@@ -9,7 +9,7 @@ import (
 func main() {
 	if beego.BConfig.RunMode == "prod" {
 		beego.BConfig.WebConfig.DirectoryIndex = true
-		beego.BConfig.WebConfig.StaticDir["/"] = "swagger"
+		beego.BConfig.WebConfig.StaticDir["/api"] = "swagger"
 	}
 	beego.Run()
 }
