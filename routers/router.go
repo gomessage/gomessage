@@ -1,6 +1,6 @@
 // @APIVersion 1.0.0
 // @Title 信息转发器
-// @Description 转发Prometheus生态圈中AlertManager推送的webhook信息到钉钉或微信等
+// @Description 转发Alertmanager的webhook信息，到钉钉、微信、或其它客户端
 // @Contact tay3223@11.com
 // @TermsOfServiceUrl http://beego.me/
 // @License Apache 2.0
@@ -14,14 +14,8 @@ import (
 )
 
 func init() {
-	ns := beego.NewNamespace("/monitoring",
-		beego.NSNamespace("/object",
-			beego.NSInclude(&controllers.ObjectController{}),
-		),
-		beego.NSNamespace("/user",
-			beego.NSInclude(&controllers.UserController{}),
-		),
-		beego.NSNamespace("/prometheus",
+	ns := beego.NewNamespace("/v1",
+		beego.NSNamespace("/client",
 			beego.NSInclude(&controllers.DingtalkControllers{}),
 		),
 	)
