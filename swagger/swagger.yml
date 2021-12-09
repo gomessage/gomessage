@@ -9,7 +9,7 @@ info:
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-basePath: /v1
+basePath: /monitoring
 paths:
   /object/:
     get:
@@ -100,6 +100,10 @@ paths:
           description: '{string} delete success!'
         "403":
           description: objectId is empty
+  /prometheus/:
+    post:
+      tags:
+      - prometheus
   /user/:
     get:
       tags:
@@ -262,3 +266,6 @@ tags:
 - name: user
   description: |
     Operations about Users
+- name: prometheus
+  description: |
+    转发Prometheus报警

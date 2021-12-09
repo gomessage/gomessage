@@ -1,0 +1,14 @@
+##########################
+# Git提交时屏蔽以下文件
+##########################
+venv
+env
+.venv
+.env
+.idea
+*.iml
+
+*.log
+*.sqlite3
+lastupdate.tmp
+routers/commentsRouter_controllers.go

@@ -1,0 +1,49 @@
+{
+  "receiver": "dingding",
+  "status": "firing",
+  "alerts": [
+    {
+      "status": "firing",
+      "labels": {
+        "alertname": "KubeControllerManagerDown",
+        "prometheus": "monitoring/k8s",
+        "severity": "critical"
+      },
+      "annotations": {
+        "description": "KubeControllerManager has disappeared from Prometheus target discovery.",
+        "runbook_url": "https://github.com/prometheus-operator/kube-prometheus/wiki/kubecontrollermanagerdown",
+        "summary": "Target disappeared from Prometheus target discovery."
+      },
+      "startsAt": "2021-05-19T02:41:44.408663452Z",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "http://prometheus-k8s-1:9090/graph?g0.expr=absent%28up%7Bjob%3D%22kube-controller-manager%22%7D+%3D%3D+1%29&g0.tab=1",
+      "fingerprint": "838121cc4ca56ab5"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertname": "KubeControllerManagerDown",
+        "prometheus": "monitoring/k8s",
+        "severity": "critical"
+      },
+      "annotations": {
+        "description": "KubeControllerManager has disappeared from Prometheus target discovery.",
+        "runbook_url": "https://github.com/prometheus-operator/kube-prometheus/wiki/kubecontrollermanagerdown",
+        "summary": "Target disappeared from Prometheus target discovery."
+      },
+      "startsAt": "2021-05-19T02:41:44.408663452Z",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "http://prometheus-k8s-1:9090/graph?g0.expr=absent%28up%7Bjob%3D%22kube-controller-manager%22%7D+%3D%3D+1%29&g0.tab=1",
+      "fingerprint": "838121cc4ca56ab5"
+    }
+  ],
+  "groupLabels": {},
+  "commonLabels": {
+    "prometheus": "monitoring/k8s"
+  },
+  "commonAnnotations": {},
+  "externalURL": "http://alertmanager-main-0:9093",
+  "version": "4",
+  "groupKey": "{}:{}",
+  "truncatedAlerts": 0
+}

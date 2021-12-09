@@ -13,7 +13,7 @@
             "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
         }
     },
-    "basePath": "/v1",
+    "basePath": "/monitoring",
     "paths": {
         "/object/": {
             "get": {
@@ -148,6 +148,13 @@
                         "description": "objectId is empty"
                     }
                 }
+            }
+        },
+        "/prometheus/": {
+            "post": {
+                "tags": [
+                    "prometheus"
+                ]
             }
         },
         "/user/": {
@@ -393,6 +400,10 @@
         {
             "name": "user",
             "description": "Operations about Users\n"
+        },
+        {
+            "name": "prometheus",
+            "description": "转发Prometheus报警\n"
         }
     ]
 }
