@@ -10,5 +10,6 @@ env
 
 *.log
 *.sqlite3
+*.tar.gz
 lastupdate.tmp
 routers/commentsRouter_controllers.go

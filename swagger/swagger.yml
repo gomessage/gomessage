@@ -3,9 +3,9 @@ info:
   title: 信息转发器
   description: 转发Alertmanager的webhook信息，到钉钉、微信、或其它客户端
   version: 1.0.0
-  termsOfService: http://beego.me/
+  termsOfService: https://blog.taycc.com/pages/prometheus/target_icmp.html
   contact:
-    email: tay3223@11.com
+    email: tay3223@qq.com
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
