@@ -1,7 +1,7 @@
 {
     "swagger": "2.0",
     "info": {
-        "title": "信息转发器",
+        "title": "报警转发器",
         "description": "转发Alertmanager的webhook信息，到钉钉、微信、或其它客户端",
         "version": "1.0.0",
         "termsOfService": "https://blog.taycc.com/pages/prometheus/target_icmp.html",
@@ -15,18 +15,76 @@
     },
     "basePath": "/v1",
     "paths": {
-        "/client/dingtalk": {
+        "/alertmanager/dingding/k8s": {
             "post": {
                 "tags": [
-                    "client"
-                ]
+                    "alertmanager"
+                ],
+                "description": "推送数据到钉钉，数据来自于Alertmanager的webhook推送",
+                "operationId": "K8sControllers.推送数据",
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    }
+                }
+            }
+        },
+        "/alertmanager/dingding/linux": {
+            "post": {
+                "tags": [
+                    "alertmanager"
+                ],
+                "description": "推送数据到钉钉，数据来自于Alertmanager的webhook推送",
+                "operationId": "LinuxControllers.推送数据",
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    }
+                }
+            }
+        },
+        "/text/wechat": {
+            "post": {
+                "tags": [
+                    "text"
+                ],
+                "description": "推送数据到微信客户端",
+                "operationId": "WechatControllers.推送数据",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "message",
+                        "description": "对象内容",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "推送成功"
+                    },
+                    "403": {
+                        "description": "创建失败"
+                    }
+                }
             }
         }
     },
     "tags": [
         {
-            "name": "client",
-            "description": "客户端：如果想发送到不同的客户端请调用对应的API\n"
+            "name": "alertmanager",
+            "description": "接收Alertmanager推送的报警信息\n"
+        },
+        {
+            "name": "alertmanager",
+            "description": "转发来自于Prometheus的数据\n"
+        },
+        {
+            "name": "text",
+            "description": "转发文本格式的数据\n"
         }
     ]
 }

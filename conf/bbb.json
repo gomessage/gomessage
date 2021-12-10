@@ -1,0 +1,119 @@
+{
+  "alerts": [
+    {
+      "annotations": {
+        "message": "34.68% throttling of CPU in namespace lens-metrics for container node-exporter in pod node-exporter-4wwb9.",
+        "runbook_url": "https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-cputhrottlinghigh"
+      },
+      "endsAt": "0001-01-01T00:00:00Z",
+      "fingerprint": "e49bbb6e2de63400",
+      "generatorURL": "http://prometheus-k8s-1:9090/graph?g0.expr=sum+by%28container%2C+pod%2C+namespace%29+%28increase%28container_cpu_cfs_throttled_periods_total%7Bcontainer%21%3D%22%22%7D%5B5m%5D%29%29+%2F+sum+by%28container%2C+pod%2C+namespace%29+%28increase%28container_cpu_cfs_periods_total%5B5m%5D%29%29+%3E+%2825+%2F+100%29&g0.tab=1",
+      "labels": {
+        "alertname": "CPUThrottlingHigh",
+        "container": "node-exporter",
+        "namespace": "lens-metrics",
+        "pod": "node-exporter-4wwb9",
+        "prometheus": "monitoring/k8s",
+        "severity": "warning"
+      },
+      "startsAt": "2021-12-09T11:07:47.55260138Z",
+      "status": "firing"
+    },
+    {
+      "annotations": {
+        "message": "35.14% throttling of CPU in namespace lens-metrics for container node-exporter in pod node-exporter-8wngw.",
+        "runbook_url": "https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-cputhrottlinghigh"
+      },
+      "endsAt": "0001-01-01T00:00:00Z",
+      "fingerprint": "2bea6d37d5381e40",
+      "generatorURL": "http://prometheus-k8s-1:9090/graph?g0.expr=sum+by%28container%2C+pod%2C+namespace%29+%28increase%28container_cpu_cfs_throttled_periods_total%7Bcontainer%21%3D%22%22%7D%5B5m%5D%29%29+%2F+sum+by%28container%2C+pod%2C+namespace%29+%28increase%28container_cpu_cfs_periods_total%5B5m%5D%29%29+%3E+%2825+%2F+100%29&g0.tab=1",
+      "labels": {
+        "alertname": "CPUThrottlingHigh",
+        "container": "node-exporter",
+        "namespace": "lens-metrics",
+        "pod": "node-exporter-8wngw",
+        "prometheus": "monitoring/k8s",
+        "severity": "warning"
+      },
+      "startsAt": "2021-11-25T10:31:47.55260138Z",
+      "status": "firing"
+    },
+    {
+      "annotations": {
+        "message": "35.83% throttling of CPU in namespace lens-metrics for container node-exporter in pod node-exporter-944sz.",
+        "runbook_url": "https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-cputhrottlinghigh"
+      },
+      "endsAt": "0001-01-01T00:00:00Z",
+      "fingerprint": "26fe30376d8bd73d",
+      "generatorURL": "http://prometheus-k8s-0:9090/graph?g0.expr=sum+by%28container%2C+pod%2C+namespace%29+%28increase%28container_cpu_cfs_throttled_periods_total%7Bcontainer%21%3D%22%22%7D%5B5m%5D%29%29+%2F+sum+by%28container%2C+pod%2C+namespace%29+%28increase%28container_cpu_cfs_periods_total%5B5m%5D%29%29+%3E+%2825+%2F+100%29&g0.tab=1",
+      "labels": {
+        "alertname": "CPUThrottlingHigh",
+        "container": "node-exporter",
+        "namespace": "lens-metrics",
+        "pod": "node-exporter-944sz",
+        "prometheus": "monitoring/k8s",
+        "severity": "warning"
+      },
+      "startsAt": "2021-12-07T04:07:17.55260138Z",
+      "status": "firing"
+    },
+    {
+      "annotations": {
+        "message": "26.81% throttling of CPU in namespace lens-metrics for container node-exporter in pod node-exporter-pzkzv.",
+        "runbook_url": "https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-cputhrottlinghigh"
+      },
+      "endsAt": "2021-12-09T11:17:47.55260138Z",
+      "fingerprint": "cb8693ecbe86c8fc",
+      "generatorURL": "http://prometheus-k8s-0:9090/graph?g0.expr=sum+by%28container%2C+pod%2C+namespace%29+%28increase%28container_cpu_cfs_throttled_periods_total%7Bcontainer%21%3D%22%22%7D%5B5m%5D%29%29+%2F+sum+by%28container%2C+pod%2C+namespace%29+%28increase%28container_cpu_cfs_periods_total%5B5m%5D%29%29+%3E+%2825+%2F+100%29&g0.tab=1",
+      "labels": {
+        "alertname": "CPUThrottlingHigh",
+        "container": "node-exporter",
+        "namespace": "lens-metrics",
+        "pod": "node-exporter-pzkzv",
+        "prometheus": "monitoring/k8s",
+        "severity": "warning"
+      },
+      "startsAt": "2021-12-09T11:07:47.55260138Z",
+      "status": "resolved"
+    },
+    {
+      "annotations": {
+        "message": "32.14% throttling of CPU in namespace lens-metrics for container node-exporter in pod node-exporter-w6dxn.",
+        "runbook_url": "https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-cputhrottlinghigh"
+      },
+      "endsAt": "0001-01-01T00:00:00Z",
+      "fingerprint": "1636b75242974c6a",
+      "generatorURL": "http://prometheus-k8s-0:9090/graph?g0.expr=sum+by%28container%2C+pod%2C+namespace%29+%28increase%28container_cpu_cfs_throttled_periods_total%7Bcontainer%21%3D%22%22%7D%5B5m%5D%29%29+%2F+sum+by%28container%2C+pod%2C+namespace%29+%28increase%28container_cpu_cfs_periods_total%5B5m%5D%29%29+%3E+%2825+%2F+100%29&g0.tab=1",
+      "labels": {
+        "alertname": "CPUThrottlingHigh",
+        "container": "node-exporter",
+        "namespace": "lens-metrics",
+        "pod": "node-exporter-w6dxn",
+        "prometheus": "monitoring/k8s",
+        "severity": "warning"
+      },
+      "startsAt": "2021-11-25T10:32:17.55260138Z",
+      "status": "firing"
+    }
+  ],
+  "commonAnnotations": {
+    "runbook_url": "https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-cputhrottlinghigh"
+  },
+  "commonLabels": {
+    "alertname": "CPUThrottlingHigh",
+    "container": "node-exporter",
+    "namespace": "lens-metrics",
+    "prometheus": "monitoring/k8s",
+    "severity": "warning"
+  },
+  "externalURL": "http://alertmanager-main-0:9093",
+  "groupKey": "{}/{container=~\"^(?:node-exporter)$\"}:{alertname=\"CPUThrottlingHigh\", namespace=\"lens-metrics\", severity=\"warning\"}",
+  "groupLabels": {
+    "alertname": "CPUThrottlingHigh",
+    "namespace": "lens-metrics",
+    "severity": "warning"
+  },
+  "receiver": "debug",
+  "status": "firing",
+  "version": "4"
+}
