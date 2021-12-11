@@ -16,7 +16,7 @@ import (
 )
 
 func init() {
-	//静态页面
+	//静态页面2
 	beego.Router("/go", &controllers.MainController{})
 
 	//命名空间
