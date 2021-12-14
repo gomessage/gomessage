@@ -3,6 +3,8 @@
 ##########################
 venv
 env
+build
+
 .venv
 .env
 .idea
