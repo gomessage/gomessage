@@ -2,9 +2,11 @@ package alertmanager
 
 import (
 	"GoMessage/client/dingtalk"
+	web2 "GoMessage/controllers/web2"
 	"encoding/json"
 	"fmt"
 	beego "github.com/beego/beego/v2/server/web"
+	"time"
 )
 
 // 接收Alertmanager推送的报警信息
@@ -17,11 +19,17 @@ type K8sControllers struct {
 // @Success 200 ok
 // @router /dingding/k8s [post]
 func (this *K8sControllers) Post() {
+
 	msg := dingtalk.Messages{}
+
 	err := json.Unmarshal(this.Ctx.Input.RequestBody, &msg)
 	if err != nil {
 		fmt.Errorf("错误：%v", err)
 	}
+
+	web2.TmpJsonData.JsonData = msg
+	web2.TmpJsonData.UpdateTime = time.Now()
+
 	//从request推送过来的数据中，拿到需要转发出去的数据，然后实例化为一个结构体对象，传递给下文使用
 	messageData := dingtalk.MessageStruct{
 		N1:  msg.Alerts[0].Labels["alertname"],

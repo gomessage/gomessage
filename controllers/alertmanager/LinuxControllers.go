@@ -2,9 +2,11 @@ package alertmanager
 
 import (
 	"GoMessage/client/dingtalk"
+	web2 "GoMessage/controllers/web2"
 	"encoding/json"
 	"fmt"
 	beego "github.com/beego/beego/v2/server/web"
+	"time"
 )
 
 // 转发来自于Prometheus的数据
@@ -23,6 +25,9 @@ func (this *LinuxControllers) Post() {
 	if err != nil {
 		fmt.Errorf("错误：%v", err)
 	}
+
+	web2.TmpJsonData.JsonData = msg
+	web2.TmpJsonData.UpdateTime = time.Now()
 
 	//fmt.Println(msg.Alerts[0].StartsAt)
 	//fmt.Println(msg.Alerts[0].StartsAt.Add(8 * time.Hour))

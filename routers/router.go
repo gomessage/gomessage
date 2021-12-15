@@ -11,13 +11,14 @@ import (
 	"GoMessage/controllers"
 	"GoMessage/controllers/alertmanager"
 	"GoMessage/controllers/text"
+	web2 "GoMessage/controllers/web2"
 
 	beego "github.com/beego/beego/v2/server/web"
 )
 
 func init() {
 	//静态页面2
-	beego.Router("/go", &controllers.MainController{})
+	beego.Router("/vue", &controllers.MainController{})
 
 	//命名空间
 	ns := beego.NewNamespace("/v1",
@@ -31,6 +32,10 @@ func init() {
 		//),
 		beego.NSNamespace("/text",
 			beego.NSInclude(&text.WechatControllers{}),
+		),
+		beego.NSNamespace("/web",
+			beego.NSInclude(&web2.JsonControllers{}),
+			beego.NSInclude(&web2.MapControllers{}),
 		),
 	)
 
