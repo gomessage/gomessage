@@ -27,7 +27,8 @@ func (this *LinuxControllers) Post() {
 	}
 
 	//绑定数据
-	json.Unmarshal(this.Ctx.Input.RequestBody, &web2.CacheData.JsonData)
+	web2.CacheData.RequestBody = this.Ctx.Input.RequestBody
+	json.Unmarshal(web2.CacheData.RequestBody, &web2.CacheData.MessageData)
 	web2.CacheData.UpdateTime = time.Now()
 
 	//fmt.Println(msg.Alerts[0].StartsAt)

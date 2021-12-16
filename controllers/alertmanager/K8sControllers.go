@@ -28,7 +28,8 @@ func (this *K8sControllers) Post() {
 	}
 
 	//绑定数据
-	json.Unmarshal(this.Ctx.Input.RequestBody, &web2.CacheData.JsonData)
+	web2.CacheData.RequestBody = this.Ctx.Input.RequestBody
+	json.Unmarshal(web2.CacheData.RequestBody, &web2.CacheData.MessageData)
 	web2.CacheData.UpdateTime = time.Now()
 
 	//从request推送过来的数据中，拿到需要转发出去的数据，然后实例化为一个结构体对象，传递给下文使用

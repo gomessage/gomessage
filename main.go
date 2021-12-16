@@ -18,7 +18,7 @@ func init() {
 	orm.RegisterDriver("sqlite3", orm.DRSqlite)
 	orm.RegisterDataBase("default", "sqlite3", "conf/db.sqlite3")
 	orm.RunSyncdb("default", false, true)
-	orm.Debug = true //开启调试模式
+	//orm.Debug = true //开启调试模式
 }
 
 func main() {
@@ -39,7 +39,7 @@ func main() {
 
 	if beego.BConfig.RunMode == "dev" || beego.BConfig.RunMode == "test" || beego.BConfig.RunMode == "prod" {
 		beego.BConfig.WebConfig.DirectoryIndex = true
-		beego.BConfig.WebConfig.StaticDir["/"] = "swagger"
+		beego.BConfig.WebConfig.StaticDir["/api"] = "swagger"
 	}
 	beego.Run()
 }

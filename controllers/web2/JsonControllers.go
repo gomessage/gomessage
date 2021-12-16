@@ -1,4 +1,4 @@
-package alertmanager
+package web2
 
 import (
 	"fmt"
@@ -6,6 +6,23 @@ import (
 	"time"
 )
 
+//========================
+//可接受任意json格式的结构体
+//========================
+type ArbitrarilyJsonData struct {
+	MessageData map[string]interface{} `json:"json_data"`
+	UpdateTime  time.Time              `json:"update_time"`
+	RequestBody []byte
+}
+
+//========================
+//全局变量，其它文件中可以写入和读取
+//========================
+var CacheData ArbitrarilyJsonData
+
+//========================
+// JsonControllers控制器
+//========================
 type JsonControllers struct {
 	beego.Controller
 }
@@ -15,7 +32,7 @@ type JsonControllers struct {
 // @Success 200 ok
 // @router /json [get]
 func (this *JsonControllers) Get() {
-	//tmpJsonData := ResponseJsonData{}
+	//tmpJsonData := ArbitrarilyJsonData{}
 
 	fmt.Println(CacheData)
 
@@ -29,18 +46,3 @@ func (this *JsonControllers) Get() {
 	this.Data["json"] = CacheData
 	this.ServeJSON()
 }
-
-//只能接收固定json格式
-//type ResponseJsonData struct {
-//	JsonData   dingtalk.Messages `json:"json_data"`
-//	UpdateTime time.Time         `json:"update_time"`
-//}
-
-//可以接受任意json格式
-type ResponseJsonData struct {
-	JsonData   map[string]interface{} `json:"json_data"`
-	UpdateTime time.Time              `json:"update_time"`
-}
-
-//全局变量，其它文件中可以写入，而我这个接口可以读取
-var CacheData ResponseJsonData

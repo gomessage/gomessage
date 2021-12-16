@@ -73,6 +73,13 @@ paths:
       responses:
         "200":
           description: ok
+  /web/template:
+    get:
+      tags:
+      - web
+    post:
+      tags:
+      - web
 tags:
 - name: alertmanager
   description: |
@@ -83,3 +90,8 @@ tags:
 - name: text
   description: |
     转发文本格式的数据
+- name: web
+  description: |
+    ========================
+    JsonControllers控制器
+    ========================

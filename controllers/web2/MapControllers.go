@@ -1,4 +1,4 @@
-package alertmanager
+package web2
 
 import (
 	"GoMessage/models"
@@ -7,10 +7,10 @@ import (
 )
 
 //全局变量，其它文件中可以写入，而我这个接口可以读取
-//var CacheData ResponseJsonData
+//var CacheData ArbitrarilyJsonData
 
-//type ResponseJsonData struct {
-//	JsonData   dingtalk.Messages `json:"json_data"`
+//type ArbitrarilyJsonData struct {
+//	MessageData   dingtalk.Messages `json:"json_data"`
 //	UpdateTime time.Time         `json:"update_time"`
 //}
 
