@@ -84,6 +84,18 @@
                 }
             }
         },
+        "/web/client": {
+            "get": {
+                "tags": [
+                    "web"
+                ]
+            },
+            "post": {
+                "tags": [
+                    "web"
+                ]
+            }
+        },
         "/web/json": {
             "get": {
                 "tags": [
@@ -137,10 +149,6 @@
         {
             "name": "text",
             "description": "转发文本格式的数据\n"
-        },
-        {
-            "name": "web",
-            "description": "========================\nJsonControllers控制器\n========================\n"
         }
     ]
 }

@@ -18,7 +18,7 @@ import (
 
 func init() {
 	//静态页面2
-	beego.Router("/", &controllers.MainController{})
+	//beego.Router("/", &controllers.MainController{})
 
 	//命名空间
 	ns := beego.NewNamespace("/v1",
@@ -36,6 +36,7 @@ func init() {
 		beego.NSNamespace("/web",
 			beego.NSInclude(&web2.JsonControllers{}),
 			beego.NSInclude(&web2.MapControllers{}),
+			beego.NSInclude(&web2.ClientControllers{}),
 			beego.NSInclude(&web2.TemplateControllers{}),
 		),
 		beego.NSNamespace("/test",

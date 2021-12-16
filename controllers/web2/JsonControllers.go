@@ -20,9 +20,6 @@ type ArbitrarilyJsonData struct {
 //========================
 var CacheData ArbitrarilyJsonData
 
-//========================
-// JsonControllers控制器
-//========================
 type JsonControllers struct {
 	beego.Controller
 }

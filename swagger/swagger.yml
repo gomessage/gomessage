@@ -55,6 +55,13 @@ paths:
           description: 推送成功
         "403":
           description: 创建失败
+  /web/client:
+    get:
+      tags:
+      - web
+    post:
+      tags:
+      - web
   /web/json:
     get:
       tags:
@@ -90,8 +97,3 @@ tags:
 - name: text
   description: |
     转发文本格式的数据
-- name: web
-  description: |
-    ========================
-    JsonControllers控制器
-    ========================
