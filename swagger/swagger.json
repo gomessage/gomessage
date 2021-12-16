@@ -43,6 +43,18 @@
                 }
             }
         },
+        "/test/": {
+            "get": {
+                "tags": [
+                    "test"
+                ]
+            },
+            "post": {
+                "tags": [
+                    "test"
+                ]
+            }
+        },
         "/text/wechat": {
             "post": {
                 "tags": [

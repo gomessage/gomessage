@@ -26,8 +26,9 @@ func (this *LinuxControllers) Post() {
 		fmt.Errorf("错误：%v", err)
 	}
 
-	web2.TmpJsonData.JsonData = msg
-	web2.TmpJsonData.UpdateTime = time.Now()
+	//绑定数据
+	json.Unmarshal(this.Ctx.Input.RequestBody, &web2.CacheData.JsonData)
+	web2.CacheData.UpdateTime = time.Now()
 
 	//fmt.Println(msg.Alerts[0].StartsAt)
 	//fmt.Println(msg.Alerts[0].StartsAt.Add(8 * time.Hour))

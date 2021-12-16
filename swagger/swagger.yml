@@ -29,6 +29,13 @@ paths:
       responses:
         "200":
           description: ok
+  /test/:
+    get:
+      tags:
+      - test
+    post:
+      tags:
+      - test
   /text/wechat:
     post:
       tags:

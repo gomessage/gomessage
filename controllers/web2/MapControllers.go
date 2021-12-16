@@ -7,7 +7,7 @@ import (
 )
 
 //全局变量，其它文件中可以写入，而我这个接口可以读取
-//var TmpJsonData ResponseJsonData
+//var CacheData ResponseJsonData
 
 //type ResponseJsonData struct {
 //	JsonData   dingtalk.Messages `json:"json_data"`

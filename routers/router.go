@@ -37,6 +37,9 @@ func init() {
 			beego.NSInclude(&web2.JsonControllers{}),
 			beego.NSInclude(&web2.MapControllers{}),
 		),
+		beego.NSNamespace("/test",
+			beego.NSInclude(&controllers.TestController{}),
+		),
 	)
 
 	//注册命名空间

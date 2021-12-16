@@ -27,8 +27,9 @@ func (this *K8sControllers) Post() {
 		fmt.Errorf("错误：%v", err)
 	}
 
-	web2.TmpJsonData.JsonData = msg
-	web2.TmpJsonData.UpdateTime = time.Now()
+	//绑定数据
+	json.Unmarshal(this.Ctx.Input.RequestBody, &web2.CacheData.JsonData)
+	web2.CacheData.UpdateTime = time.Now()
 
 	//从request推送过来的数据中，拿到需要转发出去的数据，然后实例化为一个结构体对象，传递给下文使用
 	messageData := dingtalk.MessageStruct{
