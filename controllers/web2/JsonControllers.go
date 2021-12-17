@@ -1,7 +1,6 @@
 package web2
 
 import (
-	"fmt"
 	beego "github.com/beego/beego/v2/server/web"
 	"time"
 )
@@ -29,15 +28,6 @@ type JsonControllers struct {
 // @Success 200 ok
 // @router /json [get]
 func (this *JsonControllers) Get() {
-	//tmpJsonData := ArbitrarilyJsonData{}
-
-	fmt.Println(CacheData)
-
-	//bs, _ := json.Marshal(CacheData)
-	//var out bytes.Buffer
-	//json.Indent(&out, bs, "", "\t")
-	//fmt.Printf("aaa=%v\n", out.String())
-
 	//返回值
 	this.Ctx.ResponseWriter.WriteHeader(200)
 	this.Data["json"] = CacheData

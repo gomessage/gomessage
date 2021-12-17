@@ -20,7 +20,7 @@ build() {
     #交叉编译，在mac上编译linux上的部署包
     bee pack -a "${baoName}" \
         -o "${OUTPUT_PATH}" \
-        -exr "^pack.sh|^build|README.md|.sh\$|bak" \
+        -exr "^pack.sh|^build|README.md|.sh\$|bak|.sqlite3\$" \
         -be GOOS="${GOOS}" \
         -be GOARCH="${GOARCH}"
 

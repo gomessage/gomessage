@@ -72,7 +72,7 @@ func DeleteTemplate(j Template) int64 {
 //######################
 //函数：查询所有用户
 //######################
-func GetAllTemplate() []Template {
+func QueryAllTemplate() []Template {
 	var temp []Template
 	t := Template{}
 

@@ -1,7 +1,7 @@
 package text
 
 import (
-	"GoMessage/client/wechat"
+	"GoMessage/apps/ClientWechat"
 	"encoding/json"
 	"fmt"
 	beego "github.com/beego/beego/v2/server/web"

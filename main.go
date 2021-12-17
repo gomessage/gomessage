@@ -39,7 +39,7 @@ func main() {
 
 	if beego.BConfig.RunMode == "dev" || beego.BConfig.RunMode == "test" || beego.BConfig.RunMode == "prod" {
 		beego.BConfig.WebConfig.DirectoryIndex = true
-		beego.BConfig.WebConfig.StaticDir["/"] = "swagger"
+		beego.BConfig.WebConfig.StaticDir["/docs"] = "swagger"
 	}
 	beego.Run()
 }

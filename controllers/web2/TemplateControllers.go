@@ -29,7 +29,7 @@ func (this *TemplateControllers) Post() {
 	json.Unmarshal(this.Ctx.Input.RequestBody, &data)
 
 	//遍历删除全部配置存储
-	for _, ttt := range models.GetAllTemplate() {
+	for _, ttt := range models.QueryAllTemplate() {
 		models.DeleteTemplate(ttt)
 	}
 

@@ -29,6 +29,13 @@ paths:
       responses:
         "200":
           description: ok
+  /go/message:
+    get:
+      tags:
+      - go
+    post:
+      tags:
+      - go
   /test/:
     get:
       tags:
@@ -72,6 +79,9 @@ paths:
         "200":
           description: ok
   /web/map:
+    get:
+      tags:
+      - web
     post:
       tags:
       - web
