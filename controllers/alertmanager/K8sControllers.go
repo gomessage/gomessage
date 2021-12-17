@@ -1,7 +1,7 @@
 package alertmanager
 
 import (
-	"GoMessage/client/dingtalk"
+	"GoMessage/apps/ClientDingtalk"
 	web2 "GoMessage/controllers/web2"
 	"encoding/json"
 	"fmt"

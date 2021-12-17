@@ -20,7 +20,7 @@ type Json struct {
 //######################
 //函数：添加用户
 //######################
-func AddUser(key string, value string) int {
+func AddMap(key string, value string) int {
 	//密码加密
 
 	o := orm.NewOrm()
@@ -38,7 +38,7 @@ func AddUser(key string, value string) int {
 //######################
 //函数：查询和创建一个用户，确保它始终存在
 //######################
-func ReadOrCreateUser(key string, value string) Json {
+func ReadOrCreateMap(key string, value string) Json {
 	o := orm.NewOrm()
 	json := Json{}
 	json.Key = key
@@ -64,7 +64,7 @@ func ReadOrCreateUser(key string, value string) Json {
 //######################
 //函数：查询所有用户
 //######################
-func GetAllUsers() []Json {
+func QueryAllMap() []Json {
 	var jsons []Json
 	json := Json{}
 
@@ -76,23 +76,9 @@ func GetAllUsers() []Json {
 }
 
 //######################
-//函数：删除所有数据
-//######################
-//func DeleteAllUsers() []*Json {
-//	var jsons []*Json
-//	json := Json{}
-//
-//	o := orm.NewOrm()
-//	num, _ := o.Delete(&json).All(&jsons)
-//	fmt.Printf("受影响的行数：%v\n", num)
-//
-//	return jsons
-//}
-
-//######################
 //函数：删除用户
 //######################
-func DeleteUser(j Json) int64 {
+func DeleteMap(j Json) int64 {
 	o := orm.NewOrm()
 	//json := Json{Id: Id}
 	num, err2 := o.Delete(&j)

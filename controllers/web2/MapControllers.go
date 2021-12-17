@@ -18,7 +18,15 @@ type MapControllers struct {
 	beego.Controller
 }
 
-// Post
+// @router /map [get]
+func (this *MapControllers) Get() {
+	mList := models.QueryAllMap()
+	//返回值
+	this.Ctx.ResponseWriter.WriteHeader(200)
+	this.Data["json"] = mList
+	this.ServeJSON()
+}
+
 // @Title 推送数据
 // @Description 推送数据到钉钉，数据来自于Alertmanager的webhook推送
 // @Success 200 ok
@@ -34,8 +42,8 @@ func (this *MapControllers) Post() {
 	}
 
 	//遍历删除全部配置存储
-	for _, json := range models.GetAllUsers() {
-		models.DeleteUser(json)
+	for _, json := range models.QueryAllMap() {
+		models.DeleteMap(json)
 		//fmt.Println(result)
 	}
 
@@ -45,7 +53,7 @@ func (this *MapControllers) Post() {
 	//批量写入新的配置
 	for _, json := range r.KeyValueList {
 		for key, vv := range json {
-			result := models.ReadOrCreateUser(key, vv)
+			result := models.ReadOrCreateMap(key, vv)
 			ResponseJsons = append(ResponseJsons, result)
 		}
 	}

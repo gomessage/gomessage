@@ -26,10 +26,9 @@ func init() {
 			beego.NSInclude(&alertmanager.K8sControllers{}),
 			beego.NSInclude(&alertmanager.LinuxControllers{}),
 		),
-		//beego.NSNamespace("/prometheus",
-		//	beego.NSInclude(&alertmanager.K8sControllers{}),
-		//	beego.NSInclude(&alertmanager.LinuxControllers{}),
-		//),
+		beego.NSNamespace("/test",
+			beego.NSInclude(&controllers.TestController{}),
+		),
 		beego.NSNamespace("/text",
 			beego.NSInclude(&text.WechatControllers{}),
 		),
@@ -39,11 +38,18 @@ func init() {
 			beego.NSInclude(&web2.ClientControllers{}),
 			beego.NSInclude(&web2.TemplateControllers{}),
 		),
-		beego.NSNamespace("/test",
-			beego.NSInclude(&controllers.TestController{}),
+		beego.NSNamespace("/go",
+			beego.NSInclude(&web2.ApiControllers{}),
 		),
 	)
 
+	//messageApi := beego.NewNamespace("/message",
+	//	beego.NSNamespace("/v1",
+	//		beego.NSInclude(&web2.ApiControllers{}),
+	//	),
+	//)
+
 	//注册命名空间
 	beego.AddNamespace(ns)
+	//beego.AddNamespace(messageApi)
 }
