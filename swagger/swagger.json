@@ -43,18 +43,6 @@
                 }
             }
         },
-        "/go/message": {
-            "get": {
-                "tags": [
-                    "go"
-                ]
-            },
-            "post": {
-                "tags": [
-                    "go"
-                ]
-            }
-        },
         "/test/": {
             "get": {
                 "tags": [

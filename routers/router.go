@@ -18,10 +18,12 @@ import (
 
 func init() {
 	//静态页面2
-	beego.Router("/", &controllers.MainController{})
+	beego.Router("/", &controllers.IndexController{})
 
 	//命名空间
 	ns := beego.NewNamespace("/v1",
+
+		//与web界面的api没有任何关系，唯一有关系的可能是web2里有些函数引用了老的结构体
 		beego.NSNamespace("/alertmanager",
 			beego.NSInclude(&alertmanager.K8sControllers{}),
 			beego.NSInclude(&alertmanager.LinuxControllers{}),
@@ -32,24 +34,24 @@ func init() {
 		beego.NSNamespace("/text",
 			beego.NSInclude(&text.WechatControllers{}),
 		),
+
+		//以下部分的路由才是有用的
 		beego.NSNamespace("/web",
 			beego.NSInclude(&web2.JsonControllers{}),
 			beego.NSInclude(&web2.MapControllers{}),
 			beego.NSInclude(&web2.ClientControllers{}),
 			beego.NSInclude(&web2.TemplateControllers{}),
 		),
-		beego.NSNamespace("/go",
-			beego.NSInclude(&web2.ApiControllers{}),
+	)
+
+	//这是一个独立的命名空间，用来让用户推送数据
+	goUrl := beego.NewNamespace("/go", //命名空间名称
+		beego.NSNamespace("/message", //一级路由
+			beego.NSInclude(&web2.ApiControllers{}), //控制器上包含二级路由（注释型路由）
 		),
 	)
 
-	//messageApi := beego.NewNamespace("/message",
-	//	beego.NSNamespace("/v1",
-	//		beego.NSInclude(&web2.ApiControllers{}),
-	//	),
-	//)
-
 	//注册命名空间
 	beego.AddNamespace(ns)
-	//beego.AddNamespace(messageApi)
+	beego.AddNamespace(goUrl)
 }

@@ -1,7 +1,6 @@
 package web2
 
 import (
-	dingtalk "GoMessage/apps/ClientDingtalk"
 	"GoMessage/models"
 	"bytes"
 	"encoding/json"
@@ -12,6 +11,7 @@ import (
 	"io/ioutil"
 	"math/rand"
 	"net/http"
+	"strings"
 	"time"
 )
 
@@ -19,23 +19,34 @@ type ApiControllers struct {
 	beego.Controller
 }
 
-// @router /message [get]
 func (this *ApiControllers) Get() {
 
-	//aaaData := make(map[string]string)
-	proData := dingtalk.Messages{}
-	json.Unmarshal(CacheData.RequestBody, &proData)
-
-	bs, _ := json.Marshal(proData)
-	var out bytes.Buffer
-	json.Indent(&out, bs, "", "\t")
-	fmt.Printf("student=%v\n", out.String())
-
-	//result := gjson.GetBytes(CacheData.RequestBody, "alerts")
-	//fmt.Println(result.Array())
-	//for _, isData := range result.Array() {
-	//	fmt.Println(isData.String())
+	//proData := dingtalk.Messages{}
+	//json.Unmarshal(CacheData.RequestBody, &proData)
+	//
+	//for _, v := range proData.Alerts {
+	//	fmt.Println(v)
 	//}
+
+	//bs, _ := json.Marshal(proData)
+	//var out bytes.Buffer
+	//json.Indent(&out, bs, "", "\t")
+	//fmt.Printf("student=%v\n", out.String())
+	aaa := "alerts.#.labels.alertname"
+
+	var tmList []map[string]string
+
+	//fmt.Println(bbb)
+
+	result := gjson.GetBytes(CacheData.RequestBody, aaa)
+	//fmt.Println(result.Array())
+	for _, i := range result.Array() {
+		bbb := strings.ReplaceAll(aaa, ".", "_")
+		tmData := make(map[string]string)
+		tmData[bbb] = i.String()
+		tmList = append(tmList, tmData)
+	}
+	fmt.Println(tmList)
 	//
 	//result.ForEach(func(_, da gjson.Result) bool {
 	//	fmt.Println(da)
@@ -48,10 +59,9 @@ func (this *ApiControllers) Get() {
 	this.ServeJSON()
 }
 
-// @router /message [post]
 func (this *ApiControllers) Post() {
 	//进行CacheData数据绑定
-	CacheData.RequestBody = this.Ctx.Input.RequestBody
+	CacheData.RequestBody = this.Ctx.Input.RequestBody //[]byte
 	json.Unmarshal(CacheData.RequestBody, &CacheData.MessageData)
 	CacheData.UpdateTime = time.Now()
 
