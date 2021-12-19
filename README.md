@@ -6,11 +6,11 @@
 
 ### 下载安装包
 
-打开安装包下载界面：https://gitee.com/tay3223/go-message/releases
+打开安装包下载界面：https://gitee.com/ergou-open-source/go-message/releases
 
 ```bash
 # 下载安装包
-wget https://gitee.com/tay3223/go-message/attach_files/912104/download/GoMessage-v1.0.0-linux-amd64.tar.gz
+wget https://gitee.com/ergou-open-source/go-message/attach_files/912104/download/GoMessage-v1.0.0-linux-amd64.tar.gz
 
 # 新建服务运行时的工作目录；
 # 作者推荐把服务安装到：/opt/gomessage/目录下；
@@ -28,7 +28,7 @@ tar - zxvf ./GoMessage-v1.0.0-linux-amd64.tar.gz -C /opt/gomessage/
 新建以下文件：
 
 ```bash
-/usr/lib/systemd/system/go_message.service
+/usr/lib/systemd/system/gomessage.service
 ```
 
 追加如如下内容：
@@ -63,10 +63,10 @@ systemctl daemon-reload
 到此为止就算安装成功了，常用的启动命令如下：
 
 ```bash
-systemctl start   go_message.service
-systemctl stop    go_message.service
-systemctl restart go_message.service
-systemctl status  go_message.service
+systemctl start   gomessage.service
+systemctl stop    gomessage.service
+systemctl restart gomessage.service
+systemctl status  gomessage.service
 ```
 
 # 如何使用
