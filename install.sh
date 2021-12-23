@@ -22,7 +22,7 @@ Group=root
 LimitNOFILE=65535
 LimitNPROC=65535
 WorkingDirectory=/opt/gomessage/
-ExecStart=/opt/gomessage/GoMessage
+ExecStart=/opt/gomessage/gomessage
 Restart=no
 
 

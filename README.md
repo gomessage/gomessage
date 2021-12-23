@@ -1,6 +1,6 @@
 # GoMessage
 
-# 安装
+详细使用文档：https://gitee.com/ergou-open-source/gomessage/wikis/pages
 
 > (以Centos7.x环境安装为例进行演示)
 

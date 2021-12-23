@@ -37,7 +37,7 @@ build() {
     else
         bee pack -a gomessage \
             -o "${OUTPUT_PATH}${GOOS}/" \
-            -exr "^pack.sh|^build|README.md|.sh\$|bak|.sqlite3\$|LICENSE|bak\$" \
+            -exr "^pack.sh|^build|README.md|.sh\$|bak|.sqlite3\$|LICENSE|bak\$|docs" \
             -be CGO_ENABLED=1 \
             -be GOOS="${GOOS}" \
             -be GOARCH="${GOARCH}"
