@@ -1,4 +1,4 @@
-# GoMessage：报警信息转发器
+# GoMessage
 
 # 安装
 

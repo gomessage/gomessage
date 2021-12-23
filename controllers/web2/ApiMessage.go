@@ -1,17 +1,11 @@
 package web2
 
 import (
+	"GoMessage/apps/WebMessageSend"
 	"GoMessage/models"
-	"bytes"
 	"encoding/json"
 	"fmt"
 	beego "github.com/beego/beego/v2/server/web"
-	"github.com/tidwall/gjson"
-	"html/template"
-	"io/ioutil"
-	"math/rand"
-	"net/http"
-	"strings"
 	"time"
 )
 
@@ -20,48 +14,15 @@ type ApiControllers struct {
 }
 
 func (this *ApiControllers) Get() {
-
-	//proData := dingtalk.Messages{}
-	//json.Unmarshal(CacheData.RequestBody, &proData)
-	//
-	//for _, v := range proData.Alerts {
-	//	fmt.Println(v)
-	//}
-
-	//bs, _ := json.Marshal(proData)
-	//var out bytes.Buffer
-	//json.Indent(&out, bs, "", "\t")
-	//fmt.Printf("student=%v\n", out.String())
-	aaa := "alerts.#.labels.alertname"
-
-	var tmList []map[string]string
-
-	//fmt.Println(bbb)
-
-	result := gjson.GetBytes(CacheData.RequestBody, aaa)
-	//fmt.Println(result.Array())
-	for _, i := range result.Array() {
-		bbb := strings.ReplaceAll(aaa, ".", "_")
-		tmData := make(map[string]string)
-		tmData[bbb] = i.String()
-		tmList = append(tmList, tmData)
-	}
-	fmt.Println(tmList)
-	//
-	//result.ForEach(func(_, da gjson.Result) bool {
-	//	fmt.Println(da)
-	//	return true
-	//})
-
 	//给出返回值
 	this.Ctx.ResponseWriter.WriteHeader(200)
-	this.Data["json"] = "ok"
+	this.Data["json"] = "GoMessage"
 	this.ServeJSON()
 }
 
 func (this *ApiControllers) Post() {
 	//进行CacheData数据绑定
-	CacheData.RequestBody = this.Ctx.Input.RequestBody //[]byte
+	CacheData.RequestBody = this.Ctx.Input.RequestBody
 	json.Unmarshal(CacheData.RequestBody, &CacheData.MessageData)
 	CacheData.UpdateTime = time.Now()
 
@@ -71,18 +32,22 @@ func (this *ApiControllers) Post() {
 	//从数据库中拿到"模板变量"映射关系 （数据库方法）
 	//从数据库中拿到"模板内容" （数据库方法）
 	//从数据库中拿到钉钉客户端的配置 （数据库方法）
-	conf := GetConfig()
+	userConfig := WebMessageSend.GetUserConfig()
 
 	//获得自定义变量与数据的映射 AnalysisData()
-	analysisData := AnalysisData(conf.mapConfig, messageByteData)
+	analysisDataList := WebMessageSend.AnalysisData(userConfig.ConfigMap, messageByteData)
+	//fmt.Println(analysisDataList)
 
-	//通过自定义变量+模板内容渲染出最终的消息体 MessageRenders()
-	message := MessageRenders(conf.templateConfig, analysisData)
-	fmt.Println("渲染后的信息：" + message)
+	//得到渲染完成后的模板消息列表，测试还没有根据不同的客户端渲染成完整的推送消息体
+	templateMessageList := WebMessageSend.TemplateRenders(userConfig.MessageTemplate, analysisDataList)
+	//fmt.Println("-------------", len(templateMessageList))
 
-	//把最终的消息体通过钉钉发送出去
-	result := SendMessage(conf.dingtalkConfig, message)
-	fmt.Println(result)
+	//判断消息是否聚合发送
+	if userConfig.MessageMerge {
+		MergeSend(templateMessageList, userConfig)
+	} else {
+		DisperseSend(templateMessageList, userConfig)
+	}
 
 	//给出返回值
 	this.Ctx.ResponseWriter.WriteHeader(200)
@@ -91,143 +56,75 @@ func (this *ApiControllers) Post() {
 }
 
 //========================
-//随机获取一个钉钉地址
+//消息（聚合）发送，所有消息拼接成一个整体
 //========================
-func DingtalkRandomUrl(dingding []models.DingtalkClient) models.DingtalkClient {
-	dingtalkClient := dingding
-	rand.Seed(time.Now().Unix())
-	n := rand.Int() % len(dingtalkClient)
-	return dingtalkClient[n]
+func MergeSend(messageList []string, userConfig WebMessageSend.Config) {
+	for _, ccc := range userConfig.ActiveClient {
+		oneClientInfo, _ := models.GetClient(ccc.Id)
+		cType := oneClientInfo.Type
+
+		if cType == "feishu" {
+			msg := WebMessageSend.MessageJoint(messageList, cType) //完成消息拼接，不同的客户端消息拼接格式不同
+			url := WebMessageSend.RobotRandomUrl(oneClientInfo.ClientFeishu.RobotUrlList)
+			data := WebMessageSend.MessageRendersFeishu(oneClientInfo, msg)
+			WebMessageSend.SendMessage(data, url)
+
+		} else if cType == "dingtalk" {
+			msg := WebMessageSend.MessageJoint(messageList, cType)
+			url := WebMessageSend.RobotRandomUrl(oneClientInfo.ClientDingtalk.RobotUrlList)
+			data := WebMessageSend.MessageRendersDingtalk(oneClientInfo.ClientDingtalk.RobotKeyword, msg)
+			WebMessageSend.SendMessage(data, url)
+
+		} else if cType == "wechat" {
+			msg := WebMessageSend.MessageJoint(messageList, cType)
+			wechat := WebMessageSend.WeChat{
+				Corpid:      oneClientInfo.ClientWechat.Corpid,
+				Agentid:     oneClientInfo.ClientWechat.Agentid,
+				Agentsecret: oneClientInfo.ClientWechat.Secret,
+				Touser:      oneClientInfo.ClientWechat.Touser,
+				Content:     msg,
+			}
+			wechat.PushMessage()
+		}
+
+		//data, url := WebMessageSend.VerdictClient(oneClientInfo, msg)
+		//fmt.Println(data, url)
+		//WebMessageSend.SendMessage(data, url)
+	}
+
 }
 
 //========================
-//消息体的最终格式化
+//消息（分散）发送，切割成一条一条的发送出去
 //========================
-func formatMessage(keyword string, message string) interface{} {
-	type MarkdownMessage struct {
-		Msgtype  string `json:"msgtype"`
-		Markdown struct {
-			Title string `json:"title"`
-			Text  string `json:"text"`
-		} `json:"markdown"`
-	}
-	m := MarkdownMessage{}
-	m.Msgtype = "markdown"
-	m.Markdown.Title = "GoMessage：" + keyword
-	m.Markdown.Text = message
-	return m
-}
+func DisperseSend(messageList []string, userConfig WebMessageSend.Config) {
+	for _, oneMessage := range messageList {
+		for _, oneClient := range userConfig.ActiveClient {
+			oneClientInfo, _ := models.GetClient(oneClient.Id)
+			cType := oneClientInfo.Type
 
-//========================
-//发送数据的实际方法
-//========================
-func SendMessage(dingding []models.DingtalkClient, message string) interface{} {
-	dingtalkCli := DingtalkRandomUrl(dingding)
-	url := dingtalkCli.RobotUrl
-	keyword := dingtalkCli.RobotKeyword
-	data := formatMessage(keyword, message)
+			if cType == "feishu" {
+				url := WebMessageSend.RobotRandomUrl(oneClientInfo.ClientFeishu.RobotUrlList)
+				data := WebMessageSend.MessageRendersFeishu(oneClientInfo, oneMessage)
+				WebMessageSend.SendMessage(data, url)
 
-	contentType := "application/json;charset=utf-8"
-	//结构体转换为json
-	e, err := json.Marshal(data)
-	if err != nil {
-		fmt.Println(err)
-	}
-	//发送post请求
-	client := &http.Client{}
-	response, err := client.Post(url, contentType, bytes.NewBuffer(e)) //post请求时，数据必须是byte
-	if err != nil {
-		fmt.Println(err)
-	}
-	defer response.Body.Close()
-	body, err2 := ioutil.ReadAll(response.Body)
-	if err2 != nil {
-		fmt.Println(err2)
-	}
-	type DingtalkResponse struct {
-		Errcode int    `json:"errcode"`
-		Errmsg  string `json:"errmsg"`
-	}
-	req := DingtalkResponse{}
-	json.Unmarshal(body, &req)
+			} else if cType == "dingtalk" {
+				url := WebMessageSend.RobotRandomUrl(oneClientInfo.ClientDingtalk.RobotUrlList)
+				data := WebMessageSend.MessageRendersDingtalk(oneClientInfo.ClientDingtalk.RobotKeyword, oneMessage)
+				WebMessageSend.SendMessage(data, url)
 
-	fmt.Println(string(body)) //打印的是人类可读的信息
-	//return string(body)
-	return req
-}
-
-type Config struct {
-	mapConfig      []map[string]string
-	templateConfig string
-	dingtalkConfig []models.DingtalkClient
-}
-
-//========================
-//获取到数据库中存储的用户配置
-//========================
-func GetConfig() Config {
-	c := Config{}
-
-	//获取Map相关的配置
-	var tmpList []map[string]string
-	for _, value := range models.QueryAllMap() {
-		tmpMap := make(map[string]string)
-		k := value.Key
-		v := value.Value
-		tmpMap[k] = v
-		tmpList = append(tmpList, tmpMap)
-	}
-	c.mapConfig = tmpList
-
-	//获取Template相关的配置
-	c.templateConfig = models.GetOneTemplate("default").MessageTemplate
-
-	//获取dingding相关的配置
-	c.dingtalkConfig = models.QueryAllDingtalkClient()
-
-	return c
-}
-
-//========================
-//模板变量与实际的RequestData对应起来，建立映射关系
-//========================
-func AnalysisData(keyValueList []map[string]string, messageData []byte) map[string]string {
-	var dataMapping map[string]string
-	dataMapping = make(map[string]string)
-	var tmpKey string
-	var tmpValue gjson.Result
-	for _, dict := range keyValueList {
-		for k, v := range dict {
-			tmpKey = v
-			tmpValue = gjson.GetBytes(messageData, tmpKey)
-			//fmt.Println(k, tmpValue)
-			dataMapping[k] = tmpValue.String()
+			} else if cType == "wechat" {
+				fmt.Println("进入wechat判断...")
+				wechat := WebMessageSend.WeChat{
+					Corpid:      oneClientInfo.ClientWechat.Corpid,
+					Agentid:     oneClientInfo.ClientWechat.Agentid,
+					Agentsecret: oneClientInfo.ClientWechat.Secret,
+					Touser:      oneClientInfo.ClientWechat.Touser,
+					Content:     oneMessage,
+				}
+				wechat.PushMessage()
+			}
 		}
 	}
-	return dataMapping
-}
-
-//========================
-//接收用户的模板信息，然后加上映射好的数据模型，直接返回一个完整的信息体出来
-//========================
-func MessageRenders(thisTemplate string, data map[string]string) string {
-
-	//创建一个字节缓冲器
-	var buf bytes.Buffer
-
-	//以 K8sMessageTemplate 为蓝本，新建一个模板，新起一个名字叫tmplNewName
-	tmpl, err := template.New("tmplNewName").Parse(thisTemplate)
-	if err != nil {
-		fmt.Println(err)
-	}
-	//实例化属性
-	tmplData := data
-
-	//渲染tmpl模板，渲染的过程中把tmplData的值填充到模板之内，最后把渲染后的结果存入到buf这个字节缓冲器中
-	if err = tmpl.Execute(&buf, tmplData); err != nil {
-		panic(err)
-	}
-
-	//格式化字节缓冲器中的内容为String串，然后返回给调用方
-	return buf.String()
+	fmt.Println("没有进入for循环")
 }

@@ -14,9 +14,9 @@ type DingtalkClient struct {
 	CreateTime   time.Time `orm:"auto_now_add;type(datetime)"` //创建时间
 }
 
-func init() {
-	orm.RegisterModel(new(DingtalkClient))
-}
+//func init() {
+//	orm.RegisterModel(new(DingtalkClient))
+//}
 
 //######################
 //增

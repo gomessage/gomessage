@@ -18,7 +18,7 @@ type Json struct {
 }
 
 //######################
-//函数：添加用户
+//函数：添加
 //######################
 func AddMap(key string, value string) int {
 	//密码加密
@@ -36,7 +36,7 @@ func AddMap(key string, value string) int {
 }
 
 //######################
-//函数：查询和创建一个用户，确保它始终存在
+//函数：查询和创建一个，确保它始终存在
 //######################
 func ReadOrCreateMap(key string, value string) Json {
 	o := orm.NewOrm()
@@ -49,9 +49,9 @@ func ReadOrCreateMap(key string, value string) Json {
 	}
 	//判断用户是否是新创建的
 	if newCreate {
-		fmt.Println("新创建用户ID：", id)
+		fmt.Println("新创建Map的ID：", id)
 	} else {
-		fmt.Println("查询到用户ID：", id)
+		fmt.Println("查询到Map的ID：", id)
 		//如果用户存在，则更新用户的信息
 		_, err := o.Update(&json)
 		if err != nil {
@@ -62,7 +62,7 @@ func ReadOrCreateMap(key string, value string) Json {
 }
 
 //######################
-//函数：查询所有用户
+//函数：查询所有
 //######################
 func QueryAllMap() []Json {
 	var jsons []Json
@@ -70,13 +70,13 @@ func QueryAllMap() []Json {
 
 	o := orm.NewOrm()
 	num, _ := o.QueryTable(&json).All(&jsons)
-	fmt.Printf("受影响的行数：%v\n", num)
+	fmt.Printf("查询全部Map，受影响的行数：%v\n", num)
 
 	return jsons
 }
 
 //######################
-//函数：删除用户
+//函数：删除
 //######################
 func DeleteMap(j Json) int64 {
 	o := orm.NewOrm()

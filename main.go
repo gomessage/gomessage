@@ -5,7 +5,8 @@ import (
 	"github.com/beego/beego/v2/client/orm"
 	beego "github.com/beego/beego/v2/server/web"
 	"github.com/beego/beego/v2/server/web/filter/cors"
-	_ "github.com/mattn/go-sqlite3"
+	//_ "github.com/logoove/sqlite"
+	_ "github.com/mattn/go-sqlite3" //这个是cgo的驱动，在mac上交叉编译很不方便，注释掉保留在此处备忘
 )
 
 func init() {

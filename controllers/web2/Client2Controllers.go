@@ -8,12 +8,12 @@ import (
 	beego "github.com/beego/beego/v2/server/web"
 )
 
-type ClientControllers struct {
+type Client2Controllers struct {
 	beego.Controller
 }
 
-// @router /client [get]
-func (this *ClientControllers) Get() {
+// @router /ActiveClient [get]
+func (this *Client2Controllers) Get() {
 	mList := models.QueryAllDingtalkClient()
 	//返回值
 	this.Ctx.ResponseWriter.WriteHeader(200)
@@ -21,8 +21,8 @@ func (this *ClientControllers) Get() {
 	this.ServeJSON()
 }
 
-// @router /client [post]
-func (this *ClientControllers) Post() {
+// @router /ActiveClient [post]
+func (this *Client2Controllers) Post() {
 	type Data struct {
 		RequestData []map[string]string `json:"request_data"`
 	}

@@ -55,47 +55,6 @@
                 ]
             }
         },
-        "/text/wechat": {
-            "post": {
-                "tags": [
-                    "text"
-                ],
-                "description": "推送数据到微信客户端",
-                "operationId": "WechatControllers.推送数据",
-                "parameters": [
-                    {
-                        "in": "body",
-                        "name": "message",
-                        "description": "对象内容",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        },
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "推送成功"
-                    },
-                    "403": {
-                        "description": "创建失败"
-                    }
-                }
-            }
-        },
-        "/web/client": {
-            "get": {
-                "tags": [
-                    "web"
-                ]
-            },
-            "post": {
-                "tags": [
-                    "web"
-                ]
-            }
-        },
         "/web/json": {
             "get": {
                 "tags": [
@@ -150,10 +109,6 @@
         {
             "name": "alertmanager",
             "description": "转发来自于Prometheus的数据\n"
-        },
-        {
-            "name": "text",
-            "description": "转发文本格式的数据\n"
         }
     ]
 }

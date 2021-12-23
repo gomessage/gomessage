@@ -3,7 +3,6 @@ package web2
 import (
 	"GoMessage/models"
 	"encoding/json"
-	"fmt"
 	beego "github.com/beego/beego/v2/server/web"
 )
 
@@ -22,19 +21,21 @@ func (this *TemplateControllers) Get() {
 
 // @router /template [post]
 func (this *TemplateControllers) Post() {
-	type requestData struct {
-		MessageTemplate string `json:"message_template"`
+	type Param struct {
+		RequestData struct {
+			*models.Templates
+		} `json:"request_data"`
 	}
-	data := requestData{}
-	json.Unmarshal(this.Ctx.Input.RequestBody, &data)
+
+	param := Param{}
+	json.Unmarshal(this.Ctx.Input.RequestBody, &param)
 
 	//遍历删除全部配置存储
 	for _, ttt := range models.QueryAllTemplate() {
 		models.DeleteTemplate(ttt)
 	}
 
-	fmt.Println(data)
-	temp := models.ReadOrCreateTemplate("default", data.MessageTemplate)
+	temp := models.ReadOrCreateTemplate("default", param.RequestData.MessageTemplate, param.RequestData.MessageMerge)
 
 	//返回值
 	this.Ctx.ResponseWriter.WriteHeader(200)

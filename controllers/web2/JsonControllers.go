@@ -5,20 +5,6 @@ import (
 	"time"
 )
 
-//========================
-//可接受任意json格式的结构体
-//========================
-type ArbitrarilyJsonData struct {
-	MessageData map[string]interface{} `json:"json_data"`
-	UpdateTime  time.Time              `json:"update_time"`
-	RequestBody []byte
-}
-
-//========================
-//全局变量，其它文件中可以写入和读取
-//========================
-var CacheData ArbitrarilyJsonData
-
 type JsonControllers struct {
 	beego.Controller
 }
@@ -33,3 +19,17 @@ func (this *JsonControllers) Get() {
 	this.Data["json"] = CacheData
 	this.ServeJSON()
 }
+
+//========================
+//可接受任意json格式的结构体
+//========================
+type ArbitrarilyJsonData struct {
+	MessageData map[string]interface{} `json:"json_data"`
+	UpdateTime  time.Time              `json:"update_time"`
+	RequestBody []byte
+}
+
+//========================
+//全局变量，其它文件中可以写入和读取
+//========================
+var CacheData ArbitrarilyJsonData
