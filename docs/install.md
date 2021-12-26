@@ -1,12 +1,11 @@
+# Linux环境安装
 GoMessage当前支持`Linux`和`Mac`系统的部署
 
-打开下载页面下载最新版的安装包：
+安装包下载页面：https://gitee.com/ergou-open-source/gomessage/releases
 
-下载页面：https://gitee.com/ergou-open-source/gomessage/releases
+> 目前提供有Linux、Mac、Windows三个版本的安装包，如需支持其它版本，可以自行下载源码编译，也可以直接联系作者编译出指定版本的安装包。
 
-> 目前提供有Linux和Mac两个版本的下载版，如需支持其它版本，可以自行下载源码编译，也可以直接联系作者编译出指定版本的安装包。
 
-## Linux环境安装
 ### 一键自动化部署（推荐）
 
 本项目提供Liunx裸机运行环境上的`一键自动化部署脚本`，强烈推荐小伙伴们使用脚本进行服务安装。
@@ -16,10 +15,10 @@ GoMessage当前支持`Linux`和`Mac`系统的部署
 wget https://gitee.com/ergou-open-source/gomessage/attach_files/920371/download/gomessage-版本号-linux-amd64.tar.gz
 
 # 解压安装包
-tar -zxvf gomessage-版本号-linux-amd64.tar.gz -C ./aaa/
+tar -zxvf gomessage-版本号-linux-amd64.tar.gz
 
 # 进入aaa目录
-cd ./aaa/
+cd ./gomessage-版本号-linux-amd64/
 
 # 可以看到目录结构体如下
 ./
@@ -67,7 +66,7 @@ GoMessage服务安装成功，默认监听端口为：http://0.0.0.0:7077
 
 (自动化一键部署的内容到此结束)
 
-
+<br><br><br><br><br>
 
 ### 手动部署（详细操作步骤）
 
