@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-VERSION="v1.0.6"
+VERSION="1.0.8"
 OUTPUT_PATH="./build/${VERSION}/"
 GOOS_LIST=(darwin linux windows)
 GOARCH_LIST=(amd64)
-EXRS="^build|^README.md|^docs|^bak|^LICENSE|.sh\$|.sqlite3\$|.bak\$|.md\$"
+EXRS='^build|^bak|^docs|^LICENSE|.sh$|.sqlite3$|.bak$|.md$'
 
 build() {
     #yum groupinstall -y "Development Tools"
