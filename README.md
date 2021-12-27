@@ -48,21 +48,7 @@ GoMessage是一款消息转发器，主要功能为：
 ![](https://img.taycc.com/2021-12-27-NlUd9w.png)
 
 
-#### 飞书消息（分割）发送后的样式：
 
-![](https://img.taycc.com/2021-12-27-nL4rRM.png)
-
-#### 飞书消息（聚合）发送后的样式：
-
-![](https://img.taycc.com/2021-12-27-kkFxHD.png)
-
-#### 钉钉消息发送后的样式：
-
-![](https://img.taycc.com/2021-12-27-3hlvkE.png)
-
-#### 企业微信消息发送后的样式：
-
-![](https://img.taycc.com/2021-12-27-DF6T9p.png)
 
 
 ## 体验地址
