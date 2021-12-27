@@ -33,18 +33,23 @@ GoMessage是一款消息转发器，主要功能为：
 ## 操作界面
 
 > - 自动识别和生成消息推送地址：
+
 ![](https://img.taycc.com/2021-12-27-9HOAd2.png)
 
 > - 劫持json原始数据，声明模板变量，编写模板（模板中可以带逻辑控制）
+
 ![](https://img.taycc.com/2021-12-27-UEgRNZ.png)
 
 > - 客户端的多种搭配与激活使用（也可以只创建不激活）
+
 ![](https://img.taycc.com/2021-12-27-rWvtmd.png)
 
 > - 新增客户端：添加一个新的企业微信接收客户端
+
 ![](https://img.taycc.com/2021-12-27-l2EmY0.png)
 
 > - 新增客户单：天界一个新的飞书接收客户端
+
 ![](https://img.taycc.com/2021-12-27-NlUd9w.png)
 
 
