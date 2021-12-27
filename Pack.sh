@@ -4,7 +4,7 @@ VERSION="1.0.7"
 OUTPUT_PATH="./build/${VERSION}/"
 GOOS_LIST=(darwin linux windows)
 GOARCH_LIST=(amd64)
-EXRS='^build|^bak|^docs|^swagger|^LICENSE|.sh$|.sqlite3$|.bak$|.md$'
+EXRS='^build|^bak|^docs|^swagger|^LICENSE|.sh$|.sqlite3$|.bak$|.md$|prof$'
 
 build() {
     #yum groupinstall -y "Development Tools"
