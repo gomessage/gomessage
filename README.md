@@ -62,7 +62,7 @@ GoMessage是一款消息转发器，主要功能为：
 
 #### 企业微信消息发送后的样式：
 
-![](https://img.taycc.com/2021-12-27-DF6T9p.png =300)
+![](https://img.taycc.com/2021-12-27-DF6T9p.png)
 
 
 ## 体验地址
