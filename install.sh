@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 ##############################
 # 安装服务
@@ -8,6 +8,8 @@ install_gomessage() {
     mkdir -p /opt/gomessage
     rm -rf /opt/gomessage/*
     tar zxvf ./gomessage.tar.gz -C /opt/gomessage/
+    chown -R root:root /opt/gomessage
+
 
     cat >/usr/lib/systemd/system/gomessage.service <<EOF
 [Unit]
@@ -29,6 +31,15 @@ Restart=no
 [Install]
 WantedBy=multi-user.target
 EOF
+
+    #如果有检测到用户的备份数据库存在，也直接使用备份数据库启动新版本的gomessage，否则啥也不干
+    if (ls /tmp/gomessage_cache | grep db.sqlite3); then
+        cp -rf /tmp/gomessage_cache/db.sqlite3 /opt/gomessage/conf/
+        echo "复用已有的数据库..."
+    else
+        #如果没有备份数据库的存在，则啥也不干
+        echo ""
+    fi
 
     systemctl daemon-reload
     systemctl enable gomessage.service

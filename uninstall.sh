@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 
 systemctl stop gomessage.service
@@ -9,6 +9,10 @@ echo "从Daemon中注销GoMessage服务..."
 
 systemctl daemon-reload
 echo "刷新守护进程列表..."
+
+mkdir -p /tmp/gomessage_cache
+
+cp -rf /opt/gomessage/conf/db.sqlite3 /tmp/gomessage_cache/
 
 rm -rf /opt/gomessage
 rm -rf /usr/lib/systemd/system/gomessage.service

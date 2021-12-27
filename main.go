@@ -5,7 +5,7 @@ import (
 	"github.com/beego/beego/v2/client/orm"
 	beego "github.com/beego/beego/v2/server/web"
 	"github.com/beego/beego/v2/server/web/filter/cors"
-	//_ "github.com/logoove/sqlite"
+	//_ "github.com/logoove/sqlite"	//这个不是cgo的驱动，但是性能很差
 	_ "github.com/mattn/go-sqlite3" //这个是cgo的驱动，在mac上交叉编译很不方便，注释掉保留在此处备忘
 )
 
@@ -38,7 +38,8 @@ func main() {
 		AllowCredentials: true,
 	}))
 
-	if beego.BConfig.RunMode == "dev" || beego.BConfig.RunMode == "test" || beego.BConfig.RunMode == "prod" {
+	//if beego.BConfig.RunMode == "dev" || beego.BConfig.RunMode == "test" || beego.BConfig.RunMode == "prod" {
+	if beego.BConfig.RunMode == "dev" || beego.BConfig.RunMode == "test" {
 		beego.BConfig.WebConfig.DirectoryIndex = true
 		beego.BConfig.WebConfig.StaticDir["/docs"] = "swagger"
 	}
