@@ -15,10 +15,15 @@ GoMessage是一款消息转发器，主要功能为：
 软件特色：
 
 - 一次接收，多端推送
+
 - 切割AlertManager消息中的数组，把`Alertmanager聚合组中`聚合起来的消息切割为`单条`然后逐一发送
-- 元数据劫持，可以直观的观察到上游推送过来的json数据结构
+
+- 原始数据劫持，可以直观的观察到上游推送过来的json数据结构
+
 - 模板支持`if...else`、`for循环`等逻辑门编写
+
 - 模板支持`Markdown语法`编写
+
 - 模板支持`文本`中插入`CSS样式标签`来控制字体颜色或其它样式渲染
 
 ## 投产架构：
@@ -27,31 +32,35 @@ GoMessage是一款消息转发器，主要功能为：
 
 ## 操作界面
 
+自动识别和生成消息推送地址：
 ![](https://img.taycc.com/2021-12-27-9HOAd2.png)
 
+劫持json原始数据，可以对照着编写模板
 ![](https://img.taycc.com/2021-12-27-UEgRNZ.png)
 
+客户端的多种搭配激活使用
 ![](https://img.taycc.com/2021-12-27-rWvtmd.png)
 
+新增客户端的界面1
 ![](https://img.taycc.com/2021-12-27-l2EmY0.png)
 
+新增客户端的界面2
 ![](https://img.taycc.com/2021-12-27-NlUd9w.png)
 
-### 接收端的消息样式
 
-#### 飞书消息（分割）发送：
+#### 飞书消息（分割）发送后的样式：
 
 ![](https://img.taycc.com/2021-12-27-nL4rRM.png)
 
-#### 飞书消息（聚合）发送：
+#### 飞书消息（聚合）发送后的样式：
 
 ![](https://img.taycc.com/2021-12-27-kkFxHD.png)
 
-#### 钉钉消息发送
+#### 钉钉消息发送后的样式：
 
 ![](https://img.taycc.com/2021-12-27-3hlvkE.png)
 
-#### 企业微信消息发送
+#### 企业微信消息发送后的样式：
 
 ![](https://img.taycc.com/2021-12-27-DF6T9p.png)
 
