@@ -91,7 +91,7 @@ GoMessage是一款消息转发器，主要功能为：
 
 ### Docker方式（安装和启动）：
 ```bash
-docker run -d -p 7077:7077 --name=gomessage taycc/gomessage 
+docker run -d -p 7077:7077 taycc/gomessage 
 ```
 
 
