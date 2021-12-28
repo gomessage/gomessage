@@ -4,7 +4,7 @@ VERSION="1.0.7"
 OUTPUT_PATH="./build/${VERSION}/"
 GOOS_LIST=(darwin linux windows)
 GOARCH_LIST=(amd64)
-EXRS='^build|^bak|^docs|^swagger|^LICENSE|.sh$|.sqlite3$|.bak$|.md$|prof$'
+EXRS='^build|^bak|^docs|^swagger|^deploy|^LICENSE|.sh$|.sqlite3$|.bak$|.md$|prof$'
 
 build() {
     #yum groupinstall -y "Development Tools"
@@ -33,8 +33,10 @@ build() {
             -be CXX=x86_64-linux-musl-g++ \
             -be GOOS="${GOOS}" \
             -be GOARCH="${GOARCH}"
-        cp ./install.sh ${OUTPUT_PATH}${baoName}/
-        cp ./uninstall.sh ${OUTPUT_PATH}${baoName}/
+
+        cp ./deploy/install.sh      ${OUTPUT_PATH}${baoName}/
+        cp ./deploy/uninstall.sh    ${OUTPUT_PATH}${baoName}/
+        cp ./deploy/Dockerfile      ${OUTPUT_PATH}${baoName}/
 
     elif [[ ${GOOS} == "windows" ]]; then
         bee pack -a gomessage \
