@@ -91,20 +91,12 @@ GoMessage是一款消息转发器，主要功能为：
 
 ### Docker方式（安装和启动）：
 ```bash
-docker run -d \
+docker run \
+    -d \
     -p 7077:7077 \
-    --restart=always \
     --name=gomessage \
-    taycc/gomessage
-    
-    
-参数解释：
-docker run：使用docker命令启动一个容器镜像，如果本地没有，就从Docker Hub镜像仓库中拉取
--d：在后台运行
--p：把docker容器的7077端口上映射与绑定到本机的7077端口上
---restart=always：设定该容器为开机自动启动`<前提是：docker基座服务要先设定为开机启动>`
---name=gomessage：把启动起来的容器给他起个名字叫做gomessage
-taycc/gomessage：从Docker Hub镜像库中拉取已经打包好的最新版的gomessage服务镜像
+    --restart=always \
+    taycc/gomessage 
 ```
 
 
