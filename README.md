@@ -26,8 +26,29 @@
 ## 安装步骤：
 
 ### `Docker方式`安装和使用（强烈推荐）：
+
+快速启动：
+
 ```bash
 docker run -d -p 7077:7077 taycc/gomessage 
+```
+
+只运行一次（容器关闭后自动删除，不残留和污染本地环境）：
+```bash
+docker run -d \
+    -p 7077:7077 \
+    --rm \
+    --name=gomessage \
+    taycc/gomessage
+```
+
+稳定的运行（且设定为开机启动）：
+```bash
+docker run -d \
+    -p 7077:7077 \
+    --restart=always \
+    --name=gomessage \
+    taycc/gomessage
 ```
 
 <br>
@@ -97,41 +118,3 @@ GoMessage是一款消息转发器，主要功能为：
 > 新增客户单：添加一个新的飞书接收客户端
 
 ![](https://img.taycc.com/2021-12-27-NlUd9w.png)
-
-<<<<<<< HEAD
-=======
-
-
-<br><br>
-
-## 体验地址
-
-点击右侧地址进行体验：[http://106.15.51.55:7077](http://106.15.51.55:7077)
-
-**（作者是个人开发者，体验服务器只有1MB的带宽，加载较慢请见谅哈~）**
-
-> 小提示：
-> - GoMessage的设计初衷就把它定位为`内网基础设施工具`，因此没有设计`账号密码及权限相关`的模块，广大用户可以借助Nginx的Base登录来控制相关权限。
-> - 不排除以后会追加设计权限控制模块，但是至少`v2.0.0版本`的开发计划中暂时没有该模块的设计与追加。
-
-<br><br>
-
-## 安装包下载地址：
-
-打开安装包下载界面：https://gitee.com/gomessage/gomessage/releases
-
-<br><br>
-
-## 安装步骤：
-
-### Docker方式（安装和启动）：
-```bash
-docker run -d -p 7077:7077 taycc/gomessage 
-```
-
-
-### 服务器裸机安装（安装和启动）：
-- [Mac环境下的安装](https://gitee.com/gomessage/gomessage/blob/master/docs/install.md#linux%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85)
-- [Linux环境下的安装](https://gitee.com/gomessage/gomessage/blob/master/docs/install.md#linux%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85)
-- [Windows环境下的安装](https://gitee.com/gomessage/gomessage/blob/master/docs/install.md#linux%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85)
->>>>>>> origin/master
