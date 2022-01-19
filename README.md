@@ -25,13 +25,14 @@
 
 ## 安装步骤：
 
-### Docker方式（安装和启动）：
-
+### `Docker容器`安装和使用（强烈推荐）：
 ```bash
 docker run -d -p 7077:7077 taycc/gomessage 
 ```
 
-### 服务器裸机安装（安装和启动）：
+<br>
+
+### `服务器裸机`安装和使用：
 
 - [Mac环境下的安装](https://gitee.com/gomessage/gomessage/blob/master/docs/install.md#linux%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85)
 - [Linux环境下的安装](https://gitee.com/gomessage/gomessage/blob/master/docs/install.md#linux%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85)
