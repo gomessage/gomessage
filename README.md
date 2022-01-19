@@ -26,8 +26,29 @@
 ## 安装步骤：
 
 ### `Docker方式`安装和使用（强烈推荐）：
+
+快速启动：
+
 ```bash
 docker run -d -p 7077:7077 taycc/gomessage 
+```
+
+只运行一次（容器关闭后自动删除，不残留和污染本地环境）：
+```bash
+docker run -d \
+    -p 7077:7077 \
+    --rm \
+    --name=gomessage \
+    taycc/gomessage
+```
+
+稳定的运行（且设定为开机启动）：
+```bash
+docker run -d \
+    -p 7077:7077 \
+    --restart=always \
+    --name=gomessage \
+    taycc/gomessage
 ```
 
 <br>
