@@ -25,7 +25,7 @@
 
 ## 安装步骤：
 
-### `Docker容器`安装和使用（强烈推荐）：
+### `Docker方式`安装和使用（强烈推荐）：
 ```bash
 docker run -d -p 7077:7077 taycc/gomessage 
 ```
