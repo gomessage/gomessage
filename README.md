@@ -1,6 +1,6 @@
 # GoMessage
 
-## 投产架构
+投产架构：
 
 ![](https://img.taycc.com/2021-12-27-GoMessage的作用.png)
 
@@ -39,7 +39,7 @@ docker run -d -p 7077:7077 taycc/gomessage
 
 <br><br>
 
-## 用途
+## GoMessage用途说明
 
 GoMessage是一款消息转发器，主要功能为：
 
@@ -67,7 +67,7 @@ GoMessage是一款消息转发器，主要功能为：
 
 <br><br>
 
-## 操作界面
+## 操作界面展示
 
 > 自动识别和生成消息推送地址：
 
