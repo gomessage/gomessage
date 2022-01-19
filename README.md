@@ -1,5 +1,7 @@
 # GoMessage
 
+## 投产架构
+
 ![](https://img.taycc.com/2021-12-27-GoMessage的作用.png)
 
 ## 体验地址
