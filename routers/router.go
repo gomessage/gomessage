@@ -19,6 +19,7 @@ func init() {
 	//静态页面2
 	beego.Router("/", &controllers.IndexController{})
 	beego.Router("/go/message", &web2.ApiControllers{})
+	//beego.Router("/go/message/:namespace", &web2.ApiControllers{})
 
 	//命名空间
 	ns := beego.NewNamespace("/v1",
