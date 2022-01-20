@@ -34,9 +34,9 @@ build() {
             -be GOOS="${GOOS}" \
             -be GOARCH="${GOARCH}"
 
-        cp ./deploy/install.sh      ${OUTPUT_PATH}${baoName}/
-        cp ./deploy/uninstall.sh    ${OUTPUT_PATH}${baoName}/
-        cp ./deploy/Dockerfile      ${OUTPUT_PATH}${baoName}/
+        cp ./deploy/install.sh ${OUTPUT_PATH}${baoName}/
+        cp ./deploy/uninstall.sh ${OUTPUT_PATH}${baoName}/
+        #cp ./deploy/Dockerfile ${OUTPUT_PATH}${baoName}/
 
     elif [[ ${GOOS} == "windows" ]]; then
         bee pack -a gomessage \
@@ -50,7 +50,7 @@ build() {
             -be GOARCH="${GOARCH}"
 
     elif [[ ${GOOS} == "darwin" ]]; then
-         bee pack -a gomessage \
+        bee pack -a gomessage \
             -o "${OUTPUT_PATH}${baoName}/" \
             -exr ${EXRS} \
             -be CGO_ENABLED=1 \
@@ -60,7 +60,7 @@ build() {
         echo "GOOS版本未识别~"
     fi
 
-    tar  -zcvf  ${OUTPUT_PATH}${baoName}.tar.gz  -C  ${OUTPUT_PATH} ${baoName}
+    tar -zcvf ${OUTPUT_PATH}${baoName}.tar.gz -C ${OUTPUT_PATH} ${baoName}
 
     #编译完成之后再把runmode参数修改回来，这样下次都不用手动修改了
     gsed -i '/^runmode/c runmode = dev' ./conf/app.conf
@@ -78,6 +78,7 @@ echo "历史包清理完成..."
 #循环编译指定版本的包
 for GOOS in "${GOOS_LIST[@]}"; do
     for GOARCH in "${GOARCH_LIST[@]}"; do
+        #遍历数组后拿到的<临时变量>拼接成<新的包名>
         baoName="gomessage-${VERSION}-${GOOS}-${GOARCH}"
         build
     done
