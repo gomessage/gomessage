@@ -20,9 +20,16 @@ build() {
                 #复制dockerfile到安装包目录
                 #cp ./deploy/Dockerfile ${OUTPUT_PATH}${baoName}/
 
-                #编译对应版本的image
+                #制作的image
                 docker build -t taycc/gomessage:latest -f ./deploy/Dockerfile "${OUTPUT_PATH}${baoName}/"
                 docker build -t taycc/gomessage:${VERSION} -f ./deploy/Dockerfile "${OUTPUT_PATH}${baoName}/"
+
+                #权限验证
+                docker login --username=taycc
+
+                #上传镜像
+                docker push taycc/gomessage:${VERSION}
+                docker push taycc/gomessage:latest
             fi
         else
             echo "Docker服务未运行，因此跳过编译docker镜像~"
