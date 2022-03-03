@@ -10,7 +10,6 @@ install_gomessage() {
     tar zxvf ./gomessage.tar.gz -C /opt/gomessage/
     chown -R root:root /opt/gomessage
 
-
     cat >/usr/lib/systemd/system/gomessage.service <<EOF
 [Unit]
 Description=GoMessage

@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-
 systemctl stop gomessage.service
 echo "检测与停止GoMessage服务..."
 
@@ -19,4 +18,3 @@ rm -rf /usr/lib/systemd/system/gomessage.service
 echo "删除GoMessage服务所需的全部依赖文件..."
 
 echo "GoMessage服务卸载完成..."
-
