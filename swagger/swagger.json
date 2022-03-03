@@ -137,7 +137,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/models.Json"
+                                "$ref": "#/definitions/models.Configmap"
                             }
                         }
                     },
@@ -181,8 +181,8 @@
         }
     },
     "definitions": {
-        "models.Json": {
-            "title": "Json",
+        "models.Configmap": {
+            "title": "Configmap",
             "type": "object",
             "properties": {
                 "CreateTime": {

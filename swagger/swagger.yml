@@ -90,7 +90,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/models.Json'
+              $ref: '#/definitions/models.Configmap'
         "404":
           description: 错误请求
   /web/template:
@@ -115,8 +115,8 @@ paths:
         "404":
           description: 错误请求
 definitions:
-  models.Json:
-    title: Json
+  models.Configmap:
+    title: Configmap
     type: object
     properties:
       CreateTime:

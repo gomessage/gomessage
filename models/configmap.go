@@ -7,10 +7,10 @@ import (
 )
 
 func init() {
-	orm.RegisterModel(new(Json))
+	orm.RegisterModel(new(Configmap))
 }
 
-type Json struct {
+type Configmap struct {
 	Id         int       `orm:"pk;auto"`                     //id
 	Key        string    `orm:"size(500)"`                   //配置的key
 	Value      string    `orm:"size(500)"`                   //配置的value
@@ -25,7 +25,7 @@ func AddMap(key string, value string) int {
 	//密码加密
 
 	o := orm.NewOrm()
-	j := new(Json)
+	j := new(Configmap)
 	j.Key = key
 	j.Value = value
 
@@ -39,9 +39,9 @@ func AddMap(key string, value string) int {
 //######################
 //函数：查询和创建一个，确保它始终存在
 //######################
-func ReadOrCreateMap(key string, value string) Json {
+func ReadOrCreateMap(key string, value string) Configmap {
 	o := orm.NewOrm()
-	json := Json{}
+	json := Configmap{}
 	json.Key = key
 	json.Value = value
 	newCreate, id, err := o.ReadOrCreate(&json, "Id")
@@ -65,9 +65,9 @@ func ReadOrCreateMap(key string, value string) Json {
 //######################
 //函数：查询所有
 //######################
-func QueryAllMap() []Json {
-	var jsons []Json
-	json := Json{}
+func QueryAllMap() []Configmap {
+	var jsons []Configmap
+	json := Configmap{}
 
 	o := orm.NewOrm()
 	num, _ := o.QueryTable(&json).All(&jsons)
@@ -79,9 +79,9 @@ func QueryAllMap() []Json {
 //######################
 //函数：删除
 //######################
-func DeleteMap(j Json) int64 {
+func DeleteMap(j Configmap) int64 {
 	o := orm.NewOrm()
-	//json := Json{Id: Id}
+	//json := Configmap{Id: Id}
 	num, err2 := o.Delete(&j)
 	if err2 != nil {
 		fmt.Println(err2)

@@ -27,7 +27,7 @@ func (this *MapControllers) Get() {
 // @Title /v1/web/map
 // @Description 更新用户变量
 // @Param key_value_list body string false "存放用户变量的一个list"
-// @Success 200 {object} []models.Json
+// @Success 200 {object} []models.Configmap
 // @Failure 404 错误请求
 // @router /map [post]
 func (this *MapControllers) Post() {
@@ -49,7 +49,7 @@ func (this *MapControllers) Post() {
 	}
 
 	//新建一个切片，暂存需要返回给用户的数据
-	var ResponseJsons []models.Json
+	var ResponseJsons []models.Configmap
 
 	//批量写入新的配置
 	for _, json := range r.KeyValueList {
