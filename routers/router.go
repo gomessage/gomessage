@@ -17,14 +17,17 @@ import (
 )
 
 func init() {
-	//静态页面2
+	//首页~前端静态页面
 	beego.Router("/", &controllers.IndexController{})
+
+	//单管道~消息入口
 	beego.Router("/go/message", &web2.ApiControllers{})
-	//beego.Router("/go/message/:namespace", &web2.ApiControllers{})
+
+	//多管道~消息入口（测试版）
+	beego.Router("/gomessage/:label:string", &web2.PipelineControllers{})
 
 	//命名空间（v1版本的api）
 	ns := beego.NewNamespace("/v1",
-
 		//与web界面的api没有任何关系，唯一有关系的可能是web2里有些函数引用了老的结构体
 		beego.NSNamespace("/alertmanager",
 			beego.NSInclude(&alertmanager.K8sControllers{}),
