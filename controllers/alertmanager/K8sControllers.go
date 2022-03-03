@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-// 接收Alertmanager推送的报警信息
+// Prometheus相关api
 type K8sControllers struct {
 	beego.Controller
 }

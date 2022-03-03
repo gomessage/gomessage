@@ -1,4 +1,4 @@
-package controllers
+package test
 
 import (
 	web2 "GoMessage/controllers/web2"
@@ -7,6 +7,7 @@ import (
 	beego "github.com/beego/beego/v2/server/web"
 )
 
+// 测试api
 type TestController struct {
 	beego.Controller
 }

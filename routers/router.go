@@ -1,15 +1,16 @@
-// @APIVersion 1.0.0
-// @Title 报警转发器
-// @Description 转发Alertmanager的webhook信息，到钉钉、微信、或其它客户端
+// @APIVersion v1
+// @Title GoMessage
+// @Description 转发Json格式的信息，到钉钉、微信、或其它客户端
 // @Contact tay3223@qq.com
-// @TermsOfServiceUrl https://blog.taycc.com/pages/prometheus/target_icmp.html
-// @License Apache 2.0
-// @LicenseUrl http://www.apache.org/licenses/LICENSE-2.0.html
+// //@TermsOfServiceUrl https://blog.taycc.com/pages/prometheus/target_icmp.html
+// //@License Apache 2.0
+// //@LicenseUrl http://www.apache.org/licenses/LICENSE-2.0.html
 package routers
 
 import (
 	"GoMessage/controllers"
 	"GoMessage/controllers/alertmanager"
+	"GoMessage/controllers/test"
 	web2 "GoMessage/controllers/web2"
 
 	beego "github.com/beego/beego/v2/server/web"
@@ -21,7 +22,7 @@ func init() {
 	beego.Router("/go/message", &web2.ApiControllers{})
 	//beego.Router("/go/message/:namespace", &web2.ApiControllers{})
 
-	//命名空间
+	//命名空间（v1版本的api）
 	ns := beego.NewNamespace("/v1",
 
 		//与web界面的api没有任何关系，唯一有关系的可能是web2里有些函数引用了老的结构体
@@ -29,21 +30,23 @@ func init() {
 			beego.NSInclude(&alertmanager.K8sControllers{}),
 			beego.NSInclude(&alertmanager.LinuxControllers{}),
 		),
-		beego.NSNamespace("/test",
-			beego.NSInclude(&controllers.TestController{}),
-		),
-		//beego.NSNamespace("/text",
-		//	beego.NSInclude(&text.WechatControllers{}),
-		//),
 
-		//以下部分的路由才是有用的
+		//测试接口
+		beego.NSNamespace("/test",
+			beego.NSInclude(&test.TestController{}),
+		),
+
+		//GoMessage业务的api
 		beego.NSNamespace("/web",
 			beego.NSInclude(&web2.JsonControllers{}),
 			beego.NSInclude(&web2.MapControllers{}),
 			beego.NSInclude(&web2.TemplateControllers{}),
-			beego.NSRouter("/client", &web2.Clients{}),
-			beego.NSRouter("/client/:id:int", &web2.Client{}),
-			beego.NSRouter("/client/active", &web2.ClientActive{}),
+			beego.NSInclude(&web2.Clients{}),
+			beego.NSInclude(&web2.Client{}),
+			beego.NSInclude(&web2.ClientActive{}),
+			//beego.NSRouter("/client", &web2.Clients{}),
+			//beego.NSRouter("/client/:id:int", &web2.Client{}),
+			//beego.NSRouter("/client/active", &web2.ClientActive{}),
 		),
 	)
 

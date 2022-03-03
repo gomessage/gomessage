@@ -9,6 +9,7 @@ import (
 	"time"
 )
 
+//控制器：信息实际进入接口
 type ApiControllers struct {
 	beego.Controller
 }

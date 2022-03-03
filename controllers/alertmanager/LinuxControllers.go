@@ -9,7 +9,6 @@ import (
 	"time"
 )
 
-// 转发来自于Prometheus的数据
 type LinuxControllers struct {
 	beego.Controller
 }

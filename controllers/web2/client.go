@@ -33,6 +33,7 @@ type Clients struct {
 }
 
 // get方法
+// @router /client [get]
 func (c *Clients) Get() {
 	type Resp struct {
 		ResponseData []*models.Client `json:"response_data"`
@@ -52,6 +53,7 @@ func (c *Clients) Get() {
 }
 
 // post方法
+// @router /client [post]
 func (c *Clients) Post() {
 
 	//给出去的返回值
@@ -151,6 +153,7 @@ type Client struct {
 }
 
 // get方法
+// @router /client/:id [get]
 func (c *Client) Get() {
 	type RespData struct {
 		*models.Client
@@ -210,6 +213,7 @@ func (c *Client) Get() {
 }
 
 // 删除方法
+// @router /client/:id [delete]
 func (c *Client) Delete() {
 	type RespData struct {
 		Result bool `json:"result"`
@@ -245,6 +249,7 @@ type ClientActive struct {
 }
 
 // put方法
+// @router /client/active [put]
 func (c *ClientActive) Put() {
 	type RespData struct {
 		Result bool `json:"result"`

@@ -5,13 +5,15 @@ import (
 	"time"
 )
 
+// GoMessage前后端交互api
 type JsonControllers struct {
 	beego.Controller
 }
 
-// @Title 推送数据
-// @Description 推送数据到钉钉，数据来自于Alertmanager的webhook推送
-// @Success 200 ok
+// @Title /v1/web/json
+// @Description 劫持到过境数据
+// @Success 200 响应成功
+// @Failure 404 错误请求
 // @router /json [get]
 func (this *JsonControllers) Get() {
 	//返回值

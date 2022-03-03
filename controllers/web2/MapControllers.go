@@ -6,10 +6,15 @@ import (
 	beego "github.com/beego/beego/v2/server/web"
 )
 
+//控制器：用户变量功能
 type MapControllers struct {
 	beego.Controller
 }
 
+// @Title /v1/web/map
+// @Description 获取用户变量
+// @Success 200 响应成功
+// @Failure 404 错误请求
 // @router /map [get]
 func (this *MapControllers) Get() {
 	mList := models.QueryAllMap()
@@ -19,14 +24,18 @@ func (this *MapControllers) Get() {
 	this.ServeJSON()
 }
 
-// @Title 推送数据
-// @Description 推送数据到钉钉，数据来自于Alertmanager的webhook推送
-// @Success 200 ok
+// @Title /v1/web/map
+// @Description 更新用户变量
+// @Param key_value_list body string false "存放用户变量的一个list"
+// @Success 200 {object} []models.Json
+// @Failure 404 错误请求
 // @router /map [post]
 func (this *MapControllers) Post() {
+	//解析request中的数据结构
 	type requestData struct {
 		KeyValueList []map[string]string `json:"key_value_list"`
 	}
+	//获取request中的数据
 	r := requestData{}
 	err := json.Unmarshal(this.Ctx.Input.RequestBody, &r)
 	if err != nil {

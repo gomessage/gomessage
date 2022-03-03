@@ -5,7 +5,7 @@ import (
 	"github.com/beego/beego/v2/client/orm"
 	beego "github.com/beego/beego/v2/server/web"
 	"github.com/beego/beego/v2/server/web/filter/cors"
-	//_ "github.com/logoove/sqlite"	//这个不是cgo的驱动，但是性能很差
+	//_ "github.com/logoove/sqlite"	//这个不是cgo的驱动，可以直接编译sqlite，但是性能很差
 	_ "github.com/mattn/go-sqlite3" //这个是cgo的驱动，在mac上交叉编译很不方便，注释掉保留在此处备忘
 )
 
@@ -16,9 +16,18 @@ func init() {
 	//logs.SetLogger(logs.AdapterFile, `{"filename":"app.log", "level":9}`)
 
 	//连接数据库
-	orm.RegisterDriver("sqlite3", orm.DRSqlite)
-	orm.RegisterDataBase("default", "sqlite3", "conf/db.sqlite3")
-	orm.RunSyncdb("default", false, true)
+	err := orm.RegisterDriver("sqlite3", orm.DRSqlite)
+	if err != nil {
+		return
+	}
+	err2 := orm.RegisterDataBase("default", "sqlite3", "conf/gomessage.sqlite3")
+	if err2 != nil {
+		return
+	}
+	err3 := orm.RunSyncdb("default", false, true)
+	if err3 != nil {
+		return
+	}
 	//orm.Debug = true //开启调试模式
 }
 

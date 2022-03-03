@@ -6,10 +6,15 @@ import (
 	beego "github.com/beego/beego/v2/server/web"
 )
 
+//控制器：用户消息体的模板
 type TemplateControllers struct {
 	beego.Controller
 }
 
+// @Title Get user template
+// @Description Get user template
+// @Success 200 响应成功
+// @Failure 404 错误请求
 // @router /template [get]
 func (this *TemplateControllers) Get() {
 	t := models.GetOneTemplate("default")
@@ -19,6 +24,10 @@ func (this *TemplateControllers) Get() {
 	this.ServeJSON()
 }
 
+// @Title /v1/web/template
+// @Description 添加用户模板
+// @Success 200 响应成功
+// @Failure 404 错误请求
 // @router /template [post]
 func (this *TemplateControllers) Post() {
 	type Param struct {

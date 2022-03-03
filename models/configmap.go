@@ -15,6 +15,7 @@ type Json struct {
 	Key        string    `orm:"size(500)"`                   //配置的key
 	Value      string    `orm:"size(500)"`                   //配置的value
 	CreateTime time.Time `orm:"auto_now_add;type(datetime)"` //创建时间
+	UpdateTime time.Time `orm:"auto_now;type(datetime)"`     //修改时间
 }
 
 //######################

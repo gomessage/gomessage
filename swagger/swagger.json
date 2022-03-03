@@ -1,16 +1,11 @@
 {
     "swagger": "2.0",
     "info": {
-        "title": "报警转发器",
-        "description": "转发Alertmanager的webhook信息，到钉钉、微信、或其它客户端",
-        "version": "1.0.0",
-        "termsOfService": "https://blog.taycc.com/pages/prometheus/target_icmp.html",
+        "title": "GoMessage",
+        "description": "转发Json格式的信息，到钉钉、微信、或其它客户端",
+        "version": "v1",
         "contact": {
             "email": "tay3223@qq.com"
-        },
-        "license": {
-            "name": "Apache 2.0",
-            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
         }
     },
     "basePath": "/v1",
@@ -55,16 +50,50 @@
                 ]
             }
         },
+        "/web/client": {
+            "get": {
+                "tags": [
+                    "web"
+                ]
+            },
+            "post": {
+                "tags": [
+                    "web"
+                ]
+            }
+        },
+        "/web/client/active": {
+            "put": {
+                "tags": [
+                    "web"
+                ]
+            }
+        },
+        "/web/client/{id}": {
+            "get": {
+                "tags": [
+                    "web"
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "web"
+                ]
+            }
+        },
         "/web/json": {
             "get": {
                 "tags": [
                     "web"
                 ],
-                "description": "推送数据到钉钉，数据来自于Alertmanager的webhook推送",
-                "operationId": "JsonControllers.推送数据",
+                "description": "劫持到过境数据",
+                "operationId": "JsonControllers./v1/web/json",
                 "responses": {
                     "200": {
-                        "description": "ok"
+                        "description": "响应成功"
+                    },
+                    "404": {
+                        "description": "错误请求"
                     }
                 }
             }
@@ -73,17 +102,47 @@
             "get": {
                 "tags": [
                     "web"
-                ]
+                ],
+                "description": "获取用户变量",
+                "operationId": "MapControllers./v1/web/map",
+                "responses": {
+                    "200": {
+                        "description": "响应成功"
+                    },
+                    "404": {
+                        "description": "错误请求"
+                    }
+                }
             },
             "post": {
                 "tags": [
                     "web"
                 ],
-                "description": "推送数据到钉钉，数据来自于Alertmanager的webhook推送",
-                "operationId": "MapControllers.推送数据",
+                "description": "更新用户变量",
+                "operationId": "MapControllers./v1/web/map",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "key_value_list",
+                        "description": "存放用户变量的一个list",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "type": "string"
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "ok"
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Json"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "错误请求"
                     }
                 }
             }
@@ -92,23 +151,93 @@
             "get": {
                 "tags": [
                     "web"
-                ]
+                ],
+                "description": "Get user template",
+                "operationId": "TemplateControllers.Get user template",
+                "responses": {
+                    "200": {
+                        "description": "响应成功"
+                    },
+                    "404": {
+                        "description": "错误请求"
+                    }
+                }
             },
             "post": {
                 "tags": [
                     "web"
-                ]
+                ],
+                "description": "添加用户模板",
+                "operationId": "TemplateControllers./v1/web/template",
+                "responses": {
+                    "200": {
+                        "description": "响应成功"
+                    },
+                    "404": {
+                        "description": "错误请求"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.Json": {
+            "title": "Json",
+            "type": "object",
+            "properties": {
+                "CreateTime": {
+                    "type": "string",
+                    "format": "datetime"
+                },
+                "Id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "Key": {
+                    "type": "string"
+                },
+                "UpdateTime": {
+                    "type": "string",
+                    "format": "datetime"
+                },
+                "Value": {
+                    "type": "string"
+                }
             }
         }
     },
     "tags": [
         {
             "name": "alertmanager",
-            "description": "接收Alertmanager推送的报警信息\n"
+            "description": "Prometheus相关api\n"
         },
         {
-            "name": "alertmanager",
-            "description": "转发来自于Prometheus的数据\n"
+            "name": "test",
+            "description": "测试api\n"
+        },
+        {
+            "name": "web",
+            "description": "GoMessage前后端交互api\n"
+        },
+        {
+            "name": "web",
+            "description": "控制器：用户变量功能\n"
+        },
+        {
+            "name": "web",
+            "description": "控制器：用户消息体的模板\n"
+        },
+        {
+            "name": "web",
+            "description": "client api 相关的控制器\n"
+        },
+        {
+            "name": "web",
+            "description": "单个client客户端操作的控制器\n"
+        },
+        {
+            "name": "web",
+            "description": "激活状态的控制器\n"
         }
     ]
 }
