@@ -1,6 +1,7 @@
 package main
 
 import (
+	"GoMessage/models"
 	_ "GoMessage/routers"
 	"github.com/beego/beego/v2/client/orm"
 	beego "github.com/beego/beego/v2/server/web"
@@ -32,8 +33,7 @@ func init() {
 }
 
 func main() {
-	//解决跨域问题
-	//InsertFilter是提供一个过滤函数
+	//解决跨域问题，InsertFilter是提供一个过滤函数
 	beego.InsertFilter("*", beego.BeforeRouter, cors.Allow(&cors.Options{
 		// 允许访问所有源
 		AllowAllOrigins: true,
@@ -46,6 +46,13 @@ func main() {
 		// 如果设置，则允许共享身份验证凭据，例如cookie
 		AllowCredentials: true,
 	}))
+
+	//create default namespace
+	models.CreateDefaultNamespace()
+	models.AddNamespace(&models.Namespaces{Name: "test2"})
+	models.AddNamespace(&models.Namespaces{Name: "test3"})
+	models.AddNamespace(&models.Namespaces{Name: "test4"})
+	models.AddNamespace(&models.Namespaces{Name: "test5"})
 
 	//if beego.BConfig.RunMode == "dev" || beego.BConfig.RunMode == "test" || beego.BConfig.RunMode == "prod" {
 	if beego.BConfig.RunMode == "dev" || beego.BConfig.RunMode == "test" {

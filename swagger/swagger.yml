@@ -93,6 +93,75 @@ paths:
               $ref: '#/definitions/models.Configmap'
         "404":
           description: 错误请求
+  /web/namespace:
+    get:
+      tags:
+      - web
+      description: Add a namespace
+      operationId: NamespaceControllers./v1/web/namespace
+      parameters:
+      - in: body
+        name: request_data
+        description: Namespace对象
+        required: true
+        schema:
+          $ref: '#/definitions/models.Namespaces'
+      responses:
+        "200":
+          description: 响应成功
+        "404":
+          description: 错误请求
+    put:
+      tags:
+      - web
+      description: Delete a namespace
+      operationId: NamespaceControllers./v1/web/namespace
+      parameters:
+      - in: body
+        name: request_data
+        description: Namespace对象
+        required: true
+        schema:
+          $ref: '#/definitions/models.Namespaces'
+      responses:
+        "200":
+          description: 响应成功
+        "404":
+          description: 错误请求
+    post:
+      tags:
+      - web
+      description: Add a namespace
+      operationId: NamespaceControllers./v1/web/namespace
+      parameters:
+      - in: body
+        name: request_data
+        description: Namespace对象
+        required: true
+        schema:
+          $ref: '#/definitions/models.Namespaces'
+      responses:
+        "200":
+          description: 响应成功
+        "404":
+          description: 错误请求
+    delete:
+      tags:
+      - web
+      description: Delete a namespace
+      operationId: NamespaceControllers./v1/web/namespace
+      parameters:
+      - in: body
+        name: request_data
+        description: Namespace对象
+        required: true
+        schema:
+          $ref: '#/definitions/models.Namespaces'
+      responses:
+        "200":
+          description: 响应成功
+        "404":
+          description: 错误请求
   /web/template:
     get:
       tags:
@@ -132,6 +201,32 @@ definitions:
         format: datetime
       Value:
         type: string
+  models.Namespaces:
+    title: Namespaces
+    type: object
+    properties:
+      description:
+        type: string
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+  models.Templates:
+    title: Templates
+    type: object
+    properties:
+      Namespace:
+        $ref: '#/definitions/models.Namespaces'
+      id:
+        type: integer
+        format: int64
+      label:
+        type: string
+      message_merge:
+        type: boolean
+      message_template:
+        type: string
 tags:
 - name: alertmanager
   description: |
@@ -157,3 +252,6 @@ tags:
 - name: web
   description: |
     激活状态的控制器
+- name: web
+  description: |
+    控制器：命名空间管理

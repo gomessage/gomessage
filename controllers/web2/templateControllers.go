@@ -44,7 +44,13 @@ func (this *TemplateControllers) Post() {
 		models.DeleteTemplate(ttt)
 	}
 
-	temp := models.ReadOrCreateTemplate("default", param.RequestData.MessageTemplate, param.RequestData.MessageMerge)
+	temp := models.ReadOrCreateTemplate("default", param.RequestData.MessageTemplate, param.RequestData.MessageMerge, models.GetNamespace("default"))
+	models.ReadOrCreateTemplate("bbb", "bbb", true, models.GetNamespace("test2"))
+	models.ReadOrCreateTemplate("ccc", "ccc", true, models.GetNamespace("test2"))
+	models.ReadOrCreateTemplate("ddd", "ddd", true, models.GetNamespace("test3"))
+	models.ReadOrCreateTemplate("eee", "eee", true, models.GetNamespace("test3"))
+	models.ReadOrCreateTemplate("fff", "fff", true, models.GetNamespace("test3"))
+	models.ReadOrCreateTemplate("fff", "fff", true, models.GetNamespace("test55"))
 
 	//返回值
 	this.Ctx.ResponseWriter.WriteHeader(200)

@@ -11,7 +11,7 @@ import (
 	"GoMessage/controllers"
 	"GoMessage/controllers/alertmanager"
 	"GoMessage/controllers/test"
-	web2 "GoMessage/controllers/web2"
+	"GoMessage/controllers/web2"
 
 	beego "github.com/beego/beego/v2/server/web"
 )
@@ -47,6 +47,7 @@ func init() {
 			beego.NSInclude(&web2.Clients{}),
 			beego.NSInclude(&web2.Client{}),
 			beego.NSInclude(&web2.ClientActive{}),
+			beego.NSInclude(&web2.NamespaceControllers{}),
 			//beego.NSRouter("/client", &web2.Clients{}),
 			//beego.NSRouter("/client/:id:int", &web2.Client{}),
 			//beego.NSRouter("/client/active", &web2.ClientActive{}),

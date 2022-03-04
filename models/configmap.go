@@ -44,7 +44,7 @@ func ReadOrCreateMap(key string, value string) Configmap {
 	json := Configmap{}
 	json.Key = key
 	json.Value = value
-	newCreate, id, err := o.ReadOrCreate(&json, "Id")
+	newCreate, id, err := o.ReadOrCreate(&json, "Num")
 	if err != nil {
 		panic(err)
 	}
@@ -81,7 +81,7 @@ func QueryAllMap() []Configmap {
 //######################
 func DeleteMap(j Configmap) int64 {
 	o := orm.NewOrm()
-	//json := Configmap{Id: Id}
+	//json := Configmap{Num: Num}
 	num, err2 := o.Delete(&j)
 	if err2 != nil {
 		fmt.Println(err2)

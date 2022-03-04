@@ -7,12 +7,13 @@ import (
 )
 
 type Templates struct {
-	Id              int       `orm:"pk;auto" json:"id"`
-	Label           string    `orm:"size(500)" json:"label"`
-	MessageTemplate string    `orm:"size(2000)" json:"message_template"`
-	MessageMerge    bool      `json:"message_merge"`
-	CreateTime      time.Time `orm:"auto_now_add;type(datetime)" json:"-"` //创建时间
-	UpdateTime      time.Time `orm:"auto_now;type(datetime)" json:"-"`
+	Id              int         `orm:"pk;auto" json:"id"`
+	Label           string      `orm:"size(500)" json:"label"`
+	Namespace       *Namespaces `orm:"rel(fk);cascade"`
+	MessageTemplate string      `orm:"size(2000)" json:"message_template"`
+	MessageMerge    bool        `json:"message_merge"`
+	CreateTime      time.Time   `orm:"auto_now_add;type(datetime)" json:"-"` //创建时间
+	UpdateTime      time.Time   `orm:"auto_now;type(datetime)" json:"-"`
 }
 
 func init() {
@@ -22,23 +23,32 @@ func init() {
 //######################
 //函数：查询和创建一条数据，确保它始终存在
 //######################
-func ReadOrCreateTemplate(label string, messageTemplate string, MessageMerge bool) Templates {
-	o := orm.NewOrm()
-	t2 := Templates{}
-	t2.Label = label
-	t2.MessageTemplate = messageTemplate
-	t2.MessageMerge = MessageMerge
-	newCreate, id, err := o.ReadOrCreate(&t2, "Label")
-	if err != nil {
-		panic(err)
-	}
-	//判断用户是否是新创建的
-	if newCreate {
-		fmt.Println("新创建template的ID：", id)
+func ReadOrCreateTemplate(label string, messageTemplate string, MessageMerge bool, namespace *Namespaces) Templates {
+
+	if namespace == nil {
+		fmt.Println("没有命名空间...")
+		return Templates{}
 	} else {
-		fmt.Println("查询到template的ID：", id)
+		o := orm.NewOrm()
+		t2 := Templates{
+			Label:           label,
+			MessageTemplate: messageTemplate,
+			MessageMerge:    MessageMerge,
+			Namespace:       namespace,
+		}
+		newCreate, id, err := o.ReadOrCreate(&t2, "Label")
+		if err != nil {
+			panic(err)
+		}
+		//判断是否是新创建的
+		if newCreate {
+			fmt.Println("新创建template的ID：", id)
+		} else {
+			fmt.Println("查询到template的ID：", id)
+		}
+		return t2
 	}
-	return t2
+
 }
 
 //######################
