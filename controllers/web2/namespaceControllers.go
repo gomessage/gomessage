@@ -13,7 +13,7 @@ type NamespaceControllers struct {
 }
 
 // @Title /v1/web/namespace
-// @Description Add a namespace
+// @Description 获取所有命名空间
 // @Param request_data body models.Namespaces true "Namespace对象"
 // @Success 200 响应成功
 // @Failure 404 错误请求
@@ -30,7 +30,7 @@ func (this *NamespaceControllers) GetAll() {
 }
 
 // @Title /v1/web/namespace
-// @Description Add a namespace
+// @Description 添加一个命名空间
 // @Param request_data body models.Namespaces true "Namespace对象"
 // @Success 200 响应成功
 // @Failure 404 错误请求
@@ -70,7 +70,7 @@ func (this *NamespaceControllers) Post() {
 }
 
 // @Title /v1/web/namespace
-// @Description Delete a namespace
+// @Description 删除一个命名空间
 // @Param request_data body models.Namespaces true "Namespace对象"
 // @Success 200 响应成功
 // @Failure 404 错误请求
@@ -108,7 +108,7 @@ func (this *NamespaceControllers) Delete() {
 }
 
 // @Title /v1/web/namespace
-// @Description Delete a namespace
+// @Description 修改一个命名空间
 // @Param request_data body models.Namespaces true "Namespace对象"
 // @Success 200 响应成功
 // @Failure 404 错误请求

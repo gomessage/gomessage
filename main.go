@@ -17,6 +17,7 @@ func init() {
 	//logs.SetLogger(logs.AdapterFile, `{"filename":"app.log", "level":9}`)
 
 	//连接数据库
+	//orm.DefaultTimeLoc = time.UTC
 	err := orm.RegisterDriver("sqlite3", orm.DRSqlite)
 	if err != nil {
 		return
@@ -54,6 +55,10 @@ func main() {
 	models.AddNamespace(&models.Namespaces{Name: "test4"})
 	models.AddNamespace(&models.Namespaces{Name: "test5"})
 
+	//删除指定的Namespace
+	//models.DelNamespace("test3")
+
+	//swagger的生效范围
 	//if beego.BConfig.RunMode == "dev" || beego.BConfig.RunMode == "test" || beego.BConfig.RunMode == "prod" {
 	if beego.BConfig.RunMode == "dev" || beego.BConfig.RunMode == "test" {
 		beego.BConfig.WebConfig.DirectoryIndex = true

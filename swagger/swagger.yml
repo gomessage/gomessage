@@ -97,7 +97,7 @@ paths:
     get:
       tags:
       - web
-      description: Add a namespace
+      description: 获取所有命名空间
       operationId: NamespaceControllers./v1/web/namespace
       parameters:
       - in: body
@@ -114,7 +114,7 @@ paths:
     put:
       tags:
       - web
-      description: Delete a namespace
+      description: 修改一个命名空间
       operationId: NamespaceControllers./v1/web/namespace
       parameters:
       - in: body
@@ -131,7 +131,7 @@ paths:
     post:
       tags:
       - web
-      description: Add a namespace
+      description: 添加一个命名空间
       operationId: NamespaceControllers./v1/web/namespace
       parameters:
       - in: body
@@ -148,7 +148,7 @@ paths:
     delete:
       tags:
       - web
-      description: Delete a namespace
+      description: 删除一个命名空间
       operationId: NamespaceControllers./v1/web/namespace
       parameters:
       - in: body
@@ -196,6 +196,8 @@ definitions:
         format: int64
       Key:
         type: string
+      Namespace:
+        $ref: '#/definitions/models.Namespaces'
       UpdateTime:
         type: string
         format: datetime

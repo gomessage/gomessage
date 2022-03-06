@@ -7,13 +7,13 @@ import (
 )
 
 type Templates struct {
-	Id              int         `orm:"pk;auto" json:"id"`
-	Label           string      `orm:"size(500)" json:"label"`
-	Namespace       *Namespaces `orm:"rel(fk);cascade"`
-	MessageTemplate string      `orm:"size(2000)" json:"message_template"`
-	MessageMerge    bool        `json:"message_merge"`
+	Id              int         `orm:"pk;auto" json:"id"`                    //id，主键，自增
+	Namespace       *Namespaces `orm:"rel(fk);cascade"`                      //外键连接Namespace表
+	Label           string      `orm:"size(500)" json:"label"`               //消息模板的标签或名称
+	MessageTemplate string      `orm:"size(2000)" json:"message_template"`   //消息模板的主体（也就是变量与字符串的混合体）
+	MessageMerge    bool        `json:"message_merge"`                       //消息模板是否切割渲染
 	CreateTime      time.Time   `orm:"auto_now_add;type(datetime)" json:"-"` //创建时间
-	UpdateTime      time.Time   `orm:"auto_now;type(datetime)" json:"-"`
+	UpdateTime      time.Time   `orm:"auto_now;type(datetime)" json:"-"`     //更新时间
 }
 
 func init() {
@@ -26,7 +26,7 @@ func init() {
 func ReadOrCreateTemplate(label string, messageTemplate string, MessageMerge bool, namespace *Namespaces) Templates {
 
 	if namespace == nil {
-		fmt.Println("没有命名空间...")
+		fmt.Println("找不到所属Namespace，不进行Template创建...")
 		return Templates{}
 	} else {
 		o := orm.NewOrm()
@@ -62,7 +62,7 @@ func GetOneTemplate(lable string) Templates {
 		fmt.Printf("报错：找到的数据不是一条")
 	}
 	if err == orm.ErrNoRows {
-		fmt.Printf("报错：没有查询到对应数据")
+		fmt.Printf("报错：没有查询到Template数据")
 	}
 	return temp
 }

@@ -17,7 +17,7 @@ type MapControllers struct {
 // @Failure 404 错误请求
 // @router /map [get]
 func (this *MapControllers) Get() {
-	mList := models.QueryAllMap()
+	mList := models.ListConfigMap(models.GetNamespace("default"))
 	//返回值
 	this.Ctx.ResponseWriter.WriteHeader(200)
 	this.Data["json"] = mList
@@ -32,35 +32,31 @@ func (this *MapControllers) Get() {
 // @router /map [post]
 func (this *MapControllers) Post() {
 	//解析request中的数据结构
-	type requestData struct {
+	type Param struct {
 		KeyValueList []map[string]string `json:"key_value_list"`
 	}
 	//获取request中的数据
-	r := requestData{}
-	err := json.Unmarshal(this.Ctx.Input.RequestBody, &r)
-	if err != nil {
-		panic(err)
-	}
+	param := Param{}
+	json.Unmarshal(this.Ctx.Input.RequestBody, &param)
 
-	//遍历删除全部配置存储
-	for _, json := range models.QueryAllMap() {
-		models.DeleteMap(json)
-		//fmt.Println(result)
+	//遍历该namespace下的所有数据，并删除
+	for _, oneConfigMap := range models.ListConfigMap(models.GetNamespace("default")) {
+		models.DeleteConfigMap(&oneConfigMap, models.GetNamespace("default"))
 	}
 
 	//新建一个切片，暂存需要返回给用户的数据
-	var ResponseJsons []models.Configmap
+	var ResponseData []models.Configmap
 
 	//批量写入新的配置
-	for _, json := range r.KeyValueList {
-		for key, vv := range json {
-			result := models.ReadOrCreateMap(key, vv)
-			ResponseJsons = append(ResponseJsons, result)
+	for _, oneKeyValue := range param.KeyValueList {
+		for key, vv := range oneKeyValue {
+			result := models.ReadOrCreateMap(key, vv, models.GetNamespace("default"))
+			ResponseData = append(ResponseData, result)
 		}
 	}
 
 	//返回值
 	this.Ctx.ResponseWriter.WriteHeader(200)
-	this.Data["json"] = ResponseJsons
+	this.Data["json"] = ResponseData
 	this.ServeJSON()
 }

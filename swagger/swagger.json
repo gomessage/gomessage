@@ -152,7 +152,7 @@
                 "tags": [
                     "web"
                 ],
-                "description": "Add a namespace",
+                "description": "获取所有命名空间",
                 "operationId": "NamespaceControllers./v1/web/namespace",
                 "parameters": [
                     {
@@ -178,7 +178,7 @@
                 "tags": [
                     "web"
                 ],
-                "description": "Delete a namespace",
+                "description": "修改一个命名空间",
                 "operationId": "NamespaceControllers./v1/web/namespace",
                 "parameters": [
                     {
@@ -204,7 +204,7 @@
                 "tags": [
                     "web"
                 ],
-                "description": "Add a namespace",
+                "description": "添加一个命名空间",
                 "operationId": "NamespaceControllers./v1/web/namespace",
                 "parameters": [
                     {
@@ -230,7 +230,7 @@
                 "tags": [
                     "web"
                 ],
-                "description": "Delete a namespace",
+                "description": "删除一个命名空间",
                 "operationId": "NamespaceControllers./v1/web/namespace",
                 "parameters": [
                     {
@@ -301,6 +301,9 @@
                 },
                 "Key": {
                     "type": "string"
+                },
+                "Namespace": {
+                    "$ref": "#/definitions/models.Namespaces"
                 },
                 "UpdateTime": {
                     "type": "string",

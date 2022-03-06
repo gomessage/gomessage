@@ -8,10 +8,11 @@ import (
 
 //命名空间（表结构）
 type Namespaces struct {
-	Id          int          `orm:"pk;auto" json:"id"`                 //id
-	Name        string       `orm:"size(50)" json:"name"`              //命名空间
-	Description string       `orm:"null;size(200)" json:"description"` //描述
-	Templates   []*Templates `orm:"reverse(many)" json:"-"`
+	Id          int          `orm:"pk;auto" json:"id"`                    //id
+	Name        string       `orm:"size(50)" json:"name"`                 //命名空间
+	Description string       `orm:"null;size(200)" json:"description"`    //描述
+	Templates   []*Templates `orm:"reverse(many)" json:"-"`               //Template表的外键
+	Configmap   []*Configmap `orm:"reverse(many)" json:"-"`               //Configmap表的外键
 	CreateTime  time.Time    `orm:"auto_now_add;type(datetime)" json:"-"` //创建时间
 	UpdateTime  time.Time    `orm:"auto_now;type(datetime)" json:"-"`     //修改时间
 }
@@ -73,7 +74,7 @@ func UpdateNamespace(namespace *Namespaces) (int64, error) {
 		nm.Name = namespace.Name
 		nm.Description = namespace.Description
 		if num, err = o.Update(&nm); err == nil {
-			fmt.Println("受影响的行数：", num)
+			fmt.Println("修改Namespace受影响的行数：", num)
 			return num, err
 		}
 		return 0, err
@@ -95,7 +96,10 @@ func GetNamespace(namespaceName string) *Namespaces {
 	o := orm.NewOrm()
 	err := o.QueryTable("namespaces").Filter("name", namespaceName).One(&oneNamespace)
 	if err != nil {
+		fmt.Println("命名空间" + namespaceName + "不存在~，向调用方返回nil...")
 		return nil
+	} else {
+		fmt.Println("查询到命名空间" + namespaceName + "，已返回给调用方...")
 	}
 	return &oneNamespace
 }
