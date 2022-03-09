@@ -55,21 +55,21 @@ docker run -d \
 
 <br>
 
-### `Linux服务器上的`·安装和使用：
+### `Linux服务器：`
 
 - [Linux环境下的安装](https://github.com/gomessage/gomessage/blob/master/docs/install.md)
 
 <br>
 
 
-### `Windows服务器上的`·安装和使用：
-- [Windows环境下的安装](https://github.com/gomessage/gomessage/blob/master/docs/install.md)
+### `Windows服务器：`
+- [Windows环境下的安装（文档暂未完成...）]()
 
 <br>
 
 
-### `Mac本地电脑上的`·安装和使用：
-- [Mac环境下的安装](https://github.com/gomessage/gomessage/blob/master/docs/install.md)
+### `Mac本地电脑：`
+- [Mac环境下的安装](https://github.com/gomessage/gomessage/blob/master/docs/install_mac.md)
 
 
 <br><br>
