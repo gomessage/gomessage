@@ -19,15 +19,15 @@
 
 ## 安装包下载：
 
-安装包下载地址（国内）：https://gitee.com/gomessage/gomessage/releases （国内下载很快）
+下载地址（国内）：https://gitee.com/gomessage/gomessage/releases （国内用这个，速度很快~）
 
-安装包下载地址（国外）：https://github.com/gomessage/gomessage/releases
+下载地址（国外）：https://github.com/gomessage/gomessage/releases
 
 <br><br>
 
 ## 安装步骤：
 
-### `Docker方式`安装和使用（强烈推荐）：
+### `Docker方式`·安装和使用（强烈推荐）：
 
 快速启动：
 
@@ -35,7 +35,7 @@
 docker run -d -p 7077:7077 taycc/gomessage 
 ```
 
-只运行一次（容器关闭后自动删除，不残留和污染本地环境）：
+只运行一次（容器停止后自动删除，不残留和污染本地环境）：
 ```bash
 docker run -d \
     -p 7077:7077 \
@@ -55,11 +55,20 @@ docker run -d \
 
 <br>
 
-### `服务器裸机`安装和使用：
+### `Linux服务器：`
 
-- [Mac环境下的安装](https://gitee.com/gomessage/gomessage/blob/master/docs/install.md#linux%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85)
-- [Linux环境下的安装](https://gitee.com/gomessage/gomessage/blob/master/docs/install.md#linux%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85)
-- [Windows环境下的安装](https://gitee.com/gomessage/gomessage/blob/master/docs/install.md#linux%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85)
+- [Linux环境下的安装](https://github.com/gomessage/gomessage/blob/master/docs/install.md)
+
+
+
+### `Windows服务器：`
+- [Windows环境下的安装（文档暂未完成...）](https://github.com/gomessage/gomessage#windows%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8)
+
+
+
+### `Mac本地电脑：`
+- [Mac环境下的安装](https://github.com/gomessage/gomessage/blob/master/docs/install_mac.md)
+
 
 <br><br>
 
