@@ -19,7 +19,7 @@
 
 ## 安装包下载：
 
-安装包下载地址（国内）：https://gitee.com/gomessage/gomessage/releases （国内下载很快）
+安装包下载地址（国内）：https://gitee.com/gomessage/gomessage/releases （这个地址国内访问速度快~）
 
 安装包下载地址（国外）：https://github.com/gomessage/gomessage/releases
 
