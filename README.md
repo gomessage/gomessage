@@ -59,13 +59,11 @@ docker run -d \
 
 - [Linux环境下的安装](https://github.com/gomessage/gomessage/blob/master/docs/install.md)
 
-<br>
 
 
 ### `Windows服务器：`
-- [Windows环境下的安装（文档暂未完成...）]()
+- [Windows环境下的安装（文档暂未完成...）](https://github.com/gomessage/gomessage#windows%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8)
 
-<br>
 
 
 ### `Mac本地电脑：`
