@@ -35,7 +35,7 @@ docker run -d \
 
 <br>
 
-#### 二进制包获的取地址：
+#### 二进制包的获取地址：
 
 下载地址（国内）：https://gitee.com/gomessage/gomessage/releases （国内用这个，速度很快~）
 
