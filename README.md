@@ -27,7 +27,7 @@
 
 ## 安装步骤：
 
-### Docker方式·安装和使用（强烈推荐）：
+### `Docker方式`·安装和使用（强烈推荐）：
 
 快速启动：
 
@@ -55,11 +55,22 @@ docker run -d \
 
 <br>
 
-### `服务器裸机`安装和使用：
+### `Linux服务器上的`·安装和使用：
 
-- [Mac环境下的安装](https://github.com/gomessage/gomessage/blob/master/docs/install.md)
 - [Linux环境下的安装](https://github.com/gomessage/gomessage/blob/master/docs/install.md)
+
+<br>
+
+
+### `Windows服务器上的`·安装和使用：
 - [Windows环境下的安装](https://github.com/gomessage/gomessage/blob/master/docs/install.md)
+
+<br>
+
+
+### `Mac本地电脑上的`·安装和使用：
+- [Mac环境下的安装](https://github.com/gomessage/gomessage/blob/master/docs/install.md)
+
 
 <br><br>
 
