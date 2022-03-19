@@ -17,7 +17,7 @@ type MapControllers struct {
 // @Failure 404 错误请求
 // @router /map [get]
 func (this *MapControllers) Get() {
-	mList := models.ListConfigMap(models.GetNamespace("default"))
+	mList := models.ListConfigMap(models.GetNamespaceParamName("default"))
 	//返回值
 	this.Ctx.ResponseWriter.WriteHeader(200)
 	this.Data["json"] = mList
@@ -27,7 +27,7 @@ func (this *MapControllers) Get() {
 // @Title /v1/web/map
 // @Description 更新用户变量
 // @Param key_value_list body string false "存放用户变量的一个list"
-// @Success 200 {object} []models.Configmap
+// @Success 200 {object} []models.Configmaps
 // @Failure 404 错误请求
 // @router /map [post]
 func (this *MapControllers) Post() {
@@ -40,17 +40,17 @@ func (this *MapControllers) Post() {
 	json.Unmarshal(this.Ctx.Input.RequestBody, &param)
 
 	//遍历该namespace下的所有数据，并删除
-	for _, oneConfigMap := range models.ListConfigMap(models.GetNamespace("default")) {
-		models.DeleteConfigMap(&oneConfigMap, models.GetNamespace("default"))
+	for _, oneConfigMap := range models.ListConfigMap(models.GetNamespaceParamName("default")) {
+		models.DeleteConfigMap(&oneConfigMap, models.GetNamespaceParamName("default"))
 	}
 
 	//新建一个切片，暂存需要返回给用户的数据
-	var ResponseData []models.Configmap
+	var ResponseData []models.Configmaps
 
 	//批量写入新的配置
 	for _, oneKeyValue := range param.KeyValueList {
 		for key, vv := range oneKeyValue {
-			result := models.ReadOrCreateMap(key, vv, models.GetNamespace("default"))
+			result := models.ReadOrCreateMap(key, vv, models.GetNamespaceParamName("default"))
 			ResponseData = append(ResponseData, result)
 		}
 	}

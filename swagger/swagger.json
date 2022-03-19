@@ -137,7 +137,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/models.Configmap"
+                                "$ref": "#/definitions/models.Configmaps"
                             }
                         }
                     },
@@ -258,8 +258,8 @@
                 "tags": [
                     "web"
                 ],
-                "description": "Get user template",
-                "operationId": "TemplateControllers.Get user template",
+                "description": "获取所有template",
+                "operationId": "TemplateControllers./v1/web/template",
                 "responses": {
                     "200": {
                         "description": "响应成功"
@@ -284,32 +284,42 @@
                     }
                 }
             }
+        },
+        "/web/template/{id}": {
+            "get": {
+                "tags": [
+                    "web"
+                ],
+                "description": "Get template",
+                "operationId": "TemplateControllers.Get template",
+                "responses": {
+                    "200": {
+                        "description": "响应成功"
+                    },
+                    "404": {
+                        "description": "错误请求"
+                    }
+                }
+            }
         }
     },
     "definitions": {
-        "models.Configmap": {
-            "title": "Configmap",
+        "models.Configmaps": {
+            "title": "Configmaps",
             "type": "object",
             "properties": {
-                "CreateTime": {
-                    "type": "string",
-                    "format": "datetime"
-                },
-                "Id": {
+                "id": {
                     "type": "integer",
                     "format": "int64"
                 },
-                "Key": {
+                "key": {
                     "type": "string"
                 },
-                "Namespace": {
-                    "$ref": "#/definitions/models.Namespaces"
+                "namespace_id": {
+                    "type": "integer",
+                    "format": "int64"
                 },
-                "UpdateTime": {
-                    "type": "string",
-                    "format": "datetime"
-                },
-                "Value": {
+                "value": {
                     "type": "string"
                 }
             }
@@ -326,28 +336,6 @@
                     "format": "int64"
                 },
                 "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.Templates": {
-            "title": "Templates",
-            "type": "object",
-            "properties": {
-                "Namespace": {
-                    "$ref": "#/definitions/models.Namespaces"
-                },
-                "id": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "label": {
-                    "type": "string"
-                },
-                "message_merge": {
-                    "type": "boolean"
-                },
-                "message_template": {
                     "type": "string"
                 }
             }

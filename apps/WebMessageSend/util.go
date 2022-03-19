@@ -34,7 +34,7 @@ func GetUserConfig() Config {
 
 	//获取ConfigMap相关的配置（用户的变量映射）
 	var tmpList []map[string]string
-	for _, value := range models.ListConfigMap(models.GetNamespace("default")) {
+	for _, value := range models.ListConfigMap(models.GetNamespaceParamName("default")) {
 		tmpMap := make(map[string]string)
 		k := value.Key
 		v := value.Value
@@ -44,7 +44,8 @@ func GetUserConfig() Config {
 	c.ConfigMap = tmpList
 
 	//获取Template相关的配置（这里拿到的是用户的模板骨架）
-	templateObject := models.GetOneTemplate("default")
+	//templateObject := models.GetOneTemplate(models.GetNamespaceParamName("default"))
+	templateObject := models.GetOneTemplate(1)
 	c.MessageTemplate = templateObject.MessageTemplate
 
 	//（这里拿到的是消息是否聚合）

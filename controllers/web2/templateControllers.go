@@ -4,6 +4,7 @@ import (
 	"GoMessage/models"
 	"encoding/json"
 	beego "github.com/beego/beego/v2/server/web"
+	"strconv"
 )
 
 //控制器：用户消息体的模板
@@ -11,16 +12,43 @@ type TemplateControllers struct {
 	beego.Controller
 }
 
-// @Title Get user template
-// @Description Get user template
+// @Title /v1/web/template
+// @Description 获取所有template
 // @Success 200 响应成功
 // @Failure 404 错误请求
 // @router /template [get]
-func (this *TemplateControllers) Get() {
-	t := models.GetOneTemplate("default")
+func (this *TemplateControllers) GetAll() {
+	listAllTemplate, err := models.ListAllTemplate()
+	if err != nil {
+		return
+	}
 	//返回值
 	this.Ctx.ResponseWriter.WriteHeader(200)
-	this.Data["json"] = t
+	this.Data["json"] = listAllTemplate
+	this.ServeJSON()
+}
+
+// @Title Get template
+// @Description Get template
+// @Success 200 响应成功
+// @Failure 404 错误请求
+// @router /template/:id [get]
+func (this *TemplateControllers) Get() {
+
+	//获取get请求中的参数
+	id, err := strconv.Atoi(this.Ctx.Input.Param(":id"))
+	if err != nil {
+		this.Ctx.ResponseWriter.WriteHeader(400)
+		this.Data["json"] = nil
+		this.ServeJSON()
+		return
+	}
+
+	temp := models.GetOneTemplate(id)
+
+	//返回值
+	this.Ctx.ResponseWriter.WriteHeader(200)
+	this.Data["json"] = temp
 	this.ServeJSON()
 }
 
@@ -32,25 +60,34 @@ func (this *TemplateControllers) Get() {
 func (this *TemplateControllers) Post() {
 	type Param struct {
 		RequestData struct {
-			*models.Templates
+			NamespaceName string            `json:"namespace_name"`
+			Template      *models.Templates `json:"template"`
 		} `json:"request_data"`
 	}
 
 	param := Param{}
 	json.Unmarshal(this.Ctx.Input.RequestBody, &param)
 
-	//遍历删除全部配置存储
-	for _, ttt := range models.QueryAllTemplate() {
+	//遍历所有的模板（按照namespace来遍历，只返回指定namespace下的遍历结果）
+	for _, ttt := range models.ListNsTemplate(models.GetNamespaceParamName(param.RequestData.NamespaceName)) {
+		//删除遍历到的结果
 		models.DeleteTemplate(ttt)
 	}
 
-	temp := models.ReadOrCreateTemplate("default", param.RequestData.MessageTemplate, param.RequestData.MessageMerge, models.GetNamespace("default"))
-	models.ReadOrCreateTemplate("bbb", "bbb", true, models.GetNamespace("test2"))
-	models.ReadOrCreateTemplate("ccc", "ccc", true, models.GetNamespace("test2"))
-	models.ReadOrCreateTemplate("ddd", "ddd", true, models.GetNamespace("test3"))
-	models.ReadOrCreateTemplate("eee", "eee", true, models.GetNamespace("test3"))
-	models.ReadOrCreateTemplate("fff", "fff", true, models.GetNamespace("test3"))
-	models.ReadOrCreateTemplate("fff", "fff", true, models.GetNamespace("test55"))
+	//新增一个Template
+	temp := models.ReadOrCreateTemplate(
+		param.RequestData.Template.TemplateName,
+		param.RequestData.Template.MessageTemplate,
+		param.RequestData.Template.MessageMerge,
+		models.GetNamespaceParamName(param.RequestData.NamespaceName),
+	)
+
+	//models.ReadOrCreateTemplate("bbb", "bbb", true, models.GetNamespaceParamName("test2"))
+	//models.ReadOrCreateTemplate("ccc", "ccc", true, models.GetNamespaceParamName("test2"))
+	//models.ReadOrCreateTemplate("ddd", "ddd", true, models.GetNamespaceParamName("test3"))
+	//models.ReadOrCreateTemplate("eee", "eee", true, models.GetNamespaceParamName("test3"))
+	//models.ReadOrCreateTemplate("fff", "fff", true, models.GetNamespaceParamName("test3"))
+	//models.ReadOrCreateTemplate("fff", "fff", true, models.GetNamespaceParamName("test5"))
 
 	//返回值
 	this.Ctx.ResponseWriter.WriteHeader(200)
