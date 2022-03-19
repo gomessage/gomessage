@@ -48,7 +48,7 @@ func main() {
 		AllowCredentials: true,
 	}))
 
-	//create default namespace
+	//创建默认的Namespace
 	models.CreateDefaultNamespace()
 	models.AddNamespace(&models.Namespaces{Name: "test2"})
 	models.AddNamespace(&models.Namespaces{Name: "test3"})
