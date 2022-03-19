@@ -138,13 +138,12 @@ func (this *NamespaceControllers) Put() {
 		return
 	}
 
-	oneNamespace := models.Namespaces{
-		Id:          param.RequestData.Id,
+	newNamespace := models.Namespaces{
 		Name:        param.RequestData.Name,
 		Description: param.RequestData.Description,
 	}
-
-	updateNum, err := models.UpdateNamespace(&oneNamespace)
+	oldNamespace := models.GetNamespaceParamName(newNamespace.Name)
+	updateNum, err := models.UpdateNamespace(oldNamespace, &newNamespace)
 	if err != nil {
 		return
 	}

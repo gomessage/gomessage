@@ -4,7 +4,6 @@ import (
 	"GoMessage/models"
 	"encoding/json"
 	beego "github.com/beego/beego/v2/server/web"
-	"strconv"
 )
 
 //控制器：用户消息体的模板
@@ -32,24 +31,25 @@ func (this *TemplateControllers) GetAll() {
 // @Description 获取指定编号的模板信息
 // @Success 200 响应成功
 // @Failure 404 错误请求
-// @router /template/:id [get]
+// @router /template/:namespace [get]
 func (this *TemplateControllers) Get() {
-
 	//获取get请求中的参数
-	id, err := strconv.Atoi(this.Ctx.Input.Param(":id"))
-	if err != nil {
+	namespace := this.Ctx.Input.Param(":namespace")
+	ns := models.GetNamespaceParamName(namespace)
+	if ns != nil {
+		temp := models.GetOneTemplate(ns.Id)
+		//返回值
+		this.Ctx.ResponseWriter.WriteHeader(200)
+		this.Data["json"] = temp
+		this.ServeJSON()
+	} else {
+		//返回值
 		this.Ctx.ResponseWriter.WriteHeader(400)
-		this.Data["json"] = nil
+		this.Data["json"] = "Namespace不存在"
 		this.ServeJSON()
 		return
 	}
 
-	temp := models.GetOneTemplate(id)
-
-	//返回值
-	this.Ctx.ResponseWriter.WriteHeader(200)
-	this.Data["json"] = temp
-	this.ServeJSON()
 }
 
 // @Title /v1/web/template

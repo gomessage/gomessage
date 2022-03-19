@@ -194,7 +194,7 @@ paths:
           description: 响应成功
         "404":
           description: 错误请求
-  /web/template/{id}:
+  /web/template/{namespace}:
     get:
       tags:
       - web

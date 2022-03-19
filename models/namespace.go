@@ -64,21 +64,36 @@ func DelNamespace(nsName string) (int64, error) {
 }
 
 //改：（这个改方法可能写的不正确，后面有空了再修改）
-func UpdateNamespace(ns *Namespaces) (int64, error) {
-	o := orm.NewOrm()
-	oneNamespace := Namespaces{Id: ns.Id}
+func UpdateNamespace(oleNs *Namespaces, newNs *Namespaces) (int64, error) {
+	//var oneNs *Namespaces
+	//var num2 int64
+	//var err2 error
+	//
+	//o := orm.NewOrm()
+	//err := o.QueryTable(&Namespaces{}).Filter("id", &ns.Id).One(&oneNs)
+	//if err != nil {
+	//	return 0, err
+	//} else {
+	//	oneNamespace := Namespaces{Id: ns.Id}
+	//	if num2, err2 = o.Update(&oneNamespace); err == nil {
+	//		fmt.Println("修改Namespace受影响的行数：", num2)
+	//		return num2, err2
+	//	}
+	//	return 0, err2
+	//}
+
 	var num int64
 	var err error
-	if o.Read(&oneNamespace) == nil {
-		oneNamespace.Name = ns.Name
-		oneNamespace.Description = ns.Description
-		if num, err = o.Update(&oneNamespace); err == nil {
-			fmt.Println("修改Namespace受影响的行数：", num)
-			return num, err
+	o := orm.NewOrm()
+	temp := Namespaces{Id: oleNs.Id}
+	if o.Read(&temp) == nil {
+		temp.Name = newNs.Name
+		temp.Description = newNs.Description
+		if num, err = o.Update(&temp); err == nil {
+			fmt.Println(num)
 		}
-		return 0, err
 	}
-	return 0, err
+	return num, err
 }
 
 //查：获取所有的Namespace

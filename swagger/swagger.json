@@ -302,7 +302,7 @@
                 }
             }
         },
-        "/web/template/{id}": {
+        "/web/template/{namespace}": {
             "get": {
                 "tags": [
                     "web"
