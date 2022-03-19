@@ -3,7 +3,6 @@ package web2
 import (
 	"GoMessage/models"
 	"encoding/json"
-	"fmt"
 	beego "github.com/beego/beego/v2/server/web"
 )
 
@@ -90,9 +89,20 @@ func (this *NamespaceControllers) Delete() {
 		return
 	}
 
-	fmt.Println(param.RequestData.Name)
+	//获取namespace对象
+	ns := models.GetNamespaceParamName(param.RequestData.Name)
 
-	//删除命名空间
+	//删除templates表中关联数据
+	for _, temp := range models.ListNsTemplate(ns) {
+		models.DeleteTemplate(temp)
+	}
+
+	//删除configmaps表中关联的数据
+	for _, configmap := range models.ListNsConfigMap(ns) {
+		models.DeleteOneConfigMap(&configmap)
+	}
+
+	//最后再删除命名空间
 	namespaceId, delErr := models.DelNamespace(param.RequestData.Name)
 	if delErr != nil {
 		return

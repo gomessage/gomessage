@@ -103,7 +103,7 @@
                 "tags": [
                     "web"
                 ],
-                "description": "获取用户变量",
+                "description": "获取所有用户变量",
                 "operationId": "MapControllers./v1/web/map",
                 "responses": {
                     "200": {
@@ -118,7 +118,7 @@
                 "tags": [
                     "web"
                 ],
-                "description": "更新用户变量",
+                "description": "创建一组新的用户变量（同一Namespace下的老变量会被删掉，一个Namespace下永远只有一组用户变量）",
                 "operationId": "MapControllers./v1/web/map",
                 "parameters": [
                     {
@@ -140,6 +140,23 @@
                                 "$ref": "#/definitions/models.Configmaps"
                             }
                         }
+                    },
+                    "404": {
+                        "description": "错误请求"
+                    }
+                }
+            }
+        },
+        "/web/map/{namespace}": {
+            "get": {
+                "tags": [
+                    "web"
+                ],
+                "description": "获取指定namespace下的用户变量",
+                "operationId": "MapControllers./v1/web/map",
+                "responses": {
+                    "200": {
+                        "description": "响应成功"
                     },
                     "404": {
                         "description": "错误请求"
@@ -290,8 +307,8 @@
                 "tags": [
                     "web"
                 ],
-                "description": "Get template",
-                "operationId": "TemplateControllers.Get template",
+                "description": "获取指定编号的模板信息",
+                "operationId": "TemplateControllers./v1/web/template",
                 "responses": {
                     "200": {
                         "description": "响应成功"

@@ -28,8 +28,8 @@ func (this *TemplateControllers) GetAll() {
 	this.ServeJSON()
 }
 
-// @Title Get template
-// @Description Get template
+// @Title /v1/web/template
+// @Description 获取指定编号的模板信息
 // @Success 200 响应成功
 // @Failure 404 错误请求
 // @router /template/:id [get]

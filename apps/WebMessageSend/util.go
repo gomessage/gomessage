@@ -34,7 +34,7 @@ func GetUserConfig() Config {
 
 	//获取ConfigMap相关的配置（用户的变量映射）
 	var tmpList []map[string]string
-	for _, value := range models.ListConfigMap(models.GetNamespaceParamName("default")) {
+	for _, value := range models.ListNsConfigMap(models.GetNamespaceParamName("default")) {
 		tmpMap := make(map[string]string)
 		k := value.Key
 		v := value.Value

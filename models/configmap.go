@@ -49,11 +49,23 @@ func ReadOrCreateMap(key string, value string, nm *Namespaces) Configmaps {
 }
 
 //######################
-//函数：删除（按namespace删除）
+//函数：删除（按namespace条件+configmap条件进行删除）
 //######################
 func DeleteConfigMap(configmap *Configmaps, ns *Namespaces) int64 {
 	o := orm.NewOrm()
-	num, err := o.QueryTable("configmap").Filter("key", &configmap.Key).Filter("namespace_id", &ns.Id).Delete()
+	num, err := o.QueryTable("configmaps").Filter("key", &configmap.Key).Filter("namespace_id", &ns.Id).Delete()
+	if err != nil {
+		return 0
+	}
+	return num
+}
+
+//######################
+//函数：删除（按namespace条件+configmap条件进行删除）
+//######################
+func DeleteOneConfigMap(configmap *Configmaps) int64 {
+	o := orm.NewOrm()
+	num, err := o.QueryTable("configmaps").Filter("key", &configmap.Key).Delete()
 	if err != nil {
 		return 0
 	}
@@ -63,13 +75,26 @@ func DeleteConfigMap(configmap *Configmaps, ns *Namespaces) int64 {
 //######################
 //函数：查询所有（按namespace查询）
 //######################
-func ListConfigMap(ns *Namespaces) []Configmaps {
+func ListNsConfigMap(ns *Namespaces) []Configmaps {
 	var configMapList []Configmaps
 	o := orm.NewOrm()
-	num, err := o.QueryTable("configmap").Filter("namespace_id", &ns.Id).All(&configMapList)
+	num, err := o.QueryTable("configmaps").Filter("namespace_id", &ns.Id).All(&configMapList)
 	if err != nil {
 		return nil
 	}
 	fmt.Printf("查询全部ConfigMap，受影响的行数：%v\n", num)
 	return configMapList
+}
+
+//######################
+//函数：查询所有（不加条件）
+//######################
+func ListAllConfigMap() ([]*Configmaps, error) {
+	var list []*Configmaps
+	o := orm.NewOrm()
+	_, err := o.QueryTable(Configmaps{}).OrderBy("-id").All(&list)
+	if err != nil {
+		return nil, err
+	}
+	return list, err
 }
