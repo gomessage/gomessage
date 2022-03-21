@@ -1,14 +1,20 @@
 #!/usr/bin/env bash
 
-VERSION="1.0.9"
-OUTPUT_PATH="./build/${VERSION}/"
-GOOS_LIST=(darwin linux windows)
-GOARCH_LIST=(amd64)
-EXRS='^build|^bak|^docs|^swagger|^deploy|^LICENSE|.sh$|.sqlite3$|.bak$|.md$|prof$'
 
+VERSION="1.0.9"  #编译之后的包版本（只修改这一个就行了，下文别的东西不要动）
+
+
+#下面这些参数尽量不要动（重复通读整个脚本，明白这些变量的用途，否则不要进行修改和变动）
+OUTPUT_PATH="./build/${VERSION}/"  #制品输出路径
+GOOS_LIST=(darwin linux windows)  #系统平台
+GOARCH_LIST=(amd64)  #系统脚骨
+EXRS='^build|^bak|^docs|^swagger|^deploy|^LICENSE|.sh$|.sqlite3$|.bak$|.md$|prof$'  #编译时要忽略的文件
+
+
+#该函数负责实际的代码交叉编译
 build() {
-    #yum groupinstall -y "Development Tools"
-    go get github.com/beego/bee/v2
+    #bee工具的安装
+    go get -u github.com/beego/bee/v2
 
     #去掉不必要的包
     go mod tidy
@@ -21,7 +27,7 @@ build() {
     #修改runmode参数，让编译后的应用程序运行在prod环境中
     gsed -i '/^runmode/c runmode = prod' ./conf/app.conf
 
-    mkdir -p ${OUTPUT_PATH}${baoName}
+    mkdir -p ${OUTPUT_PATH}"${baoName}"
 
     if [[ ${GOOS} == "linux" ]]; then
         bee pack -a gomessage \
@@ -36,7 +42,7 @@ build() {
 
         cp ./deploy/install.sh ${OUTPUT_PATH}${baoName}/
         cp ./deploy/uninstall.sh ${OUTPUT_PATH}${baoName}/
-        #cp ./deploy/Dockerfile ${OUTPUT_PATH}${baoName}/
+        # cp ./deploy/Dockerfile ${OUTPUT_PATH}${baoName}/   #不再复制dockerfile文件进入最终的安装包中，次命令留作备忘
 
     elif [[ ${GOOS} == "windows" ]]; then
         bee pack -a gomessage \
@@ -67,15 +73,19 @@ build() {
 
 }
 
+
 #清空指定目录下的内容（只执行一次）
 mkdir -p ${OUTPUT_PATH}
 echo ${OUTPUT_PATH}
 
+
+#一定要确定build目录下是干净的
 #rm -rf "${OUTPUT_PATH}"*
 rm -rf ./build/*
 echo "历史包清理完成..."
 
-#循环编译指定版本的包
+
+#开始进行编译：循环遍历两个参数：系统平台、系统架构；然后进行分别编译
 for GOOS in "${GOOS_LIST[@]}"; do
     for GOARCH in "${GOARCH_LIST[@]}"; do
         #遍历数组后拿到的<临时变量>拼接成<新的包名>
