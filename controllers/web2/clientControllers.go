@@ -27,14 +27,14 @@ type ClientFeishu struct {
 	RobotUrlList []ClientFeishuUrl `json:"robot_url"`
 }
 
-// client api 相关的控制器
+// 客户端接口
 type Clients struct {
 	beego.Controller
 }
 
 // get方法
-// @router /client [get]
-func (c *Clients) Get() {
+// @router / [get]
+func (c *Clients) GetAll() {
 	type Resp struct {
 		ResponseData []*models.Client `json:"response_data"`
 	}
@@ -52,20 +52,41 @@ func (c *Clients) Get() {
 	c.ServeJSON()
 }
 
+// get方法
+// @router /ns/:namespace [get]
+func (c *Clients) Get() {
+	type Resp struct {
+		ResponseData []*models.Client `json:"response_data"`
+	}
+
+	ns := c.Ctx.Input.Param(":namespace")
+	nsObject := models.GetNamespaceParamName(ns)
+
+	list, err := models.ListNsClient(nsObject)
+	if err != nil {
+		c.Ctx.ResponseWriter.WriteHeader(200)
+		c.Data["json"] = Resp{ResponseData: list}
+		c.ServeJSON()
+		return
+	}
+
+	c.Ctx.ResponseWriter.WriteHeader(200)
+	c.Data["json"] = Resp{ResponseData: list}
+	c.ServeJSON()
+}
+
 // post方法
-// @router /client [post]
+// @router / [post]
 func (c *Clients) Post() {
 
-	//给出去的返回值
-	type RespData struct {
+	//返回值
+	type Response struct {
 		Result bool `json:"result"`
 	}
-	//给出去的返回值
-	type Resp struct {
-		ResponseData RespData `json:"response_data"`
-	}
 
+	//===================
 	//请求的数据
+	//===================
 	type Param struct {
 		RequestData struct {
 			*models.Client                 //这里只会拿到四个数据
@@ -76,7 +97,7 @@ func (c *Clients) Post() {
 	err := json.Unmarshal(c.Ctx.Input.RequestBody, &param)
 	if err != nil {
 		c.Ctx.ResponseWriter.WriteHeader(400)
-		c.Data["json"] = Resp{ResponseData: RespData{Result: false}}
+		c.Data["json"] = Response{Result: false}
 		c.ServeJSON()
 		return
 	}
@@ -87,7 +108,7 @@ func (c *Clients) Post() {
 		err = json.Unmarshal(param.RequestData.ClientInfo, &dingtalk) //这里只能拿到url的绑定
 		if err != nil {
 			c.Ctx.ResponseWriter.WriteHeader(400)
-			c.Data["json"] = Resp{ResponseData: RespData{Result: false}}
+			c.Data["json"] = Response{Result: false}
 			c.ServeJSON()
 			return
 		}
@@ -103,7 +124,7 @@ func (c *Clients) Post() {
 		err = json.Unmarshal(param.RequestData.ClientInfo, &wechat)
 		if err != nil {
 			c.Ctx.ResponseWriter.WriteHeader(400)
-			c.Data["json"] = Resp{ResponseData: RespData{Result: false}}
+			c.Data["json"] = Response{Result: false}
 			c.ServeJSON()
 			return
 		}
@@ -114,7 +135,7 @@ func (c *Clients) Post() {
 		err = json.Unmarshal(param.RequestData.ClientInfo, &feishu)
 		if err != nil {
 			c.Ctx.ResponseWriter.WriteHeader(400)
-			c.Data["json"] = Resp{ResponseData: RespData{Result: false}}
+			c.Data["json"] = Response{Result: false}
 			c.ServeJSON()
 			return
 		}
@@ -128,7 +149,7 @@ func (c *Clients) Post() {
 
 	} else {
 		c.Ctx.ResponseWriter.WriteHeader(400)
-		c.Data["json"] = Resp{ResponseData: RespData{Result: false}}
+		c.Data["json"] = Response{Result: false}
 		c.ServeJSON()
 		return
 	}
@@ -137,13 +158,13 @@ func (c *Clients) Post() {
 	_, err = models.AddClient(param.RequestData.Client)
 	if err != nil {
 		c.Ctx.ResponseWriter.WriteHeader(200)
-		c.Data["json"] = Resp{ResponseData: RespData{Result: false}}
+		c.Data["json"] = Response{Result: false}
 		c.ServeJSON()
 		return
 	}
 
 	c.Ctx.ResponseWriter.WriteHeader(200)
-	c.Data["json"] = Resp{ResponseData: RespData{Result: true}}
+	c.Data["json"] = Response{Result: true}
 	c.ServeJSON()
 }
 
@@ -153,7 +174,7 @@ type Client struct {
 }
 
 // get方法
-// @router /client/:id [get]
+// @router /info/:id [get]
 func (c *Client) Get() {
 	type RespData struct {
 		*models.Client
@@ -213,7 +234,7 @@ func (c *Client) Get() {
 }
 
 // 删除方法
-// @router /client/:id [delete]
+// @router /del/:id [delete]
 func (c *Client) Delete() {
 	type RespData struct {
 		Result bool `json:"result"`
@@ -249,40 +270,35 @@ type ClientActive struct {
 }
 
 // put方法
-// @router /client/active [put]
+// @router /active/ [put]
 func (c *ClientActive) Put() {
-	type RespData struct {
+	type Response struct {
 		Result bool `json:"result"`
-	}
-	type Resp struct {
-		ResponseData RespData `json:"response_data"`
 	}
 
 	type Param struct {
-		RequestData struct {
-			Id     int  `json:"id"`
-			Active bool `json:"client_active"`
-		} `json:"request_data"`
+		Id     int  `json:"id"`
+		Active bool `json:"client_active"`
 	}
 	param := Param{}
 	err := json.Unmarshal(c.Ctx.Input.RequestBody, &param)
 	if err != nil {
 		c.Ctx.ResponseWriter.WriteHeader(400)
-		c.Data["json"] = Resp{ResponseData: RespData{Result: false}}
+		c.Data["json"] = Response{Result: false}
 		c.ServeJSON()
 		return
 	}
 
-	_, err = models.ActiveClient(param.RequestData.Id, param.RequestData.Active)
+	_, err = models.ActiveClient(param.Id, param.Active)
 	if err != nil {
 		fmt.Println(err)
 		c.Ctx.ResponseWriter.WriteHeader(200)
-		c.Data["json"] = Resp{ResponseData: RespData{Result: false}}
+		c.Data["json"] = Response{Result: false}
 		c.ServeJSON()
 		return
 	}
 
 	c.Ctx.ResponseWriter.WriteHeader(200)
-	c.Data["json"] = Resp{ResponseData: RespData{Result: true}}
+	c.Data["json"] = Response{Result: true}
 	c.ServeJSON()
 }

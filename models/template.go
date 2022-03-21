@@ -66,10 +66,26 @@ func DeleteTemplate(temp Templates) int64 {
 //######################
 //函数：查询一条数据
 //######################
-func GetOneTemplate(id int) Templates {
+func GetOneTemplateTid(id int) Templates {
 	var temp Templates
 	o := orm.NewOrm()
 	err := o.QueryTable("templates").Filter("id", id).One(&temp)
+	if err == orm.ErrMultiRows {
+		fmt.Printf("报错：找到的数据不是一条")
+	}
+	if err == orm.ErrNoRows {
+		fmt.Printf("报错：没有查询到Template数据")
+	}
+	return temp
+}
+
+//######################
+//函数：查询一条数据
+//######################
+func GetOneTemplateNid(id int) Templates {
+	var temp Templates
+	o := orm.NewOrm()
+	err := o.QueryTable("templates").Filter("namespace_id", id).One(&temp)
 	if err == orm.ErrMultiRows {
 		fmt.Printf("报错：找到的数据不是一条")
 	}

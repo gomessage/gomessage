@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-// GoMessage前后端交互api
+// 元数据接口
 type JsonControllers struct {
 	beego.Controller
 }
@@ -14,7 +14,7 @@ type JsonControllers struct {
 // @Description 劫持到过境数据
 // @Success 200 响应成功
 // @Failure 404 错误请求
-// @router /json [get]
+// @router /json/ [get]
 func (this *JsonControllers) Get() {
 	//返回值
 	this.Ctx.ResponseWriter.WriteHeader(200)

@@ -6,7 +6,7 @@ import (
 	beego "github.com/beego/beego/v2/server/web"
 )
 
-//控制器：命名空间管理
+// 命名空间接口
 type NamespaceControllers struct {
 	beego.Controller
 }
@@ -16,7 +16,7 @@ type NamespaceControllers struct {
 // @Param request_data body models.Namespaces true "Namespace对象"
 // @Success 200 响应成功
 // @Failure 404 错误请求
-// @router /namespace [get]
+// @router / [get]
 func (this *NamespaceControllers) GetAll() {
 	listNamespace, err := models.ListNamespace()
 	if err != nil {
@@ -33,7 +33,7 @@ func (this *NamespaceControllers) GetAll() {
 // @Param request_data body models.Namespaces true "Namespace对象"
 // @Success 200 响应成功
 // @Failure 404 错误请求
-// @router /namespace [post]
+// @router / [post]
 func (this *NamespaceControllers) Post() {
 	//request中的数据结构
 	type Param struct {
@@ -73,7 +73,7 @@ func (this *NamespaceControllers) Post() {
 // @Param request_data body models.Namespaces true "Namespace对象"
 // @Success 200 响应成功
 // @Failure 404 错误请求
-// @router /namespace [delete]
+// @router / [delete]
 func (this *NamespaceControllers) Delete() {
 	//request中的数据结构
 	type Param struct {
@@ -122,7 +122,7 @@ func (this *NamespaceControllers) Delete() {
 // @Param request_data body models.Namespaces true "Namespace对象"
 // @Success 200 响应成功
 // @Failure 404 错误请求
-// @router /namespace [put]
+// @router / [put]
 func (this *NamespaceControllers) Put() {
 	//request中的数据结构
 	type Param struct {

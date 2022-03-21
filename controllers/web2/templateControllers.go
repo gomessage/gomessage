@@ -6,7 +6,7 @@ import (
 	beego "github.com/beego/beego/v2/server/web"
 )
 
-//控制器：用户消息体的模板
+// 消息模板接口
 type TemplateControllers struct {
 	beego.Controller
 }
@@ -15,7 +15,7 @@ type TemplateControllers struct {
 // @Description 获取所有template
 // @Success 200 响应成功
 // @Failure 404 错误请求
-// @router /template [get]
+// @router / [get]
 func (this *TemplateControllers) GetAll() {
 	listAllTemplate, err := models.ListAllTemplate()
 	if err != nil {
@@ -31,13 +31,13 @@ func (this *TemplateControllers) GetAll() {
 // @Description 获取指定编号的模板信息
 // @Success 200 响应成功
 // @Failure 404 错误请求
-// @router /template/:namespace [get]
+// @router /:namespace [get]
 func (this *TemplateControllers) Get() {
 	//获取get请求中的参数
 	namespace := this.Ctx.Input.Param(":namespace")
 	ns := models.GetNamespaceParamName(namespace)
 	if ns != nil {
-		temp := models.GetOneTemplate(ns.Id)
+		temp := models.GetOneTemplateNid(ns.Id)
 		//返回值
 		this.Ctx.ResponseWriter.WriteHeader(200)
 		this.Data["json"] = temp
@@ -56,7 +56,7 @@ func (this *TemplateControllers) Get() {
 // @Description 添加用户模板
 // @Success 200 响应成功
 // @Failure 404 错误请求
-// @router /template [post]
+// @router / [post]
 func (this *TemplateControllers) Post() {
 	type Param struct {
 		RequestData struct {

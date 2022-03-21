@@ -23,6 +23,7 @@ build() {
     rm -rf ./*.log
     rm -rf ./*.tar.gz
     rm -rf ./GoMessage
+    rm -rf ./go_build_GoMessage
 
     #修改runmode参数，让编译后的应用程序运行在prod环境中
     gsed -i '/^runmode/c runmode = prod' ./conf/app.conf

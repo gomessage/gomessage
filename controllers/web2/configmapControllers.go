@@ -6,7 +6,7 @@ import (
 	beego "github.com/beego/beego/v2/server/web"
 )
 
-//控制器：用户变量功能
+//映射关系接口
 type MapControllers struct {
 	beego.Controller
 }
@@ -15,7 +15,7 @@ type MapControllers struct {
 // @Description 获取所有用户变量
 // @Success 200 响应成功
 // @Failure 404 错误请求
-// @router /map [get]
+// @router / [get]
 func (this *MapControllers) GetAll() {
 	listAllConfigMap, err := models.ListAllConfigMap()
 	if err != nil {
@@ -31,7 +31,7 @@ func (this *MapControllers) GetAll() {
 // @Description 获取指定namespace下的用户变量
 // @Success 200 响应成功
 // @Failure 404 错误请求
-// @router /map/:namespace [get]
+// @router /:namespace [get]
 func (this *MapControllers) Get() {
 	namespace := this.Ctx.Input.Param(":namespace")
 	mList := models.ListNsConfigMap(models.GetNamespaceParamName(namespace))
@@ -46,7 +46,7 @@ func (this *MapControllers) Get() {
 // @Param key_value_list body string false "存放用户变量的一个list"
 // @Success 200 {object} []models.Configmaps
 // @Failure 404 错误请求
-// @router /map [post]
+// @router / [post]
 func (this *MapControllers) Post() {
 	//解析request中的数据结构
 	type Param struct {

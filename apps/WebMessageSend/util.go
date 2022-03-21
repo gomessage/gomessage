@@ -45,7 +45,7 @@ func GetUserConfig() Config {
 
 	//获取Template相关的配置（这里拿到的是用户的模板骨架）
 	//templateObject := models.GetOneTemplate(models.GetNamespaceParamName("default"))
-	templateObject := models.GetOneTemplate(1)
+	templateObject := models.GetOneTemplateTid(1)
 	c.MessageTemplate = templateObject.MessageTemplate
 
 	//（这里拿到的是消息是否聚合）

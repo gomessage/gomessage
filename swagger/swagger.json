@@ -10,98 +10,50 @@
     },
     "basePath": "/v1",
     "paths": {
-        "/alertmanager/dingding/k8s": {
-            "post": {
-                "tags": [
-                    "alertmanager"
-                ],
-                "description": "推送数据到钉钉，数据来自于Alertmanager的webhook推送",
-                "operationId": "K8sControllers.推送数据",
-                "responses": {
-                    "200": {
-                        "description": "ok"
-                    }
-                }
-            }
-        },
-        "/alertmanager/dingding/linux": {
-            "post": {
-                "tags": [
-                    "alertmanager"
-                ],
-                "description": "推送数据到钉钉，数据来自于Alertmanager的webhook推送",
-                "operationId": "LinuxControllers.推送数据",
-                "responses": {
-                    "200": {
-                        "description": "ok"
-                    }
-                }
-            }
-        },
-        "/test/": {
+        "/client/": {
             "get": {
                 "tags": [
-                    "test"
+                    "client"
                 ]
             },
             "post": {
                 "tags": [
-                    "test"
+                    "client"
                 ]
             }
         },
-        "/web/client": {
-            "get": {
-                "tags": [
-                    "web"
-                ]
-            },
-            "post": {
-                "tags": [
-                    "web"
-                ]
-            }
-        },
-        "/web/client/active": {
+        "/client/active/": {
             "put": {
                 "tags": [
-                    "web"
+                    "client"
                 ]
             }
         },
-        "/web/client/{id}": {
-            "get": {
-                "tags": [
-                    "web"
-                ]
-            },
+        "/client/del/{id}": {
             "delete": {
                 "tags": [
-                    "web"
+                    "client"
                 ]
             }
         },
-        "/web/json": {
+        "/client/info/{id}": {
             "get": {
                 "tags": [
-                    "web"
-                ],
-                "description": "劫持到过境数据",
-                "operationId": "JsonControllers./v1/web/json",
-                "responses": {
-                    "200": {
-                        "description": "响应成功"
-                    },
-                    "404": {
-                        "description": "错误请求"
-                    }
-                }
+                    "client"
+                ]
             }
         },
-        "/web/map": {
+        "/client/ns/{namespace}": {
             "get": {
                 "tags": [
-                    "web"
+                    "client"
+                ]
+            }
+        },
+        "/map/": {
+            "get": {
+                "tags": [
+                    "map"
                 ],
                 "description": "获取所有用户变量",
                 "operationId": "MapControllers./v1/web/map",
@@ -116,7 +68,7 @@
             },
             "post": {
                 "tags": [
-                    "web"
+                    "map"
                 ],
                 "description": "创建一组新的用户变量（同一Namespace下的老变量会被删掉，一个Namespace下永远只有一组用户变量）",
                 "operationId": "MapControllers./v1/web/map",
@@ -147,10 +99,10 @@
                 }
             }
         },
-        "/web/map/{namespace}": {
+        "/map/{namespace}": {
             "get": {
                 "tags": [
-                    "web"
+                    "map"
                 ],
                 "description": "获取指定namespace下的用户变量",
                 "operationId": "MapControllers./v1/web/map",
@@ -164,10 +116,27 @@
                 }
             }
         },
-        "/web/namespace": {
+        "/metadata/json/": {
             "get": {
                 "tags": [
-                    "web"
+                    "metadata"
+                ],
+                "description": "劫持到过境数据",
+                "operationId": "JsonControllers./v1/web/json",
+                "responses": {
+                    "200": {
+                        "description": "响应成功"
+                    },
+                    "404": {
+                        "description": "错误请求"
+                    }
+                }
+            }
+        },
+        "/namespace/": {
+            "get": {
+                "tags": [
+                    "namespace"
                 ],
                 "description": "获取所有命名空间",
                 "operationId": "NamespaceControllers./v1/web/namespace",
@@ -193,7 +162,7 @@
             },
             "put": {
                 "tags": [
-                    "web"
+                    "namespace"
                 ],
                 "description": "修改一个命名空间",
                 "operationId": "NamespaceControllers./v1/web/namespace",
@@ -219,7 +188,7 @@
             },
             "post": {
                 "tags": [
-                    "web"
+                    "namespace"
                 ],
                 "description": "添加一个命名空间",
                 "operationId": "NamespaceControllers./v1/web/namespace",
@@ -245,7 +214,7 @@
             },
             "delete": {
                 "tags": [
-                    "web"
+                    "namespace"
                 ],
                 "description": "删除一个命名空间",
                 "operationId": "NamespaceControllers./v1/web/namespace",
@@ -270,10 +239,10 @@
                 }
             }
         },
-        "/web/template": {
+        "/template/": {
             "get": {
                 "tags": [
-                    "web"
+                    "template"
                 ],
                 "description": "获取所有template",
                 "operationId": "TemplateControllers./v1/web/template",
@@ -288,7 +257,7 @@
             },
             "post": {
                 "tags": [
-                    "web"
+                    "template"
                 ],
                 "description": "添加用户模板",
                 "operationId": "TemplateControllers./v1/web/template",
@@ -302,10 +271,10 @@
                 }
             }
         },
-        "/web/template/{namespace}": {
+        "/template/{namespace}": {
             "get": {
                 "tags": [
-                    "web"
+                    "template"
                 ],
                 "description": "获取指定编号的模板信息",
                 "operationId": "TemplateControllers./v1/web/template",
@@ -360,40 +329,32 @@
     },
     "tags": [
         {
-            "name": "alertmanager",
-            "description": "Prometheus相关api\n"
+            "name": "namespace",
+            "description": "命名空间接口\n"
         },
         {
-            "name": "test",
-            "description": "测试api\n"
+            "name": "map",
+            "description": "映射关系接口\n"
         },
         {
-            "name": "web",
-            "description": "GoMessage前后端交互api\n"
+            "name": "template",
+            "description": "消息模板接口\n"
         },
         {
-            "name": "web",
-            "description": "控制器：用户变量功能\n"
+            "name": "client",
+            "description": "客户端接口\n"
         },
         {
-            "name": "web",
-            "description": "控制器：用户消息体的模板\n"
-        },
-        {
-            "name": "web",
-            "description": "client api 相关的控制器\n"
-        },
-        {
-            "name": "web",
+            "name": "client",
             "description": "单个client客户端操作的控制器\n"
         },
         {
-            "name": "web",
+            "name": "client",
             "description": "激活状态的控制器\n"
         },
         {
-            "name": "web",
-            "description": "控制器：命名空间管理\n"
+            "name": "metadata",
+            "description": "元数据接口\n"
         }
     ]
 }
