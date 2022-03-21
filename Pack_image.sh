@@ -2,13 +2,13 @@
 
 VERSION="1.0.9"
 OUTPUT_PATH="./build/${VERSION}/"
-GOOS_LIST=(darwin linux windows)
+GOOS_LIST=(linux)
 GOARCH_LIST=(amd64)
 
 build() {
 
     #创建工作目录
-    mkdir -p ${OUTPUT_PATH}${baoName}
+    mkdir -p ${OUTPUT_PATH}"${baoName}"
 
     if [[ ${GOOS} == "linux" ]]; then
 
@@ -25,11 +25,11 @@ build() {
                 docker build -t taycc/gomessage:${VERSION} -f ./deploy/Dockerfile "${OUTPUT_PATH}${baoName}/"
 
                 #权限验证
-                docker login --username=taycc
+                #docker login --username=taycc
 
                 #上传镜像
-                docker push taycc/gomessage:${VERSION}
-                docker push taycc/gomessage:latest
+                #docker push taycc/gomessage:${VERSION}
+                #docker push taycc/gomessage:latest
             fi
         else
             echo "Docker服务未运行，因此跳过编译docker镜像~"
