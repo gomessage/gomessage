@@ -100,7 +100,7 @@ func UpdateNamespace(oleNs *Namespaces, newNs *Namespaces) (int64, error) {
 func ListNamespace() ([]*Namespaces, error) {
 	var list []*Namespaces
 	o := orm.NewOrm()
-	_, err := o.QueryTable(&Namespaces{}).OrderBy("-id").All(&list)
+	_, err := o.QueryTable(&Namespaces{}).OrderBy("id").All(&list)
 	return list, err
 }
 

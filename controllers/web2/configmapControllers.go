@@ -70,10 +70,12 @@ func (this *MapControllers) Post() {
 		var ResponseData []models.Configmaps
 		//批量写入新的配置
 		for _, oneKeyValue := range param.KeyValueList {
-			key := oneKeyValue["key"]
-			value := oneKeyValue["value"]
-			result := models.ReadOrCreateMap(key, value, namespace)
-			ResponseData = append(ResponseData, result)
+			for kkk, vvv := range oneKeyValue {
+				//key := oneKeyValue["key"]
+				//value := oneKeyValue["value"]
+				result := models.ReadOrCreateMap(kkk, vvv, namespace)
+				ResponseData = append(ResponseData, result)
+			}
 		}
 		//返回值
 		this.Ctx.ResponseWriter.WriteHeader(200)
@@ -81,7 +83,7 @@ func (this *MapControllers) Post() {
 		this.ServeJSON()
 	} else {
 		//返回值
-		this.Ctx.ResponseWriter.WriteHeader(400)
+		this.Ctx.ResponseWriter.WriteHeader(402)
 		this.Data["json"] = "Namespace不存在"
 		this.ServeJSON()
 		return
