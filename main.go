@@ -50,13 +50,10 @@ func main() {
 
 	//创建默认的Namespace
 	models.CreateDefaultNamespace()
-	models.AddNamespace(&models.Namespaces{Name: "test2"})
-	models.AddNamespace(&models.Namespaces{Name: "test3"})
-	models.AddNamespace(&models.Namespaces{Name: "test4"})
-	models.AddNamespace(&models.Namespaces{Name: "test5"})
-
-	//删除指定的Namespace
-	//models.DelNamespace("test3")
+	models.AddNamespace(&models.Namespaces{Name: "test2", Description: "示例通道test2，您可以随时删除该通道..."})
+	models.AddNamespace(&models.Namespaces{Name: "test3", Description: "示例通道test3，您可以随时删除该通道..."})
+	models.AddNamespace(&models.Namespaces{Name: "test4", Description: "示例通道test4，您可以随时删除该通道..."})
+	models.AddNamespace(&models.Namespaces{Name: "test5", Description: "示例通道test5，您可以随时删除该通道..."})
 
 	//swagger的生效范围
 	//if beego.BConfig.RunMode == "dev" || beego.BConfig.RunMode == "test" || beego.BConfig.RunMode == "prod" {
@@ -64,5 +61,6 @@ func main() {
 		beego.BConfig.WebConfig.DirectoryIndex = true
 		beego.BConfig.WebConfig.StaticDir["/docs"] = "swagger"
 	}
+
 	beego.Run()
 }

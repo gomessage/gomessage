@@ -15,53 +15,46 @@ import (
 )
 
 func init() {
-	//ns2 := beego.NewNamespace("/test",
-	//	//与web界面的api没有任何关系，唯一有关系的可能是web2里有些函数引用了老的结构体
-	//	beego.NSNamespace("/alertmanager",
-	//		beego.NSInclude(&alertmanager.K8sControllers{}),
-	//		beego.NSInclude(&alertmanager.LinuxControllers{}),
-	//	),
-	//
-	//	//测试接口
-	//	beego.NSNamespace("/test",
-	//		beego.NSInclude(&test.TestController{}),
-	//	),
-	//)
-
-	//首页~前端静态页面
+	//首页
 	beego.Router("/", &controllers.IndexController{})
 
-	//单管道~消息入口
-	beego.Router("/go/message", &web2.ApiControllers{})
-
 	//多管道~消息入口（测试版）
-	beego.Router("/gomessage/:label:string", &web2.PipelineControllers{})
+	beego.Router("/gomessage", &web2.PipelineControllers{})
+	beego.Router("/gomessage/:namespace:string", &web2.PipelineControllers{})
 
-	//命名空间（v1版本的api）
+	//接口：v1版本的api
 	ns := beego.NewNamespace("/v1",
+		//一个命名空间(Namespace)下的多个模块拼装在一起，才能形成一个"管道（或消息通道）"的概念~
+		//前端对用户传达"管道"的概念或UI名称，是为了便于用户从"使用层面"快速的理解GoMessage"，但是后端开发过程中要意识到"命名空间"存在的重要意义~
+		//未来的某段时间内，如果您也参与进来为GoMessage贡献代码，请尝试着把Namespace视为一个重要的"逻辑平面"或某种"主键"；
+		//从数据库表设计、到抽象方法的封装、到业务逻辑的编写、到接口的设计，每一层都把Namespace视作一个整体，从而完整的构建出了GoMessage的"多通道"处理模型~
 
+		//命名空间管理路由
 		beego.NSNamespace("/namespace",
 			beego.NSInclude(&web2.NamespaceControllers{}),
 		),
+		//用户变量映射路由
 		beego.NSNamespace("/map",
 			beego.NSInclude(&web2.MapControllers{}),
 		),
+		//模板编辑路由
 		beego.NSNamespace("/template",
 			beego.NSInclude(&web2.TemplateControllers{}),
 		),
+		//客户端操作路由
 		beego.NSNamespace("/client",
 			beego.NSInclude(&web2.Clients{}),
 			beego.NSInclude(&web2.Client{}),
 			beego.NSInclude(&web2.ClientActive{}),
 		),
-		//GoMessage业务的api
+		//数据劫持路由
 		beego.NSNamespace("/metadata",
 			beego.NSInclude(&web2.JsonControllers{}),
-
-			//beego.NSRouter("/client", &web2.Clients{}),
-			//beego.NSRouter("/client/:id:int", &web2.Client{}),
-			//beego.NSRouter("/client/active", &web2.ClientActive{}),
 		),
+		//测试接口
+		//beego.NSNamespace("/test",
+		//	beego.NSInclude(&test.TestController{}),
+		//),
 	)
 
 	//注册命名空间

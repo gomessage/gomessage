@@ -2,7 +2,7 @@ package controllers
 
 import beego "github.com/beego/beego/v2/server/web"
 
-//首页
+//首页控制器
 type IndexController struct {
 	beego.Controller
 }

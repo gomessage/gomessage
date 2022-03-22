@@ -73,12 +73,12 @@ paths:
           description: 响应成功
         "404":
           description: 错误请求
-  /metadata/json/:
+  /metadata/json/{namespace}:
     get:
       tags:
       - metadata
       description: 劫持到过境数据
-      operationId: JsonControllers./v1/web/json
+      operationId: JsonControllers./v1/metadata/json/:namespace
       responses:
         "200":
           description: 响应成功
@@ -232,4 +232,4 @@ tags:
     激活状态的控制器
 - name: metadata
   description: |
-    元数据接口
+    劫持数据的接口

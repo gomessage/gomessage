@@ -1,4 +1,4 @@
-package WebMessageSend
+package piplineUtil
 
 import (
 	"encoding/json"

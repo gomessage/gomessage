@@ -1,4 +1,4 @@
-package WebMessageSend
+package piplineUtil
 
 import (
 	"GoMessage/models"
@@ -20,21 +20,21 @@ import (
 //结构体：存放用户配置的实例化
 //========================
 type Config struct {
-	ConfigMap       []map[string]string
-	MessageTemplate string
-	MessageMerge    bool
-	ActiveClient    []models.Client
+	ConfigMap       []map[string]string //用户变量
+	MessageTemplate string              //消息模板骨架
+	MessageMerge    bool                //是否聚合发送
+	ActiveClient    []models.Client     //客户端是否是激活的
 }
 
 //========================
 //获取到用户在图形界面上设置的各种参数和变量
 //========================
-func GetUserConfig() Config {
+func GetUserConfig(ns *models.Namespaces) Config {
 	c := Config{}
 
 	//获取ConfigMap相关的配置（用户的变量映射）
 	var tmpList []map[string]string
-	for _, value := range models.ListNsConfigMap(models.GetNamespaceParamName("default")) {
+	for _, value := range models.ListNsConfigMap(ns) {
 		tmpMap := make(map[string]string)
 		k := value.Key
 		v := value.Value
@@ -44,15 +44,14 @@ func GetUserConfig() Config {
 	c.ConfigMap = tmpList
 
 	//获取Template相关的配置（这里拿到的是用户的模板骨架）
-	//templateObject := models.GetOneTemplate(models.GetNamespaceParamName("default"))
-	templateObject := models.GetOneTemplateTid(1)
+	templateObject := models.GetOneTemplateNsId(ns.Id)
 	c.MessageTemplate = templateObject.MessageTemplate
 
 	//（这里拿到的是消息是否聚合）
 	c.MessageMerge = templateObject.MessageMerge
 
 	//获取客户端相关（只获取激活的客户端）
-	c.ActiveClient = models.GetClentActive()
+	c.ActiveClient = models.GetClentActive(ns.Id)
 	return c
 }
 
@@ -216,7 +215,7 @@ func MessageRendersDingtalk(keyword string, message string) interface{} {
 }
 
 //========================
-//模板渲染（这仅仅只是把模板中内嵌的变量渲染成消息实体）
+//模板渲染（这仅仅只是把模板中内嵌的变量渲染成消息体）
 //========================
 func TemplateRenders(thisTemplate string, dataList []map[string]string) []string {
 

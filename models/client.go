@@ -201,10 +201,10 @@ func ActiveClient(id int, active bool) (int64, error) {
 	return n, err
 }
 
-func GetClentActive() []Client {
+func GetClentActive(NamespaceId int) []Client {
 	var list []Client
 	o := orm.NewOrm()
-	_, err := o.QueryTable(&Client{}).Filter("active", "1").All(&list)
+	_, err := o.QueryTable(&Client{}).Filter("namespace_id", NamespaceId).Filter("active", "1").All(&list)
 	if err != nil {
 		return nil
 	}

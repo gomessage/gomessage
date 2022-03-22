@@ -25,7 +25,7 @@ func CreateDefaultNamespace() {
 	//实例化一个默认的namespace对象，然后在开局的main函数中创造出来
 	defaultNamespace := Namespaces{
 		Name:        "default",
-		Description: "Default Namespace",
+		Description: "默认消息转发通道，由GoMessage自动生成；除此之外您还可以创建其它新的通道，来应对不同的转发场景。",
 	}
 	//创建一个Namespace当做系统的default命名空间
 	_, err := AddNamespace(&defaultNamespace)

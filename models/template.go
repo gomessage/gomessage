@@ -66,7 +66,7 @@ func DeleteTemplate(temp Templates) int64 {
 //######################
 //函数：查询一条数据
 //######################
-func GetOneTemplateTid(id int) Templates {
+func GetOneTemplateId(id int) Templates {
 	var temp Templates
 	o := orm.NewOrm()
 	err := o.QueryTable("templates").Filter("id", id).One(&temp)
@@ -82,7 +82,7 @@ func GetOneTemplateTid(id int) Templates {
 //######################
 //函数：查询一条数据
 //######################
-func GetOneTemplateNid(id int) Templates {
+func GetOneTemplateNsId(id int) Templates {
 	var temp Templates
 	o := orm.NewOrm()
 	err := o.QueryTable("templates").Filter("namespace_id", id).One(&temp)

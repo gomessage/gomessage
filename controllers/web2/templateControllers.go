@@ -37,7 +37,7 @@ func (this *TemplateControllers) Get() {
 	namespace := this.Ctx.Input.Param(":namespace")
 	ns := models.GetNamespaceParamName(namespace)
 	if ns != nil {
-		temp := models.GetOneTemplateNid(ns.Id)
+		temp := models.GetOneTemplateNsId(ns.Id)
 		//返回值
 		this.Ctx.ResponseWriter.WriteHeader(200)
 		this.Data["json"] = temp

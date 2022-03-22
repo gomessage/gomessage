@@ -116,13 +116,13 @@
                 }
             }
         },
-        "/metadata/json/": {
+        "/metadata/json/{namespace}": {
             "get": {
                 "tags": [
                     "metadata"
                 ],
                 "description": "劫持到过境数据",
-                "operationId": "JsonControllers./v1/web/json",
+                "operationId": "JsonControllers./v1/metadata/json/:namespace",
                 "responses": {
                     "200": {
                         "description": "响应成功"
@@ -354,7 +354,7 @@
         },
         {
             "name": "metadata",
-            "description": "元数据接口\n"
+            "description": "劫持数据的接口\n"
         }
     ]
 }
