@@ -16,7 +16,7 @@
 #
 #############################################################################
 
-FROM golang:1.18.0-alpine
+FROM golang:1.17.7-alpine
 
 RUN mkdir -p /opt/gomessage && rm -rf /opt/gomessage/*
 
