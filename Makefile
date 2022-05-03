@@ -27,9 +27,15 @@ start:
 	gsed -i '/^runmode/c runmode = prod' ./conf/app.conf
 
 
+end:
+	gsed -i '/^runmode/c runmode = dev' ./conf/app.conf
+
+
 build-linux:
 	mkdir -p ${OUTPUT_PATH}${baoName}/
-	GOARCH=amd64 GOOS=linux CGO_ENABLED=1 \
+	GOARCH=amd64 \
+	GOOS=linux \
+	CGO_ENABLED=1 \
 	CGO_LDFLAGS="-static" \
 	CC=x86_64-linux-musl-gcc \
 	CXX=x86_64-linux-musl-g++ \
@@ -41,7 +47,9 @@ build-linux:
 
 build-windows:
 	mkdir -p ${OUTPUT_PATH}${baoName}/
-	GOARCH=amd64 GOOS=windows CGO_ENABLED=1  \
+	GOARCH=amd64 \
+	GOOS=windows \
+	CGO_ENABLED=1 \
 	CGO_CFLAGS="-g -O2 -Wno-return-local-addr" \
 	CC=x86_64-w64-mingw32-gcc \
 	CXX=x86_64-w64-mingw32-g++ \
@@ -54,10 +62,6 @@ build-mac:
 	GOARCH=amd64 GOOS=darwin CGO_ENABLED=1 \
 	bee pack -a gomessage -o "${OUTPUT_PATH}${baoName}/" -exr ${EXRS}
 	tar -zcvf ${OUTPUT_PATH}${baoName}.tar.gz -C ${OUTPUT_PATH} ${baoName}
-
-
-end:
-	gsed -i '/^runmode/c runmode = dev' ./conf/app.conf
 
 
 docker:
