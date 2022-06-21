@@ -37,6 +37,7 @@ build-linux:
 	CGO_ENABLED=1 \
 	bee pack -a gomessage -o "${OUTPUT_PATH}" -exr ${EXRS}
 
+
 build-linux-mac:
 	mkdir -p ${OUTPUT_PATH}
 	GOARCH=amd64 \
@@ -46,3 +47,8 @@ build-linux-mac:
 	CC=x86_64-linux-musl-gcc \
 	CXX=x86_64-linux-musl-g++ \
 	bee pack -a gomessage -o "${OUTPUT_PATH}" -exr ${EXRS}
+
+
+docker:
+	docker build -t cicd:gomessage-${BUILD_ID} .
+    ./imageSync -i cicd:gomessage-${BUILD_ID}
