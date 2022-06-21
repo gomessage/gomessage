@@ -9,8 +9,8 @@ build-windows: baoName := gomessage-${VERSION}-windows-amd64
 
 
 
-.PHONY: clean start build-linux build-linux-mac end
-all: clean start build-linux end
+.PHONY: clean start build-linux build-linux-mac end docker
+all: clean start build-linux end docker
 
 
 clean:
