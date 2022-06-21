@@ -36,9 +36,6 @@ build-linux:
 	GOOS=linux \
 	CGO_ENABLED=1 \
 	bee pack -a gomessage -o "${OUTPUT_PATH}" -exr ${EXRS}
-	cp ./deploy/install.sh ${OUTPUT_PATH}${baoName}/
-	cp ./deploy/uninstall.sh ${OUTPUT_PATH}${baoName}/
-	tar -zcvf ${OUTPUT_PATH}${baoName}.tar.gz -C ${OUTPUT_PATH} ${baoName}
 
 
 build-windows:
