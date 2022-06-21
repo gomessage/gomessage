@@ -50,5 +50,5 @@ build-linux-mac:
 
 
 docker:
-	docker build -t cicd:gomessage-${GIT_COMMIT}-${BUILD_TAG} .
-    ./imageSync -i cicd:gomessage-${GIT_COMMIT}-${BUILD_TAG}
+	docker build -t cicd:gomessage-${GIT_COMMIT}-${BUILD_TAG} . \
+    && ${WORKSPACE}/imageSync -i cicd:gomessage-${GIT_COMMIT}-${BUILD_TAG}
