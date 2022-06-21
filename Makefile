@@ -58,5 +58,5 @@ build-mac:
 
 
 docker:
-	docker build -t harbor-shkbs-office.zmops.cc/cicd/images:gomessage -f ./Dockerfile "${OUTPUT_PATH}"
-	imageSync -i harbor-shkbs-office.zmops.cc/cicd/images:gomessage
+	docker build -t cicd:gomessage -f ./Dockerfile "${OUTPUT_PATH}"
+	imageSync -i cicd:gomessage
