@@ -1,5 +1,4 @@
-VERSION := 1.0.0
-OUTPUT_PATH := ./build/${VERSION}/
+OUTPUT_PATH := ./build/
 EXRS := '^build|^bak|^docs|^swagger|^deploy|^LICENSE|.sh$$|.sqlite3$$|.bak$$|.md$$|prof$$'
 
 build-mac: baoName := gomessage-${VERSION}-mac-amd64
@@ -32,11 +31,11 @@ end:
 
 
 build-linux:
-	mkdir -p ${OUTPUT_PATH}${baoName}/
+	mkdir -p ${OUTPUT_PATH}
 	GOARCH=amd64 \
 	GOOS=linux \
 	CGO_ENABLED=1 \
-	bee pack -a gomessage -o "${OUTPUT_PATH}${baoName}/" -exr ${EXRS}
+	bee pack -a gomessage -o "${OUTPUT_PATH}" -exr ${EXRS}
 	cp ./deploy/install.sh ${OUTPUT_PATH}${baoName}/
 	cp ./deploy/uninstall.sh ${OUTPUT_PATH}${baoName}/
 	tar -zcvf ${OUTPUT_PATH}${baoName}.tar.gz -C ${OUTPUT_PATH} ${baoName}
