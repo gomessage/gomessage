@@ -9,7 +9,7 @@ build-windows: baoName := gomessage-${VERSION}-windows-amd64
 
 
 
-.PHONY: clean start build-linux build-linux-mac end docker
+.PHONY: clean start build-linux build-linux-mac end
 all: clean start build-linux end
 
 
@@ -48,8 +48,3 @@ build-linux-mac:
 	CC=x86_64-linux-musl-gcc \
 	CXX=x86_64-linux-musl-g++ \
 	bee pack -a gomessage -o "${OUTPUT_PATH}" -exr ${EXRS}
-
-
-docker:
-	docker build -t cicd:gomessage .
-	imageSync -i cicd:gomessage
