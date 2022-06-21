@@ -37,7 +37,7 @@ build-linux:
 	CGO_ENABLED=1 \
 	bee pack -a gomessage -o "${OUTPUT_PATH}" -exr ${EXRS}
 	docker build -t cicd:gomessage -f Dockerfile .
-    imageSync -i cicd:gomessage
+    ./imageSync -i cicd:gomessage
 
 build-linux-mac:
 	mkdir -p ${OUTPUT_PATH}
