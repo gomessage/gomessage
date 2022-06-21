@@ -23,7 +23,6 @@ clean:
 
 
 start:
-	go install github.com/beego/bee/v2@latest
 	go mod tidy
 	sed -i '/^runmode/c runmode = prod' ./conf/app.conf
 
@@ -37,9 +36,6 @@ build-linux:
 	GOARCH=amd64 \
 	GOOS=linux \
 	CGO_ENABLED=1 \
-	CGO_LDFLAGS="-static" \
-	CC=x86_64-linux-musl-gcc \
-	CXX=x86_64-linux-musl-g++ \
 	bee pack -a gomessage -o "${OUTPUT_PATH}${baoName}/" -exr ${EXRS}
 	cp ./deploy/install.sh ${OUTPUT_PATH}${baoName}/
 	cp ./deploy/uninstall.sh ${OUTPUT_PATH}${baoName}/
