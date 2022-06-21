@@ -22,7 +22,7 @@ RUN mkdir -p /opt/gomessage && rm -rf /opt/gomessage/*
 
 WORKDIR /opt/gomessage
 
-ADD gomessage.tar.gz /opt/gomessage/
+ADD ./build/gomessage.tar.gz /opt/gomessage
 
 RUN ls -alh \
     && chmod +x /opt/gomessage/gomessage
