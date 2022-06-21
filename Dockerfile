@@ -24,6 +24,8 @@ WORKDIR /opt/gomessage
 
 ADD ./gomessage.tar.gz /opt/gomessage/
 
+RUN chmod +x /opt/gomessage/gomessage
+
 EXPOSE 7077
 
 ENTRYPOINT ["/opt/gomessage/gomessage"]
