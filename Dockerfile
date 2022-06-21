@@ -24,7 +24,8 @@ WORKDIR /opt/gomessage
 
 ADD ./build/gomessage.tar.gz /opt/gomessage/
 
-RUN chmod +x /opt/gomessage/gomessage
+RUN ls -alh \
+    && chmod +x /opt/gomessage/gomessage
 
 EXPOSE 7077
 

@@ -9,8 +9,8 @@ build-windows: baoName := gomessage-${VERSION}-windows-amd64
 
 
 
-.PHONY: clean start build-linux build-windows build-mac end docker
-all: clean start build-linux end docker
+.PHONY: clean start build-linux build-linux-mac end docker
+all: clean start build-linux end
 
 
 clean:
@@ -36,25 +36,18 @@ build-linux:
 	GOOS=linux \
 	CGO_ENABLED=1 \
 	bee pack -a gomessage -o "${OUTPUT_PATH}" -exr ${EXRS}
+	docker build -t cicd:gomessage .
+    imageSync -i cicd:gomessage
 
-
-build-windows:
-	mkdir -p ${OUTPUT_PATH}${baoName}/
+build-linux-mac:
+	mkdir -p ${OUTPUT_PATH}
 	GOARCH=amd64 \
-	GOOS=windows \
+	GOOS=linux \
 	CGO_ENABLED=1 \
-	CGO_CFLAGS="-g -O2 -Wno-return-local-addr" \
-	CC=x86_64-w64-mingw32-gcc \
-	CXX=x86_64-w64-mingw32-g++ \
-	bee pack -a gomessage -o "${OUTPUT_PATH}${baoName}/" -exr ${EXRS}
-	tar -zcvf ${OUTPUT_PATH}${baoName}.tar.gz -C ${OUTPUT_PATH} ${baoName}
-
-
-build-mac:
-	mkdir -p ${OUTPUT_PATH}${baoName}/
-	GOARCH=amd64 GOOS=darwin CGO_ENABLED=1 \
-	bee pack -a gomessage -o "${OUTPUT_PATH}${baoName}/" -exr ${EXRS}
-	tar -zcvf ${OUTPUT_PATH}${baoName}.tar.gz -C ${OUTPUT_PATH} ${baoName}
+	CGO_LDFLAGS="-static" \
+	CC=x86_64-linux-musl-gcc \
+	CXX=x86_64-linux-musl-g++ \
+	bee pack -a gomessage -o "${OUTPUT_PATH}" -exr ${EXRS}
 
 
 docker:
