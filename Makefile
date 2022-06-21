@@ -1,5 +1,5 @@
 OUTPUT_PATH := ./build/
-EXRS := '^build|^bak|^docs|^swagger|^deploy|^LICENSE|.sh$$|.sqlite3$$|.bak$$|.md$$|prof$$'
+EXRS := '^build|^bak|^docs|^swagger|^deploy|^LICENSE|^goo|^Makefile|.sh$$|.sqlite3$$|.bak$$|.md$$|prof$$'
 
 build-mac: baoName := gomessage-${VERSION}-mac-amd64
 build-linux: baoName := gomessage-${VERSION}-linux-amd64
