@@ -35,8 +35,7 @@ build-linux:
 	GOARCH=amd64 \
 	GOOS=linux \
 	CGO_ENABLED=1 \
-	go build -o "${OUTPUT_PATH}/gomessage"
-	#bee pack -a gomessage -o "${OUTPUT_PATH}" -exr ${EXRS}
+	bee pack -a gomessage -o "${OUTPUT_PATH}" -exr ${EXRS}
 
 
 build-windows:
