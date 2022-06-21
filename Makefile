@@ -58,5 +58,5 @@ build-mac:
 
 
 docker:
-	docker build -t cicd:gomessage -f Dockerfile ./build/
+	docker build -t cicd:gomessage .
 	imageSync -i cicd:gomessage
