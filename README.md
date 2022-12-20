@@ -57,7 +57,7 @@ docker run -d \
 
 ### `Linux服务器：`
 
-- [Linux环境下的安装](./docs/install.md)
+- [Linux环境下的安装](./assets/wiki/install.md)
 
 
 
@@ -67,7 +67,7 @@ docker run -d \
 
 
 ### `Mac本地电脑：`
-- [Mac环境下的安装](./docs/install_mac.md)
+- [Mac环境下的安装](./assets/wiki/install_mac.md)
 
 
 <br><br>
