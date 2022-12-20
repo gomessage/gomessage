@@ -1,0 +1,81 @@
+<template>
+    <el-menu class="el-menu-demo" :default-active="activeIndex2" mode="horizontal" @select="handleSelect"
+             background-color="#303133" text-color="#fff" active-text-color="#ffd04b" collapse-transition=true>
+
+        <!--Header左侧的"Logo"层-->
+        <el-menu-item>
+            <img src="../assets/logo.svg" height="90%">
+            &nbsp;&nbsp;
+            <span id="nav-logo-txt">GoMessage · 报警转发器</span>
+        </el-menu-item>
+
+        <!--Header右侧的"文字和按钮"层-->
+        <el-row id="aaa" type="flex" justify="end">
+
+            <!-- 按钮 -->
+            <router-link to="/">
+                <el-menu-item index="1">快速开始</el-menu-item>
+            </router-link>
+
+            <!-- 按钮 -->
+            <router-link to="/request_data">
+                <el-menu-item index="33">RequestData</el-menu-item>
+            </router-link>
+
+
+            <!-- 按钮 -->
+            <router-link to="/data_template">
+                <el-menu-item index="37">消息模板</el-menu-item>
+            </router-link>
+
+            <!-- 按钮 -->
+            <router-link to="/data_client">
+                <el-menu-item index="4">客户端配置</el-menu-item>
+            </router-link>
+
+            <!-- 按钮2 -->
+            <!--            <el-submenu index="2">-->
+            <!--                <template slot="title">全局设置</template>-->
+            <!--                <el-menu-item index="2-1">选项1</el-menu-item>-->
+            <!--                <el-menu-item index="2-2">选项2</el-menu-item>-->
+            <!--                <el-menu-item index="2-3">选项3</el-menu-item>-->
+            <!--                <el-submenu index="2-4">-->
+            <!--                    <template slot="title">选项4</template>-->
+            <!--                    <el-menu-item index="2-4-1">选项1</el-menu-item>-->
+            <!--                    <el-menu-item index="2-4-2">选项2</el-menu-item>-->
+            <!--                    <el-menu-item index="2-4-3">选项3</el-menu-item>-->
+            <!--                </el-submenu>-->
+            <!--            </el-submenu>-->
+
+            <!-- 按钮3 -->
+            <!--            <el-menu-item index="3" disabled>监控查看</el-menu-item>-->
+
+
+        </el-row>
+        <!--Header右侧的"文字和按钮"层-->
+
+    </el-menu>
+</template>
+
+<script>
+export default {
+    name: "NavHeader",
+    data() {
+        return {
+            activeIndex: '1',
+            activeIndex2: '1'
+        };
+    },
+    methods: {
+        handleSelect(key, keyPath) {
+            console.log(key, keyPath);
+        }
+    }
+}
+</script>
+
+<style scoped>
+#nav-logo-txt {
+    font-size: 15px;
+}
+</style>

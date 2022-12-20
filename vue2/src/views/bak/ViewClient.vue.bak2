@@ -1,0 +1,246 @@
+<template>
+    <el-row style="margin-top: 20px;margin-bottom: 20px;">
+        <el-col span="16" offset="4">
+            <CDrawer></CDrawer>
+            <CDrawerOneDataInfo v-bind:oneClientInfo="oneClientInfo" v-bind:visibleStatus="visibleStatus" v-bind:thisClose="thisClose"></CDrawerOneDataInfo>
+            <el-card style="box-shadow: #ccc 0px 10px 10px;">
+                <div slot="header" class="clearfix">
+                    <span style="padding-left: 50px">客户端列表</span>
+                    <el-button style="float: right; padding: 3px 0" type="text" v-on:click="pullClientData">拉取更新</el-button>
+                </div>
+                <!-- ------------------------------------------------------- -->
+
+                <!--Table表格-->
+                <el-table
+                    style="width: 100%"
+                    :data="clientList"
+                    :border="true"
+                    :stripe="true"
+                    :header-cell-style="{background:'#2f2f35',color:'#fff'}"
+                    key="rowData"
+                >
+                    <el-table-column prop="client_name" label="客户端名称"></el-table-column>
+                    <el-table-column prop="client_description" label="客户端描述"></el-table-column>
+                    <el-table-column prop="client_type" label="客户端类型"></el-table-column>
+                    <el-table-column prop="is_active" label="是否激活">
+                        <template slot-scope="scope">
+                            <el-checkbox v-model="scope.row.is_active">激活</el-checkbox>
+                        </template>
+                    </el-table-column>
+                    <el-table-column fixed="right" label="操作" width="100">
+                        <template slot-scope="scope">
+                            <el-button @click.native.prevent="getRowInfo(scope.$index, clientList)" type="text" size="small">详情</el-button>
+                            <el-button @click.native.prevent="deleteRow(scope.$index, clientList)" type="text" size="small">移除</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+
+                <br>
+                <br>
+                <br>
+
+
+                <el-button type="info" round v-on:click="saveActiveStatus">保存激活状态</el-button>
+                <el-button type="info" round v-on:click="addClient">新增客户端</el-button>
+            </el-card>
+
+
+        </el-col>
+    </el-row>
+
+</template>
+
+<script>
+import CDrawer from "./cDrawer";
+import CDrawerOneDataInfo from "./cDrawerOneDataInfo";
+
+export default {
+    name: "ViewClient",
+    data() {
+        return {
+            visibleStatus: false, //传递给子组件用的变量，用来控制是否显示OneDataInfo的抽屉
+            oneClientInfo: {  //传递给子组件用的变量，传过去一个json对象，那边会自动展开来显示的
+                client_id: 12,
+                client_name: "客户端1",
+                client_description: "用于通知开发者git提交情况",
+                client_type: "dingtalk",
+                is_active: true,
+                client_info: {}
+            },
+            // mapList3: [
+            //     {
+            //         robotName: '',
+            //         robotKeyword: '',
+            //         robotUrl: ''
+            //     }
+            // ],
+            clientList: [
+                {
+                    client_id: 1,
+                    client_name: "客户端1",
+                    client_description: "用于通知开发者git提交和推送情况",
+                    client_type: "dingtalk",
+                    is_active: true,
+                    client_info: {}
+                },
+                {
+                    client_id: 2,
+                    client_name: "客户端2",
+                    client_description: "用于通知xxx组的开发者，双11期间的报警情况",
+                    client_type: "dingtalk",
+                    is_active: false,
+                    client_info: {}
+                },
+            ],
+        }
+    },
+    components: {
+        CDrawer,
+        CDrawerOneDataInfo,
+    },
+    methods: {
+        saveActiveStatus: function () {
+
+        },
+        addClient: function () {
+            this.$store.commit("updateDrawerStatus", true);
+        },
+
+        // 添加tableData的一行数据（和上面的添加输入框不是一回事）
+        addTableData: function () {
+            let robotName = this.mapList3[0].robotName;
+            let robotKeyword = this.mapList3[0].robotKeyword;
+            let robotUrl = this.mapList3[0].robotUrl;
+
+            if (robotName.length === 0 || robotKeyword.length === 0 || robotUrl.length === 0) {
+                alert("输入框不能为空...")
+            } else {
+                let tableRow = {
+                    robotName: robotName,
+                    robotKeyword: robotKeyword,
+                    robotUrl: robotUrl
+                };
+                this.clientList.push(tableRow);
+                this.mapList3[0].robotName = "";
+                this.mapList3[0].robotKeyword = "";
+                this.mapList3[0].robotUrl = "";
+                // console.log(this.robotList);
+                // for (let i = 0; i < this.robotList.length; i++) {
+                //     console.log(this.robotList[i].robotName);
+                // }
+                this.$message.success("添加成功...");
+            }
+        },
+
+        // 删除一行数据
+        deleteRow(index, rows) {
+            console.log(index, rows);
+            rows.splice(index, 1);
+            this.$message.warning("您已经删除一行数据...")
+        },
+
+        getRowInfo: function (index, rows) {
+            console.log(rows[index]);
+            let tmpclientData = require('./aaaClient.json')["client_list"];
+            this.visibleStatus = true;
+            this.oneClientInfo = tmpclientData[index];
+        },
+        thisClose: function () {
+            this.visibleStatus = false;
+        },
+
+        // 提交数据
+        post_data: function () {
+            console.log(this.clientList);
+            this.axios.post('/web/client',
+                {
+                    "request_data": this.clientList
+                }
+            )
+                .then(response => {
+                    // alert(response.data);
+                    console.log(response.data);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        },
+        // 提交数据结束
+
+        //拉取数据
+        pullDingtalkData: function () {
+            this.axios.get('/web/client')
+                .then(response => {
+                    // console.log(response.data);
+                    let tmpRobotList = [];
+                    response.data.forEach(data => {
+                        // console.log(data["RobotName"]);
+                        // console.log(data["RobotUrl"]);
+                        // console.log(data["RobotKeyword"]);
+                        let robot = {
+                            "robotKeyword": data["RobotKeyword"],
+                            "robotName": data["RobotName"],
+                            "robotUrl": data["RobotUrl"]
+                        };
+                        tmpRobotList.push(robot);
+                    });
+                    this.clientList = tmpRobotList;
+
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        },
+        pullClientData: function () {
+            const clientData = require('./aaaClient.json');
+            let tmpList = [];
+            clientData.client_list.forEach(i => {
+                let tmpClient = {
+                    "client_id": i.client_id,
+                    "client_name": i.client_name,
+                    "client_description": i.client_description,
+                    "is_active": i.is_active,
+                    "client_type": i.client_type,
+                }
+                tmpList.push(tmpClient);
+            });
+            this.clientList = tmpList;
+        }
+    },
+    created() {
+        //修改步骤条的值
+        this.$store.commit("updateStepsActive", 3);
+        //拉取数据更新
+        // this.pullDingtalkData();
+        //拉取数据更新（后端没开发好，这里拉取的事本地json文件）
+        this.pullClientData();
+    }
+}
+</script>
+
+<style scoped>
+#ClientContent {
+    width: 60%;
+    margin-left: 20%;
+}
+
+
+#subButton {
+    width: 100%;
+}
+
+
+.ClientBoxCard {
+    /*width: 45rem;*/
+    /* margin-top: 1.5rem; */
+    /* margin-left: 1.5rem; */
+}
+
+.ClientGridContent {
+    /*圆角*/
+    border-radius: 4px;
+    /*最小高度*/
+    min-height: 36px;
+    margin-bottom: 20px;
+}
+</style>

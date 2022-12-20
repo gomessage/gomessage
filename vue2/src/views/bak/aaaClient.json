@@ -1,0 +1,38 @@
+{
+    "client_list": [
+        {
+            "client_id": 12,
+            "client_name": "客户端1",
+            "client_description": "用于通知开发者git提交情况",
+            "is_active": true,
+            "client_type": "dingtalk",
+            "client_info": {
+                "robot_url": "https://oapi.dingtalk.com/robot/send?access_token=7c94fd96db657713c5e0406202c9395d13dacdc2307b180a4f4ecc3cc2140f7f",
+                "robot_keyword": "报警"
+            }
+        },
+        {
+            "client_id": 17,
+            "client_name": "客户端2",
+            "client_description": "用于推送报警错误信息",
+            "is_active": false,
+            "client_type": "wechat",
+            "client_info": {
+                "wechat_corpid": "ww8290f080960950c4",
+                "wechat_agentid": "1000010",
+                "wechat_secret": "5mtW-dbOiTXPYPD3VidAZq1EfK3h5nGIp8B0zWuA4z0"
+            }
+        },
+        {
+            "client_id": 19,
+            "client_name": "客户端3",
+            "client_description": "把报警消息复制发送一份到产品组里面",
+            "is_active": true,
+            "client_type": "dingtalk",
+            "client_info": {
+                "robot_url": "https://oapi.dingtalk.com/robot/send?access_token=7c94fd96db657713c5e0406202c9395d13dacdc2307b180a4f4ecc3cc2140f7f",
+                "robot_keyword": "报警"
+            }
+        }
+    ]
+}

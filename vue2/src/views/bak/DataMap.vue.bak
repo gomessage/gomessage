@@ -1,0 +1,302 @@
+<template>
+    <div id="DataMapContent">
+        <el-card class="box-card" id="DataMapCard" shadow="always">
+
+            <!--卡片标题-->
+            <div slot="header" class="clearfix"><span>添加数据映射</span></div>
+
+            <!--Table表格-->
+            <el-table
+                :data="tableData"
+                style="width: 100%"
+                border="true"
+                stripe="true">
+
+                <el-table-column prop="key" label="Key（模板占位符）"></el-table-column>
+                <el-table-column prop="value" label="Value（RequestData中的索引）"></el-table-column>
+                <el-table-column fixed="right" label="操作">
+                    <template slot-scope="scope">
+                        <el-button @click.native.prevent="deleteRow(scope.$index, tableData)" type="text" size="small">
+                            移除
+                        </el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+
+            <br>
+
+            <!--输入框，是从最初的增长型输入框转变过来的-->
+            <div v-for="(list, index) in mapList2" :key="index">
+                <!-- 填写服务器地址，col之间的间隔为20 -->
+                <el-row :gutter="20">
+
+                    <!--Key-->
+                    <el-col :span="12">
+                        <div class="grid-content">
+                            <el-input placeholder="alertname" v-model="list.mapKey">
+                                <template slot="prepend">
+                                    Key:
+                                </template>
+                            </el-input>
+                        </div>
+                    </el-col>
+
+                    <!--Value-->
+                    <el-col :span="12">
+                        <div class="grid-content">
+                            <el-input placeholder="alerts.labels.alertname" v-model="list.mapValue">
+                                <template slot="prepend">
+                                    Value:
+                                </template>
+                            </el-input>
+                        </div>
+                    </el-col>
+
+                    <!-- 删除按钮 -->
+                    <!--                    <el-col :span="2">-->
+                    <!--                        <div class="grid-content">-->
+                    <!--                            <el-button type="danger" icon="el-icon-delete" circle size="medium" v-on:click="del(index)"></el-button>-->
+                    <!--                        </div>-->
+                    <!--                    </el-col>-->
+
+                </el-row>
+            </div>
+
+
+            <!--添加新的输入框（+号按钮）-->
+            <el-button type="primary" v-on:click="addTableData" size="mini">+</el-button>
+
+            <!--这个框框只是在这里占位置的，没有任何实际作用，只为了撑起按钮和输入框之间的距离-->
+            <el-row :gutter="20">
+                <el-col :span="14"></el-col>
+            </el-row>
+
+            <!--提交按钮-->
+            <el-row :gutter="20">
+                <el-col :span="4">
+                    <div class="grid-content bg-purple"></div>
+                </el-col>
+                <el-col :span="16">
+                    <div class="grid-content bg-purple">
+                        <el-button type="info" round id="subButton" v-on:click="post_data">提交映射</el-button>
+                    </div>
+                </el-col>
+                <el-col :span="4">
+                    <div class="grid-content bg-purple"></div>
+                </el-col>
+            </el-row>
+
+
+            <!--卡片结束位置-->
+        </el-card>
+    </div>
+</template>
+
+<script>
+// import DataMapTable from "./DataMapTable";
+
+export default {
+    name: "DataMap",
+    data() {
+        return {
+            mapList2: [
+                {
+                    mapKey: '',
+                    mapValue: ''
+                }
+            ],
+            tableData: [{
+                key: '{{ alertName }} ',
+                value: 'alerts[0].labels.alertname',
+            }, {
+                key: '{{ alertStatus }}',
+                value: 'alerts[0].status',
+            }, {
+                key: '{{ alertDescripyion }}',
+                value: 'alerts[0].annotations.description',
+            }, {
+                key: '{{ sendTime }}',
+                value: 'alerts[0].startsAt',
+            }],
+        };
+    },
+    computed: {},
+    components: {
+        // DataMapTable,
+    },
+    methods: {
+        // 添加输入框
+        add: function () {
+            let cope = {
+                mapKey: '',
+                mapValue: ''
+            };
+            this.mapList2.push(cope);
+            console.log(this.mapList2);
+            for (let i = 0; i < this.mapList2.length; i++) {
+                console.log(this.mapList2[i].mapKey);
+            }
+        },
+        // 添加tableData的一行数据（和上面的添加输入框不是一回事）
+        addTableData: function () {
+            let mapKey = this.mapList2[0].mapKey;
+            let mapValue = this.mapList2[0].mapValue;
+
+            if (mapKey.length === 0 || mapValue.length === 0) {
+                alert("输入框不能为空...")
+            } else {
+                let tableRow = {
+                    key: mapKey,
+                    value: mapValue
+                };
+                this.tableData.push(tableRow);
+                this.mapList2[0].mapKey = "";
+                this.mapList2[0].mapValue = "";
+                console.log(this.tableData);
+                for (let i = 0; i < this.tableData.length; i++) {
+                    console.log(this.tableData[i].mapKey);
+                }
+            }
+        },
+        // 删除一个输入框
+        del: function (index) {
+            this.mapList2.splice(index, 1);
+            // console.log(this.mylist);
+        },
+        // 删除一行数据
+        deleteRow(index, rows) {
+            console.log(index, rows);
+            rows.splice(index, 1);
+        },
+        // 提交数据
+        post_data: function () {
+            const dataList = [];
+            for (let i = 0; i < this.mapList2.length; i++) {
+                let mapKey = this.mapList2[i].mapKey;
+                let mapValue = this.mapList2[i].mapValue;
+                // const newKeyValue = mapKey + ':' + mapValue;
+                let newKeyValue = {};
+                newKeyValue[mapKey] = mapValue;
+                dataList.push(newKeyValue);
+            }
+
+            console.log(dataList);
+            this.mapList2 = dataList;
+
+            this.axios.post('/v1/web/map', {
+                "key_value_list": dataList
+            })
+                .then(response => {
+                    alert(response.data);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        },
+        //获取服务端数据（服务端已经在后台劫持好"过路"数据了）
+        // getServerData: function () {
+        //     //必须使用下文这种方式发送request，箭头符号都不能修改，不然this穿透不进来
+        //     const axios = require('axios');
+        //     axios({
+        //         url: "http://localhost:8080/v1/web/json",
+        //         method: 'get'
+        //     })
+        //         // 这里如果使用funciton(response){}这个种模式，那么this指的就不是vue实例了，
+        //         // 如果下面这样使用箭头函数，就可以实现上下文穿透，this就可以代指vue实例本身了，然后就有$router方法了
+        //         .then(response => {
+        //             console.log(response.data);
+        //             const jsonData = response["data"]["json_data"];
+        //             if (jsonData["receiver"].length === 0) {
+        //                 alert("\n没有request数据可以查看...\n\n请先把Alertmanager的报警信息推送给我...\n\n我才能劫持到数据展示给您哦...");
+        //             } else {
+        //                 const t = response["data"]["update_time"];
+        //                 this.codeJsonContent = JSON.stringify(jsonData, null, 4);
+        //                 this.codeUpdateTime = this.dateFormat(new Date(t));
+        //             }
+        //
+        //
+        //         })
+        //         .catch(function (error) {
+        //             console.log(error);
+        //         });
+        // },
+    },
+
+}
+</script>
+
+<style scoped>
+#DataMapContent {
+    /*border: 10px solid red;*/
+    width: 60%;
+    margin-left: 20%;
+    margin-top: 20px;
+}
+
+#DataMapCard {
+    width: 100%;
+}
+
+.elRowStype {
+    /*margin-bottom: 50px;*/
+}
+
+#codeStyle {
+    /*border: 10px solid gray;*/
+    text-align: left;
+    background-color: #2f2f35;
+    /*font-family: Monaco,  Arial, Helvetica, sans-serif;*/
+    font-family: Menlo, Monaco, Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", "Courier New", Courier, monospace;
+    font-size: 14px;
+    /*color: bisque;*/
+    line-height: 22px;
+    color: violet;
+    overflow-x: auto;
+    min-height: 20rem;
+    /*height: 20rem;*/
+}
+
+#codeTime {
+    text-align: left;
+    margin: 10px 0;
+}
+
+#subButton {
+    width: 100%;
+}
+
+#tay-font-size {
+    font-size: 1.25rem;
+}
+
+.box-card {
+    width: 45rem;
+    /* margin-top: 1.5rem; */
+    /* margin-left: 1.5rem; */
+}
+
+.grid-content {
+    /*圆角*/
+    border-radius: 4px;
+    /*最小高度*/
+    min-height: 36px;
+}
+
+.row-bg {
+    padding: 10px 0;
+    background-color: #f9fafc;
+}
+
+.el-row {
+    margin-bottom: 20px;
+
+:last-child {
+    margin-bottom: 0;
+}
+
+}
+
+.el-col {
+    border-radius: 4px;
+}
+</style>

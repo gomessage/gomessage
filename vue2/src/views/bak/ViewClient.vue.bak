@@ -1,0 +1,259 @@
+<template>
+    <el-row style="margin-top: 20px;margin-bottom: 20px">
+        <el-col span="14" offset="5">
+            <!--            卡片-->
+            <el-card>
+                <!--                标题-->
+                <div slot="header" class="clearfix">
+                    <span>钉钉机器人配置</span>
+                    <el-button style="float: right; padding: 3px 0" type="text" v-on:click="pullDingtalkData">拉取更新</el-button>
+                </div>
+                <!-- ------------------------------------------------------- -->
+
+                <!--Table表格-->
+                <el-table
+                    :data="robotList"
+                    style="width: 100%"
+                    border="true"
+                    stripe="true"
+                    :header-cell-style="{background:'#2f2f35',color:'#fff'}"
+                >
+                    <el-table-column prop="robotName" label="机器人名称"></el-table-column>
+                    <el-table-column prop="robotUrl" label="URL地址"></el-table-column>
+                    <el-table-column prop="robotKeyword" label="放行关键词"></el-table-column>
+                    <el-table-column fixed="right" label="操作" width="100">
+                        <template slot-scope="scope">
+                            <el-button @click.native.prevent="deleteRow(scope.$index, robotList)" type="text" size="small">移除</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+                <!--Table表格-->
+
+                <!-- 一个空行 -->
+                <br>
+                <br>
+                <br>
+
+                <!--输入框，是从最初的（可增加数量的输入框）转变过来的-->
+                <div v-for="(list, index) in mapList3" :key="index">
+                    <!-- 填写服务器地址，col之间的间隔为20 -->
+                    <el-row :gutter="20">
+
+                        <!--Key-->
+                        <el-col :span="12">
+                            <div class="ClientGridContent">
+                                <el-input placeholder="自定义字符串，用于提醒自己" v-model="list.robotName">
+                                    <template slot="prepend">
+                                        机器人名称:
+                                    </template>
+                                </el-input>
+                            </div>
+                        </el-col>
+
+                        <!--Value-->
+                        <el-col :span="12">
+                            <div class="ClientGridContent">
+                                <el-input placeholder="需要和钉钉机器人上设置的放行关键词保持一致" v-model="list.robotKeyword">
+                                    <template slot="prepend">
+                                        放行关键字:
+                                    </template>
+                                </el-input>
+                            </div>
+                        </el-col>
+
+                        <!--Value-->
+                        <el-col :span="24">
+                            <div class="ClientGridContent">
+                                <el-input placeholder="粘贴钉钉机器人的URL地址" v-model="list.robotUrl">
+                                    <template slot="prepend">
+                                        机器人地址:
+                                    </template>
+                                </el-input>
+                            </div>
+                        </el-col>
+                    </el-row>
+                </div>
+
+
+                <!--添加新的输入框（+号按钮）-->
+                <el-button type="primary" v-on:click="addTableData" size="mini">追加钉钉机器人</el-button>
+
+                <br>
+                <br>
+                <br>
+
+                <!--提交按钮-->
+                <el-row :gutter="20">
+                    <el-col :span="4">
+                        <div class="ClientGridContent"></div>
+                    </el-col>
+
+                    <el-col :span="16">
+                        <div class="ClientGridContent">
+                            <el-button type="info" round id="subButton" v-on:click="post_data">更新数据库</el-button>
+                        </div>
+                    </el-col>
+
+                    <el-col :span="4">
+                        <div class="ClientGridContent"></div>
+                    </el-col>
+                </el-row>
+
+                <el-button type="info" round v-on:click="addClient">新增客户端</el-button>
+
+                <!--卡片结束位置-->
+
+            </el-card>
+        </el-col>
+        <CDrawer></CDrawer>
+    </el-row>
+
+</template>
+
+<script>
+import CDrawer from "./cDrawer";
+
+export default {
+    name: "ViewClient",
+    data() {
+        return {
+            mapList3: [
+                {
+                    robotName: '',
+                    robotKeyword: '',
+                    robotUrl: ''
+                }
+            ],
+            robotList: [
+                {
+                    robotName: "机器人1",
+                    robotUrl: "https://oapi.dingtalk.com/robot/send?access_token=7c94fd96db657713c5e0406202c9395d13dacdc2307b180a4f4ecc3cc2140f7f",
+                    robotKeyword: "报警",
+                },
+                {
+                    robotName: "机器人2",
+                    robotUrl: "https://oapi.dingtalk.com/robot/send?access_token=7c94fd96db657713c5e0406202c9395d13dacdc2307b180a4f4ecc3cc2140f7f",
+                    robotKeyword: "报警",
+                },
+            ],
+        }
+    },
+    components: {
+        CDrawer,
+    },
+    methods: {
+        addClient: function () {
+            this.$store.commit("updateDrawerStatus", true);
+        },
+
+        // 添加tableData的一行数据（和上面的添加输入框不是一回事）
+        addTableData: function () {
+            let robotName = this.mapList3[0].robotName;
+            let robotKeyword = this.mapList3[0].robotKeyword;
+            let robotUrl = this.mapList3[0].robotUrl;
+
+            if (robotName.length === 0 || robotKeyword.length === 0 || robotUrl.length === 0) {
+                alert("输入框不能为空...")
+            } else {
+                let tableRow = {
+                    robotName: robotName,
+                    robotKeyword: robotKeyword,
+                    robotUrl: robotUrl
+                };
+                this.robotList.push(tableRow);
+                this.mapList3[0].robotName = "";
+                this.mapList3[0].robotKeyword = "";
+                this.mapList3[0].robotUrl = "";
+                // console.log(this.robotList);
+                // for (let i = 0; i < this.robotList.length; i++) {
+                //     console.log(this.robotList[i].robotName);
+                // }
+                this.$message.success("添加成功...");
+            }
+        },
+
+        // 删除一行数据
+        deleteRow(index, rows) {
+            console.log(index, rows);
+            rows.splice(index, 1);
+            this.$message.warning("您已经删除一行数据...")
+        },
+
+        // 提交数据
+        post_data: function () {
+            console.log(this.robotList);
+            this.axios.post('/web/client',
+                {
+                    "request_data": this.robotList
+                }
+            )
+                .then(response => {
+                    // alert(response.data);
+                    console.log(response.data);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        },
+        // 提交数据结束
+
+        //拉取数据
+        pullDingtalkData: function () {
+            this.axios.get('/web/client')
+                .then(response => {
+                    // console.log(response.data);
+                    let tmpRobotList = [];
+                    response.data.forEach(data => {
+                        // console.log(data["RobotName"]);
+                        // console.log(data["RobotUrl"]);
+                        // console.log(data["RobotKeyword"]);
+                        let robot = {
+                            "robotKeyword": data["RobotKeyword"],
+                            "robotName": data["RobotName"],
+                            "robotUrl": data["RobotUrl"]
+                        };
+                        tmpRobotList.push(robot);
+                    });
+                    this.robotList = tmpRobotList;
+
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        }
+    },
+    created() {
+        //修改步骤条的值
+        this.$store.commit("updateStepsActive", 3);
+        //拉取数据
+        this.pullDingtalkData()
+    }
+}
+</script>
+
+<style scoped>
+#ClientContent {
+    width: 60%;
+    margin-left: 20%;
+}
+
+
+#subButton {
+    width: 100%;
+}
+
+
+.ClientBoxCard {
+    /*width: 45rem;*/
+    /* margin-top: 1.5rem; */
+    /* margin-left: 1.5rem; */
+}
+
+.ClientGridContent {
+    /*圆角*/
+    border-radius: 4px;
+    /*最小高度*/
+    min-height: 36px;
+    margin-bottom: 20px;
+}
+</style>

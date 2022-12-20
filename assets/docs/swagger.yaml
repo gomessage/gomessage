@@ -1,0 +1,143 @@
+info:
+  contact: {}
+paths:
+  /api/v1/:namespace/client:
+    get:
+      responses: {}
+      summary: 获取所有客户端
+      tags:
+      - Client
+    post:
+      responses: {}
+      summary: 新增一个客户端
+      tags:
+      - Client
+  /api/v1/:namespace/client/:id:
+    delete:
+      responses: {}
+      summary: 删除一个客户端
+      tags:
+      - Client
+    get:
+      responses: {}
+      summary: 查询一个客户端
+      tags:
+      - Client
+    put:
+      responses: {}
+      summary: 修改一个客户端
+      tags:
+      - Client
+  /api/v1/:namespace/health:
+    get:
+      consumes:
+      - application/json
+      description: 访问该接口将返回：Hello World
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: 命名空间健康检测
+      tags:
+      - Health
+  /api/v1/:namespace/template:
+    get:
+      responses: {}
+      summary: 获取所有消息模板
+      tags:
+      - Template
+    post:
+      responses: {}
+      summary: 新增一个消息模板
+      tags:
+      - Template
+  /api/v1/:namespace/template/:id:
+    delete:
+      responses: {}
+      summary: 删除一个消息模板
+      tags:
+      - Template
+    get:
+      responses: {}
+      summary: 查询一个消息模板
+      tags:
+      - Template
+    put:
+      responses: {}
+      summary: 修改一个消息模板
+      tags:
+      - Template
+  /api/v1/:namespace/vars:
+    get:
+      responses: {}
+      summary: 获取所有用户变量
+      tags:
+      - Variables
+    post:
+      responses: {}
+      summary: 新增一个用户变量
+      tags:
+      - Variables
+  /api/v1/:namespace/vars/:id:
+    delete:
+      responses: {}
+      summary: 删除一个用户变量
+      tags:
+      - Variables
+    get:
+      responses: {}
+      summary: 查询一个用户变量
+      tags:
+      - Variables
+    put:
+      responses: {}
+      summary: 修改一个用户变量
+      tags:
+      - Variables
+  /api/v1/namespace:
+    get:
+      responses: {}
+      summary: 获取所有命名空间
+      tags:
+      - Namespace
+    post:
+      responses: {}
+      summary: 新增一个命名空间
+      tags:
+      - Namespace
+  /api/v1/namespace/:id:
+    delete:
+      responses: {}
+      summary: 删除一个命名空间
+      tags:
+      - Namespace
+    get:
+      responses: {}
+      summary: 查询一个命名空间
+      tags:
+      - Namespace
+    put:
+      responses: {}
+      summary: 修改一个命名空间
+      tags:
+      - Namespace
+  /go/:namespace:
+    post:
+      responses: {}
+      tags:
+      - gomessage
+  /go/message:
+    get:
+      responses: {}
+      tags:
+      - gomessage
+  /health:
+    get:
+      responses: {}
+      summary: 全局健康检测
+      tags:
+      - Health
+swagger: "2.0"

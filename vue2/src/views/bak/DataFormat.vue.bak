@@ -1,0 +1,74 @@
+<template>
+    <div id="DataFormatContent" >
+        <!--        <el-card class="box-card" id="DataFormatCard" shadow="always">-->
+        <!--            <div slot="header" class="clearfix">-->
+        <!--                <span>请求的数据</span>-->
+        <!--                <el-button style="float: right; padding: 3px 0" type="text">刷新</el-button>-->
+        <!--            </div>-->
+        <!--            <div v-for="o in 4" :key="o" class="text item">-->
+        <!--                {{ '列表内容 ' + o }}-->
+        <!--            </div>-->
+        <!--        </el-card>-->
+        <!--        <highlightjs language='javascript' code="var x = 5;"/>-->
+        <pre v-highlightjs  id="codeStyle">
+            <code>
+                const s = new Date().toString()
+                123
+                123
+                123const s = new Date().toString()const s = new Date().toString()const s = new Date().toString()const s = new Date().toString()const s = new Date().toString()const s = new Date().toString()const s = new Date().toString()const s = new Date().toString()const s = new Date().toString()const s = new Date().toString()const s = new Date().toString()const s = new Date().toString()
+                123
+                123
+                123
+                123
+                123
+            </code>
+        </pre>
+    </div>
+</template>
+
+<script>
+export default {
+    name: "DataFormat"
+}
+</script>
+
+<style scoped>
+#DataFormatContent {
+    border: 10px solid red;
+    width: 70%;
+    margin-left: 15%;
+    margin-top: 20px;
+}
+
+#codeStyle{
+    /*border: 10px solid gray;*/
+    text-align: left;
+    background-color: aqua;
+}
+
+#DataFormatCard {
+    width: 100%;
+}
+
+.text {
+    font-size: 14px;
+}
+
+.item {
+    margin-bottom: 18px;
+}
+
+.clearfix:before,
+.clearfix:after {
+    display: table;
+    content: "";
+}
+
+.clearfix:after {
+    clear: both
+}
+
+.box-card {
+    width: 480px;
+}
+</style>

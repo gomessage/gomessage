@@ -1,0 +1,58 @@
+#--------------------
+# 全局配置
+#--------------------
+global:
+  appName: "GoMessage"
+  appDescription: "消息转发器"
+  env: "dev"                    # 当前运行环境（这里是的第二优先级，如果启动服务时没有指定--env=dev，则这里的才会生效）
+  ginMode: "release"            # Gin框架运行模式（debug、test、release）
+
+
+#--------------------
+# 启动地址和端口
+#--------------------
+server:
+  host: 127.0.0.1
+  port: 7077
+
+
+#--------------------
+# 日志配置
+#--------------------
+log:
+  level: info                   #（选项：debug、info）
+  format: text                  #（选项：json、text）
+  logFile: ./gomessage.log
+
+
+#--------------------
+# 数据库类型选择: (sqlite3、mysql)
+# 如果该参数不为空（则就要填写下文中，对应的数据库连接参数）
+#--------------------
+databaseType: "sqlite3"
+
+
+#--------------------
+# Mysql 基本配置
+#--------------------
+mysql:
+  host: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+  port: "3306"
+  name: "xxxxxxxxxx"
+  username: "xxxxxxxxxx"
+  password: "xxxxxxxxxx"
+  options: "charset=utf8mb4&parseTime=True&loc=Local"
+
+
+#--------------------
+# SQLite 基本配置
+#--------------------
+sqlite3:
+  path: "./gomessage.db"
+  MaxIdleConns: 10
+  MaxOpenConns: 100
+
+
+
+
+

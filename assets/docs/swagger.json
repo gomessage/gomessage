@@ -1,0 +1,212 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/api/v1/:namespace/client": {
+            "get": {
+                "tags": [
+                    "Client"
+                ],
+                "summary": "获取所有客户端",
+                "responses": {}
+            },
+            "post": {
+                "tags": [
+                    "Client"
+                ],
+                "summary": "新增一个客户端",
+                "responses": {}
+            }
+        },
+        "/api/v1/:namespace/client/:id": {
+            "get": {
+                "tags": [
+                    "Client"
+                ],
+                "summary": "查询一个客户端",
+                "responses": {}
+            },
+            "put": {
+                "tags": [
+                    "Client"
+                ],
+                "summary": "修改一个客户端",
+                "responses": {}
+            },
+            "delete": {
+                "tags": [
+                    "Client"
+                ],
+                "summary": "删除一个客户端",
+                "responses": {}
+            }
+        },
+        "/api/v1/:namespace/health": {
+            "get": {
+                "description": "访问该接口将返回：Hello World",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Health"
+                ],
+                "summary": "命名空间健康检测",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/:namespace/template": {
+            "get": {
+                "tags": [
+                    "Template"
+                ],
+                "summary": "获取所有消息模板",
+                "responses": {}
+            },
+            "post": {
+                "tags": [
+                    "Template"
+                ],
+                "summary": "新增一个消息模板",
+                "responses": {}
+            }
+        },
+        "/api/v1/:namespace/template/:id": {
+            "get": {
+                "tags": [
+                    "Template"
+                ],
+                "summary": "查询一个消息模板",
+                "responses": {}
+            },
+            "put": {
+                "tags": [
+                    "Template"
+                ],
+                "summary": "修改一个消息模板",
+                "responses": {}
+            },
+            "delete": {
+                "tags": [
+                    "Template"
+                ],
+                "summary": "删除一个消息模板",
+                "responses": {}
+            }
+        },
+        "/api/v1/:namespace/vars": {
+            "get": {
+                "tags": [
+                    "Variables"
+                ],
+                "summary": "获取所有用户变量",
+                "responses": {}
+            },
+            "post": {
+                "tags": [
+                    "Variables"
+                ],
+                "summary": "新增一个用户变量",
+                "responses": {}
+            }
+        },
+        "/api/v1/:namespace/vars/:id": {
+            "get": {
+                "tags": [
+                    "Variables"
+                ],
+                "summary": "查询一个用户变量",
+                "responses": {}
+            },
+            "put": {
+                "tags": [
+                    "Variables"
+                ],
+                "summary": "修改一个用户变量",
+                "responses": {}
+            },
+            "delete": {
+                "tags": [
+                    "Variables"
+                ],
+                "summary": "删除一个用户变量",
+                "responses": {}
+            }
+        },
+        "/api/v1/namespace": {
+            "get": {
+                "tags": [
+                    "Namespace"
+                ],
+                "summary": "获取所有命名空间",
+                "responses": {}
+            },
+            "post": {
+                "tags": [
+                    "Namespace"
+                ],
+                "summary": "新增一个命名空间",
+                "responses": {}
+            }
+        },
+        "/api/v1/namespace/:id": {
+            "get": {
+                "tags": [
+                    "Namespace"
+                ],
+                "summary": "查询一个命名空间",
+                "responses": {}
+            },
+            "put": {
+                "tags": [
+                    "Namespace"
+                ],
+                "summary": "修改一个命名空间",
+                "responses": {}
+            },
+            "delete": {
+                "tags": [
+                    "Namespace"
+                ],
+                "summary": "删除一个命名空间",
+                "responses": {}
+            }
+        },
+        "/go/:namespace": {
+            "post": {
+                "tags": [
+                    "gomessage"
+                ],
+                "responses": {}
+            }
+        },
+        "/go/message": {
+            "get": {
+                "tags": [
+                    "gomessage"
+                ],
+                "responses": {}
+            }
+        },
+        "/health": {
+            "get": {
+                "tags": [
+                    "Health"
+                ],
+                "summary": "全局健康检测",
+                "responses": {}
+            }
+        }
+    }
+}
