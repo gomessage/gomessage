@@ -13,9 +13,11 @@ build
 *.log
 *.sqlite3
 *.tar.gz
+*.tmp
 lastupdate.tmp
 routers/commentsRouter_controllers.go
 routers/commentsRouter______________________Users_tay_go_src_GoMessage_controllers.go
 GoMessage
+gomessage-*
 *prof
 

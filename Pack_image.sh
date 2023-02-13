@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-VERSION="1.0.10"
+VERSION="1.0.11"
 OUTPUT_PATH="./build/${VERSION}/"
 GOOS_LIST=(darwin linux windows)
 GOARCH_LIST=(amd64)

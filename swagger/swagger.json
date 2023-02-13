@@ -2,7 +2,7 @@
     "swagger": "2.0",
     "info": {
         "title": "报警转发器",
-        "description": "转发Alertmanager的webhook信息，到钉钉、微信、或其它客户端\n",
+        "description": "转发Alertmanager的webhook信息，到钉钉、微信、或其它客户端",
         "version": "1.0.0",
         "termsOfService": "https://blog.taycc.com/pages/prometheus/target_icmp.html",
         "contact": {
@@ -20,7 +20,7 @@
                 "tags": [
                     "alertmanager"
                 ],
-                "description": "推送数据到钉钉，数据来自于Alertmanager的webhook推送\n\u003cbr\u003e",
+                "description": "推送数据到钉钉，数据来自于Alertmanager的webhook推送",
                 "operationId": "K8sControllers.推送数据",
                 "responses": {
                     "200": {
@@ -34,7 +34,7 @@
                 "tags": [
                     "alertmanager"
                 ],
-                "description": "推送数据到钉钉，数据来自于Alertmanager的webhook推送\n\u003cbr\u003e",
+                "description": "推送数据到钉钉，数据来自于Alertmanager的webhook推送",
                 "operationId": "LinuxControllers.推送数据",
                 "responses": {
                     "200": {
