@@ -29,6 +29,8 @@
 
 ### `Docker方式`·安装和使用（强烈推荐）：
 
+docker image仓库地址：https://hub.docker.com/r/taycc/gomessage
+
 快速启动：
 
 ```bash
