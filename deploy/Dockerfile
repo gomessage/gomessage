@@ -16,7 +16,7 @@
 #
 #############################################################################
 
-FROM golang:1.15.15-alpine
+FROM centos:7.9.2009
 
 RUN mkdir -p /opt/gomessage && rm -rf /opt/gomessage/*
 

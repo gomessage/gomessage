@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-VERSION="1.0.9"
+VERSION="1.0.10"
 OUTPUT_PATH="./build/${VERSION}/"
 GOOS_LIST=(darwin linux windows)
 GOARCH_LIST=(amd64)
@@ -8,7 +8,7 @@ EXRS='^build|^bak|^docs|^swagger|^deploy|^LICENSE|.sh$|.sqlite3$|.bak$|.md$|prof
 
 build() {
     #yum groupinstall -y "Development Tools"
-    go get github.com/beego/bee/v2
+    go get github.com/beego/bee/v2@v2.0.2
 
     #去掉不必要的包
     go mod tidy
@@ -17,6 +17,7 @@ build() {
     rm -rf ./*.log
     rm -rf ./*.tar.gz
     rm -rf ./GoMessage
+    rm -rf ./gomessage-*
 
     #修改runmode参数，让编译后的应用程序运行在prod环境中
     gsed -i '/^runmode/c runmode = prod' ./conf/app.conf

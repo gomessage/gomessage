@@ -38,9 +38,13 @@ func init() {
 
 		//以下部分的路由才是有用的
 		beego.NSNamespace("/web",
-			beego.NSInclude(&web2.JsonControllers{}),
-			beego.NSInclude(&web2.MapControllers{}),
-			beego.NSInclude(&web2.TemplateControllers{}),
+			//beego.NSInclude(&web2.JsonControllers{}),
+			//beego.NSInclude(&web2.MapControllers{}),
+			//beego.NSInclude(&web2.TemplateControllers{}),
+
+			beego.NSRouter("/json", &web2.JsonControllers{}),
+			beego.NSRouter("/map", &web2.MapControllers{}),
+			beego.NSRouter("/template", &web2.TemplateControllers{}),
 			beego.NSRouter("/client", &web2.Clients{}),
 			beego.NSRouter("/client/:id:int", &web2.Client{}),
 			beego.NSRouter("/client/active", &web2.ClientActive{}),

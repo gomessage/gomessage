@@ -1,7 +1,8 @@
 swagger: "2.0"
 info:
   title: 报警转发器
-  description: 转发Alertmanager的webhook信息，到钉钉、微信、或其它客户端
+  description: |
+    转发Alertmanager的webhook信息，到钉钉、微信、或其它客户端
   version: 1.0.0
   termsOfService: https://blog.taycc.com/pages/prometheus/target_icmp.html
   contact:
@@ -15,7 +16,9 @@ paths:
     post:
       tags:
       - alertmanager
-      description: 推送数据到钉钉，数据来自于Alertmanager的webhook推送
+      description: |-
+        推送数据到钉钉，数据来自于Alertmanager的webhook推送
+        <br>
       operationId: K8sControllers.推送数据
       responses:
         "200":
@@ -24,7 +27,9 @@ paths:
     post:
       tags:
       - alertmanager
-      description: 推送数据到钉钉，数据来自于Alertmanager的webhook推送
+      description: |-
+        推送数据到钉钉，数据来自于Alertmanager的webhook推送
+        <br>
       operationId: LinuxControllers.推送数据
       responses:
         "200":
@@ -36,34 +41,6 @@ paths:
     post:
       tags:
       - test
-  /web/json:
-    get:
-      tags:
-      - web
-      description: 推送数据到钉钉，数据来自于Alertmanager的webhook推送
-      operationId: JsonControllers.推送数据
-      responses:
-        "200":
-          description: ok
-  /web/map:
-    get:
-      tags:
-      - web
-    post:
-      tags:
-      - web
-      description: 推送数据到钉钉，数据来自于Alertmanager的webhook推送
-      operationId: MapControllers.推送数据
-      responses:
-        "200":
-          description: ok
-  /web/template:
-    get:
-      tags:
-      - web
-    post:
-      tags:
-      - web
 tags:
 - name: alertmanager
   description: |

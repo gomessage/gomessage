@@ -48,7 +48,7 @@ type WeChat struct {
 	Content          string
 }
 
-//想微信发送请求获取access_token
+//向微信发送请求获取access_token
 func (this WeChat) getAccessToken() GetAccessTokenReturn {
 	tmpCorpId := this.Corpid
 	tmpAgentsecret := this.Agentsecret
