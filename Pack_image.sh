@@ -21,8 +21,8 @@ build() {
                 #cp ./deploy/Dockerfile ${OUTPUT_PATH}${baoName}/
 
                 #编译对应版本的image
-                docker build -t taycc/gomessage:latest -f ./deploy/Dockerfile "${OUTPUT_PATH}${baoName}/"
-                docker build -t taycc/gomessage:${VERSION} -f ./deploy/Dockerfile "${OUTPUT_PATH}${baoName}/"
+                docker build -t gomessage/gomessage:latest -f ./deploy/Dockerfile "${OUTPUT_PATH}${baoName}/"
+                docker build -t gomessage/gomessage:${VERSION} -f ./deploy/Dockerfile "${OUTPUT_PATH}${baoName}/"
             fi
         else
             echo "Docker服务未运行，因此跳过编译docker镜像~"
