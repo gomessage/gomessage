@@ -1,6 +1,6 @@
 > - v1版本的gomessage在当前仓库中不再继续更新；
 > - 但是考虑到v1版本为单通道的消息转发架构，性能极为出色，因此独立出去成为一个单独的仓库；
-> - 新仓库地址为：https://github.com/gomessage/gomessage-v1；
+> - 新仓库地址为：https://github.com/gomessage/gomessage-v1
 > - 独立出去的仓库不进行较大的架构变动，而是不断定时的修补一些补丁和小规模的功能改进；
 > - 如果您想体验gomessage的最新功能，请关注master分之上的最新提交。
 
