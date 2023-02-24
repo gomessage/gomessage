@@ -65,6 +65,9 @@ build_linux:
 	cp -rf ./config "${OUTPUT_PATH}/${packagePath}/"
 	cp -rf ./assets "${OUTPUT_PATH}/${packagePath}/"
 	tar -zcvf "${OUTPUT_PATH}/${packagePath}.tar.gz" -C ${OUTPUT_PATH} ${packagePath}
+	@echo "\n---------编译封装image专用的tar包：开始---------\n"
+	tar -zcvf "${OUTPUT_PATH}/${NAME}.tar.gz" -C ${OUTPUT_PATH} ${packagePath}
+	@echo "\n---------编译封装image专用的tar包：完成---------\n"
 	ls -alh "${OUTPUT_PATH}/${packagePath}/"
 
 
@@ -114,8 +117,10 @@ end:
 # Target：编译为docker镜像
 ######################################
 .PHONY: docker
+docker: DOCKER_SCAN_SUGGEST := False
 docker:
-	docker build -t ${NAME}:latest -f Dockerfile .
-	docker login harbor.zmlearn.com -u taycc -p xxxxxx
-	docker tag ${NAME}:latest harbor.zmlearn.com/triton/triton:${DATE_NOW}_${OFFICE_ENV}
-	docker push harbor.zmlearn.com/triton/triton:${DATE_NOW}_${OFFICE_ENV}
+	@echo "\n---------版本：latest---------\n"
+	docker build -t gomessage/gomessage:latest -f ./deploy/Dockerfile  "${OUTPUT_PATH}/"
+	@echo "\n---------版本：${VERSION}---------\n"
+	docker build -t gomessage/gomessage:${VERSION} -f ./deploy/Dockerfile  "${OUTPUT_PATH}/"
+	@echo "\n---------image打包完成---------\n"
