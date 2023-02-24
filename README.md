@@ -2,7 +2,7 @@
 
 投产架构：
 
-![](https://img.taycc.com/2021-12-27-GoMessage的作用.png)
+![](https://img.taycc.com/2021-12-27-GoMessage.png)
 
 ## 体验地址
 
