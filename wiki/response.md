@@ -18,7 +18,7 @@ Response成功示例：
     "name": "test",
     "description": "test"
   },
-  "err": null
+  "error": null
 }
 ```
 
@@ -29,7 +29,7 @@ Response失败示例：
   "code": 0,
   "msg": "命名空间已存在，不能重复创建",
   "result": null,
-  "err": {
+  "error": {
     "Code": 19,
     "ExtendedCode": 2067,
     "SystemErrno": 0

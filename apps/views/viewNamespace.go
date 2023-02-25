@@ -38,7 +38,7 @@ func PostNamespace(g *gin.Context) {
 	}
 	namespace, err := models.AddNamespace(&body)
 	if err != nil {
-		g.JSON(http.StatusBadRequest, &ResponseTemplate{Code: 0, Msg: "命名空间已存在，不能重复创建", Err: err})
+		g.JSON(http.StatusBadRequest, &ResponseTemplate{Code: 0, Msg: "命名空间已存在，不能重复创建", Error: err})
 	} else {
 		g.JSON(http.StatusOK, &ResponseTemplate{Code: 1, Msg: "创建成功", Result: &namespace})
 	}
