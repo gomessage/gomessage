@@ -15,6 +15,24 @@ import (
     "time"
 )
 
+// GoMessageByGet
+// @Tags gomessage
+// @Router /go/message [GET]
+func GoMessageByGet(g *gin.Context) {
+    namespace := g.Param("namespace")
+    if namespace == "message" {
+        namespace = "default"
+    }
+    loggers.DefaultLogger.Info("当前命名空间为：", namespace)
+
+    result, err := models.GetNamespaceByName(namespace)
+    if err != nil {
+        g.JSON(http.StatusBadRequest, httpBase.ResponseFailure("namespace不存在", err))
+    } else {
+        g.JSON(http.StatusOK, httpBase.ResponseSuccessful("namespace ready", result))
+    }
+}
+
 // GoMessageByPost
 // @Tags gomessage
 // @Router /go/:namespace [POST]
@@ -38,40 +56,25 @@ func GoMessageByPost(g *gin.Context) {
     cachex.SetCacheData(namespace, cachex.CacheData)
 
     //从数据库中拿到用户当前用户在图形界面上配置的参数
-    //userConfig := sendMessage.GetUserConfig(namespace)
+    userConfig := sendMessage.GetUserConfig(namespace)
+    fmt.Println(userConfig)
 
     //创建过境数据与用户变量之间的映射
-    //analysisDataList := sendMessage.AnalysisData(userConfig.VariablesMap, cachex.CacheData.RequestByte)
+    analysisDataList := sendMessage.AnalysisData(userConfig.VariablesMap, cachex.CacheData.RequestByte)
+    fmt.Println(analysisDataList)
 
     //得到渲染完成后的消息列表
-    //templateMessageList := sendMessage.CompleteMessage(userConfig.MessageTemplate, analysisDataList)
+    templateMessageList := sendMessage.CompleteMessage(userConfig.MessageTemplate, analysisDataList)
+    fmt.Println(templateMessageList)
 
     //判断消息是否聚合发送
-    //if userConfig.MessageMerge {
-    //    MergeSend(templateMessageList, userConfig)
-    //} else {
-    //    DisperseSend(templateMessageList, userConfig)
-    //}
+    if userConfig.MessageMerge {
+        MergeSend(templateMessageList, userConfig)
+    } else {
+        DisperseSend(templateMessageList, userConfig)
+    }
 
     g.JSON(http.StatusOK, "ok")
-}
-
-// GoMessageByGet
-// @Tags gomessage
-// @Router /go/message [GET]
-func GoMessageByGet(g *gin.Context) {
-    namespace := g.Param("namespace")
-    if namespace == "message" {
-        namespace = "default"
-    }
-    loggers.DefaultLogger.Info("当前命名空间为：", namespace)
-
-    result, err := models.GetNamespaceByName(namespace)
-    if err != nil {
-        g.JSON(http.StatusBadRequest, httpBase.ResponseFailure("namespace不存在", err))
-    } else {
-        g.JSON(http.StatusOK, httpBase.ResponseSuccessful("namespace ready", result))
-    }
 }
 
 // MergeSend 消息（聚合）发送，所有消息拼接成一个整体
@@ -120,8 +123,8 @@ func DisperseSend(messageList []string, userConfig sendMessage.Config) {
                 sendMessage.SendMessage(data, url)
 
             } else if cType == "dingtalk" {
-                url := sendMessage.RobotRandomUrl(oneClientInfo.ExtendDingtalk.RobotUrlInfoList)
-                data := clients.MessageRendersDingtalk(oneClientInfo.ExtendDingtalk.RobotKeyword, oneMessage)
+                url := sendMessage.RobotRandomUrl(oneClientInfo.ExtendDingtalk.RobotUrlInfoList)              //随机获取一个机器人地址
+                data := clients.MessageRendersDingtalk(oneClientInfo.ExtendDingtalk.RobotKeyword, oneMessage) //拼装一个完整的服务钉钉消息推送规范的内容体
                 sendMessage.SendMessage(data, url)
 
             } else if cType == "wechat" {
@@ -137,5 +140,5 @@ func DisperseSend(messageList []string, userConfig sendMessage.Config) {
             }
         }
     }
-    fmt.Println("没有进入for循环")
+    fmt.Println("不切割信息发送，for循环已结束")
 }

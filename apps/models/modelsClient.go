@@ -194,7 +194,7 @@ func ActiveClient(id int, active bool) (*Client, error) {
 
 func GetActiveClient() ([]Client, error) {
     var list []Client
-    result := database.DB.DefaultClient.Where(&Client{IsActive: true}).First(&list)
+    result := database.DB.DefaultClient.Where(&Client{IsActive: true}).Find(&list)
     if result.Error != nil {
         return list, result.Error
     }

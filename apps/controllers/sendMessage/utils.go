@@ -43,7 +43,7 @@ func SendMessage(data interface{}, url string) {
 	//发送post请求
 	client := &http.Client{}
 	//response, err := client.Post(url, contentType, bytes.NewBuffer(e)) //post请求时，数据必须是byte
-	response, err := client.Post(url, contentType, strings.NewReader(string(e))) //post请求时，数据必须是byte
+	response, err := client.Post(url, contentType, strings.NewReader(string(e)))
 	if err != nil {
 		fmt.Println(err)
 	}
