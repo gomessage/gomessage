@@ -67,6 +67,7 @@ func GetNamespaceById(id int) (*Namespace, error) {
 	var ns Namespace
 	result := database.DB.DefaultClient.Where(&Namespace{ID: id}).First(&ns)
 	return &ns, result.Error
+
 }
 
 func GetNamespaceByName(name string) (*Namespace, error) {

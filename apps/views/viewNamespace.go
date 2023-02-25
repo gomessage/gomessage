@@ -1,6 +1,7 @@
 package views
 
 import (
+	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"gomessage/apps/models"
@@ -18,12 +19,12 @@ func ListNamespace(g *gin.Context) {
 	case "true", "false", "1", "0", "":
 		list, err := models.ListNamespace(isActive)
 		if err != nil {
-			g.JSON(http.StatusInternalServerError, "服务器内部错误")
+			g.JSON(http.StatusInternalServerError, ResponseFailure("服务器内部错误", err))
 		}
-		g.JSON(http.StatusOK, list)
+		g.JSON(http.StatusOK, ResponseSuccessful("查询成功", list))
 
 	default:
-		g.JSON(http.StatusBadRequest, "参数错误")
+		g.JSON(http.StatusBadRequest, ResponseFailure("参数错误", errors.New("is_active的值只能为布尔值true、false")))
 	}
 }
 
@@ -53,9 +54,9 @@ func GetNamespace(g *gin.Context) {
 	id, _ := strconv.Atoi(g.Param("id"))
 	result, err := models.GetNamespaceById(id)
 	if err != nil {
-		g.JSON(http.StatusBadRequest, "参数错误")
+		g.JSON(http.StatusBadRequest, ResponseFailure("参数错误", err))
 	} else {
-		g.JSON(http.StatusOK, result)
+		g.JSON(http.StatusOK, ResponseSuccessful("查询成功", result))
 	}
 }
 
