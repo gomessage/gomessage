@@ -29,10 +29,10 @@
                     <el-input v-model="oneClientInfo.client_info.robot_keyword" placeholder="需要后端发数据给我" disabled></el-input>
                 </el-form-item>
 
-                <div v-for="(list, index) in oneClientInfo.client_info.robot_url" :key="index">
-                    <el-form-item label="机器人URL:">
-                        <el-input v-model="list.url" placeholder="需要后端发数据给我" disabled></el-input>
-                    </el-form-item>
+                <div v-for="(list, index) in oneClientInfo.client_info.robot_url_list" :key="index">
+                  <el-form-item label="机器人URL:">
+                    <el-input v-model="list.url" placeholder="需要后端发数据给我" disabled></el-input>
+                  </el-form-item>
                 </div>
             </div>
 
@@ -70,11 +70,11 @@
                     <el-input v-model="oneClientInfo.client_info.title_color" placeholder="需要后端发数据给我" disabled></el-input>
                 </el-form-item>
 
-                <div v-for="(list, index) in oneClientInfo.client_info.robot_url" :key="index">
-                    <el-form-item label="机器人URL:">
-                        <el-input v-model="list.url" placeholder="需要后端发数据给我" disabled></el-input>
-                    </el-form-item>
-                </div>
+              <div v-for="(list, index) in oneClientInfo.client_info.robot_url_list" :key="index">
+                <el-form-item label="机器人URL:">
+                  <el-input v-model="list.url" placeholder="需要后端发数据给我" disabled></el-input>
+                </el-form-item>
+              </div>
             </div>
 
             <div v-else>

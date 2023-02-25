@@ -4,25 +4,30 @@
         <!--容器布局：全局-->
         <el-container id="MyContainer-Container">
 
-            <!--容器布局：Header-->
-            <el-header id="MyContainer-Header">
-                <NavHeader/>
-            </el-header>
+          <!--容器布局：Header-->
+          <el-header id="MyContainer-Header">
+            <NavHeader/>
+          </el-header>
 
 
+          <el-container>
+            <!--容器布局：Aside-->
+            <el-aside id="MyContainer-Aside" width="220px">
+              <NavAside/>
+            </el-aside>
 
             <!--容器布局：Main-->
             <el-main id="MyContainer-Main">
-<!--                <CSteps></CSteps>-->
-
-                <!-- 路由匹配到的组件将渲染在这里 -->
-                <router-view></router-view>
+              <!-- 路由匹配到的组件将渲染在这里 -->
+              <router-view></router-view>
             </el-main>
+          </el-container>
 
-            <!--容器布局：Footer-->
-            <el-footer id="MyContainer-Footer">
-                <NavFooter/>
-            </el-footer>
+
+          <!--容器布局：Footer-->
+          <el-footer id="MyContainer-Footer">
+            <NavFooter/>
+          </el-footer>
 
         </el-container>
 
@@ -32,14 +37,16 @@
 <script>
 import NavHeader from './views/NavHeader.vue'
 import NavFooter from "./views/NavFooter";
+import NavAside from "@/views/NavAside.vue";
 // import CSteps from "./views/cSteps";
 
 export default {
     name: 'app',
     components: {
-        NavHeader, //导航栏组件
-        NavFooter, //底部栏组件
-        // CSteps, //步骤条
+      NavHeader, //导航栏组件
+      NavFooter, //底部栏组件
+      NavAside,
+      // CSteps, //步骤条
     }
 }
 </script>
@@ -69,22 +76,31 @@ export default {
 
 /*布局容器：导航栏*/
 #MyContainer-Header {
-    padding: 0;
-    margin: 0;
+  padding: 0;
+  margin: 0;
+  /*border: 3px solid red;*/
 }
 
 /*布局容器：内容栏*/
 #MyContainer-Main {
-    padding: 0;
-    margin: 0;
+  padding: 0;
+  margin: 0;
+  /*border: 3px solid red;*/
+}
+
+#MyContainer-Aside {
+  padding: 0;
+  margin: 0;
+  /*height: 100%;*/
+  /*border: 3px solid black;*/
 }
 
 /*布局容器：底部栏*/
 #MyContainer-Footer {
-    padding: 0;
-    margin: 0;
-    height: auto !important;
-    /*border: 10px solid red;*/
+  padding: 0;
+  margin: 0;
+  height: auto !important;
+  /*border: 3px solid red;*/
 }
 
 /*全局设定el-row的样式，但是我打算用别的方式实现，这个先不删，留在这里备忘*/

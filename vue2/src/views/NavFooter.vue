@@ -7,7 +7,7 @@
             <el-menu-item id="NavFooter-menu-item" disabled>
 
 
-                <el-link href="https://github.com/gomessage/gomessage" type="primary">@ 2020~2022&nbsp;&nbsp;</el-link>
+                <el-link href="https://github.com/gomessage/gomessage" type="primary">@ 2020~2023&nbsp;&nbsp;</el-link>
                 <el-link href="https://opensource.org/licenses/MIT" type="primary">MIT License&nbsp;&nbsp;&nbsp;</el-link>
                 <el-link href="https://github.com/gomessage/gomessage" type="primary">Github&nbsp;</el-link>
                 or

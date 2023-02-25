@@ -1,7 +1,7 @@
 module.exports = {
-    publicPath: "./",               //指定相对子路径
-    assetsDir: "static",            //放置生成的静态资源 (js、css、img、fonts) 的 (相对于 outputDir 的) 目录
-    outputDir: "../assets/vue2",    //当运行 vue-cli-service build 时生成的生产环境构建文件的目录。注意目标目录的内容在构建之前会被清除 (构建时传入 --no-clean 可关闭该行为)
+    outputDir: "../assets/vue2",    //指定输出目录
+    publicPath: "./",               //指定相对于"输出目录"的子目录
+    assetsDir: "static",            //指定最终静态文件的存放目录，放置生成的静态资源 (js、css、img、fonts) 的 (相对于 outputDir 的) 目录
     devServer: {
         open: true,
         port: 7070,

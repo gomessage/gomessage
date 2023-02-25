@@ -6,9 +6,16 @@
         <!--左侧logo-->
         <el-menu-item>
             <router-link to="/">
-                <img height="90%" src="../assets/logo.svg">
-                &nbsp;&nbsp;
-                <span style="font-size: 15px;">GoMessage · 消息转发器</span>
+              <img height="90%" src="../assets/logo.svg">
+              &nbsp;&nbsp;
+              <span style="font-size: 15px;">GoMessage · 消息转发器</span>
+              <el-button
+                  disabled
+                  icon="el-icon-location"
+                  size="medium"
+                  style="color: navy;margin-left: 100px">
+                {{ getStoreNamespace }}
+              </el-button>
             </router-link>
         </el-menu-item>
 
@@ -50,20 +57,25 @@
 <script>
 
 export default {
-    name: "NavHeader",
-    data() {
-        return {
-            // activeIndex: this.getActiveIndex,
-        };
-    },
-    components: {
-        // CSteps,
-    },
-    methods: {
-        handleSelect(key, keyPath) {
-            console.log(key, keyPath);
-        }
+  name: "NavHeader",
+  data() {
+    return {
+      // activeIndex: this.getActiveIndex,
+    };
+  },
+  components: {
+    // CSteps,
+  },
+  computed: {
+    getStoreNamespace: function () {
+      return this.$store.getters.getNamespace
     }
+  },
+  methods: {
+    handleSelect(key, keyPath) {
+      console.log(key, keyPath);
+    }
+  }
 }
 </script>
 
