@@ -60,13 +60,6 @@ func Path(g *gin.Engine) {
         //数据劫持
         v1View.GET("/:namespace/json", views.GetNamespaceJson)
 
-        //客户端
-        v1View.GET("/:namespace/client", httpClient.ListClient)          //获取所有客户端
-        v1View.POST("/:namespace/client", httpClient.PostClient)         //新增一个客户端
-        v1View.GET("/:namespace/client/:id", httpClient.GetClient)       //获取一个客户端的详情
-        v1View.PUT("/:namespace/client/:id", httpClient.PutClient)       //更新一个客户端
-        v1View.DELETE("/:namespace/client/:id", httpClient.DeleteClient) //删除一个客户端
-
         //用户变量
         v1View.GET("/:namespace/vars", views.ListVariables)
         v1View.POST("/:namespace/vars", views.PostVariables)
@@ -74,6 +67,13 @@ func Path(g *gin.Engine) {
         //消息模板
         v1View.GET("/:namespace/template", views.ListTemplate)
         v1View.POST("/:namespace/template", views.PostTemplate)
+
+        //客户端
+        v1View.GET("/:namespace/client", httpClient.ListClient)          //获取所有客户端
+        v1View.POST("/:namespace/client", httpClient.PostClient)         //新增一个客户端
+        v1View.GET("/:namespace/client/:id", httpClient.GetClient)       //获取客户端详情
+        v1View.PUT("/:namespace/client/:id", httpClient.PutClient)       //更新一个客户端
+        v1View.DELETE("/:namespace/client/:id", httpClient.DeleteClient) //删除一个客户端
 
     }
 

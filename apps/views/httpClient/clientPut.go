@@ -14,7 +14,10 @@ import (
 func PutClient(g *gin.Context) {
     id, _ := strconv.Atoi(g.Param("id"))
     client := models.Client{}
-    g.ShouldBindJSON(&client)
+    err := g.ShouldBindJSON(&client)
+    if err != nil {
+        return
+    }
 
     result, err := models.UpdateClient(id, &client)
     if err != nil {

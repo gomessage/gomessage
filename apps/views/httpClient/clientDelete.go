@@ -1,8 +1,10 @@
 package httpClient
 
 import (
+    "fmt"
     "github.com/gin-gonic/gin"
     "gomessage/apps/models"
+    "gomessage/apps/views/httpBase"
     "net/http"
     "strconv"
 )
@@ -13,10 +15,10 @@ import (
 // @Router /api/v1/:namespace/client/:id [DELETE]
 func DeleteClient(g *gin.Context) {
     id, _ := strconv.Atoi(g.Param("id"))
-    _, err := models.DeleteClient(id)
+    num, err := models.DeleteClient(id)
     if err != nil {
-        g.JSON(http.StatusBadRequest, err)
+        g.JSON(http.StatusBadRequest, httpBase.ResponseFailure("删除失败", err))
     } else {
-        g.JSON(http.StatusOK, map[string]bool{"result": true})
+        g.JSON(http.StatusOK, httpBase.ResponseSuccessful("删除成功", fmt.Sprintf("受影响的行数为：%v", num)))
     }
 }

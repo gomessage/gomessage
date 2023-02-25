@@ -82,23 +82,23 @@ func MergeSend(messageList []string, userConfig sendMessage.Config) {
 
         if cType == "feishu" {
             msg := sendMessage.MessageJoint(messageList, cType) //完成消息拼接，不同的客户端消息拼接格式不同
-            url := sendMessage.RobotRandomUrl(oneClientInfo.ClientInfoFeishu.RobotUrls)
+            url := sendMessage.RobotRandomUrl(oneClientInfo.ExtendFeishu.RobotUrls)
             data := clients.MessageRendersFeishu(oneClientInfo, msg)
             sendMessage.SendMessage(data, url)
 
         } else if cType == "dingtalk" {
             msg := sendMessage.MessageJoint(messageList, cType)
-            url := sendMessage.RobotRandomUrl(oneClientInfo.ClientInfoDingtalk.RobotUrls)
-            data := clients.MessageRendersDingtalk(oneClientInfo.ClientInfoDingtalk.RobotKeyword, msg)
+            url := sendMessage.RobotRandomUrl(oneClientInfo.ExtendDingtalk.RobotUrlInfoList)
+            data := clients.MessageRendersDingtalk(oneClientInfo.ExtendDingtalk.RobotKeyword, msg)
             sendMessage.SendMessage(data, url)
 
         } else if cType == "wechat" {
             msg := sendMessage.MessageJoint(messageList, cType)
             wechat := clients.WeChat{
-                Corpid:      oneClientInfo.ClientInfoWechat.CorpId,
-                Agentid:     oneClientInfo.ClientInfoWechat.AgentId,
-                Agentsecret: oneClientInfo.ClientInfoWechat.Secret,
-                Touser:      oneClientInfo.ClientInfoWechat.Touser,
+                Corpid:      oneClientInfo.ExtendWechat.CorpId,
+                Agentid:     oneClientInfo.ExtendWechat.AgentId,
+                Agentsecret: oneClientInfo.ExtendWechat.Secret,
+                Touser:      oneClientInfo.ExtendWechat.Touser,
                 Content:     msg,
             }
             wechat.PushMessage()
@@ -115,22 +115,22 @@ func DisperseSend(messageList []string, userConfig sendMessage.Config) {
             cType := oneClientInfo.ClientType
 
             if cType == "feishu" {
-                url := sendMessage.RobotRandomUrl(oneClientInfo.ClientInfoFeishu.RobotUrls)
+                url := sendMessage.RobotRandomUrl(oneClientInfo.ExtendFeishu.RobotUrls)
                 data := clients.MessageRendersFeishu(oneClientInfo, oneMessage)
                 sendMessage.SendMessage(data, url)
 
             } else if cType == "dingtalk" {
-                url := sendMessage.RobotRandomUrl(oneClientInfo.ClientInfoDingtalk.RobotUrls)
-                data := clients.MessageRendersDingtalk(oneClientInfo.ClientInfoDingtalk.RobotKeyword, oneMessage)
+                url := sendMessage.RobotRandomUrl(oneClientInfo.ExtendDingtalk.RobotUrlInfoList)
+                data := clients.MessageRendersDingtalk(oneClientInfo.ExtendDingtalk.RobotKeyword, oneMessage)
                 sendMessage.SendMessage(data, url)
 
             } else if cType == "wechat" {
                 fmt.Println("进入wechat判断...")
                 wechat := clients.WeChat{
-                    Corpid:      oneClientInfo.ClientInfoWechat.CorpId,
-                    Agentid:     oneClientInfo.ClientInfoWechat.AgentId,
-                    Agentsecret: oneClientInfo.ClientInfoWechat.Secret,
-                    Touser:      oneClientInfo.ClientInfoWechat.Touser,
+                    Corpid:      oneClientInfo.ExtendWechat.CorpId,
+                    Agentid:     oneClientInfo.ExtendWechat.AgentId,
+                    Agentsecret: oneClientInfo.ExtendWechat.Secret,
+                    Touser:      oneClientInfo.ExtendWechat.Touser,
                     Content:     oneMessage,
                 }
                 wechat.PushMessage()
