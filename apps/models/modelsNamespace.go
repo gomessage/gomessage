@@ -25,16 +25,13 @@ func (*Namespace) TableName() string {
 
 func AddNamespace(n *Namespace) (*Namespace, error) {
 	createResult := database.DB.DefaultClient.Create(&n)
-
 	if createResult.Error != nil {
 		return nil, createResult.Error
-
 	} else {
 		if createResult.RowsAffected != 1 {
 			return nil, errors.New("创建数据失败：记录影响行数不为1")
 		}
 	}
-
 	return n, createResult.Error
 }
 
@@ -60,7 +57,7 @@ func ListNamespace(isActive string) (*[]Namespace, error) {
 		return &nsList, result.Error
 
 	} else { //如果不是空字符串，则把字符串转换为布尔值，然后再进行查询.
-		status, _ := strconv.ParseBool(isActive) //字符串转布尔值
+		status, _ := strconv.ParseBool(isActive) //字符串转布尔值（1=True，0=False）
 		result := database.DB.DefaultClient.Where("is_active", status).Find(&nsList)
 		return &nsList, result.Error
 	}

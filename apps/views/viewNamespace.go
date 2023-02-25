@@ -14,7 +14,6 @@ import (
 // @Router /api/v1/namespace [GET]
 func ListNamespace(g *gin.Context) {
 	isActive := g.DefaultQuery("is_active", "")
-
 	switch isActive {
 	case "true", "false", "1", "0", "":
 		list, err := models.ListNamespace(isActive)
@@ -39,9 +38,9 @@ func PostNamespace(g *gin.Context) {
 	}
 	namespace, err := models.AddNamespace(&body)
 	if err != nil {
-		g.JSON(http.StatusBadRequest, &ResponseTemplate{Msg: "命名空间已存在，不能重复创建", Err: err})
+		g.JSON(http.StatusBadRequest, &ResponseTemplate{Code: 0, Msg: "命名空间已存在，不能重复创建", Err: err})
 	} else {
-		g.JSON(http.StatusOK, &namespace)
+		g.JSON(http.StatusOK, &ResponseTemplate{Code: 1, Msg: "创建成功", Result: &namespace})
 	}
 }
 

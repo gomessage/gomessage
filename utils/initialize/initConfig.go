@@ -64,10 +64,10 @@ func setDefaultBaseConfig() {
 
 	//运行相关
 	viper.SetDefault("server.host", "127.0.0.1") //启动时监听的地址
-	viper.SetDefault("server.port", "8080")      //启动时监听的端口
+	viper.SetDefault("server.port", "7077")      //启动时监听的端口
 
 	//日志相关
-	viper.SetDefault("log.level", "info")              //日志记录级别；（选项：debug、info）
-	viper.SetDefault("log.format", "json")             //日志记录格式；（选项：json、text）
-	viper.SetDefault("log.path", "./logs/service.log") //日志输出位置
+	viper.SetDefault("log.level", "info")                 //日志记录级别；（选项：debug、info）
+	viper.SetDefault("log.format", "json")                //日志记录格式；（选项：json、text）
+	viper.SetDefault("log.logFile", "./logs/runtime.log") //日志输出位置
 }

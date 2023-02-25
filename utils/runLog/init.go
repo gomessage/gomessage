@@ -16,8 +16,7 @@ var Log = logrus.New()
 func InitLog() {
 
 	//日志文件位置
-	logFile := viper.GetString("log.logFile") //获取默认配置文件中指定的值
-	//logFile := "./logs/service.log"              //获取默认配置文件中指定的值
+	logFile := viper.GetString("log.logFile") //获取默认配置文件中指定的值（默认值：./logs/runtime.log）
 
 	//确保存放日志文件的目录始终存在
 	logPathDir := path.Dir(logFile)                              //返回路径中除去最后一个元素的剩余部分，也就是路径最后一个元素所在的目录

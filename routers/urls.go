@@ -22,7 +22,7 @@ func initStatic(g *gin.Engine) {
 func Path(g *gin.Engine) {
 
 	//=======================
-	// 全局基础路由
+	// 全局路由：基础部分
 	//=======================
 	//中间件
 	g.Use(middleware.Cors())
@@ -39,15 +39,15 @@ func Path(g *gin.Engine) {
 	g.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler)) //Swagger页面
 
 	//=======================
-	// /go/message数据入口
+	// gomessage数据入口
 	//=======================
 	g.GET("/go/:namespace", views.GoMessageByGet, middleware.IsNamespace())
-	g.GET("/go", func(c *gin.Context) { c.Request.URL.Path = "/go/message"; g.HandleContext(c) })        //把几个路由关键字，统一重定向到统一的处理逻辑上
-	g.GET("/gomessage", func(c *gin.Context) { c.Request.URL.Path = "/go/message"; g.HandleContext(c) }) //把几个路由关键字，统一重定向到统一的处理逻辑上
+	g.GET("/go", func(c *gin.Context) { c.Request.URL.Path = "/go/message"; g.HandleContext(c) })        //把"/go"重定向到"/go/message"的路由上
+	g.GET("/gomessage", func(c *gin.Context) { c.Request.URL.Path = "/go/message"; g.HandleContext(c) }) //把"/gomessage"重定向到"/go/message"的路由上
 
 	g.POST("/go/:namespace", views.GoMessageByPost, middleware.IsNamespace())
-	g.POST("/go", func(c *gin.Context) { c.Request.URL.Path = "/go/message"; g.HandleContext(c) })        //把几个路由关键字，统一重定向到统一的处理逻辑上
-	g.POST("/gomessage", func(c *gin.Context) { c.Request.URL.Path = "/go/message"; g.HandleContext(c) }) //把几个路由关键字，统一重定向到统一的处理逻辑上
+	g.POST("/go", func(c *gin.Context) { c.Request.URL.Path = "/go/message"; g.HandleContext(c) })        //把"/go"重定向到"/go/message"的路由上
+	g.POST("/gomessage", func(c *gin.Context) { c.Request.URL.Path = "/go/message"; g.HandleContext(c) }) //把"/gomessage"重定向到"/go/message"的路由上
 
 	//=======================
 	// 用户操作接口：v1版本

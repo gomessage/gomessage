@@ -4,7 +4,7 @@
 global:
   appName: "GoMessage"
   appDescription: "消息转发器"
-  env: "dev"                    # 当前运行环境（这里是的第二优先级，如果启动服务时没有指定--env=dev，则这里的才会生效）
+  env: "dev"                    # 当前运行环境（这里是的第二优先级，如果启动时的命令行参数时没有指定--env=dev时，则这里的才会生效）
   ginMode: "release"            # Gin框架运行模式（debug、test、release）
 
 
@@ -22,7 +22,7 @@ server:
 log:
   level: info                   #（选项：debug、info）
   format: text                  #（选项：json、text）
-  logFile: ./gomessage.log
+  logFile: ./logs/runtime.log
 
 
 #--------------------
