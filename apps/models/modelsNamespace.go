@@ -3,7 +3,7 @@ package models
 import (
     "errors"
     "gomessage/utils/database"
-    "gomessage/utils/runLog"
+    "gomessage/utils/log/loggers"
     "gorm.io/gorm"
     "strconv"
     "time"
@@ -93,9 +93,9 @@ func InitNamespace() {
     if result.Error != nil {
         newNamespace := Namespace{IsActive: true, Name: "default", Description: "This is the default namespace created by GoMessage."}
         database.DB.DefaultClient.Create(&newNamespace)
-        runLog.Log.Info("创建default命名空间...")
+        loggers.DefaultLogger.Info("创建default命名空间...")
     } else {
-        runLog.Log.Info("default命名空间已存在...")
+        loggers.DefaultLogger.Info("default命名空间已存在...")
     }
 
 }

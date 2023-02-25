@@ -9,7 +9,7 @@ import (
     "gomessage/apps/controllers/sendMessage"
     "gomessage/apps/models"
     "gomessage/apps/views/httpBase"
-    "gomessage/utils/runLog"
+    "gomessage/utils/log/loggers"
     "io"
     "net/http"
     "time"
@@ -23,7 +23,7 @@ func GoMessageByPost(g *gin.Context) {
     if namespace == "message" {
         namespace = "default"
     }
-    runLog.Log.Info("当前命名空间为：", namespace)
+    loggers.DefaultLogger.Info("当前命名空间为：", namespace)
 
     //获取请求数据
     cachex.CacheData.Time = time.Now()
@@ -64,7 +64,7 @@ func GoMessageByGet(g *gin.Context) {
     if namespace == "message" {
         namespace = "default"
     }
-    runLog.Log.Info("当前命名空间为：", namespace)
+    loggers.DefaultLogger.Info("当前命名空间为：", namespace)
 
     result, err := models.GetNamespaceByName(namespace)
     if err != nil {

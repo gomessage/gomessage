@@ -9,7 +9,7 @@ import (
     "gomessage/apps/views/httpHealth"
     "gomessage/apps/views/httpIndex"
     "gomessage/routers/middleware"
-    "gomessage/utils/runLog"
+    "gomessage/utils/log/loggers"
     "net/http"
 )
 
@@ -26,6 +26,7 @@ func Path(g *gin.Engine) {
     //=======================
     //中间件
     g.Use(middleware.Cors())
+    g.Use(middleware.AccessLog())
     //加载静态文件
     initStatic(g)
     //路由重定向
@@ -69,16 +70,11 @@ func Path(g *gin.Engine) {
         //用户变量
         v1View.GET("/:namespace/vars", views.ListVariables)
         v1View.POST("/:namespace/vars", views.PostVariables)
-        //v1View.GET("/:namespace/vars/:id", views.GetVariables)
-        //v1View.PUT("/:namespace/vars/:id", views.PutVariables)
-        //v1View.DELETE("/:namespace/vars/:id", views.DeleteVariables)
 
         //消息模板
         v1View.GET("/:namespace/template", views.ListTemplate)
         v1View.POST("/:namespace/template", views.PostTemplate)
-        //v1View.GET("/:namespace/template/:id", views.GetTemplate)
-        //v1View.PUT("/:namespace/template/:id", views.PutTemplate)
-        //v1View.DELETE("/:namespace/template/:id", views.DeleteTemplate)
+
     }
 
     //=======================
@@ -94,6 +90,6 @@ func Path(g *gin.Engine) {
         v1Namespace.DELETE("/namespace/:id", views.DeleteNamespace)
     }
 
-    runLog.Log.Info("路由表加载完成...")
+    loggers.DefaultLogger.Info("路由表加载完成...")
 
 }
