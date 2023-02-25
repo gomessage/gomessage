@@ -192,9 +192,10 @@ func ActiveClient(id int, active bool) (*Client, error) {
     }
 }
 
-func GetActiveClient() ([]Client, error) {
+// GetActiveClient 获取指定命名空间下的处于激活状态的客户端
+func GetActiveClient(ns string) ([]Client, error) {
     var list []Client
-    result := database.DB.DefaultClient.Where(&Client{IsActive: true}).Find(&list)
+    result := database.DB.DefaultClient.Where(&Client{IsActive: true, Namespace: ns}).Find(&list)
     if result.Error != nil {
         return list, result.Error
     }
