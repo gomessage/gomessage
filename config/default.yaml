@@ -22,7 +22,7 @@ server:
 log:
   level: info                   #（选项：debug、info）
   format: text                  #（选项：json、text）
-  logFile: ./logs/runtime.log
+  logFile: ./gomessage.log
 
 
 #--------------------
