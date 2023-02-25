@@ -43,7 +43,7 @@ func Path(g *gin.Engine) {
     g.GET("/go/:namespace", middleware.IsNamespace(), views.GoMessageByGet)                              //给单个路由追加中间件middleware.IsNamespace()
     g.GET("/go", func(c *gin.Context) { c.Request.URL.Path = "/go/message"; g.HandleContext(c) })        //把"/go"重定向到"/go/message"的路由上
     g.GET("/gomessage", func(c *gin.Context) { c.Request.URL.Path = "/go/message"; g.HandleContext(c) }) //把"/gomessage"重定向到"/go/message"的路由上
-
+    //接收数据推送
     g.POST("/go/:namespace", middleware.IsNamespace(), views.GoMessageByPost)                             //给单个路由追加中间件middleware.IsNamespace()
     g.POST("/go", func(c *gin.Context) { c.Request.URL.Path = "/go/message"; g.HandleContext(c) })        //把"/go"重定向到"/go/message"的路由上
     g.POST("/gomessage", func(c *gin.Context) { c.Request.URL.Path = "/go/message"; g.HandleContext(c) }) //把"/gomessage"重定向到"/go/message"的路由上

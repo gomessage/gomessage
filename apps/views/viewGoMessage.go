@@ -68,9 +68,9 @@ func GoMessageByGet(g *gin.Context) {
 
     result, err := models.GetNamespaceByName(namespace)
     if err != nil {
-        g.JSON(http.StatusBadRequest, httpBase.ResponseFailure("namespace不存在aaaaaaaaaaaaa", err))
+        g.JSON(http.StatusBadRequest, httpBase.ResponseFailure("namespace不存在", err))
     } else {
-        g.JSON(http.StatusOK, httpBase.ResponseSuccessful("namespace详情", result))
+        g.JSON(http.StatusOK, httpBase.ResponseSuccessful("namespace ready", result))
     }
 }
 
