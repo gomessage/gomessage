@@ -23,7 +23,7 @@ func GoMessageByPost(g *gin.Context) {
     if namespace == "message" {
         namespace = "default"
     }
-    loggers.DefaultLogger.Info("当前命名空间为：", namespace)
+    loggers.DefaultLogger.Info("消息发送至" + namespace + "命名空间")
 
     //获取请求数据
     cachex.CacheData.Time = time.Now()
@@ -34,7 +34,7 @@ func GoMessageByPost(g *gin.Context) {
         return
     }
 
-    //把推送过来的数据写入缓存
+    //把推送过来的数据写入缓存（一个命名空间中，同一时间只能写入一条数据）
     cachex.SetCacheData(namespace, cachex.CacheData)
 
     //从数据库中拿到用户当前用户在图形界面上配置的参数
