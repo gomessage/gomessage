@@ -1,8 +1,8 @@
-package health
+package httpHealth
 
 import (
-	"github.com/gin-gonic/gin"
-	"net/http"
+    "github.com/gin-gonic/gin"
+    "net/http"
 )
 
 // Health
@@ -10,7 +10,7 @@ import (
 // @Summary 全局健康检测
 // @Router /health [GET]
 func Health(g *gin.Context) {
-	g.JSON(http.StatusOK, "Health monitoring is ok")
+    g.JSON(http.StatusOK, "Health monitoring is normal")
 }
 
 // Hello
@@ -22,5 +22,5 @@ func Health(g *gin.Context) {
 // @Success 200 {string} {string}
 // @Router /api/v1/:namespace/health [GET]
 func Hello(g *gin.Context) {
-	g.JSON(http.StatusOK, "Hello World")
+    g.JSON(http.StatusOK, "Health monitoring is normal")
 }

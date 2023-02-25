@@ -5,6 +5,7 @@ import (
     "fmt"
     "github.com/gin-gonic/gin"
     "gomessage/apps/models"
+    "gomessage/apps/views/httpBase"
     "net/http"
     "strconv"
 )
@@ -19,12 +20,12 @@ func ListNamespace(g *gin.Context) {
     case "true", "false", "1", "0", "":
         list, err := models.ListNamespace(isActive)
         if err != nil {
-            g.JSON(http.StatusInternalServerError, ResponseFailure("服务器内部错误", err))
+            g.JSON(http.StatusInternalServerError, httpBase.ResponseFailure("服务器内部错误", err))
         }
-        g.JSON(http.StatusOK, ResponseSuccessful("查询成功", list))
+        g.JSON(http.StatusOK, httpBase.ResponseSuccessful("查询成功", list))
 
     default:
-        g.JSON(http.StatusBadRequest, ResponseFailure("参数错误", errors.New("is_active的值只能为布尔值true、false")))
+        g.JSON(http.StatusBadRequest, httpBase.ResponseFailure("参数错误", errors.New("is_active的值只能为布尔值true、false")))
     }
 }
 
@@ -39,9 +40,9 @@ func PostNamespace(g *gin.Context) {
     }
     namespace, err := models.AddNamespace(&body)
     if err != nil {
-        g.JSON(http.StatusBadRequest, ResponseFailure("命名空间已存在，不能重复创建", err))
+        g.JSON(http.StatusBadRequest, httpBase.ResponseFailure("命名空间已存在，不能重复创建", err))
     } else {
-        g.JSON(http.StatusOK, ResponseSuccessful("命名空间创建成功", &namespace))
+        g.JSON(http.StatusOK, httpBase.ResponseSuccessful("命名空间创建成功", &namespace))
     }
 }
 
@@ -54,9 +55,9 @@ func GetNamespace(g *gin.Context) {
     id, _ := strconv.Atoi(g.Param("id"))
     result, err := models.GetNamespaceById(id)
     if err != nil {
-        g.JSON(http.StatusBadRequest, ResponseFailure("参数错误", err))
+        g.JSON(http.StatusBadRequest, httpBase.ResponseFailure("参数错误", err))
     } else {
-        g.JSON(http.StatusOK, ResponseSuccessful("查询成功", result))
+        g.JSON(http.StatusOK, httpBase.ResponseSuccessful("查询成功", result))
     }
 }
 
@@ -71,9 +72,9 @@ func PutNamespace(g *gin.Context) {
 
     result, err := models.UpdateNamespace(id, &body)
     if err != nil {
-        g.JSON(http.StatusBadRequest, ResponseFailure("namespace名称不能重复", err))
+        g.JSON(http.StatusBadRequest, httpBase.ResponseFailure("namespace名称不能重复", err))
     } else {
-        g.JSON(http.StatusOK, ResponseSuccessful("修改成功", result))
+        g.JSON(http.StatusOK, httpBase.ResponseSuccessful("修改成功", result))
     }
 }
 
@@ -85,8 +86,8 @@ func DeleteNamespace(g *gin.Context) {
     id, _ := strconv.Atoi(g.Param("id"))
     num, err := models.DeleteNamespace(id)
     if err != nil {
-        g.JSON(http.StatusBadRequest, ResponseFailure("删除失败", err))
+        g.JSON(http.StatusBadRequest, httpBase.ResponseFailure("删除失败", err))
     } else {
-        g.JSON(http.StatusOK, ResponseSuccessful("删除操作执行成功", fmt.Sprintf("受影响的行数：%v", num)))
+        g.JSON(http.StatusOK, httpBase.ResponseSuccessful("删除操作执行成功", fmt.Sprintf("受影响的行数：%v", num)))
     }
 }
