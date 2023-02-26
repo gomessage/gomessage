@@ -5,17 +5,15 @@
         <el-row type="flex" justify="center" id="my-row">
 
             <el-menu-item id="NavFooter-menu-item" disabled>
-
-
-                <el-link href="https://github.com/gomessage/gomessage" type="primary">@ 2020~2023&nbsp;&nbsp;</el-link>
-                <el-link href="https://opensource.org/licenses/MIT" type="primary">MIT License&nbsp;&nbsp;&nbsp;</el-link>
-                <el-link href="https://github.com/gomessage/gomessage" type="primary">Github&nbsp;</el-link>
-                or
-                <el-link href="https://gitee.com/gomessage/gomessage" type="primary">&nbsp;Gitee&nbsp;&nbsp;</el-link>
-
-
-                Give feedback and Suggestions to the author :
-                <el-link href="mailto:taycc3223@gmail.com" type="primary">Email</el-link>
+              <el-link href="https://github.com/gomessage/gomessage" type="primary">@ 2020~2023&nbsp;&nbsp;</el-link>
+              <el-link href="https://opensource.org/licenses/MIT" type="primary">MIT License&nbsp;&nbsp;&nbsp;</el-link>
+              <el-link href="https://github.com/gomessage/gomessage" type="primary">Github&nbsp;</el-link>
+              or
+              <el-link href="https://gitee.com/gomessage/gomessage" type="primary">&nbsp;Gitee&nbsp;&nbsp;</el-link>
+              Version :
+              <el-link href="https://github.com/gomessage/gomessage/releases" type="primary">v2.0.1&nbsp;&nbsp;</el-link>
+              Give feedback and Suggestions to the author :
+              <el-link href="mailto:taycc3223@gmail.com" type="primary">Email</el-link>
 
 
             </el-menu-item>

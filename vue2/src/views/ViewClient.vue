@@ -125,7 +125,7 @@ export default {
     //保存激活状态
     saveActiveStatus: function () {
       this.clientList.forEach(client => {
-        putClientOne(client.id, client).then(response => {
+        putClientOne(this.$store.getters.getNamespace, client.id, client).then(response => {
           console.log(response.data);
         }).catch(err => {
           console.log(err);
@@ -147,7 +147,7 @@ export default {
     // 删除一行数据：跟后端交互，然后刷新表格
     deleteOneClient(index, rows) {
       let id = rows[index].id;
-      deleteClientOne(id).then(response => {
+      deleteClientOne(this.$store.getters.getNamespace, id, null).then(response => {
         if (response.data.code === 1) {
           this.$message.success("删除一行数据成功...");
           rows.splice(index, 1);
@@ -163,7 +163,7 @@ export default {
     //获取单个客户端的详情
     getOneClient: function (index, rows) {
       let id = rows[index].id;
-      getClientOne(id).then(response => {
+      getClientOne(this.$store.getters.getNamespace, id, null).then(response => {
         console.log(response.data.result);
         this.clientOneInfo = response.data.result;
       }).catch(err => {

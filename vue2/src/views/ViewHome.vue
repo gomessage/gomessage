@@ -1,15 +1,15 @@
 <template>
     <div>
         <el-row style="margin-top: 20px" class="shadow">
-            <el-col span="10" offset="7">
-                <Domain></Domain>
+            <el-col :offset="7" :span="10">
+              <Domain></Domain>
             </el-col>
         </el-row>
-        <el-row>
-            <el-col span="10" offset="7" style="margin-top: 150px">
-                <el-button @click="simulation" round>模拟 AlertManager 的报警推送</el-button>
-            </el-col>
-        </el-row>
+      <el-row>
+        <el-col :offset="7" :span="10" style="margin-top: 150px">
+          <el-button round @click="simulation">模拟 AlertManager 推送一条报警信息</el-button>
+        </el-col>
+      </el-row>
     </div>
 </template>
 
@@ -25,10 +25,10 @@ export default {
     }, methods: {
         simulation: function () {
             let jsonData = require('./bbb.json');
-            postDemoData(jsonData).then(response => {
-                console.log(response)
-                this.$message.success("模拟消息推送成功...")
-            }).catch(err => {
+          postDemoData(this.$store.getters.getNamespace, jsonData).then(response => {
+            console.log(response)
+            this.$message.success("模拟消息推送成功...")
+          }).catch(err => {
                 console.log(err)
             });
         }

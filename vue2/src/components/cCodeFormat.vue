@@ -64,17 +64,17 @@ export default {
         getServerData: function () {
             // 这里如果使用funciton(response){}这个种模式，那么this指的就不是vue实例了，
             // 如果下面这样使用箭头函数，就可以实现上下文穿透，this就可以代指vue实例本身了，然后就有$router方法了
-            queryJson().then(response => {
-                console.log(response.data);
-                const jsonData = response["data"]["request_json"];
-                const t = response["data"]["time"];
+            queryJson(this.$store.getters.getNamespace, null).then(response => {
+              console.log(response.data);
+              const jsonData = response["data"]["request_json"];
+              const t = response["data"]["time"];
 
-                if (jsonData === null || jsonData.length === 0) {
-                    this.$message({
-                        showClose: false,
-                        message: "没有数据进入GoMessage服务，无法向您展示数据。"
-                    });
-                } else {
+              if (jsonData === null || jsonData.length === 0) {
+                this.$message({
+                  showClose: false,
+                  message: "没有数据进入GoMessage服务，无法向您展示数据。"
+                });
+              } else {
                     this.codeJsonContent = JSON.stringify(jsonData, null, 2);
                     this.codeUpdateTime = this.dateFormat(new Date(t));
                 }

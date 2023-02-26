@@ -1,25 +1,40 @@
 <template>
-    <el-menu :default-active="$route.name" active-text-color="#ffd04b" background-color="#303133" :collapse-transition="true"
-             mode="horizontal" router style="height: 100%" text-color="#fff" @select="handleSelect">
-        <!-- background-color="#303133" text-color="#fff" active-text-color="#ffd04b" collapse-transition=true style="height: 100%">-->
+  <el-menu
+      :collapse-transition="true"
+      :default-active="$route.name"
+      active-text-color="#ffd04b"
+      background-color="#303133"
+      mode="horizontal"
+      router
+      style="height: 100%;"
+      text-color="#fff"
+      @select="handleSelect"
+  >
+    <!-- background-color="#303133" text-color="#fff" active-text-color="#ffd04b" collapse-transition=true style="height: 100%">-->
 
-        <!--左侧logo-->
-        <el-menu-item>
-            <router-link to="/">
-              <img height="90%" src="../assets/logo.svg">
-              &nbsp;&nbsp;
-              <span style="font-size: 15px;">GoMessage · 消息转发器</span>
-              <el-button
-                  disabled
-                  icon="el-icon-location"
-                  size="medium"
-                  style="color: navy;margin-left: 100px">
-                {{ getStoreNamespace }}
-              </el-button>
-            </router-link>
-        </el-menu-item>
+    <!--左侧logo-->
+    <!--<el-menu-item>-->
+    <!--    <router-link to="/">-->
+    <!--      <img height="90%" src="../assets/logo.svg">-->
+    <!--      &nbsp;&nbsp;-->
+    <!--      <span style="font-size: 15px;">GoMessage · 消息转发器</span>-->
+    <!--303133-->
+    <!--f0fcff-->
+    <!--    </router-link>-->
+    <!--</el-menu-item>-->
 
-        <!--右侧按钮-->
+    <el-menu-item style="padding: 0;">
+      <router-link to="/">
+        <el-button
+            icon="el-icon-location"
+            style="color: navy;margin-left: 20px;">
+          {{ getStoreNamespace }}
+        </el-button>
+      </router-link>
+    </el-menu-item>
+
+
+    <!--右侧按钮-->
         <el-row justify="end" type="flex">
 
             <router-link to="/">
@@ -67,6 +82,7 @@ export default {
     // CSteps,
   },
   computed: {
+    // 计算属性：动态获取vuex中的值
     getStoreNamespace: function () {
       return this.$store.getters.getNamespace
     }
