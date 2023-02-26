@@ -33,7 +33,7 @@
 快速启动：
 
 ```bash
-docker run -d -p 7077:7077 taycc/gomessage 
+docker run -d -p 7077:7077 gomessage/gomessage:latest 
 ```
 
 只运行一次（容器停止后自动删除，不残留和污染本地环境）：
@@ -42,7 +42,7 @@ docker run -d \
     -p 7077:7077 \
     --rm \
     --name=gomessage \
-    taycc/gomessage
+    gomessage/gomessage:latest
 ```
 
 稳定的运行（且设定为开机启动）：
@@ -51,14 +51,14 @@ docker run -d \
     -p 7077:7077 \
     --restart=always \
     --name=gomessage \
-    taycc/gomessage
+    gomessage/gomessage:latest
 ```
 
 <br>
 
 ### `Linux服务器：`
 
-- [Linux环境下的安装](./assets/wiki/install.md)
+- [Linux环境下的安装](wiki/install.md)
 
 
 
@@ -68,7 +68,8 @@ docker run -d \
 
 
 ### `Mac本地电脑：`
-- [Mac环境下的安装](./assets/wiki/install_mac.md)
+
+- [Mac环境下的安装](wiki/install_mac.md)
 
 
 <br><br>
