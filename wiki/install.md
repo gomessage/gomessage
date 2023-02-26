@@ -11,69 +11,11 @@ GoMessage当前支持`Linux`和`Mac`系统的部署
 
 > 目前提供有Linux、Mac、Windows三个版本的安装包，如需支持其它版本，可以自行下载源码编译，也可以直接联系作者编译出指定版本的安装包。
 
-<br><br>
-
-## 一键自动化部署（推荐）
-
-本项目提供Liunx裸机运行环境上的`一键自动化部署脚本`，强烈推荐小伙伴们使用脚本进行服务安装。
-
-```bash
-# 下载安装包到本机（安装包下载链接可以从上文中的下载页面获取）
-wget https://github.com/gomessage/gomessage/releases/download/版本号/gomessage-版本号-linux-amd64.tar.gz
-
-# 解压安装包
-tar -zxvf gomessage-版本号-linux-amd64.tar.gz
-
-# 进入aaa目录
-cd ./gomessage-版本号-linux-amd64/
-
-# 可以看到目录结构体如下
-./
-├── gomessage.tar.gz     #安装包文件
-├── install.sh           #一键安装自动化部署脚本
-└── uninstall.sh         #一键卸载自动化部署脚本
-
-# 执行自动化安装脚本
-bash ./install.sh
-```
-
-./install.sh脚本运行完成后，出现以下内容代表一键自动化安装成功
-
-```bash
-Created symlink from /etc/systemd/system/multi-user.target.wants/gomessage.service to /usr/lib/systemd/system/gomessage.service.
-
-服务常用命令如下：
-systemctl restart gomessage.service
-systemctl start   gomessage.service
-systemctl stop    gomessage.service
-systemctl status  gomessage.service
-
-设置开机启动：
-systemctl enable  gomessage.service
-
-##############################
-# 提示
-##############################
-（√）1.服务设置为开机启动
-（√）2.服务已经启动
-（√）3.服务监听7077端口
-（√）4.服务安装目录：/opt/gomessage/
-
-GoMessage服务安装成功，默认监听端口为：http://0.0.0.0:7077
-
-```
-
-假定此时您部署GoMessage的服务器地址为`192.168.88.33`，您打开浏览器访问`http://192.168.88.33:7077`地址，就可以成功访问GoMessage的服务啦~
 
 
 
-第一次访问GoMessage的页面显示如下：
 
-![image-20211223161137899](https://img.taycc.com/picgo/image-20211223161137899.png)
-
-(自动化一键部署的内容到此结束)
-
-<br><br><br><br><br>
+<br><br><br>
 
 ## 手动部署（详细操作步骤）
 
@@ -92,7 +34,7 @@ GoMessage服务安装成功，默认监听端口为：http://0.0.0.0:7077
 cd ~/
 
 # 下载安装包
-wget https://github.com/gomessage/gomessage/releases/download/版本号/gomessage-版本号-linux-amd64.tar.gz
+wget https://github.com/gomessage/gomessage/releases/download/版本号/gomessage-版本号-linux-x64.tar.gz
 ```
 
 
@@ -113,36 +55,11 @@ mkdir -p /opt/gomessage
 解压前面下载好的安装包
 
 ```bash
-tar -zxvf ./gomessage-1.0.9-linux-amd64.tar.gz
-
-
-# 解压之后可以看到的目录结构如下：
-./
-├── gomessage.tar.gz     #安装包文件
-├── install.sh           #一键安装自动化部署脚本
-└── uninstall.sh         #一键卸载自动化部署脚本
+# 解压gomessage压缩包的内容到/opt/gomessage/目录下
+tar -zxvf ./gomessage-x.x.x-linux-x64.tar.gz -C /opt/gomessage/
 ```
 
-
-
-此时因为咱们要`手动安装`GoMessage服务，因此可以直接忽略掉作者预留的`install.sh`和`uninstall.sh`这两个脚本文件。直接解压`gomessage.tar.gz`这个压缩文件来得到真正的安装包：
-
-```bash
-# 解压gomessage.tar.gz压缩包的内容到/opt/gomessage/目录下
-tar -zxvf ./gomessage.tar.gz -C /opt/gomessage/
-
-#解压之后的目录结构如下：
-/opt/gomessage/
-├── conf          #这里面存放了GoMessage服务的全局配置，比如服务端口修改什么的
-├── gomessage     #这个是GoMessage服务的二进制可执行程序，未来我们要启动的就是这个软件
-├── static        #GoMessage服务依赖的前端静态文件
-├── swagger       #GoMessage对外提供的API接口相关的静态文件
-└── views         #GoMessage存放html页面的目录
-```
-
-
-
-到这一步为止，GoMessage就算是部署好了，直接运行一下命令就可以运行起来GoMessage服务：
+解压完成后，GoMessage就算是部署好了，直接运行一下命令就可以运行起来GoMessage服务：
 
 ```bash
 # 对，您没看错，就是这么一行命令，什么参数都不需要
