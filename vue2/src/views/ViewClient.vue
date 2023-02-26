@@ -29,7 +29,7 @@
 
           <el-table-column label="是否激活" prop="is_active">
             <template slot-scope="scope">
-              <el-checkbox v-model="scope.row.is_active">激活</el-checkbox>
+              <el-checkbox v-model="scope.row.is_active" @change="saveActiveStatus">激活</el-checkbox>
             </template>
           </el-table-column>
 
@@ -47,7 +47,7 @@
         <br>
 
 
-        <el-button round type="info" v-on:click="saveActiveStatus">保存激活状态</el-button>
+        <!--<el-button round type="info" v-on:click="saveActiveStatus">保存激活状态</el-button>-->
         <el-button round type="primary" v-on:click="addClient">添加新客户端</el-button>
       </el-card>
 

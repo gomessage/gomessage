@@ -20,7 +20,7 @@ type Dingtalk struct {
 }
 
 func (*Dingtalk) TableName() string {
-    return "dingtalk"
+    return "client_dingtalk"
 }
 
 type Feishu struct {
@@ -36,7 +36,7 @@ type Feishu struct {
 }
 
 func (*Feishu) TableName() string {
-    return "feishu"
+    return "client_feishu"
 }
 
 type Wechat struct {
@@ -52,7 +52,7 @@ type Wechat struct {
 }
 
 func (*Wechat) TableName() string {
-    return "wechat"
+    return "client_wechat"
 }
 
 type Client struct {
@@ -71,7 +71,7 @@ type Client struct {
 }
 
 func (*Client) TableName() string {
-    return "client"
+    return "clients"
 }
 
 func AddClient(c *Client) (*Client, error) {

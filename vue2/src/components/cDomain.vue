@@ -7,7 +7,7 @@
 
         <div>
             <!--下面这一行是代码框，不能换行；如果换行第二行的空格就显示在代码框里面了-->
-            <pre id="DomainUrlStyle"><code id="DomainUrlContent">{{ myDomain }}{{ getStoreNamespace }}</code></pre>
+            <pre id="DomainUrlStyle"><code id="DomainUrlContent">{{ myDomain }}{{ showNamespace }}</code></pre>
         </div>
         <!--        <ul v-for="o in 4" :key="o" class="item">-->
         <!--            <li>{{'列表内容 ' + o }}</li>-->
@@ -29,6 +29,13 @@ export default {
     // 计算属性：动态获取vuex中的值
     getStoreNamespace: function () {
       return this.$store.getters.getNamespace
+    },
+    showNamespace: function () {
+      if (this.getStoreNamespace === "default") {
+        return "message"
+      } else {
+        return this.getStoreNamespace
+      }
     }
   },
   methods: {
@@ -41,15 +48,15 @@ export default {
     },
     //一键粘贴（纯原生js document对象实现）
     copyCode: function () {
-            const val = document.getElementById('DomainUrlContent');
-            window.getSelection().selectAllChildren(val);
-            document.execCommand("Copy");
-            this.$message('复制成功...');
-        },
+      const val = document.getElementById('DomainUrlContent');
+      window.getSelection().selectAllChildren(val);
+      document.execCommand("Copy");
+      this.$message('复制成功...');
     },
-    created() {
-        this.getDomain();
-    }
+  },
+  created() {
+    this.getDomain();
+  }
 }
 </script>
 

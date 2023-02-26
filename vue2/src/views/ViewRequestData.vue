@@ -1,17 +1,22 @@
 <template>
+  <div>
     <el-row style="margin: 20px 0" :gutter="20">
-        <el-col :span="8">
-            <DataFormat class="shadow"></DataFormat>
-        </el-col>
-
-        <el-col :span="8">
-            <DataMap class="shadow"></DataMap>
-        </el-col>
-
-        <el-col :span="8">
-            <CTemplate class="shadow"></CTemplate>
-        </el-col>
+      <el-col>
+        <DataFormat class="shadow"></DataFormat>
+      </el-col>
     </el-row>
+
+    <el-row style="margin: 20px 0" :gutter="20">
+      <el-col :span="12">
+        <DataMap class="shadow"></DataMap>
+      </el-col>
+
+      <el-col :span="12">
+        <CTemplate class="shadow"></CTemplate>
+      </el-col>
+    </el-row>
+
+  </div>
 </template>
 
 <script>
@@ -35,9 +40,9 @@ export default {
 
 <style scoped>
 .shadow {
-    -webkit-box-shadow: #ccc 0px 10px 10px;
-    -moz-box-shadow: #ccc 0px 10px 10px;
-    box-shadow: #ccc 0px 10px 10px;
-    /*transform: scale(1.01, 1.01);*/
+  -webkit-box-shadow: #ccc 0px 20px 20px;
+  -moz-box-shadow: #ccc 0px 20px 20px;
+  box-shadow: #ccc 0px 20px 20px;
+  /*transform: scale(1.01, 1.01);*/
 }
 </style>

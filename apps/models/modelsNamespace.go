@@ -20,7 +20,7 @@ type Namespace struct {
 }
 
 func (*Namespace) TableName() string {
-    return "namespace"
+    return "namespaces"
 }
 
 func AddNamespace(n *Namespace) (*Namespace, error) {
@@ -91,7 +91,11 @@ func InitNamespace() {
     var queryNamespace Namespace
     result := database.DB.DefaultClient.Where(&Namespace{Name: "default"}).First(&queryNamespace)
     if result.Error != nil {
-        newNamespace := Namespace{IsActive: true, Name: "default", Description: "This is the default namespace created by GoMessage."}
+        newNamespace := Namespace{
+            IsActive:    true,
+            Name:        "default",
+            Description: "系统自动创建的\"默认通道\"，可通过 /go/message 或 /go/default 接收消息推送。",
+        }
         database.DB.DefaultClient.Create(&newNamespace)
         loggers.DefaultLogger.Info("创建default命名空间...")
     } else {

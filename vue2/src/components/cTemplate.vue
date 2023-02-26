@@ -6,7 +6,7 @@
       <el-switch v-model="template.template_is_merge" inactive-text="聚合发送" style="float: left; padding: 3px 0;"></el-switch>
 
       <!--教程提示按钮，跳转代码-->
-      <el-tooltip class="item" content="跳转到新页面：查看模板编写教程" effect="dark" placement="bottom" style="float: left;margin-left: 30px;padding-top: 3px;">
+      <el-tooltip class="item" content='跳转到新页面：查看"消息模板"编写教程' effect="dark" placement="bottom" style="float: left;margin-left: 30px;padding-top: 3px;">
         <el-link :underline="false" type="primary" @click="newTagPage">
           <span><i class="el-icon-info"></i></span>
         </el-link>

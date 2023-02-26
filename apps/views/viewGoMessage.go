@@ -4,8 +4,8 @@ import (
     "bytes"
     "fmt"
     "github.com/gin-gonic/gin"
-    "gomessage/apps/controllers/cachex"
     "gomessage/apps/controllers/clients"
+    "gomessage/apps/controllers/hijacking"
     "gomessage/apps/controllers/sendMessage"
     "gomessage/apps/models"
     "gomessage/apps/views/httpBase"
@@ -44,23 +44,24 @@ func GoMessageByPost(g *gin.Context) {
     loggers.DefaultLogger.Info("消息发送至" + namespace + "命名空间")
 
     //获取请求数据
-    cachex.CacheData.Time = time.Now()
-    cachex.CacheData.RequestByte, _ = io.ReadAll(g.Request.Body)                 //g.Request.Body中的数据只能读取一次，是因为"流"的指针被移位了
-    g.Request.Body = io.NopCloser(bytes.NewBuffer(cachex.CacheData.RequestByte)) //向g.Request.Body回写数据
+    hijacking.TmpCacheData.RequestTime = time.Now()
+    hijacking.TmpCacheData.RequestByte, _ = io.ReadAll(g.Request.Body)                 //g.Request.Body中的数据只能读取一次，是因为"流"的指针被移位了
+    g.Request.Body = io.NopCloser(bytes.NewBuffer(hijacking.TmpCacheData.RequestByte)) //向g.Request.Body回写数据
 
-    if err := g.ShouldBindJSON(&cachex.CacheData.RequestJson); err != nil {
+    //把请求数据绑定到TmpCacheData.RequestJson
+    if err := g.ShouldBindJSON(&hijacking.TmpCacheData.RequestJson); err != nil {
         return
     }
 
     //把推送过来的数据写入缓存（一个命名空间中，同一时间只能写入一条数据）
-    cachex.SetCacheData(namespace, cachex.CacheData)
+    hijacking.SetCacheData(namespace, hijacking.TmpCacheData)
 
     //从数据库中拿到用户当前用户在图形界面上配置的参数
     userConfig := sendMessage.GetUserConfig(namespace)
     fmt.Println(userConfig)
 
     //创建过境数据与用户变量之间的映射
-    analysisDataList := sendMessage.AnalysisData(userConfig.VariablesMap, cachex.CacheData.RequestByte)
+    analysisDataList := sendMessage.AnalysisData(userConfig.VariablesMap, hijacking.TmpCacheData.RequestByte)
     fmt.Println(analysisDataList)
 
     //得到渲染完成后的消息列表

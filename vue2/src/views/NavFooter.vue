@@ -10,9 +10,9 @@
               <el-link href="https://github.com/gomessage/gomessage" type="primary">Github&nbsp;</el-link>
               or
               <el-link href="https://gitee.com/gomessage/gomessage" type="primary">&nbsp;Gitee&nbsp;&nbsp;</el-link>
-              Version :
-              <el-link href="https://github.com/gomessage/gomessage/releases" type="primary">v2.0.1&nbsp;&nbsp;</el-link>
-              Give feedback and Suggestions to the author :
+              Version:
+              <el-link href="https://github.com/gomessage/gomessage/releases" type="primary">v2.x&nbsp;&nbsp;</el-link>
+              Give feedback and Suggestions to the author:
               <el-link href="mailto:taycc3223@gmail.com" type="primary">Email</el-link>
 
 

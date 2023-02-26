@@ -87,7 +87,7 @@ func Path(g *gin.Engine) {
         v1Namespace.POST("/namespace", views.PostNamespace)
         v1Namespace.GET("/namespace/:id", views.GetNamespace)
         v1Namespace.PUT("/namespace/:id", views.PutNamespace)
-        v1Namespace.DELETE("/namespace/:id", views.DeleteNamespace)
+        v1Namespace.DELETE("/namespace/:id", views.DeleteNamespace) //删除命名空间的时候，需要把当前命名空间下的（变量映射、模板、客户端）全都删除掉
     }
 
     loggers.DefaultLogger.Info("路由表加载完成...")

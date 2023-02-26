@@ -34,32 +34,74 @@
     <!--添加一个新的namespace-->
     <el-menu-item index="998" style="text-align: left">
       <el-button
-          icon="el-icon-star-off"
+          icon="el-icon-setting"
           plain
           size="mini"
           @click="dialogFormVisible222 = true"
-      >新增命名空间
+          style="padding-right: 35px"
+      >管理推送通道
       </el-button>
     </el-menu-item>
 
 
     <!--利用对话框，添加命名空间-->
-    <el-dialog :visible.sync="dialogFormVisible222" style="text-align: left" title="新增命名空间">
+    <el-dialog
+        :visible.sync="dialogFormVisible222"
+        title="消息推送通道"
+        modal
+        width="60%"
+        top="10vh"
+        lock-scroll
+    >
+      <!--表格-->
+      <el-table
+          :data="namespaceList"
+          border
+          :header-cell-style="{background:'#2f2f35',color:'#fff'}"
+          style="width: 100%"
+      >
+
+        <el-table-column
+            prop="name"
+            label="名称"
+            width="180">
+        </el-table-column>
+
+        <el-table-column
+            prop="description"
+            label="描述">
+        </el-table-column>
+
+        <!--<el-table-column-->
+        <!--    prop="is_active"-->
+        <!--    label="是否激活"-->
+        <!--    width="150">-->
+        <!--    <template slot-scope="scope">-->
+        <!--        <el-checkbox v-model="scope.row.is_active" @change="activeNamespace">激活</el-checkbox>-->
+        <!--    </template>-->
+        <!--</el-table-column>-->
+
+        <el-table-column fixed="right" label="操作" width="100">
+          <template slot-scope="scope">
+            <el-button size="small" type="danger" @click.native.prevent="deleteOneNamespace(scope.$index, namespaceList)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+
+
+      <br>
+      <!--分割线-->
+      <el-divider content-position="left">新增 · 推送通道</el-divider>
+      <br>
+
       <!--这是一个form表单，对话框支持填充表单-->
-      <el-form :model="namespaceForm" style="width: 70%">
-        <el-form-item label="名称" label-width="200px">
-          <el-input v-model="namespaceForm.name" autocomplete="off"></el-input>
+      <el-form :model="namespaceForm" style="width: 60%;">
+        <el-form-item label="通道名称" label-width="105px">
+          <el-input v-model="namespaceForm.name" autocomplete="off" placeholder="名空间的名称（纯英文小写字母）"></el-input>
         </el-form-item>
 
-        <!--<el-form-item label="状态" label-width="200px">-->
-        <!--    <el-radio-group v-model="namespaceForm.is_active">-->
-        <!--        <el-radio label="激活"></el-radio>-->
-        <!--        <el-radio label="不激活"></el-radio>-->
-        <!--    </el-radio-group>-->
-        <!--</el-form-item>-->
-
-        <el-form-item label="描述" label-width="200px">
-          <el-input v-model="namespaceForm.description" autocomplete="off" type="textarea"></el-input>
+        <el-form-item label="通道描述" label-width="105px">
+          <el-input v-model="namespaceForm.description" autocomplete="off" type="textarea" :rows="3" placeholder="请输入命名空间的描述"></el-input>
         </el-form-item>
 
       </el-form>
@@ -74,19 +116,18 @@
 </template>
 
 <script>
-import {getNamespace, postNamespace} from "@/service/requests";
+import {deleteNamespaceOne, getNamespace, postNamespace, putNamespaceOne} from "@/service/requests";
 
 export default {
   name: "NavAside",
   data() {
     return {
       namespaceList: [
-        {"name": "default"},
-        {"name": "prometheus"},
-        {"name": "alertmanager"},
-        {"name": "zabbix"},
-        {"name": "elasticsearch"},
-        {"name": "grafana"},
+        {
+          "name": "default",
+          "description": "default",
+          "is_active": true
+        },
       ],
       dialogFormVisible222: false,
       namespaceForm: {
@@ -124,6 +165,30 @@ export default {
         console.log(response)
         location.reload();
       })
+    },
+    // 删除一行数据：跟后端交互，然后刷新表格
+    deleteOneNamespace(index, rows) {
+      let id = rows[index].id;
+      deleteNamespaceOne(id).then(response => {
+        if (response.data.code === 1) {
+          this.$message.success("删除一行数据成功...");
+          rows.splice(index, 1);
+        } else {
+          this.$message.error("删除数据失败...");
+        }
+      }).catch(err => {
+        console.log(err);
+      });
+    },
+    activeNamespace: function () {
+      this.namespaceList.forEach(namespace => {
+        putNamespaceOne(namespace.id, namespace).then(response => {
+          console.log(response.data.result)
+        }).catch(err => {
+          console.log(err)
+        })
+      })
+      this.$message.success("数据更新成功...")
     }
   }, computed: {
     // 计算属性：动态获取vuex中的值

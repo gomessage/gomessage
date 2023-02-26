@@ -84,7 +84,25 @@ func PutNamespace(g *gin.Context) {
 // @Router /api/v1/namespace/:id [DELETE]
 func DeleteNamespace(g *gin.Context) {
     id, _ := strconv.Atoi(g.Param("id"))
-    num, err := models.DeleteNamespace(id)
+    ns, _ := models.GetNamespaceById(id)
+
+    //删除变量映射
+    models.DeleteVariablesByNs(ns.Name)
+
+    //删除模板
+    models.DeleteTemplateByNs(ns.Name)
+
+    //删除客户端
+    listClient, err := models.ListClient(ns.Name)
+    if err != nil {
+        return
+    }
+    for _, cli := range *listClient {
+        models.DeleteClient(cli.ID)
+    }
+
+    //删除命名空间
+    num, err := models.DeleteNamespace(ns.ID)
     if err != nil {
         g.JSON(http.StatusBadRequest, httpBase.ResponseFailure("删除失败", err))
     } else {
