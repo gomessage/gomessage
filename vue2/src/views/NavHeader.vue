@@ -13,21 +13,20 @@
     <!-- background-color="#303133" text-color="#fff" active-text-color="#ffd04b" collapse-transition=true style="height: 100%">-->
 
     <!--左侧logo-->
-    <!--<el-menu-item>-->
-    <!--    <router-link to="/">-->
-    <!--      <img height="90%" src="../assets/logo.svg">-->
-    <!--      &nbsp;&nbsp;-->
-    <!--      <span style="font-size: 15px;">GoMessage · 消息转发器</span>-->
-    <!--303133-->
-    <!--f0fcff-->
-    <!--    </router-link>-->
-    <!--</el-menu-item>-->
+    <el-menu-item>
+      <router-link to="/">
+        <img height="90%" src="../assets/logo.svg">
+        &nbsp;&nbsp;
+        <span style="font-size: 15px;">GoMessage · 消息转发器</span>
+      </router-link>
+    </el-menu-item>
 
     <el-menu-item style="padding: 0;">
       <router-link to="/">
         <el-button
+            type="text"
             icon="el-icon-location"
-            style="color: navy;margin-left: 20px;">
+            style="color: #fff;margin-left: 10px;">
           {{ getStoreNamespace }}
         </el-button>
       </router-link>

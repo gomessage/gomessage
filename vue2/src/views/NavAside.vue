@@ -8,13 +8,13 @@
   >
 
     <!--左侧logo-->
-    <el-menu-item index="999">
-      <router-link to="/">
-        <img height="90%" src="../assets/logo.svg">
-        &nbsp;&nbsp;
-        <span style="font-size: 15px;color: #fff;">GoMessage · 消息转发器</span>
-      </router-link>
-    </el-menu-item>
+    <!--<el-menu-item index="999">-->
+    <!--  <router-link to="/">-->
+    <!--    <img height="90%" src="../assets/logo.svg">-->
+    <!--    &nbsp;&nbsp;-->
+    <!--    <span style="font-size: 15px;color: #fff;">GoMessage · 消息转发器</span>-->
+    <!--  </router-link>-->
+    <!--</el-menu-item>-->
 
     <br>
 
@@ -90,18 +90,26 @@
 
 
       <br>
-      <!--分割线-->
-      <el-divider content-position="left">新增 · 推送通道</el-divider>
+      <p class="authorStatement2">GoMessage v2 版本开始支持多通道并发；只需部署一个GoMessage实例，就可以承载多环境下所有的消息转发需求。</p>
       <br>
+      <p class="authorStatement2">每类需求可以单独使用一个推送通道，通道之间彼此隔离、线程安全。</p>
+      <br>
+      <p class="authorStatement2">完美对接Prometheus生态环境，优雅实践告警信息送达的最后一公里 (*^__^*)</p>
+
+
+      <!--<br>-->
+      <!--分割线-->
+      <el-divider content-position="left"><i class="el-icon-circle-plus-outline"> 新增通道</i></el-divider>
+      <!--<br>-->
 
       <!--这是一个form表单，对话框支持填充表单-->
       <el-form :model="namespaceForm" style="width: 60%;">
         <el-form-item label="通道名称" label-width="105px">
-          <el-input v-model="namespaceForm.name" autocomplete="off" placeholder="名空间的名称（纯英文小写字母）"></el-input>
+          <el-input v-model="namespaceForm.name" autocomplete="off" placeholder="通道名是推送消息的路径地址，因此请使用（纯英文字母）"></el-input>
         </el-form-item>
 
         <el-form-item label="通道描述" label-width="105px">
-          <el-input v-model="namespaceForm.description" autocomplete="off" type="textarea" :rows="3" placeholder="请输入命名空间的描述"></el-input>
+          <el-input v-model="namespaceForm.description" autocomplete="off" type="textarea" :rows="3" placeholder="请输入推送通道的描述信息"></el-input>
         </el-form-item>
 
       </el-form>
@@ -211,5 +219,13 @@ export default {
 
 .router-link-active {
   text-decoration: none;
+}
+
+.authorStatement2 {
+  text-align: left;
+  font-size: 14px;
+  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  line-height: 1.7;
+  color: #C0C4CC;
 }
 </style>

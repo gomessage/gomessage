@@ -3,20 +3,17 @@
 
         <!--容器布局：全局-->
         <el-container id="MyContainer-Container">
-
-
-          <!--容器布局：Aside-->
-          <el-aside id="MyContainer-Aside" width="300px">
-            <NavAside/>
-          </el-aside>
+          <!--容器布局：Header-->
+          <el-header id="MyContainer-Header">
+            <NavHeader/>
+          </el-header>
 
 
           <el-container>
-
-            <!--容器布局：Header-->
-            <el-header id="MyContainer-Header">
-              <NavHeader/>
-            </el-header>
+            <!--容器布局：Aside-->
+            <el-aside id="MyContainer-Aside" width="300px">
+              <NavAside/>
+            </el-aside>
 
 
             <!--容器布局：Main-->
@@ -25,11 +22,13 @@
               <router-view></router-view>
             </el-main>
 
-            <!--容器布局：Footer-->
-            <el-footer id="MyContainer-Footer">
-              <NavFooter/>
-            </el-footer>
+
           </el-container>
+
+          <!--容器布局：Footer-->
+          <el-footer id="MyContainer-Footer">
+            <NavFooter/>
+          </el-footer>
 
 
         </el-container>

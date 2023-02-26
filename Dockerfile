@@ -10,7 +10,7 @@ RUN mkdir -p /opt/gomessage && rm -rf /opt/gomessage/*
 
 WORKDIR /opt/gomessage
 
-ADD ./gomessage.tar.gz /opt/gomessage/
+ADD . /opt/gomessage/
 
 EXPOSE 7077
 

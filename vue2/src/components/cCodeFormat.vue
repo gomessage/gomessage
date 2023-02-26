@@ -3,8 +3,8 @@
     <el-card shadow="always">
         <div slot="header">
             <span style="padding-left: 100px">劫持【
-                <span style="font-size: 30px;color: #3de1ad;font-weight:900">{{ getStoreNamespace }}通道</span>
-                】内的过境数据</span>
+                <span style="font-size: 30px;color: #3de1ad;font-weight:900">{{ getStoreNamespace }}</span>
+                】通道内的实时过境数据</span>
           <el-button style="float: right; padding: 3px 0; margin-left: 10px" type="text" v-on:click="getServerData()">劫持数据</el-button>
           <el-button style="float: right; padding: 3px 0;" type="text" v-on:click="copyCode()">一键复制</el-button>
         </div>
