@@ -28,7 +28,7 @@ DATE_NOW := $(shell date "+%Y%m%d_%H%M%S")
 ######################################
 # 指定缺省状态下执行哪些Target
 ######################################
-all:  clean  start  swagger  build_mac   build_linux  end
+all: clean start swagger build_mac build_windows build_linux end
 
 
 ######################################
@@ -83,21 +83,21 @@ build_mac:
 ######################################
 # Target：编译为Windows发行版
 ######################################
-#.PHONY: build_windows
-#build_windows: packageName:=${NAME}-${VERSION}-windows-x64
-#build_windows:
-#	mkdir -p "${OUTPUT_PATH}/${packageName}"
-#	GOARCH=amd64 \
-#	GOOS=windows \
-#	CGO_CFLAGS="-g -O2 -Wno-return-local-addr" \
-#	CC=x86_64-w64-mingw32-gcc \
-#	CXX=x86_64-w64-mingw32-g++ \
-#	CGO_ENABLED=${CGO_STATUS} \
-#	go build -o "${OUTPUT_PATH}/${packageName}/${NAME}.exe" ./main.go
-#	cp -rf ./config "${OUTPUT_PATH}/${packageName}/"
-#	cp -rf ./assets "${OUTPUT_PATH}/${packageName}/"
-#	tar -zcvf "${OUTPUT_PATH}/${packageName}.tar.gz" -C ${OUTPUT_PATH} ${packageName}
-#	ls -alh "${OUTPUT_PATH}/${packageName}/"
+.PHONY: build_windows
+build_windows: packageName:=${NAME}-${VERSION}-windows-x64
+build_windows:
+	mkdir -p "${OUTPUT_PATH}/${packageName}"
+	GOARCH=amd64 \
+	GOOS=windows \
+	CGO_CFLAGS="-g -O2 -Wno-return-local-addr" \
+	CC=x86_64-w64-mingw32-gcc \
+	CXX=x86_64-w64-mingw32-g++ \
+	CGO_ENABLED=${CGO_STATUS} \
+	go build -o "${OUTPUT_PATH}/${packageName}/${NAME}.exe" ./main.go
+	cp -rf ./config "${OUTPUT_PATH}/${packageName}/"
+	cp -rf ./assets "${OUTPUT_PATH}/${packageName}/"
+	tar -zcvf "${OUTPUT_PATH}/${packageName}.tar.gz" -C ${OUTPUT_PATH} ${packageName}
+	ls -alh "${OUTPUT_PATH}/${packageName}/"
 
 
 ######################################
@@ -113,7 +113,7 @@ build_linux:
     CC=x86_64-linux-musl-gcc \
     CXX=x86_64-linux-musl-g++ \
 	CGO_ENABLED=${CGO_STATUS} \
-	go build -o "${OUTPUT_PATH}/${packageName}/${NAME}" ./main.go
+	go build -ldflags '-extldflags "-static"' -o "${OUTPUT_PATH}/${packageName}/${NAME}" ./main.go
 	cp -rf ./config "${OUTPUT_PATH}/${packageName}/"
 	cp -rf ./assets "${OUTPUT_PATH}/${packageName}/"
 	tar -zcvf "${OUTPUT_PATH}/${packageName}.tar.gz" -C ${OUTPUT_PATH} ${packageName}
