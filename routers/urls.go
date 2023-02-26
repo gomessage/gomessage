@@ -15,8 +15,8 @@ import (
 
 func initStatic(g *gin.Engine) {
     g.StaticFile("/favicon.ico", "./assets/favicon.ico")
-    g.Static("/static", "assets/vue2/static")
-    g.LoadHTMLGlob("assets/vue2/*.html")
+    g.Static("/static", "assets/vue/static")
+    g.LoadHTMLGlob("assets/vue/*.html")
 }
 
 func Path(g *gin.Engine) {
