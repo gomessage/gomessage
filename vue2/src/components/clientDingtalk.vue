@@ -89,14 +89,14 @@ export default {
       let cope = {
         url: "",
       };
-      this.client.client_info.robot_url.push(cope);
+      this.client.client_info.robot_url_list.push(cope);
       // console.log(this.mapList2);
-      for (let i = 0; i < this.client.client_info.robot_url.length; i++) {
-        console.log(this.client.client_info.robot_url[i]);
+      for (let i = 0; i < this.client.client_info.robot_url_list.length; i++) {
+        console.log(this.client.client_info.robot_url_list[i]);
       }
     },
     del: function (index) {
-      this.client.client_info.robot_url.splice(index, 1);
+      this.client.client_info.robot_url_list.splice(index, 1);
       // console.log(this.mylist);
     },
     closeDrawer: function () {

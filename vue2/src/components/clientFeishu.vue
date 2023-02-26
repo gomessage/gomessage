@@ -25,11 +25,11 @@
             </el-select>
         </el-form-item>
 
-        <div v-for="(list, index) in client.client_info.robot_url" :key="index">
-            <el-form-item label="机器人URL:">
-                <el-input v-model="list.url" placeholder="从飞书上粘贴而来的机器人URL地址" style="width: 85%"></el-input>
-                <el-button type="danger" icon="el-icon-delete" circle size="mini" v-on:click="del(index)" style="margin-left: 10px"></el-button>
-            </el-form-item>
+        <div v-for="(list, index) in client.client_info.robot_url_list" :key="index">
+          <el-form-item label="机器人URL:">
+            <el-input v-model="list.url" placeholder="从飞书上粘贴而来的机器人URL地址" style="width: 85%"></el-input>
+            <el-button type="danger" icon="el-icon-delete" circle size="mini" v-on:click="del(index)" style="margin-left: 10px"></el-button>
+          </el-form-item>
         </div>
         <div style="text-align: center">
             <el-button type="text" icon="el-icon-plus" size="mini" @click="add">再添加一个机器人</el-button>
@@ -60,11 +60,11 @@ export default {
                 is_active: false,
                 client_info: {
                     robot_keyword: "",
-                    robot_url: [
-                        {
-                            url: "",
-                        },
-                    ],
+                  robot_url_list: [
+                    {
+                      url: "",
+                    },
+                  ],
                     title_color: "grey",
                 },
                 typeDescription: "飞书·机器人",
@@ -143,17 +143,17 @@ export default {
         },
         // 添加输入框
         add: function () {
-            let cope = {
-                url: "",
-            };
-            this.client.client_info.robot_url.push(cope);
-            // console.log(this.mapList2);
-            for (let i = 0; i < this.client.client_info.robot_url.length; i++) {
-                console.log(this.client.client_info.robot_url[i]);
-            }
+          let cope = {
+            url: "",
+          };
+          this.client.client_info.robot_url_list.push(cope);
+          // console.log(this.mapList2);
+          for (let i = 0; i < this.client.client_info.robot_url_list.length; i++) {
+            console.log(this.client.client_info.robot_url_list[i]);
+          }
         },
         del: function (index) {
-            this.client.client_info.robot_url.splice(index, 1);
+          this.client.client_info.robot_url_list.splice(index, 1);
             // console.log(this.mylist);
         },
         closeDrawer: function () {
