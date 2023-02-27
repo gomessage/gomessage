@@ -1,4 +1,5 @@
 # Linux环境安装
+
 GoMessage当前支持`Linux`和`Mac`系统的部署
 
 <br><br>
@@ -21,8 +22,6 @@ GoMessage当前支持`Linux`和`Mac`系统的部署
 
 > 以Centos7.x环境来举例
 
-
-
 ## 安装包下载：
 
 安装包下载地址（国内）：https://gitee.com/gomessage/gomessage/releases （这个地址国内访问速度快~）
@@ -37,8 +36,6 @@ cd ~/
 wget https://github.com/gomessage/gomessage/releases/download/版本号/gomessage-版本号-linux-x64.tar.gz
 ```
 
-
-
 #### 创建工作目录
 
 > （作者推荐您将工作目录设置在 /opt/gomessage/ 目录中，可以干干清爽一些）
@@ -47,8 +44,6 @@ wget https://github.com/gomessage/gomessage/releases/download/版本号/gomessag
 # 创建一个新目录/opt/gomessage
 mkdir -p /opt/gomessage
 ```
-
-
 
 #### 解压安装包
 
@@ -70,9 +65,8 @@ tar -zxvf ./gomessage-x.x.x-linux-x64.tar.gz -C /opt/gomessage/
 
 
 
-> 但是用上面挂载前台的方式启动GoMessage服务（或其它任意二进制命令形式的服务）都是不可靠的，Linux会有一套自己的QOS机制来管理自身的资源分配和回收。因此作者推荐您将GoMessage服务封装为Systemd守护进程的方式来运行。
-
-
+>
+但是用上面挂载前台的方式启动GoMessage服务（或其它任意二进制命令形式的服务）都是不可靠的，Linux会有一套自己的QOS机制来管理自身的资源分配和回收。因此作者推荐您将GoMessage服务封装为Systemd守护进程的方式来运行。
 
 ### 封装systemd守护进程（以守护进程的方式来运行GoMessage）
 
@@ -107,15 +101,11 @@ WantedBy=multi-user.target
 #只有上文这一小段写入到指定的文件中之后，别的就不用再额外写入了，除了目录修为为您自己的实际路径之后，别的部分您都可以直接抄写作者提供的默认配置。
 ```
 
-
-
 以上文件写入并保存好之后，执行如下命令重新加载守护进程列表：
 
 ```bash
 systemctl daemon-reload
 ```
-
-
 
 到此为止，您就已经为GoMessage服务封装好了一个健壮的守护进程，接下来您可以通过如下命令来操作和管理GoMessage服务：
 
@@ -126,16 +116,12 @@ systemctl restart gomessage.service   #重启gomessage服务
 systemctl status  gomessage.service   #查看gomessage服务的运行状态
 ```
 
-
-
 设置GoMessage服务的开机启动：
 
 ```bash
 systemctl enable  gomessage.service   #设置gomessage服务为开机启动
 systemctl disable gomessage.service.  #取消gomessage服务的开机启动
 ```
-
-
 
 #### 启动服务
 
@@ -145,15 +131,13 @@ systemctl disable gomessage.service.  #取消gomessage服务的开机启动
 systemctl restart gomessage.service
 ```
 
-假定此时您部署GoMessage的服务器地址为`192.168.88.33`，您打开浏览器访问`http://192.168.88.33:7077`地址，就可以成功访问GoMessage的服务啦~
-
-
+假定此时您部署GoMessage的服务器地址为`192.168.88.33`，您打开浏览器访问`http://192.168.88.33:7077`
+地址，就可以成功访问GoMessage的服务啦~
 
 第一次访问GoMessage的页面显示如下：
 
 ![image-20211223161137899](https://img.taycc.com/picgo/image-20211223161137899.png)
 
 (手动部署的内容到此结束)
-
 
 <br><br><br><br>

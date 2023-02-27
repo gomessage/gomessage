@@ -1,11 +1,11 @@
 package httpClient
 
 import (
-    "github.com/gin-gonic/gin"
-    "gomessage/apps/models"
-    "gomessage/apps/views/httpBase"
-    "net/http"
-    "strconv"
+	"github.com/gin-gonic/gin"
+	"gomessage/apps/models"
+	"gomessage/apps/views/httpBase"
+	"net/http"
+	"strconv"
 )
 
 // GetClient
@@ -13,45 +13,45 @@ import (
 // @Summary 查询一个客户端
 // @Router /api/v1/:namespace/client/:id [GET]
 func GetClient(g *gin.Context) {
-    type ResponseData struct {
-        *models.Client
-        ClientInfo any `json:"client_info"`
-    }
+	type ResponseData struct {
+		*models.Client
+		ClientInfo any `json:"client_info"`
+	}
 
-    id, _ := strconv.Atoi(g.Param("id"))
-    client, err := models.GetClientById(id)
-    if err != nil {
-        g.JSON(http.StatusBadRequest, httpBase.ResponseFailure("查询错误", err))
-    } else {
-        respData := ResponseData{Client: client}
-        if client.ClientType == "dingtalk" {
-            var urls []OneUrl
-            for _, urlAddress := range client.ExtendDingtalk.RobotUrlInfoList { //这里的RobotUrlInfoList，是从数据库取出的压缩数据，展开后得到的内容
-                urls = append(urls, OneUrl{Url: urlAddress})
-            }
-            cInfo := ClientInfoDingtalk{
-                Dingtalk:     client.ExtendDingtalk,
-                RobotUrlList: urls,
-            }
-            respData.ClientInfo = cInfo
+	id, _ := strconv.Atoi(g.Param("id"))
+	client, err := models.GetClientById(id)
+	if err != nil {
+		g.JSON(http.StatusBadRequest, httpBase.ResponseFailure("查询错误", err))
+	} else {
+		respData := ResponseData{Client: client}
+		if client.ClientType == "dingtalk" {
+			var urls []OneUrl
+			for _, urlAddress := range client.ExtendDingtalk.RobotUrlInfoList { //这里的RobotUrlInfoList，是从数据库取出的压缩数据，展开后得到的内容
+				urls = append(urls, OneUrl{Url: urlAddress})
+			}
+			cInfo := ClientInfoDingtalk{
+				Dingtalk:     client.ExtendDingtalk,
+				RobotUrlList: urls,
+			}
+			respData.ClientInfo = cInfo
 
-        } else if client.ClientType == "wechat" {
-            client.ExtendWechat.Secret = client.ExtendWechat.Secret[:5] + "*****"
-            respData.ClientInfo = client.ExtendWechat
+		} else if client.ClientType == "wechat" {
+			client.ExtendWechat.Secret = client.ExtendWechat.Secret[:5] + "*****"
+			respData.ClientInfo = client.ExtendWechat
 
-        } else if client.ClientType == "feishu" {
-            var urls []OneUrl
-            for _, v := range client.ExtendFeishu.RobotUrls {
-                urls = append(urls, OneUrl{Url: v})
-            }
-            cInfo := ClientInfoFeishu{
-                Feishu:       client.ExtendFeishu,
-                RobotUrlList: urls,
-            }
-            respData.ClientInfo = cInfo
-        }
+		} else if client.ClientType == "feishu" {
+			var urls []OneUrl
+			for _, v := range client.ExtendFeishu.RobotUrls {
+				urls = append(urls, OneUrl{Url: v})
+			}
+			cInfo := ClientInfoFeishu{
+				Feishu:       client.ExtendFeishu,
+				RobotUrlList: urls,
+			}
+			respData.ClientInfo = cInfo
+		}
 
-        g.JSON(http.StatusOK, httpBase.ResponseSuccessful("查询成功", respData))
-    }
-    return
+		g.JSON(http.StatusOK, httpBase.ResponseSuccessful("查询成功", respData))
+	}
+	return
 }

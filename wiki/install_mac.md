@@ -9,6 +9,7 @@ docker run -d -p 7077:7077 gomessage/gomessage:latest
 ```
 
 只运行一次（容器停止后自动删除，不残留和污染本地环境）：
+
 ```bash
 docker run -d \
     -p 7077:7077 \
@@ -18,6 +19,7 @@ docker run -d \
 ```
 
 稳定的运行（且设定为开机启动）：
+
 ```bash
 docker run -d \
     -p 7077:7077 \
@@ -29,9 +31,11 @@ docker run -d \
 <br>
 
 ### 以二进制文件的方式来运行GoMessage
+
 > 作者在此处默认：
 >
-> 愿意使用<二进制文件运行>的方式来在<本地电脑>上运行GoMessage的玩家，拥有丰富的Linux命令行操作使用经验，具备识别<命令行危险操作>的基本常识，因此不对该方式的部署进行过多赘述~
+> 愿意使用<二进制文件运行>的方式来在<本地电脑>上运行GoMessage的玩家，拥有丰富的Linux命令行操作使用经验，具备识别<
+> 命令行危险操作>的基本常识，因此不对该方式的部署进行过多赘述~
 
 <br>
 
@@ -40,7 +44,6 @@ docker run -d \
 下载地址（国内）：https://gitee.com/gomessage/gomessage/releases （国内用这个，速度很快~）
 
 下载地址（国外）：https://github.com/gomessage/gomessage/releases
-
 
 解压之后得到的文件目录结构为：
 

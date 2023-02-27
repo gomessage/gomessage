@@ -4,10 +4,11 @@
       <!--右侧抽屉：添加客户端-->
       <CDrawer v-bind:getClientList="getClientList"></CDrawer>
       <!--右侧抽屉：显示客户端详情-->
-      <CDrawerOneDataInfo v-bind:oneClientInfo="clientOneInfo" v-bind:thisClose="thisClose" v-bind:visibleStatus="visibleStatus"></CDrawerOneDataInfo>
+      <CDrawerOneDataInfo v-bind:oneClientInfo="clientOneInfo" v-bind:thisClose="thisClose"
+                          v-bind:visibleStatus="visibleStatus"></CDrawerOneDataInfo>
 
       <!--中间卡片：客户端列表-->
-      <el-card style="box-shadow: #ccc 0px 10px 10px;">
+      <el-card style="box-shadow: #ccc 0px 30px 30px;">
         <div slot="header" class="clearfix">
           <span style="padding-left: 50px">客户端 · 列表</span>
           <el-button style="float: right; padding: 3px 0" type="text" v-on:click="getClientList">刷新列表</el-button>
@@ -35,8 +36,11 @@
 
           <el-table-column fixed="right" label="操作" width="100">
             <template slot-scope="scope">
-              <el-button size="small" type="text" @click.native.prevent="getOneClient(scope.$index, clientList)">详情</el-button>
-              <el-button size="small" type="text" @click.native.prevent="deleteOneClient(scope.$index, clientList)">移除</el-button>
+              <el-button size="small" type="text" @click.native.prevent="getOneClient(scope.$index, clientList)">详情
+              </el-button>
+              <el-button size="small" type="text" @click.native.prevent="deleteOneClient(scope.$index, clientList)">
+                移除
+              </el-button>
             </template>
           </el-table-column>
 

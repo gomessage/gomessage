@@ -1,9 +1,11 @@
 <template>
+  <!--#303133-->
+  <!--#000000-->
   <el-menu
       :collapse-transition="true"
       :default-active="$route.name"
       active-text-color="#ffd04b"
-      background-color="#303133"
+      background-color="#161823"
       mode="horizontal"
       router
       style="height: 100%;"
@@ -34,38 +36,40 @@
 
 
     <!--右侧按钮-->
-        <el-row justify="end" type="flex">
+    <el-row justify="end" type="flex">
 
-            <router-link to="/">
-                <el-menu-item index="1-1"><i class="el-icon-position"></i>消息入口</el-menu-item>
-            </router-link>
-
-
-            <router-link to="/request_data">
-                <el-menu-item index="2-1"><i class="el-icon-set-up"></i>模板编写</el-menu-item>
-            </router-link>
+      <router-link to="/">
+        <el-menu-item index="1-1"><i class="el-icon-position"></i>消息入口</el-menu-item>
+      </router-link>
 
 
-            <router-link to="/data_client">
-                <el-menu-item index="3-1"><i class="el-icon-chat-dot-square"></i>接收客户端</el-menu-item>
-            </router-link>
-
-            <!--            <el-link href="https://gitee.com/gomessage/gomessage#gomessage" :underline="false" type="primary" target="_blank">-->
-            <!--                <el-menu-item><i class="el-icon-notebook-2"></i>文档</el-menu-item>-->
-            <!--            </el-link>-->
-
-            <el-menu-item>
-                <el-link :underline="false" href="https://github.com/gomessage/gomessage#gomessage" target="_blank" type="primary"><i class="el-icon-document"></i>文档</el-link>
-            </el-menu-item>
-
-            <!--            <el-link href="https://gitee.com/gomessage/gomessage#gomessage" :underline="false" type="primary" target="_blank">-->
-            <!--                <el-menu-item><i class="el-icon-notebook-2"></i>文档</el-menu-item>-->
-            <!--            </el-link>-->
-
-        </el-row>
+      <router-link to="/request_data">
+        <el-menu-item index="2-1"><i class="el-icon-set-up"></i>模板编写</el-menu-item>
+      </router-link>
 
 
-    </el-menu>
+      <router-link to="/data_client">
+        <el-menu-item index="3-1"><i class="el-icon-chat-dot-square"></i>接收客户端</el-menu-item>
+      </router-link>
+
+      <!--            <el-link href="https://gitee.com/gomessage/gomessage#gomessage" :underline="false" type="primary" target="_blank">-->
+      <!--                <el-menu-item><i class="el-icon-notebook-2"></i>文档</el-menu-item>-->
+      <!--            </el-link>-->
+
+      <el-menu-item>
+        <el-link :underline="false" href="https://github.com/gomessage/gomessage#gomessage" target="_blank"
+                 type="primary"><i class="el-icon-document"></i>文档
+        </el-link>
+      </el-menu-item>
+
+      <!--            <el-link href="https://gitee.com/gomessage/gomessage#gomessage" :underline="false" type="primary" target="_blank">-->
+      <!--                <el-menu-item><i class="el-icon-notebook-2"></i>文档</el-menu-item>-->
+      <!--            </el-link>-->
+
+    </el-row>
+
+
+  </el-menu>
 </template>
 
 <script>
@@ -96,6 +100,6 @@ export default {
 
 <style scoped>
 .router-link-active {
-    text-decoration: none;
+  text-decoration: none;
 }
 </style>

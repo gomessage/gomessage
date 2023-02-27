@@ -37,6 +37,7 @@ docker run -d -p 7077:7077 gomessage/gomessage:latest
 ```
 
 只运行一次（容器停止后自动删除，不残留和污染本地环境）：
+
 ```bash
 docker run -d \
     -p 7077:7077 \
@@ -46,6 +47,7 @@ docker run -d \
 ```
 
 稳定的运行（且设定为开机启动）：
+
 ```bash
 docker run -d \
     -p 7077:7077 \
@@ -60,17 +62,13 @@ docker run -d \
 
 - [Linux环境下的安装](wiki/install.md)
 
-
-
 ### `Windows服务器：`
+
 - [Windows环境下的安装（文档暂未完成...）](#windows%E6%9C%8D%E5%8A%A1%E5%99%A8)
-
-
 
 ### `Mac本地电脑：`
 
 - [Mac环境下的安装](wiki/install_mac.md)
-
 
 <br><br>
 
@@ -78,7 +76,8 @@ docker run -d \
 
 GoMessage是一款消息转发器，主要功能为：
 
-- 用`更友好的图形界面的方式`补全`Prometheus + Alertmanager`报警链路中的最后一个环节，接收Alertmanager报警消息推送，`完成消息格式化`后转发到指定客户端上。
+- 用`更友好的图形界面的方式`补全`Prometheus + Alertmanager`
+  报警链路中的最后一个环节，接收Alertmanager报警消息推送，`完成消息格式化`后转发到指定客户端上。
 -
 - 接收其它工具的消息推送（例如Git的`WebHook回调`），`完成消息格式化`后转发到指定客户端上。
 -

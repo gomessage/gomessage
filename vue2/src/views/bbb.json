@@ -1,69 +1,69 @@
 {
-    "receiver": "dingding2",
-    "status": "firing",
-    "alerts": [
-        {
-            "status": "firing",
-            "labels": {
-                "alertname": "服务器存活探测",
-                "consul_type": "blackbox-icmp",
-                "group": "yunwei-ping",
-                "hostname": "sh2-fat-kubectl-1",
-                "instance": "192.168.35.18:9115",
-                "job": "Autodiscover-icmp",
-                "ping": "172.20.5.10",
-                "severity": "严重",
-                "yunwei": "test"
-            },
-            "annotations": {
-                "description": "服务器 (172.20.5.10) 存活探测失败,可能已经宕机,请尽快查看!",
-                "summary": "存活探测失败"
-            },
-            "startsAt": "2021-10-20T03:04:22.615Z",
-            "endsAt": "0001-01-01T00:00:00Z",
-            "generatorURL": "http://sh3-tools-prometheus-1:9090/graph?g0.expr=probe_success%7Bconsul_type%3D%22blackbox-icmp%22%7D+%21%3D+1&g0.tab=1",
-            "fingerprint": "5582f114464c5dc3"
-        },
-        {
-            "status": "firing",
-            "labels": {
-                "alertname": "服务器存活探测",
-                "consul_type": "blackbox-icmp",
-                "group": "yunwei-ping",
-                "hostname": "sh3-tools-EMR-Core-1",
-                "instance": "192.168.35.18:9115",
-                "job": "Autodiscover-icmp",
-                "ping": "192.168.35.14",
-                "severity": "严重",
-                "yunwei": "test"
-            },
-            "annotations": {
-                "description": "服务器 (192.168.35.14) 存活探测失败,可能已经宕机,请尽快查看!",
-                "summary": "存活探测失败"
-            },
-            "startsAt": "2021-10-20T03:04:22.615Z",
-            "endsAt": "0001-01-01T00:00:00Z",
-            "generatorURL": "http://sh3-tools-prometheus-1:9090/graph?g0.expr=probe_success%7Bconsul_type%3D%22blackbox-icmp%22%7D+%21%3D+1&g0.tab=1",
-            "fingerprint": "e1755cd18e72b740"
-        }
-    ],
-    "groupLabels": {
-        "alertname": "服务器存活探测"
-    },
-    "commonLabels": {
+  "receiver": "dingding2",
+  "status": "firing",
+  "alerts": [
+    {
+      "status": "firing",
+      "labels": {
         "alertname": "服务器存活探测",
         "consul_type": "blackbox-icmp",
         "group": "yunwei-ping",
+        "hostname": "sh2-fat-kubectl-1",
         "instance": "192.168.35.18:9115",
         "job": "Autodiscover-icmp",
+        "ping": "172.20.5.10",
         "severity": "严重",
         "yunwei": "test"
-    },
-    "commonAnnotations": {
+      },
+      "annotations": {
+        "description": "服务器 (172.20.5.10) 存活探测失败,可能已经宕机,请尽快查看!",
         "summary": "存活探测失败"
+      },
+      "startsAt": "2021-10-20T03:04:22.615Z",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "http://sh3-tools-prometheus-1:9090/graph?g0.expr=probe_success%7Bconsul_type%3D%22blackbox-icmp%22%7D+%21%3D+1&g0.tab=1",
+      "fingerprint": "5582f114464c5dc3"
     },
-    "externalURL": "http://sh3-tools-prometheus-1:9093",
-    "version": "4",
-    "groupKey": "{}:{alertname='服务器存活探测'}",
-    "truncatedAlerts": 0
+    {
+      "status": "firing",
+      "labels": {
+        "alertname": "服务器存活探测",
+        "consul_type": "blackbox-icmp",
+        "group": "yunwei-ping",
+        "hostname": "sh3-tools-EMR-Core-1",
+        "instance": "192.168.35.18:9115",
+        "job": "Autodiscover-icmp",
+        "ping": "192.168.35.14",
+        "severity": "严重",
+        "yunwei": "test"
+      },
+      "annotations": {
+        "description": "服务器 (192.168.35.14) 存活探测失败,可能已经宕机,请尽快查看!",
+        "summary": "存活探测失败"
+      },
+      "startsAt": "2021-10-20T03:04:22.615Z",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "http://sh3-tools-prometheus-1:9090/graph?g0.expr=probe_success%7Bconsul_type%3D%22blackbox-icmp%22%7D+%21%3D+1&g0.tab=1",
+      "fingerprint": "e1755cd18e72b740"
+    }
+  ],
+  "groupLabels": {
+    "alertname": "服务器存活探测"
+  },
+  "commonLabels": {
+    "alertname": "服务器存活探测",
+    "consul_type": "blackbox-icmp",
+    "group": "yunwei-ping",
+    "instance": "192.168.35.18:9115",
+    "job": "Autodiscover-icmp",
+    "severity": "严重",
+    "yunwei": "test"
+  },
+  "commonAnnotations": {
+    "summary": "存活探测失败"
+  },
+  "externalURL": "http://sh3-tools-prometheus-1:9093",
+  "version": "4",
+  "groupKey": "{}:{alertname='服务器存活探测'}",
+  "truncatedAlerts": 0
 }

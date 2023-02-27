@@ -1,13 +1,10 @@
 <template>
   <div>
     <el-row style="margin: 20px 0" :gutter="20">
-      <el-col>
-        <DataFormat class="shadow"></DataFormat>
-      </el-col>
-    </el-row>
 
-    <el-row style="margin: 20px 0" :gutter="20">
-      <el-col :span="12">
+      <el-col span="12">
+        <DataFormat class="shadow"></DataFormat>
+        <br>
         <DataMap class="shadow"></DataMap>
       </el-col>
 
@@ -25,24 +22,24 @@ import DataMap from "@/components/cConfigMap";
 import CTemplate from "@/components/cTemplate";
 
 export default {
-    name: "ViewRequestData",
-    components: {
-        DataFormat,
-        DataMap,
-        CTemplate,
-    },
-    created() {
-        //修改步骤条的值
-        this.$store.commit("updateStepsActive", 1);
-    }
+  name: "ViewRequestData",
+  components: {
+    DataFormat,
+    DataMap,
+    CTemplate,
+  },
+  created() {
+    //修改步骤条的值
+    this.$store.commit("updateStepsActive", 1);
+  }
 }
 </script>
 
 <style scoped>
 .shadow {
-  -webkit-box-shadow: #ccc 0px 20px 20px;
-  -moz-box-shadow: #ccc 0px 20px 20px;
-  box-shadow: #ccc 0px 20px 20px;
+  -webkit-box-shadow: #ccc 0px 30px 30px;
+  -moz-box-shadow: #ccc 0px 30px 30px;
+  box-shadow: #ccc 0px 30px 30px;
   /*transform: scale(1.01, 1.01);*/
 }
 </style>

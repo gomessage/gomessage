@@ -1,12 +1,12 @@
 package views
 
 import (
-    "fmt"
-    "github.com/gin-gonic/gin"
-    "gomessage/apps/models"
-    "gomessage/apps/views/httpBase"
-    "net/http"
-    "strconv"
+	"fmt"
+	"github.com/gin-gonic/gin"
+	"gomessage/apps/models"
+	"gomessage/apps/views/httpBase"
+	"net/http"
+	"strconv"
 )
 
 // ListTemplate
@@ -14,9 +14,9 @@ import (
 // @Summary 获取所有消息模板
 // @Router /api/v1/:namespace/template [GET]
 func ListTemplate(g *gin.Context) {
-    ns := g.Param("namespace")
-    listTemplate, _ := models.ListTemplate(ns)
-    g.JSON(http.StatusOK, httpBase.ResponseSuccessful("数据查询成功", listTemplate))
+	ns := g.Param("namespace")
+	listTemplate, _ := models.ListTemplate(ns)
+	g.JSON(http.StatusOK, httpBase.ResponseSuccessful("数据查询成功", listTemplate))
 }
 
 // PostTemplate
@@ -24,24 +24,24 @@ func ListTemplate(g *gin.Context) {
 // @Summary 新增一个消息模板
 // @Router /api/v1/:namespace/template [POST]
 func PostTemplate(g *gin.Context) {
-    ns := g.Param("namespace")
-    body := models.Template{
-        Namespace:    ns,
-        TemplateName: ns,
-    }
-    g.ShouldBindJSON(&body)
+	ns := g.Param("namespace")
+	body := models.Template{
+		Namespace:    ns,
+		TemplateName: ns,
+	}
+	g.ShouldBindJSON(&body)
 
-    //删除指定namespace中的模板
-    listTemps, _ := models.ListTemplate(ns)
-    for _, temp := range *listTemps {
-        models.DeleteTemplate(temp.ID)
-    }
+	//删除指定namespace中的模板
+	listTemps, _ := models.ListTemplate(ns)
+	for _, temp := range *listTemps {
+		models.DeleteTemplate(temp.ID)
+	}
 
-    template, err := models.AddTemplate(&body)
-    if err != nil {
-        return
-    }
-    g.JSON(http.StatusOK, httpBase.ResponseSuccessful("模板添加成功", &template))
+	template, err := models.AddTemplate(&body)
+	if err != nil {
+		return
+	}
+	g.JSON(http.StatusOK, httpBase.ResponseSuccessful("模板添加成功", &template))
 }
 
 // GetTemplate
@@ -49,13 +49,13 @@ func PostTemplate(g *gin.Context) {
 // @Summary 查询一个消息模板
 // @Router /api/v1/:namespace/template/:id [GET]
 func GetTemplate(g *gin.Context) {
-    id, _ := strconv.Atoi(g.Param("id"))
-    result, err := models.GetTemplateById(id)
-    if err != nil {
-        g.JSON(http.StatusBadRequest, "参数错误")
-    } else {
-        g.JSON(http.StatusOK, result)
-    }
+	id, _ := strconv.Atoi(g.Param("id"))
+	result, err := models.GetTemplateById(id)
+	if err != nil {
+		g.JSON(http.StatusBadRequest, "参数错误")
+	} else {
+		g.JSON(http.StatusOK, result)
+	}
 }
 
 // PutTemplate
@@ -63,16 +63,16 @@ func GetTemplate(g *gin.Context) {
 // @Summary 修改一个消息模板
 // @Router /api/v1/:namespace/template/:id [PUT]
 func PutTemplate(g *gin.Context) {
-    id, _ := strconv.Atoi(g.Param("id"))
-    body := models.Template{}
-    g.ShouldBindJSON(&body)
+	id, _ := strconv.Atoi(g.Param("id"))
+	body := models.Template{}
+	g.ShouldBindJSON(&body)
 
-    result, err := models.UpdateTemplate(id, &body)
-    if err != nil {
-        g.JSON(http.StatusBadRequest, err)
-    } else {
-        g.JSON(http.StatusOK, result)
-    }
+	result, err := models.UpdateTemplate(id, &body)
+	if err != nil {
+		g.JSON(http.StatusBadRequest, err)
+	} else {
+		g.JSON(http.StatusOK, result)
+	}
 }
 
 // DeleteTemplate
@@ -80,11 +80,11 @@ func PutTemplate(g *gin.Context) {
 // @Summary 删除一个消息模板
 // @Router /api/v1/:namespace/template/:id [DELETE]
 func DeleteTemplate(g *gin.Context) {
-    id, _ := strconv.Atoi(g.Param("id"))
-    num, err := models.DeleteTemplate(id)
-    if err != nil {
-        g.JSON(http.StatusBadRequest, err)
-    } else {
-        g.JSON(http.StatusOK, fmt.Sprintf("受影响的行数：%v", num))
-    }
+	id, _ := strconv.Atoi(g.Param("id"))
+	num, err := models.DeleteTemplate(id)
+	if err != nil {
+		g.JSON(http.StatusBadRequest, err)
+	} else {
+		g.JSON(http.StatusOK, fmt.Sprintf("受影响的行数：%v", num))
+	}
 }

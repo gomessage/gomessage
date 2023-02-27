@@ -3,7 +3,7 @@
 
     <!--卡片标题-->
     <div slot="header" class="clearfix">
-      <span style="padding-left: 50px">用户变量</span>
+      <span style="padding-left: 50px">自定义变量映射</span>
       <el-button style="float: right; padding: 3px 0" type="text" v-on:click="post_data">保存变量</el-button>
     </div>
 
@@ -20,7 +20,8 @@
       <el-table-column label="Value（原始数据中的索引）" prop="value"></el-table-column>
       <el-table-column fixed="right" label="操作" width="100">
         <template slot-scope="scope">
-          <el-button size="small" type="text" @click.native.prevent="deleteRow(scope.$index, configList)">移除</el-button>
+          <el-button size="small" type="text" @click.native.prevent="deleteRow(scope.$index, configList)">移除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>

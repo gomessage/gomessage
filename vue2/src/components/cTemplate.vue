@@ -3,17 +3,19 @@
     <div slot="header" class="clearfix">
 
       <!--是否聚合发送信息-->
-      <el-switch v-model="template.template_is_merge" inactive-text="聚合发送" style="float: left; padding: 3px 0;"></el-switch>
+      <el-switch v-model="template.template_is_merge" inactive-text="聚合发送"
+                 style="float: left; padding: 3px 0;"></el-switch>
 
       <!--教程提示按钮，跳转代码-->
-      <el-tooltip class="item" content='跳转到新页面：查看"消息模板"编写教程' effect="dark" placement="bottom" style="float: left;margin-left: 30px;padding-top: 3px;">
+      <el-tooltip class="item" content='跳转到新页面：查看"消息模板"编写教程' effect="dark" placement="bottom"
+                  style="float: left;margin-left: 30px;padding-top: 3px;">
         <el-link :underline="false" type="primary" @click="newTagPage">
           <span><i class="el-icon-info"></i></span>
         </el-link>
       </el-tooltip>
 
       <!--标题-->
-      <span style="margin-right: 70px">消息模板</span>
+      <span style="margin-right: 70px">自定义消息模板</span>
 
       <!--保存模板-->
       <el-button style="float: right; padding: 3px 0;" type="text" v-on:click="pushTemplateData()">保存模板</el-button>

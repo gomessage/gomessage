@@ -1,8 +1,8 @@
 package httpIndex
 
 import (
-    "github.com/gin-gonic/gin"
-    "net/http"
+	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 // Index
@@ -10,5 +10,5 @@ import (
 // g.Static("/static", "assets/vue2/static")
 // g.LoadHTMLGlob("assets/vue2/*.html")
 func Index(c *gin.Context) {
-    c.HTML(http.StatusOK, "index.html", gin.H{"title": "GoMessage"})
+	c.HTML(http.StatusOK, "index.html", gin.H{"title": "GoMessage"})
 }

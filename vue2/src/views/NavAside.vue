@@ -1,8 +1,10 @@
 <template>
+  <!--#303133-->
+  <!--#41555d-->
   <el-menu
       :default-active="getStoreNamespace"
       active-text-color="#ffd04b"
-      background-color="#000"
+      background-color="#41555d"
       style="height: 100%"
       text-color="#fff"
   >
@@ -83,14 +85,17 @@
 
         <el-table-column fixed="right" label="操作" width="100">
           <template slot-scope="scope">
-            <el-button size="small" type="danger" @click.native.prevent="deleteOneNamespace(scope.$index, namespaceList)">删除</el-button>
+            <el-button size="small" type="danger"
+                       @click.native.prevent="deleteOneNamespace(scope.$index, namespaceList)">删除
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
 
 
       <br>
-      <p class="authorStatement2">GoMessage v2 版本支持多通道并发，只需部署一个GoMessage实例，就可承载多类型、多链路、多环境下的消息快速转发。</p>
+      <p class="authorStatement2">GoMessage v2
+        版本支持多通道并发，只需部署一个GoMessage实例，就可承载多类型、多链路、多环境下的消息快速转发。</p>
       <!--<br>-->
       <!--<p class="authorStatement2">每类需求可以单独使用一个推送通道，通道之间彼此隔离、线程安全。</p>-->
       <!--<br>-->
@@ -105,11 +110,13 @@
       <!--这是一个form表单，对话框支持填充表单-->
       <el-form :model="namespaceForm" style="width: 60%;">
         <el-form-item label="通道名称" label-width="105px">
-          <el-input v-model="namespaceForm.name" autocomplete="off" placeholder="请输入通道名称（只能是纯英文名称，不限大小写）"></el-input>
+          <el-input v-model="namespaceForm.name" autocomplete="off"
+                    placeholder="请输入通道名称（只能是纯英文名称，不限大小写）"></el-input>
         </el-form-item>
 
         <el-form-item label="通道描述" label-width="105px">
-          <el-input v-model="namespaceForm.description" autocomplete="off" type="textarea" :rows="3" placeholder="请输入推送通道的描述信息"></el-input>
+          <el-input v-model="namespaceForm.description" autocomplete="off" type="textarea" :rows="3"
+                    placeholder="请输入推送通道的描述信息"></el-input>
         </el-form-item>
 
       </el-form>

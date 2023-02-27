@@ -1,16 +1,16 @@
 <template>
-    <div>
-        <el-row style="margin-top: 20px" class="shadow">
-            <el-col :offset="7" :span="10">
-              <Domain></Domain>
-            </el-col>
-        </el-row>
-      <el-row>
-        <el-col :offset="7" :span="10" style="margin-top: 150px">
-          <el-button round @click="simulation">模拟 AlertManager 推送一条报警信息</el-button>
-        </el-col>
-      </el-row>
-    </div>
+  <div>
+    <el-row style="margin-top: 40px" class="shadow">
+      <el-col :offset="7" :span="10">
+        <Domain></Domain>
+      </el-col>
+    </el-row>
+    <el-row>
+      <el-col :offset="7" :span="10" style="margin-top: 150px">
+        <el-button round @click="simulation">模拟 AlertManager 推送一条报警信息</el-button>
+      </el-col>
+    </el-row>
+  </div>
 </template>
 
 <script>
@@ -19,24 +19,24 @@ import Domain from "@/components/cDomain";
 import {postDemoData} from '@/service/requests'
 
 export default {
-    name: 'ViewHome',
-    components: {
-        Domain,
-    }, methods: {
-        simulation: function () {
-            let jsonData = require('./bbb.json');
-          postDemoData(this.$store.getters.getNamespace, jsonData).then(response => {
-            console.log(response)
-            this.$message.success("模拟消息推送成功...")
-          }).catch(err => {
-                console.log(err)
-            });
-        }
-    },
-    created() {
-        //修改步骤条的值
-        this.$store.commit("updateStepsActive", 0);
+  name: 'ViewHome',
+  components: {
+    Domain,
+  }, methods: {
+    simulation: function () {
+      let jsonData = require('./bbb.json');
+      postDemoData(this.$store.getters.getNamespace, jsonData).then(response => {
+        console.log(response)
+        this.$message.success("模拟消息推送成功...")
+      }).catch(err => {
+        console.log(err)
+      });
     }
+  },
+  created() {
+    //修改步骤条的值
+    this.$store.commit("updateStepsActive", 0);
+  }
 
 }
 </script>
