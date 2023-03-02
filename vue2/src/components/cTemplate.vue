@@ -3,12 +3,10 @@
     <div slot="header" class="clearfix">
 
       <!--是否聚合发送信息-->
-      <el-switch v-model="template.template_is_merge" inactive-text="聚合发送"
-                 style="float: left; padding: 3px 0;"></el-switch>
+      <el-switch v-model="template.template_is_merge" inactive-text="聚合发送" style="float: left; padding: 3px 0;" @change="pushTemplateData"></el-switch>
 
       <!--教程提示按钮，跳转代码-->
-      <el-tooltip class="item" content='跳转到新页面：查看"消息模板"编写教程' effect="dark" placement="bottom"
-                  style="float: left;margin-left: 30px;padding-top: 3px;">
+      <el-tooltip class="item" content='跳转到新页面：查看"消息模板"编写教程' effect="dark" placement="bottom" style="float: left;margin-left: 30px;padding-top: 3px;">
         <el-link :underline="false" type="primary" @click="newTagPage">
           <span><i class="el-icon-info"></i></span>
         </el-link>
@@ -29,11 +27,11 @@
 
     <div>
       <el-input
-          v-model="template.template_content"
-          :autosize="{ minRows: 10, maxRows: 200}"
-          placeholder="请输入Golang语法的模板内容"
-          resize="none"
-          type="textarea">
+        v-model="template.template_content"
+        :autosize="{ minRows: 10, maxRows: 200}"
+        placeholder="请输入Golang语法的模板内容"
+        resize="none"
+        type="textarea">
       </el-input>
     </div>
   </el-card>
@@ -50,40 +48,40 @@ export default {
       template: {
         template_is_merge: false,
         template_content: '{{ if eq .N6 "firing" }}\n' +
-            '\n' +
-            '## <font color=\'#FF0000\'>【报警中】服务器{{ .N3 }}</font>\n' +
-            '\n' +
-            '{{ else if eq .N6 "resolved" }}\n' +
-            '\n' +
-            '## <font color=\'#20B2AA\'>【已恢复】服务器{{ .N3 }}</font>\n' +
-            '\n' +
-            '{{ else }}\n' +
-            '\n' +
-            '## 标题：信息通知\n' +
-            '\n' +
-            '{{ end }}\n' +
-            '\n' +
-            '========================\n' +
-            '\n' +
-            '**告警规则**：{{ .N1 }}\n' +
-            '\n' +
-            '**告警级别**：{{ .N2 }}\n' +
-            '\n' +
-            '**主机名称**：{{ .N3 }} \n' +
-            '\n' +
-            '**主机地址**：{{ .N4 }}\n' +
-            '\n' +
-            '**告警详情**：{{ .N5 }}\n' +
-            '\n' +
-            '**告警状态**：{{ .N6 }}\n' +
-            '\n' +
-            '**触发时间**：{{ .N7 }}\n' +
-            '\n' +
-            '**发送时间**：{{ .N8 }}\n' +
-            '\n' +
-            '**规则详情**：[Prometheus控制台](https://www.baidu.com)\n' +
-            '\n' +
-            '**报警详情**：[Alertmanager控制台](https://www.baidu.com)\n',
+          '\n' +
+          '## <font color=\'#FF0000\'>【报警中】服务器{{ .N3 }}</font>\n' +
+          '\n' +
+          '{{ else if eq .N6 "resolved" }}\n' +
+          '\n' +
+          '## <font color=\'#20B2AA\'>【已恢复】服务器{{ .N3 }}</font>\n' +
+          '\n' +
+          '{{ else }}\n' +
+          '\n' +
+          '## 标题：信息通知\n' +
+          '\n' +
+          '{{ end }}\n' +
+          '\n' +
+          '========================\n' +
+          '\n' +
+          '**告警规则**：{{ .N1 }}\n' +
+          '\n' +
+          '**告警级别**：{{ .N2 }}\n' +
+          '\n' +
+          '**主机名称**：{{ .N3 }} \n' +
+          '\n' +
+          '**主机地址**：{{ .N4 }}\n' +
+          '\n' +
+          '**告警详情**：{{ .N5 }}\n' +
+          '\n' +
+          '**告警状态**：{{ .N6 }}\n' +
+          '\n' +
+          '**触发时间**：{{ .N7 }}\n' +
+          '\n' +
+          '**发送时间**：{{ .N8 }}\n' +
+          '\n' +
+          '**规则详情**：[Prometheus控制台](https://www.baidu.com)\n' +
+          '\n' +
+          '**报警详情**：[Alertmanager控制台](https://www.baidu.com)\n',
       }
     }
   },

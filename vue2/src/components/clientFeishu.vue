@@ -1,6 +1,6 @@
 <template>
-  <el-form :label-position="labelPosition" label-width="100px" :model="client" style="text-align: left">
-    <el-form-item label="客户端名称:">
+  <el-form :label-position="labelPosition" label-width="100px" :model="client" :rules="feishuRules" style="text-align: left">
+    <el-form-item label="客户端名称:" prop="client_name">
       <el-input v-model="client.client_name" placeholder=""></el-input>
     </el-form-item>
 
@@ -70,6 +70,11 @@ export default {
           title_color: "grey",
         },
         typeDescription: "飞书·机器人",
+      },
+      feishuRules: {
+        client_name: [
+          {required: true, message: "name不能为空", trigger: "blur"},
+        ],
       },
       all_title_color: [
         {

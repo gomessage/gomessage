@@ -1,9 +1,9 @@
 <template>
   <el-drawer
-      title="客户端信息查看"
-      :visible.sync="visibleStatus"
-      :destroy-on-close="true"
-      :before-close="thisClose">
+    title="客户端信息查看"
+    :visible.sync="visibleStatus"
+    :destroy-on-close="true"
+    :before-close="thisClose">
     <el-form label-position="right" label-width="100px" :model="oneClientInfo" style="text-align: left">
       <el-form-item label="客户端名称:">
         <el-input v-model="oneClientInfo.client_name" disabled></el-input>
@@ -52,11 +52,11 @@
 
         <el-form-item label="接收用户:">
           <el-input
-              type="textarea"
-              :autosize="{ minRows: 4, maxRows: 6}"
-              v-model="oneClientInfo.client_info.touser"
-              placeholder="可以填写多个用户账号，用 | 分割开 （例如：aaa|bbb）"
-              disabled>
+            type="textarea"
+            :autosize="{ minRows: 4, maxRows: 6}"
+            v-model="oneClientInfo.client_info.touser"
+            placeholder="可以填写多个用户账号，用 | 分割开 （例如：aaa|bbb）"
+            disabled>
           </el-input>
         </el-form-item>
       </div>

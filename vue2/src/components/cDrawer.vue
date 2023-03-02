@@ -1,9 +1,9 @@
 <template>
   <el-drawer
-      title="添加客户端"
-      :visible="getDrawerStatus"
-      :before-close="handleClose"
-      :destroy-on-close="true">
+    title="添加客户端"
+    :visible="getDrawerStatus"
+    :before-close="handleClose"
+    :destroy-on-close="true">
     <el-tabs :tab-position="tabPosition" style="margin: 20px">
 
       <el-tab-pane label="钉钉">

@@ -16,11 +16,11 @@
         </div>
         <div>
           <el-input
-              type="textarea"
-              :autosize="{ minRows: 10, maxRows: 200}"
-              placeholder="请输入Golang语法的模板内容"
-              v-model="textarea"
-              resize="none"
+            type="textarea"
+            :autosize="{ minRows: 10, maxRows: 200}"
+            placeholder="请输入Golang语法的模板内容"
+            v-model="textarea"
+            resize="none"
           >
           </el-input>
         </div>
@@ -65,29 +65,29 @@ export default {
       console.log(this.textarea);
 
       this.axios.post('/v1/web/template',
-          {
-            "message_template": this.textarea,
-          }
+        {
+          "message_template": this.textarea,
+        }
       )
-          .then(response => {
-            // alert("模板已存储在库中...");
-            console.log(response.data);
-            this.$message.success("数据库更新成功...")
-          })
-          .catch(err => {
-            console.log(err);
-          });
+        .then(response => {
+          // alert("模板已存储在库中...");
+          console.log(response.data);
+          this.$message.success("数据库更新成功...")
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     //拉取数据
     pullTemplateData: function () {
       this.axios.get('/v1/web/template')
-          .then(response => {
-            this.textarea = response.data["MessageTemplate"];
-            console.log(response.data);
-          })
-          .catch(err => {
-            console.log(err);
-          });
+        .then(response => {
+          this.textarea = response.data["MessageTemplate"];
+          console.log(response.data);
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   }, created() {
     //修改步骤条的值

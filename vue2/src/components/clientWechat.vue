@@ -1,6 +1,6 @@
 <template>
-  <el-form :label-position="labelPosition" label-width="100px" :model="client" style="text-align: left">
-    <el-form-item label="客户端名称:">
+  <el-form :label-position="labelPosition" label-width="100px" :model="client" :rules="wechatRules" style="text-align: left">
+    <el-form-item label="客户端名称:" prop="client_name">
       <el-input v-model="client.client_name" placeholder=""></el-input>
     </el-form-item>
 
@@ -28,10 +28,10 @@
 
     <el-form-item label="接收用户:">
       <el-input
-          type="textarea"
-          :autosize="{ minRows: 4, maxRows: 6}"
-          v-model="client.client_info.touser"
-          placeholder="可以填写多个用户账号，用 | 分割开 （例如：aaa|bbb）"
+        type="textarea"
+        :autosize="{ minRows: 4, maxRows: 6}"
+        v-model="client.client_info.touser"
+        placeholder="可以填写多个用户账号，用 | 分割开 （例如：aaa|bbb）"
       >
       </el-input>
     </el-form-item>
@@ -63,6 +63,11 @@ export default {
           touser: ""
         },
         typeDescription: "企业微信·应用号",
+      },
+      wechatRules: {
+        client_name: [
+          {required: true, message: "name不能为空", trigger: "blur"},
+        ],
       },
     }
   }, props: {

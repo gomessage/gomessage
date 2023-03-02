@@ -13,9 +13,9 @@
 
     <!--Table表格-->
     <el-table
-        :border="true"
-        :data="configList"
-        style="width: 100%">
+      :border="true"
+      :data="configList"
+      style="width: 100%">
       <el-table-column label="Key（自定义变量名）" prop="key"></el-table-column>
       <el-table-column label="Value（原始数据中的索引）" prop="value"></el-table-column>
       <el-table-column fixed="right" label="操作" width="100">

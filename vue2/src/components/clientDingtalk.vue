@@ -1,6 +1,6 @@
 <template>
-  <el-form :label-position="labelPosition" :model="client" label-width="100px" style="text-align: left">
-    <el-form-item label="客户端名称:">
+  <el-form :label-position="labelPosition" :model="client" :rules="clientRules" label-width="100px" style="text-align: left">
+    <el-form-item label="客户端名称:" prop="client_name">
       <el-input v-model="client.client_name" placeholder=""></el-input>
     </el-form-item>
 
@@ -63,9 +63,12 @@ export default {
           ],
         },
         typeDescription: "钉钉·机器人",
-
-
       },
+      clientRules: {
+        client_name: [
+          {required: true, message: "name不能为空", trigger: "blur"},
+        ],
+      }
     }
   }, props: {
     getClientList: Function,

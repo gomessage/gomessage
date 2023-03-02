@@ -2,11 +2,11 @@
   <!--#303133-->
   <!--#41555d-->
   <el-menu
-      :default-active="getStoreNamespace"
-      active-text-color="#ffd04b"
-      background-color="#41555d"
-      style="height: 100%"
-      text-color="#fff"
+    :default-active="getStoreNamespace"
+    active-text-color="#ffd04b"
+    background-color="#41555d"
+    style="height: 100%"
+    text-color="#fff"
   >
 
     <!--左侧logo-->
@@ -22,11 +22,11 @@
 
     <!--for循环命名空间-->
     <el-menu-item
-        v-for="(oneNs,index) in namespaceList"
-        :key="index"
-        :index="oneNs.name"
-        style="text-align: left"
-        @click="updateNamespace(oneNs,$event)">
+      v-for="(oneNs,index) in namespaceList"
+      :key="index"
+      :index="oneNs.name"
+      style="text-align: left"
+      @click="updateNamespace(oneNs,$event)">
       <i class="el-icon-menu"></i>
       <span slot="title">{{ oneNs.name }}</span>
     </el-menu-item>
@@ -36,11 +36,11 @@
     <!--添加一个新的namespace-->
     <el-menu-item index="998" style="text-align: left">
       <el-button
-          icon="el-icon-setting"
-          plain
-          size="mini"
-          @click="dialogFormVisible222 = true"
-          style="padding-right: 35px"
+        icon="el-icon-setting"
+        plain
+        size="mini"
+        @click="dialogFormVisible222 = true"
+        style="padding-right: 35px"
       >管理推送通道
       </el-button>
     </el-menu-item>
@@ -48,30 +48,30 @@
 
     <!--利用对话框，添加命名空间-->
     <el-dialog
-        :visible.sync="dialogFormVisible222"
-        title="消息推送通道"
-        modal
-        width="60%"
-        top="10vh"
-        lock-scroll
+      :visible.sync="dialogFormVisible222"
+      title="消息推送通道"
+      modal
+      width="60%"
+      top="10vh"
+      lock-scroll
     >
       <!--表格-->
       <el-table
-          :data="namespaceList"
-          border
-          :header-cell-style="{background:'#2f2f35',color:'#fff'}"
-          style="width: 100%"
+        :data="namespaceList"
+        border
+        :header-cell-style="{background:'#2f2f35',color:'#fff'}"
+        style="width: 100%"
       >
 
         <el-table-column
-            prop="name"
-            label="名称"
-            width="180">
+          prop="name"
+          label="名称"
+          width="180">
         </el-table-column>
 
         <el-table-column
-            prop="description"
-            label="描述">
+          prop="description"
+          label="描述">
         </el-table-column>
 
         <!--<el-table-column-->
@@ -94,24 +94,19 @@
 
 
       <br>
-      <p class="authorStatement2">GoMessage v2
-        版本支持多通道并发，只需部署一个GoMessage实例，就可承载多类型、多链路、多环境下的消息快速转发。</p>
-      <!--<br>-->
-      <!--<p class="authorStatement2">每类需求可以单独使用一个推送通道，通道之间彼此隔离、线程安全。</p>-->
-      <!--<br>-->
-      <!--<p class="authorStatement2">完美对接Prometheus生态环境，优雅实践告警信息送达的最后一公里 (*^__^*)</p>-->
-
-
+      <p class="authorStatement2">
+        GoMessage v2 版本支持多通道并发，可以同时存在多个"通道"，互不干扰的进行消息转发。
+      </p>
       <br>
+
       <!--分割线-->
       <el-divider content-position="left"><i class="el-icon-circle-plus-outline"> 新增通道</i></el-divider>
       <!--<br>-->
 
       <!--这是一个form表单，对话框支持填充表单-->
-      <el-form :model="namespaceForm" style="width: 60%;">
-        <el-form-item label="通道名称" label-width="105px">
-          <el-input v-model="namespaceForm.name" autocomplete="off"
-                    placeholder="请输入通道名称（只能是纯英文名称，不限大小写）"></el-input>
+      <el-form :model="namespaceForm" :rules="namespaceRules" style="width: 60%;">
+        <el-form-item label="通道名称" label-width="105px" prop="name">
+          <el-input v-model="namespaceForm.name" autocomplete="off" placeholder="请输入通道名称（只能是纯英文名称，不限大小写）"></el-input>
         </el-form-item>
 
         <el-form-item label="通道描述" label-width="105px">
@@ -132,6 +127,7 @@
 
 <script>
 import {deleteNamespaceOne, getNamespace, postNamespace, putNamespaceOne} from "@/service/requests";
+import {isLength, isStringOrNumber, isNumberStart} from "@/utils/validate";
 
 export default {
   name: "NavAside",
@@ -150,6 +146,14 @@ export default {
         description: '',
         is_active: false,
       },
+      namespaceRules: {
+        name: [
+          {required: true, message: "name不能为空", trigger: "blur"},
+          {validator: isLength, trigger: "blur"},
+          {validator: isNumberStart, trigger: "blur"},
+          {validator: isStringOrNumber, trigger: "blur"},
+        ],
+      }
     }
   },
   methods: {

@@ -9,11 +9,11 @@
 
     <!--Table表格-->
     <el-table
-        :data="configList"
-        style="width: 100%"
-        border="true"
-        stripe="true"
-        :header-cell-style="{background:'#2f2f35',color:'#fff'}">
+      :data="configList"
+      style="width: 100%"
+      border="true"
+      stripe="true"
+      :header-cell-style="{background:'#2f2f35',color:'#fff'}">
       <el-table-column prop="key" label="Key（自定义变量名）"></el-table-column>
       <el-table-column prop="value" label="Value（请求数据中的字段名）"></el-table-column>
     </el-table>

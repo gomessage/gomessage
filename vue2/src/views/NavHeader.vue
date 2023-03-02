@@ -2,15 +2,15 @@
   <!--#303133-->
   <!--#000000-->
   <el-menu
-      :collapse-transition="true"
-      :default-active="$route.name"
-      active-text-color="#ffd04b"
-      background-color="#161823"
-      mode="horizontal"
-      router
-      style="height: 100%;"
-      text-color="#fff"
-      @select="handleSelect"
+    :collapse-transition="true"
+    :default-active="$route.name"
+    active-text-color="#ffd04b"
+    background-color="#161823"
+    mode="horizontal"
+    router
+    style="height: 100%;"
+    text-color="#fff"
+    @select="handleSelect"
   >
     <!-- background-color="#303133" text-color="#fff" active-text-color="#ffd04b" collapse-transition=true style="height: 100%">-->
 
@@ -26,9 +26,9 @@
     <el-menu-item style="padding: 0;">
       <router-link to="/">
         <el-button
-            type="text"
-            icon="el-icon-location"
-            style="color: #fff;margin-left: 10px;">
+          type="text"
+          icon="el-icon-location"
+          style="color: #fff;margin-left: 10px;">
           {{ getStoreNamespace }}
         </el-button>
       </router-link>

@@ -19,7 +19,7 @@ func PutClient(g *gin.Context) {
 		return
 	}
 
-	result, err := models.UpdateClient(id, &client)
+	result, err := models.UpdateClientActive(id, &client)
 	if err != nil {
 		g.JSON(http.StatusBadRequest, err)
 	} else {

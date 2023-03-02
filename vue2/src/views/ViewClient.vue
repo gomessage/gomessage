@@ -17,11 +17,11 @@
 
         <!--Table表格-->
         <el-table
-            :border="true"
-            :data="clientList"
-            :header-cell-style="{background:'#2f2f35',color:'#fff'}"
-            :stripe="true"
-            style="width: 100%"
+          :border="true"
+          :data="clientList"
+          :header-cell-style="{background:'#2f2f35',color:'#fff'}"
+          :stripe="true"
+          style="width: 100%"
         >
 
           <el-table-column label="客户端名称" prop="client_name"></el-table-column>

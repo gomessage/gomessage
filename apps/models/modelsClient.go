@@ -117,18 +117,22 @@ func DeleteClient(id int) (int, error) {
 	return int(result.RowsAffected), result.Error
 }
 
-func UpdateClient(id int, t *Client) (*Client, error) {
+func UpdateClientActive(id int, t *Client) (*Client, error) {
+	//client := Client{}
+	//readResult := database.DB.DefaultClient.First(&client, id)
+	//
+	////如果Error不为空
+	//if readResult.Error != nil {
+	//	return &client, readResult.Error
+	//
+	//} else {
+	//	// TODO: 这里的修改逻辑可能有问题，以后找时间修复
+	//	//updateResult := database.DB.DefaultClient.Model(&client).Omit("id").Updates(&t)
+
 	client := Client{}
-	readResult := database.DB.DefaultClient.First(&client, id)
+	updateResult := database.DB.DefaultClient.Model(&client).Where("id = ? ", id).Update("is_active", t.IsActive)
+	return &client, updateResult.Error
 
-	//如果Error不为空
-	if readResult.Error != nil {
-		return &client, readResult.Error
-
-	} else {
-		updateResult := database.DB.DefaultClient.Model(&client).Omit("id").Updates(&t)
-		return &client, updateResult.Error
-	}
 }
 
 func GetClientById(id int) (*Client, error) {

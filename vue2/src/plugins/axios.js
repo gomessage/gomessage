@@ -9,30 +9,30 @@ import axios from "axios";
 
 
 const axiosInstance = axios.create({
-    //baseURL: "http://localhost:7077"
-    baseURL: process.env.VUE_APP_BASE_URL,
-    timeout: 60 * 1000,
+  //baseURL: "http://localhost:7077"
+  baseURL: process.env.VUE_APP_BASE_URL,
+  timeout: 60 * 1000,
 });
 
 axiosInstance.interceptors.request.use(config => {
-        config.headers = {
-            'Content-Type': 'application/json'
-        };
-        return config;
-    },
-    error => {
-        return Promise.reject(error);
-    }
+    config.headers = {
+      'Content-Type': 'application/json'
+    };
+    return config;
+  },
+  error => {
+    return Promise.reject(error);
+  }
 );
 
 
 axiosInstance.interceptors.response.use(
-    response => {
-        return response;
-    },
-    error => {
-        return Promise.reject(error);
-    }
+  response => {
+    return response;
+  },
+  error => {
+    return Promise.reject(error);
+  }
 );
 
 // Plugin.install = function (Vue, options) {
@@ -56,38 +56,38 @@ axiosInstance.interceptors.response.use(
 // export default Plugin;
 
 export default {
-    Get(url, params, headers) {
-        return axiosInstance({
-            method: "get",
-            url: url,
-            headers: headers,
-            params: params
-        });
-    },
-    Delete(url, params, headers) {
-        return axiosInstance({
-            method: "delete",
-            url: url,
-            headers: headers,
-            params: params
-        });
-    },
-    Post(url, data, headers) {
-        return axiosInstance({
-            method: "post",
-            url: url,
-            headers: headers,
-            data: data
-        });
-    },
-    Put(url, data, headers) {
-        return axiosInstance({
-            method: "put",
-            url: url,
-            headers: headers,
-            data: data
-        });
-    }
+  Get(url, params, headers) {
+    return axiosInstance({
+      method: "get",
+      url: url,
+      headers: headers,
+      params: params
+    });
+  },
+  Delete(url, params, headers) {
+    return axiosInstance({
+      method: "delete",
+      url: url,
+      headers: headers,
+      params: params
+    });
+  },
+  Post(url, data, headers) {
+    return axiosInstance({
+      method: "post",
+      url: url,
+      headers: headers,
+      data: data
+    });
+  },
+  Put(url, data, headers) {
+    return axiosInstance({
+      method: "put",
+      url: url,
+      headers: headers,
+      data: data
+    });
+  }
 };
 
 
