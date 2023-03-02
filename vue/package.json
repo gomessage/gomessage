@@ -1,9 +1,9 @@
 {
-  "name": "GoMessage-UI",
+  "name": "gomwssage-ui",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve --mode development",
+    "dev": "vue-cli-service serve --mode development",
     "build": "vue-cli-service build --mode production",
     "lint": "vue-cli-service lint"
   },

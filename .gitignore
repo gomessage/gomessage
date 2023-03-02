@@ -1,7 +1,7 @@
 ### gitignore template
 .idea
-vue2/.idea
-vue2/node_modules
+vue/.idea
+vue/node_modules
 vue/.idea
 vue/node_modules
 *.iml

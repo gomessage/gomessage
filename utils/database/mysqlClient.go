@@ -5,6 +5,7 @@ import (
 	"github.com/spf13/viper"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 	"time"
 )
 
@@ -26,7 +27,10 @@ func openMysqlConnector(databaseURL, databaseName, username, password, options s
 	//dsn := fmt.Sprintf("%v:%v@tcp(%v)/%v?charset=utf8mb4&parseTime=True&loc=Local", username, password, databaseURL, databaseName)
 	dsn := fmt.Sprintf("%v:%v@tcp(%v)/%v?%v", username, password, databaseURL, databaseName, options)
 
-	database, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	database, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Silent), //设置日志默认模式为Silent
+
+	})
 	if err != nil {
 		fmt.Println(err)
 	}

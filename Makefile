@@ -16,7 +16,7 @@
 #要编译的命令名称
 NAME := gomessage
 #版本
-VERSION := 2.0.3
+VERSION := 2.0.4
 #编译输出目录
 OUTPUT_PATH := ./build/${VERSION}
 #是否开启cgo（0代表不开启，1代表开启）
@@ -129,10 +129,15 @@ docker: DOCKER_SCAN_SUGGEST := False
 docker: packageName := ${NAME}-${VERSION}-linux-x64
 docker:
 	@echo "\n---------版本latest---------\n"
-	docker build -t gomessage/gomessage:latest -f ./Dockerfile  "${OUTPUT_PATH}/${packageName}"
+	@docker build -t gomessage/gomessage:latest -f ./Dockerfile  "${OUTPUT_PATH}/${packageName}"
 	@echo "\n---------开始制作镜像，版本${VERSION}---------\n"
-	docker build -t gomessage/gomessage:${VERSION} -f ./Dockerfile  "${OUTPUT_PATH}/${packageName}"
+	@docker build -t gomessage/gomessage:${VERSION} -f ./Dockerfile  "${OUTPUT_PATH}/${packageName}"
 	@echo "\n---------镜像制作完成，版本${VERSION}---------\n"
+	@docker login -u $(DOCKER_HUB_USERNAME) -p $(DOCKER_HUB_PASSWORD) #此处创建了两个全局环境变量，便于每次推送镜像时，自动完成登录。
+	@docker push gomessage/gomessage:${VERSION}
+	@echo "\n---------推送镜像完成，版本${VERSION}---------\n"
+	@docker push gomessage/gomessage:latest
+	@echo "\n---------推送镜像完成，版本latest---------\n"
 
 
 ######################################
