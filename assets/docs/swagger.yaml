@@ -1,40 +1,40 @@
 info:
-  contact: { }
+  contact: {}
 paths:
   /api/v1/:namespace/client:
     get:
-      responses: { }
+      responses: {}
       summary: 获取所有客户端
       tags:
-        - Client
+      - Client
     post:
-      responses: { }
+      responses: {}
       summary: 新增一个客户端
       tags:
-        - Client
+      - Client
   /api/v1/:namespace/client/:id:
     delete:
-      responses: { }
+      responses: {}
       summary: 删除一个客户端
       tags:
-        - Client
+      - Client
     get:
-      responses: { }
+      responses: {}
       summary: 查询一个客户端
       tags:
-        - Client
+      - Client
     put:
-      responses: { }
+      responses: {}
       summary: 修改一个客户端
       tags:
-        - Client
+      - Client
   /api/v1/:namespace/health:
     get:
       consumes:
-        - application/json
+      - application/json
       description: 访问该接口将返回：Hello World
       produces:
-        - application/json
+      - application/json
       responses:
         "200":
           description: OK
@@ -42,102 +42,102 @@ paths:
             type: string
       summary: 命名空间健康检测
       tags:
-        - Health
+      - Health
   /api/v1/:namespace/template:
     get:
-      responses: { }
+      responses: {}
       summary: 获取所有消息模板
       tags:
-        - Template
+      - Template
     post:
-      responses: { }
+      responses: {}
       summary: 新增一个消息模板
       tags:
-        - Template
+      - Template
   /api/v1/:namespace/template/:id:
     delete:
-      responses: { }
+      responses: {}
       summary: 删除一个消息模板
       tags:
-        - Template
+      - Template
     get:
-      responses: { }
+      responses: {}
       summary: 查询一个消息模板
       tags:
-        - Template
+      - Template
     put:
-      responses: { }
+      responses: {}
       summary: 修改一个消息模板
       tags:
-        - Template
+      - Template
   /api/v1/:namespace/vars:
     get:
-      responses: { }
+      responses: {}
       summary: 获取所有用户变量
       tags:
-        - Variables
+      - Variables
     post:
-      responses: { }
+      responses: {}
       summary: 新增一个用户变量
       tags:
-        - Variables
+      - Variables
   /api/v1/:namespace/vars/:id:
     delete:
-      responses: { }
+      responses: {}
       summary: 删除一个用户变量
       tags:
-        - Variables
+      - Variables
     get:
-      responses: { }
+      responses: {}
       summary: 查询一个用户变量
       tags:
-        - Variables
+      - Variables
     put:
-      responses: { }
+      responses: {}
       summary: 修改一个用户变量
       tags:
-        - Variables
+      - Variables
   /api/v1/namespace:
     get:
-      responses: { }
+      responses: {}
       summary: 获取所有命名空间
       tags:
-        - Namespace
+      - Namespace
     post:
-      responses: { }
+      responses: {}
       summary: 新增一个命名空间
       tags:
-        - Namespace
+      - Namespace
   /api/v1/namespace/:id:
     delete:
-      responses: { }
+      responses: {}
       summary: 删除一个命名空间
       tags:
-        - Namespace
+      - Namespace
     get:
-      responses: { }
+      responses: {}
       summary: 查询一个命名空间
       tags:
-        - Namespace
+      - Namespace
     put:
-      responses: { }
+      responses: {}
       summary: 修改一个命名空间
       tags:
-        - Namespace
+      - Namespace
   /go/:namespace:
     post:
-      responses: { }
+      responses: {}
       tags:
-        - gomessage
+      - gomessage
   /go/message:
     get:
-      responses: { }
+      responses: {}
       tags:
-        - gomessage
+      - gomessage
   /health:
     get:
-      responses: { }
+      responses: {}
       summary: 全局健康检测
       tags:
-        - Health
+      - Health
 swagger: "2.0"
