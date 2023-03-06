@@ -3,6 +3,7 @@ package loggers
 import (
 	"fmt"
 	"github.com/sirupsen/logrus"
+	"gomessage/utils/log/hooks/es"
 	"io"
 	"os"
 	"path"
@@ -50,4 +51,6 @@ func init() {
 			TimestampFormat: "2006-01-02 15:04:05.000 -0700 MST",
 		},
 	)
+
+	AccessLogger.AddHook(es.NewEsHook([]logrus.Level{logrus.InfoLevel}))
 }
