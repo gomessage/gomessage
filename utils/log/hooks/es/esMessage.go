@@ -5,7 +5,7 @@ const Mapping = `
 {
   "mappings": {
     "properties": {
-	  "@timestamp": {
+      "@timestamp": {
         "type": "date"
       },
       "start_time": {
@@ -14,7 +14,7 @@ const Mapping = `
       "end_time": {
         "type": "keyword"
       },
-	  "latency": {
+      "latency": {
         "type": "keyword"
       },
       "status_code": {
@@ -29,19 +29,27 @@ const Mapping = `
       "path": {
         "type": "keyword"
       },
-	  "router": {
+      "router": {
         "type": "keyword"
       },
-	  "request_body": {
+      "request_body": {
+        "type": "text"
+      },
+      "server_host": {
         "type": "keyword"
       },
-	  "server_host": {
-        "type": "keyword"
-      },
-	  "levels": {
+      "levels": {
         "type": "keyword"
       }
     }
+  }
+}`
+
+const Mapping2 = `
+{
+  "mappings": {
+	"dynamic": true,
+    "properties": {}
   }
 }`
 

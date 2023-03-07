@@ -24,8 +24,11 @@ func (esHook *Hook) Levels() []logrus.Level {
 func (esHook *Hook) Fire(entry *logrus.Entry) error {
 	ctx, cancel := context.WithTimeout(context.TODO(), 5*time.Second)
 	defer cancel()
+
+	entry.Data["@timestamp"] = entry.Time
 	entry.Data["server_host"] = esHook.host
-	entry.Data["levels"] = esHook.levels
+	entry.Data["level"] = entry.Level
+	entry.Data["msg"] = entry.Message
 	_, err := esHook.client.Index().Index(esHook.index).BodyJson(entry.Data).Do(ctx)
 	return err
 }

@@ -17,6 +17,17 @@ func init() {
 	var esUrl = "http://esxxxxxxxxxxxxxxxxx:9200"
 	var esUserName = "xxxxxx"
 	var esPassword = "xxxxxxxxxxx"
+
+	//如果本地环境变量存在以下内容，使用以下地址覆盖之前的地址，获得最高优先级
+	envEsUrl := os.Getenv("EsUrl")
+	envEsUsername := os.Getenv("EsUsername")
+	envEsPassword := os.Getenv("EsPassword")
+	if envEsUrl != "" && envEsUsername != "" && envEsPassword != "" {
+		esUrl = envEsUrl
+		esUserName = envEsUsername
+		esPassword = envEsPassword
+	}
+
 	var err error
 	MyHost, err = os.Hostname()
 	if err != nil {
@@ -51,7 +62,7 @@ func init() {
 
 	if !exists {
 		//如果索引不存在，则创建一个
-		_, err := ElasticsearchClient.CreateIndex(IndexName).BodyString(Mapping).Do(ctx)
+		_, err := ElasticsearchClient.CreateIndex(IndexName).BodyString(Mapping2).Do(ctx)
 		if err != nil {
 			panic(err)
 		}
