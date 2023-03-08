@@ -4,30 +4,30 @@ import (
 	"fmt"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
+	"gomessage/utils/log/hooks/es"
 	"io"
 	"os"
 	"path"
 )
 
-// DefaultLogger 此处实例化一个日志对象，是用来记录服务自身'运行日志'的，request请求过程中的access日志由另外一个封装好的'日志中间件'来单独记录
 var DefaultLogger = logrus.New()
 
-// InitLog 初始化函数
-func InitLog() {
+// InitRuntimeLog 初始化函数
+func InitRuntimeLog() {
 
 	//日志文件位置
-	logFile := viper.GetString("log.logFile") //获取默认配置文件中指定的值（默认值：./logs/runtime.log）
+	logFile := viper.GetString("log.runtimeLogFile") //获取默认配置文件中指定的值（默认值：./logs/runtime.log）
 
 	//确保存放日志文件的目录始终存在
 	logPathDir := path.Dir(logFile)                              //返回路径中除去最后一个元素的剩余部分，也就是路径最后一个元素所在的目录
 	if err := os.MkdirAll(logPathDir, os.ModePerm); err != nil { //创建目录类似于（mkdir -p /aaa/bbb的效果）
-		fmt.Println("创建日志目录失败：", err)
+		fmt.Println("创建runtime日志目录失败：", err)
 		os.Exit(3)
 	}
 
 	//确保日志文件始终也存在
 	if _, err := os.Create(logFile); err != nil { //创建日志文件
-		fmt.Println("创建日志文件失败：", err)
+		fmt.Println("创建runtime日志文件失败：", err)
 		os.Exit(3)
 	}
 
@@ -49,6 +49,11 @@ func InitLog() {
 
 	//设定日志输出格式
 	setLogFormat(DefaultLogger, viper.GetString("log.format"))
+
+	//如果开启es的日志投放功能，则加载对应的钩子
+	if viper.GetBool("log.logToEs") {
+		DefaultLogger.AddHook(es.NewRuntimeToEsHook())
+	}
 
 	DefaultLogger.Info("log模块初始化完成...")
 }

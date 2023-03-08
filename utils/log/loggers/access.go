@@ -3,6 +3,7 @@ package loggers
 import (
 	"fmt"
 	"github.com/sirupsen/logrus"
+	"github.com/spf13/viper"
 	"gomessage/utils/log/hooks/es"
 	"io"
 	"os"
@@ -11,20 +12,20 @@ import (
 
 var AccessLogger = logrus.New()
 
-func init() {
+func InitAccessLog() {
 	//日志文件位置
-	logFile := "./access.log" //获取默认配置文件中指定的值（默认值：./logs/runtime.log）
+	logFile := viper.GetString("log.accessLogFile")
 
 	//确保存放日志文件的目录始终存在
 	logPathDir := path.Dir(logFile)                              //返回路径中除去最后一个元素的剩余部分，也就是路径最后一个元素所在的目录
 	if err := os.MkdirAll(logPathDir, os.ModePerm); err != nil { //创建目录类似于（mkdir -p /aaa/bbb的效果）
-		fmt.Println("创建日志目录失败：", err)
+		fmt.Println("创建access日志目录失败：", err)
 		os.Exit(3)
 	}
 
 	//确保日志文件始终也存在
 	if _, err := os.Create(logFile); err != nil { //创建日志文件
-		fmt.Println("创建日志文件失败：", err)
+		fmt.Println("创建access日志文件失败：", err)
 		os.Exit(3)
 	}
 
@@ -51,6 +52,8 @@ func init() {
 			TimestampFormat: "2006-01-02 15:04:05.000 -0700 MST",
 		},
 	)
-
-	AccessLogger.AddHook(es.NewEsHook([]logrus.Level{logrus.InfoLevel}))
+	//如果开启es的日志投放功能，则加载对应的钩子
+	if viper.GetBool("log.logToEs") {
+		AccessLogger.AddHook(es.NewAccessToEsHook())
+	}
 }

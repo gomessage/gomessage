@@ -39,7 +39,6 @@ func AccessLog() gin.HandlerFunc {
 		latency := endTime.Sub(startTime)
 		//记录日志
 		loggers.AccessLogger.WithFields(logrus.Fields{
-			//"@timestamp":   time.Now(),
 			"start_time":   startTime.Format("2006-01-02_15:04:05.000000"),
 			"end_time":     endTime.Format("2006-01-02_15:04:05.000000"),
 			"latency":      latency.String(),
@@ -49,7 +48,7 @@ func AccessLog() gin.HandlerFunc {
 			"path":         uriPath,
 			"router":       c.FullPath(),
 			"request_body": string(body),
-		}).Info("记录一条access日志")
+		}).Info("access.log")
 
 	}
 }

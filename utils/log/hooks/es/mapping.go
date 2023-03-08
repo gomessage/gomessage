@@ -1,6 +1,5 @@
 package es
 
-// Mapping 定义索引
 const Mapping = `
 {
   "mappings": {
@@ -52,16 +51,3 @@ const Mapping2 = `
     "properties": {}
   }
 }`
-
-//type DocsToEs struct {
-//	Timestamp   time.Time `json:"@timestamp"`
-//	StartTime   string    `json:"start_time"`
-//	EndTime     string    `json:"end_time"`
-//	Latency     string    `json:"latency"`
-//	StatusCode  int       `json:"status_code"`
-//	ClientIp    string    `json:"client_ip"`
-//	Method      string    `json:"method"`
-//	Path        string    `json:"path"`
-//	Router      string    `json:"router"`
-//	RequestBody string    `json:"request_body"`
-//}
