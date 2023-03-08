@@ -25,8 +25,8 @@ func init() {
 	initialize.InitConfig()  //应该被第一个执行
 	initialize.InitCmd()     //初始化环境变量，应该紧跟在InitConfig后面，被第二个执行，cmd模块接受各种启动参数，通常用来覆盖config中的一些内容
 	loggers.InitRuntimeLog() //初始化runtime日志模块，应该紧跟在InitEnv后面，被第三个执行（剩下的其它模块初始化，启动顺序就没有什么要求了）
-	loggers.InitAccessLog()  //初始化access日志模块
 	loggers.InitPushLogger()
+	loggers.InitAccessLog()
 	initialize.InitSwagger()
 	initialize.InitGinMode()
 	initialize.InitDB("sqlite3", initialize.GlobalVars.Migrate)
