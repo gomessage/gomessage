@@ -37,23 +37,22 @@ func InitPushLogger() {
 	}
 
 	//设定日志输出位置
-	//AccessLogger.SetOutput(io.MultiWriter(writer1, writer2))
-	AccessLogger.SetOutput(io.MultiWriter(writer2))
+	PushLogger.SetOutput(io.MultiWriter(writer2))
 
 	//设定输出日志中是否要携带上文件名与行号
-	AccessLogger.SetReportCaller(false)
+	PushLogger.SetReportCaller(false)
 
 	//设定日志等级
-	AccessLogger.SetLevel(logrus.InfoLevel)
+	PushLogger.SetLevel(logrus.InfoLevel)
 
 	//设定日志输出格式
-	AccessLogger.SetFormatter(
+	PushLogger.SetFormatter(
 		&logrus.JSONFormatter{
 			TimestampFormat: "2006-01-02 15:04:05.000 -0700 MST",
 		},
 	)
 	//如果开启es的日志投放功能，则加载对应的钩子
 	if viper.GetBool("log.log2es") {
-		AccessLogger.AddHook(es.NewPushToEsHook())
+		PushLogger.AddHook(es.NewPushToEsHook())
 	}
 }
