@@ -4,12 +4,15 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/sirupsen/logrus"
 	"github.com/tidwall/gjson"
+	"gomessage/utils/log/loggers"
 	"html/template"
 	"io"
 	"net/http"
 	"strconv"
 	"strings"
+	"time"
 )
 
 // MessageJoint 按照不同的客户端类型，选择不同的拼接和聚合形式
@@ -57,6 +60,16 @@ func SendMessage(data interface{}, url string) {
 	if err2 != nil {
 		fmt.Println(err2)
 	}
+
+	loggers.PushLogger.WithFields(logrus.Fields{
+		"content_type":    contentType,
+		"url":             url,
+		"request_body":    string(e),
+		"response_body":   string(body),
+		"response_status": response.Status,
+		"time_now":        time.Now().Format("2006-01-02_15:04:05.000000"),
+	}).Info("推送数据成功")
+
 	fmt.Println(string(body)) //打印的是人类可读的信息
 }
 

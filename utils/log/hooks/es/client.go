@@ -23,8 +23,8 @@ var once sync.Once
 
 func GetEsClient() *elastic.Client {
 	once.Do(func() {
-		if viper.GetBool("log.logToEs") {
-			//如果log.logToEs==true，则开启向es的投放日志，初始化es客户端
+		if viper.GetBool("log.log2es") {
+			//如果log.log2es==true，则开启向es的投放日志，初始化es客户端
 			initClient()
 		}
 	})
@@ -68,7 +68,7 @@ func initClient() {
 	}
 
 	//创建多个索引
-	for _, indexName := range []string{GetIndexName("gomessage-access"), GetIndexName("gomessage-runtime")} {
+	for _, indexName := range []string{GetIndexName("gomessage-access"), GetIndexName("gomessage-runtime"), GetIndexName("gomessage-push")} {
 		SyncIndex(indexName)
 	}
 }

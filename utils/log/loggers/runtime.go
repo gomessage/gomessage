@@ -51,7 +51,7 @@ func InitRuntimeLog() {
 	setLogFormat(DefaultLogger, viper.GetString("log.format"))
 
 	//如果开启es的日志投放功能，则加载对应的钩子
-	if viper.GetBool("log.logToEs") {
+	if viper.GetBool("log.log2es") {
 		DefaultLogger.AddHook(es.NewRuntimeToEsHook())
 	}
 

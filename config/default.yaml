@@ -23,9 +23,11 @@ log:
   level: info                                 #（选项：debug、info）
   format: text                                #（选项：json、text）
   runtimeLogFile: ./gomessage-runtime.log     # 该文件记录的基础日志
-  accessLogFile: ./gomessage-access.log       # 该文件记录的基础日志
-  logToEs: true                               # 这是一个开关，如果设定为true则日志会被送入es中，如果为false则什么也不做（索引格式：gomessage-runtime-2022.03.05、gomessage-access-2022.03.05）
-  es:                                         # 如果上面的开关 logToEs==false，则下面的信息不会被使用
+  accessLogFile: ./gomessage-access.log       # 该文件记录的access日志
+  pushLogFile: ./gomessage-push.log           # 该文件记录的推送数据的日志
+  log2es: false                               # 这是一个开关，如果设定为true则日志会被送入es中，如果为false则什么也不做（索引格式：gomessage-runtime-2022.03.05、gomessage-access-2022.03.05）
+  # 如果 log2es == false，则下面的信息不会被使用
+  es:
     username: "elastic"
     password: "123456"
     urls:

@@ -40,7 +40,7 @@ func InitConfig() {
 	 * **********************************************
 	 */
 	//InitConfig()	   						     //这就是当前函数自身，注释在这里只是为了提醒顺序
-	//InitEnv()                                  //初始化环境变量，应该紧跟在InitConfig后面，被第二个执行
+	//InitCmd()                                  //初始化环境变量，应该紧跟在InitConfig后面，被第二个执行
 	//runLog.InitLog()                           //初始化日志模块，应该紧跟在InitEnv后面，被第三个执行（剩下的其它模块初始化，启动顺序就没有什么要求了）
 	//InitSwagger()                              //初始化Swagger
 	//InitGinMode()                              //初始化GinMode

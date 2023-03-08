@@ -27,6 +27,16 @@ func Path(g *gin.Engine) {
 	//中间件
 	g.Use(middleware.Cors())
 	g.Use(middleware.AccessLog())
+
+	// Once it's done, you can attach the handler as one of your middleware
+	//g.Use(sentrygin.New(sentrygin.Options{}))
+	//g.Use(func(ctx *gin.Context) {
+	//	if hub := sentrygin.GetHubFromContext(ctx); hub != nil {
+	//		hub.Scope().SetTag("someRandomTag", "maybeYouNeedIt")
+	//	}
+	//	ctx.Next()
+	//})
+
 	//加载静态文件
 	initStatic(g)
 	//路由重定向

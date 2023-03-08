@@ -10,22 +10,22 @@ import (
 	"path"
 )
 
-var AccessLogger = logrus.New()
+var PushLogger = logrus.New()
 
-func InitAccessLog() {
+func InitPushLogger() {
 	//日志文件位置
-	logFile := viper.GetString("log.accessLogFile")
+	logFile := viper.GetString("log.pushLogFile")
 
 	//确保存放日志文件的目录始终存在
 	logPathDir := path.Dir(logFile)                              //返回路径中除去最后一个元素的剩余部分，也就是路径最后一个元素所在的目录
 	if err := os.MkdirAll(logPathDir, os.ModePerm); err != nil { //创建目录类似于（mkdir -p /aaa/bbb的效果）
-		fmt.Println("创建access日志目录失败：", err)
+		fmt.Println("创建push日志目录失败：", err)
 		os.Exit(3)
 	}
 
 	//确保日志文件始终也存在
 	if _, err := os.Create(logFile); err != nil { //创建日志文件
-		fmt.Println("创建access日志文件失败：", err)
+		fmt.Println("创建push日志文件失败：", err)
 		os.Exit(3)
 	}
 
@@ -48,12 +48,12 @@ func InitAccessLog() {
 
 	//设定日志输出格式
 	AccessLogger.SetFormatter(
-		&logrus.TextFormatter{
+		&logrus.JSONFormatter{
 			TimestampFormat: "2006-01-02 15:04:05.000 -0700 MST",
 		},
 	)
 	//如果开启es的日志投放功能，则加载对应的钩子
 	if viper.GetBool("log.log2es") {
-		AccessLogger.AddHook(es.NewAccessToEsHook())
+		AccessLogger.AddHook(es.NewPushToEsHook())
 	}
 }

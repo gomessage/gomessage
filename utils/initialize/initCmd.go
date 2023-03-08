@@ -44,13 +44,14 @@ func wordSepNormalizeFunc(f *pflag.FlagSet, name string) pflag.NormalizedName {
 	return pflag.NormalizedName(name)
 }
 
-// InitEnv 初始化环境
-func InitEnv() {
+// InitCmd 初始化环境
+func InitCmd() {
 	//命令行参数（启动时可以通过 --xxx=aaa 的方式来调用，优先级最高，可以覆盖config/default.yaml中的变量）
 	var env = pflag.StringP("env", "e", "", "启动环境（dev、fat、uat、pro）")
 	//考虑到GoMessage自身的元数据对用户来说不怎么关注；因此这个默认设置为true，也就是说每次都迁移数据库，这样可以对元数据的存储更具有广泛的支持性
 	//如果不需要可以通过参数--migrate=false来取消。
 	var migrate = pflag.BoolP("migrate", "m", true, "是否迁移数据库（true、false）")
+	var log2es = pflag.BoolP("log2es", "l", false, "是否迁移数据库（true、false）")
 	var ginMode = pflag.StringP("ginMode", "g", "", "Gin框架运行模式（debug、test、release）")
 	//设置命令行参数标准化兼容函数（防止用户手滑填写错误，可以兼容：下划线、点号、减号、等等）
 	pflag.CommandLine.SetNormalizeFunc(wordSepNormalizeFunc)
@@ -71,9 +72,16 @@ func InitEnv() {
 		viper.Set("global.ginMode", *ginMode)
 	}
 
+	if *log2es == true {
+		//判断--log2es是否为true，如果是则覆盖掉viper中的值
+		//因为main.go的init中先执行InitConfig，后执行InitEnv，随后才陆续启动其它组件。
+		//因此在这里拿到pflag参数覆盖到viper中时；后续调用viper中的变量，就是已经被pflag覆盖后的值。
+		viper.Set("log.log2es", *log2es)
+	}
+
 	//判断viper中env的值是否为空
 	if len(viper.GetString("global.env")) != 0 {
-		//这是一个钩子函数，可以调用也可以跳过
+		//这是一个钩子函数
 		//需要注意：migrate参数代表是否迁移一次数据库，该参数没有进入到viper中，只放在了GlobalVars中了。
 		setGlobalVarHook(viper.GetString("global.env"), *migrate)
 
