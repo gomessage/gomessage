@@ -67,7 +67,7 @@ func setDefaultBaseConfig() {
 	viper.SetDefault("server.port", "7077")      //启动时监听的端口
 
 	//日志相关
-	viper.SetDefault("log.level", "info")              //日志记录级别；（选项：debug、info）
-	viper.SetDefault("log.format", "json")             //日志记录格式；（选项：json、text）
-	viper.SetDefault("log.logFile", "./gomessage.log") //日志输出位置
+	viper.SetDefault("log.level", "info")                     //日志记录级别；（选项：debug、info）
+	viper.SetDefault("log.format", "json")                    //日志记录格式；（选项：json、text）
+	viper.SetDefault("log.runtimeLogFile", "./gomessage.log") //日志输出位置
 }
