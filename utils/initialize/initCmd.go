@@ -51,7 +51,7 @@ func InitCmd() {
 	//考虑到GoMessage自身的元数据对用户来说不怎么关注；因此这个默认设置为true，也就是说每次都迁移数据库，这样可以对元数据的存储更具有广泛的支持性
 	//如果不需要可以通过参数--migrate=false来取消。
 	var migrate = pflag.BoolP("migrate", "m", true, "是否迁移数据库（true、false）")
-	var log2es = pflag.BoolP("log2es", "l", false, "是否迁移数据库（true、false）")
+	var log2es = pflag.BoolP("log2es", "l", false, "是否上传数据到es中（true、false）")
 	var ginMode = pflag.StringP("ginMode", "g", "", "Gin框架运行模式（debug、test、release）")
 	//设置命令行参数标准化兼容函数（防止用户手滑填写错误，可以兼容：下划线、点号、减号、等等）
 	pflag.CommandLine.SetNormalizeFunc(wordSepNormalizeFunc)
