@@ -16,7 +16,7 @@
 #要编译的命令名称
 NAME := gomessage
 #版本
-VERSION := 2.0.5
+VERSION := 2.0.6
 #编译输出目录
 OUTPUT_PATH := ./build/${VERSION}
 #是否开启cgo（0代表不开启，1代表开启）

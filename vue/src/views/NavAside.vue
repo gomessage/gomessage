@@ -104,7 +104,7 @@
       <!--<br>-->
 
       <!--这是一个form表单，对话框支持填充表单-->
-      <el-form :model="namespaceForm" :rules="namespaceRules" style="width: 60%;">
+      <el-form ref="namespaceForm" :model="namespaceForm" :rules="namespaceRules" style="width: 60%;">
         <el-form-item label="通道名称" label-width="105px" prop="name">
           <el-input v-model="namespaceForm.name" autocomplete="off" placeholder="请输入通道名称（只能是纯英文名称，不限大小写）"></el-input>
         </el-form-item>
@@ -175,15 +175,19 @@ export default {
       location.reload();
     },
     addNamespace: function () {
-      // 关闭对话框视图
-      this.dialogFormVisible222 = false;
-      // 保证所有的命名空间永远都是激活的
-      this.namespaceForm.is_active = true
-      // 发送post请求
-      postNamespace(this.namespaceForm).then(response => {
-        console.log(response)
-        location.reload();
-      })
+      this.$refs["namespaceForm"].validate(valid => {
+        if (valid) {
+          // 关闭对话框视图
+          this.dialogFormVisible222 = false;
+          // 保证所有的命名空间永远都是激活的
+          this.namespaceForm.is_active = true
+          // 发送post请求
+          postNamespace(this.namespaceForm).then(response => {
+            console.log(response)
+            location.reload();
+          })
+        }
+      });
     },
     // 删除一行数据：跟后端交互，然后刷新表格
     deleteOneNamespace(index, rows) {

@@ -7,7 +7,7 @@ export const postDemoData = (namespace, data) => http.Post("/go/" + namespace, d
 //劫持过境数据
 export const queryJson = (namespace, params) => http.Get("/api/v1/" + namespace + "/json", params)
 
-//用户变量相关
+//用户变量相关（完成数据校验）
 export const queryVars = (namespace, params) => http.Get("/api/v1/" + namespace + "/vars", params)
 export const postVars = (namespace, data) => http.Post("/api/v1/" + namespace + "/vars", data)
 
@@ -24,7 +24,7 @@ export const putClientOne = (namespace, id, data) => http.Put("/api/v1/" + names
 export const deleteClientOne = (namespace, id, params) => http.Delete("/api/v1/" + namespace + "/client/" + id, params)
 
 
-//命名空间
+//命名空间（完成数据校验）
 export const getNamespace = (params) => http.Get("/api/v1/namespace", params)
 export const postNamespace = (data) => http.Post("/api/v1/namespace", data)
 export const deleteNamespaceOne = (id) => http.Delete("/api/v1/namespace/" + id)

@@ -28,34 +28,34 @@
 
     <br>
 
-    <!--输入框，是从最初的（可增加数量的输入框）转变过来的-->
-    <div v-for="(list, index) in mapList2" :key="index">
+
+    <el-form ref="newMap" :model="newMap" :rules="newMapRules">
       <!-- 填写服务器地址，col之间的间隔为20 -->
       <el-row :gutter="20">
 
         <!--Key-->
         <el-col :span="12">
           <div class="DataMapGridContent">
-            <el-input v-model="list.mapKey" placeholder="纯字符串，不能有符号">
-              <template slot="prepend">
-                Key:
-              </template>
-            </el-input>
+            <el-form-item prop="mapKey">
+              <el-input v-model="newMap.mapKey" placeholder="纯字符串，不能有符号">
+                <template slot="prepend">Key:</template>
+              </el-input>
+            </el-form-item>
           </div>
         </el-col>
 
         <!--Value-->
         <el-col :span="12">
           <div class="DataMapGridContent">
-            <el-input v-model="list.mapValue" placeholder="Json索引路径">
-              <template slot="prepend">
-                Value:
-              </template>
-            </el-input>
+            <el-form-item prop="mapValue">
+              <el-input v-model="newMap.mapValue" placeholder="Json索引路径">
+                <template slot="prepend">Value:</template>
+              </el-input>
+            </el-form-item>
           </div>
         </el-col>
       </el-row>
-    </div>
+    </el-form>
 
     <br>
 
@@ -68,17 +68,30 @@
 <script>
 
 import {postVars, queryVars} from '@/service/requests'
+import {isLength, isNumberStart, isStringOrNumber} from "@/utils/validate";
 
 export default {
   name: "cConfigMap",
   data() {
     return {
-      mapList2: [
-        {
-          mapKey: '',
-          mapValue: ''
-        }
-      ],
+      newMap: {
+        mapKey: '',
+        mapValue: ''
+      },
+      newMapRules: {
+        mapKey: [
+          {required: true, message: "不能为空", trigger: "blur"},
+          {validator: isLength, trigger: "blur"},
+          {validator: isNumberStart, trigger: "blur"},
+          {validator: isStringOrNumber, trigger: "blur"},
+        ],
+        mapValue: [
+          {required: true, message: "不能为空", trigger: "blur"},
+          {validator: isLength, trigger: "blur"},
+          {validator: isNumberStart, trigger: "blur"},
+          {validator: isStringOrNumber, trigger: "blur"},
+        ],
+      },
       configList: [
         {
           key: '{{ .N1 }} ',
@@ -114,26 +127,31 @@ export default {
   methods: {
     // 添加tableData的一行数据（和上面的添加输入框不是一回事）
     addTableData: function () {
-      let mapKey = this.mapList2[0].mapKey;
-      let mapValue = this.mapList2[0].mapValue;
+      this.$refs["newMap"].validate(valid => {
+        if (valid) {
+          let mapKey = this.newMap.mapKey;
+          let mapValue = this.newMap.mapValue;
 
-      if (mapKey.length === 0 || mapValue.length === 0) {
-        this.$message.error('输入框不能为空...');
-      } else {
-        let tableRow = {
-          key: "{{ ." + mapKey + " }}",
-          value: mapValue
-        };
-        this.configList.push(tableRow);
-        this.mapList2[0].mapKey = "";
-        this.mapList2[0].mapValue = "";
+          if (mapKey.length === 0 || mapValue.length === 0) {
+            this.$message.error('输入框不能为空...');
+          } else {
+            let tableRow = {
+              key: "{{ ." + mapKey + " }}",
+              value: mapValue
+            };
+            this.configList.push(tableRow);
+            this.newMap.mapKey = "";
+            this.newMap.mapValue = "";
 
-        this.$message.success("添加成功...");
-        this.post_data()
-      }
+            this.$message.success("添加成功...");
+            this.post_data()
+          }
+        }
+      })
     },
 
-    // 删除一行数据
+    // 删除一行数据，这里虽然是删除一条数据，但本质上是从数组中删除了一个元素，
+    // 因为每次提交到后端的变量映射，都会再数据库中删除全部的映射，重新再保存一份当前的最新映射
     deleteRow(index, rows) {
       rows.splice(index, 1);
       this.post_data()
