@@ -155,3 +155,10 @@ docker_push:
 	@docker push gomessage/gomessage:latest
 	@echo "\n---------推送镜像，版本latest---------\n"
 
+
+######################################
+# Target：推送package到github
+######################################
+.PHONY: package_push
+package_push:
+	@go run uploads.go --version=${VERSION}
