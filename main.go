@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/spf13/viper"
 	"gomessage/routers"
 	"gomessage/utils/initialize"
 	"gomessage/utils/log/loggers"
@@ -58,8 +59,11 @@ func main() {
 	//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 	//启动web服务，默认(BaseURL := "127.0.0.1:7077")
 	//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-	loggers.DefaultLogger.Info("服务监听：http://127.0.0.1:7077")
-	if err := r.Run(":7077"); err != nil {
+	host := viper.GetString("service.host")
+	port := viper.GetString("service.port")
+	serviceAddress := fmt.Sprintf("%s:%s", host, port)
+	loggers.DefaultLogger.Infof("服务监听：http://%s", serviceAddress)
+	if err := r.Run(serviceAddress); err != nil {
 		return
 	}
 }

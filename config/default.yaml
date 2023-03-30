@@ -2,18 +2,18 @@
 # 全局配置
 #--------------------
 global:
-  appName: "GoMessage"           # 应用名称，可以随意修改，如果同一台机器上启动多个GoMessage服务，请不要让改名称冲突
+  appName: "GoMessage"           # 应用名称，可以随意修改，如果同一台机器上启动多个GoMessage服务，请不要让该名称冲突
   appDescription: "消息转发器"     # 应用说明，可以随意修改
   env: "dev"                      # 当前运行环境（这里是的第二优先级，如果启动时的命令行参数时没有指定--env=dev时，则这里的才会生效）
   ginMode: "release"              # 运行模式（debug、test、release），如果不是二次开发该项目，则不用关注这个参数。
 
 
 #--------------------
-# 启动地址和端口（考虑到以后鼓励大家以docker的方式来使用，这里的配置暂时不用填写了，把监听地址直接写死到了代码中：0.0.0.0:7077）
+# 服务监听的地址和端口
 #--------------------
-#server:
-#  host: 0.0.0.0
-#  port: 7077
+service:
+  host: "0.0.0.0"
+  port: "7077"
 
 
 #--------------------
@@ -22,11 +22,11 @@ global:
 log:
   level: info                                 #（选项：debug、info）
   format: text                                #（选项：json、text）
-  runtimeLogFile: ./gomessage-runtime.log     # 该文件记录的基础日志
-  accessLogFile: ./gomessage-access.log       # 该文件记录的access日志
-  pushLogFile: ./gomessage-push.log           # 该文件记录的推送数据的日志
-  log2es: false                               # 这是一个开关，如果设定为true则日志会被送入es中，如果为false则什么也不做（索引格式：gomessage-runtime-2022.03.05、gomessage-access-2022.03.05）
-  es: # 如果 log2es==false，则下面的信息不会被使用
+  runtimeLogFile: ./gomessage-runtime.log     # 该文件记录"运行时"的日志
+  accessLogFile: ./gomessage-access.log       # 该文件记录"access"的日志
+  pushLogFile: ./gomessage-push.log           # 该文件记录"推送数据"的日志
+  log2es: false                               # （未完成）这是一个开关，如果设定为true则日志会被送入es中，如果为false则什么也不做（索引格式：gomessage-runtime-2022.03.05、gomessage-access-2022.03.05、gomessage-push-2022.03.05）
+  es:                                         # 如果 log2es==true 时，下面的es相关的信息才会生效。
     username: "elastic"
     password: "123456"
     urls:
@@ -37,13 +37,14 @@ log:
 
 #--------------------
 # 数据库类型选择: (sqlite3、mysql)
-# 如果该参数不能为空，官方默认推荐使用sqlite3，因为只存储gomessage的元数据，因此存储量很小，并不需要额外的mysql数据库
+# 如果该参数不能为空，官方默认推荐使用sqlite3，
+# 因为只存储gomessage的运行元数据，因此存储量很小，sqlite3 刚好满足要求
 #--------------------
 databaseType: "sqlite3"
 
 
 #--------------------
-# SQLite 基本配置
+# SQLite3 基本配置
 #--------------------
 sqlite3:
   path: "./gomessage.db"
