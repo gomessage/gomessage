@@ -16,7 +16,7 @@
 #要编译的命令名称
 NAME := gomessage
 #版本
-VERSION := 2.0.6
+VERSION := 2.0.7
 #编译输出目录
 OUTPUT_PATH := ./build/${VERSION}
 #是否开启cgo（0代表不开启，1代表开启）
@@ -151,9 +151,9 @@ docker_push: packageName := ${NAME}-${VERSION}-linux-x64
 docker_push:
 	@docker login -u $(DOCKER_HUB_USERNAME) -p $(DOCKER_HUB_PASSWORD)
 	@docker push gomessage/gomessage:${VERSION}
-	@echo "\n---------推送镜像，版本${VERSION}---------\n"
+	@echo "\n---------推送镜像完成，版本${VERSION}---------\n"
 	@docker push gomessage/gomessage:latest
-	@echo "\n---------推送镜像，版本latest---------\n"
+	@echo "\n---------推送镜像完成，版本latest---------\n"
 
 
 ######################################

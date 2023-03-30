@@ -68,7 +68,7 @@
 <script>
 
 import {postVars, queryVars} from '@/service/requests'
-import {isLength, isNumberStart, isStringOrNumber} from "@/utils/validate";
+import {isNumberStart, isStringOrNumber} from "@/utils/validate";
 
 export default {
   name: "cConfigMap",
@@ -81,15 +81,15 @@ export default {
       newMapRules: {
         mapKey: [
           {required: true, message: "不能为空", trigger: "blur"},
-          {validator: isLength, trigger: "blur"},
+          // {validator: isLength, trigger: "blur"},
           {validator: isNumberStart, trigger: "blur"},
           {validator: isStringOrNumber, trigger: "blur"},
         ],
         mapValue: [
           {required: true, message: "不能为空", trigger: "blur"},
-          {validator: isLength, trigger: "blur"},
+          // {validator: isLength, trigger: "blur"},
           {validator: isNumberStart, trigger: "blur"},
-          {validator: isStringOrNumber, trigger: "blur"},
+          // {validator: isStringOrNumber, trigger: "blur"},
         ],
       },
       configList: [
