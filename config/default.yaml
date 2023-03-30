@@ -47,7 +47,7 @@ databaseType: "sqlite3"
 # SQLite3 基本配置
 #--------------------
 sqlite3:
-  path: "./gomessage.db"
+  path: "./config/gomessage.db"
   MaxIdleConns: 10
   MaxOpenConns: 100
 

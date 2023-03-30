@@ -6,6 +6,8 @@
 #
 #	make docker --->  编译docker镜像
 #
+#	make docker_push --->  推送docker镜像
+#
 #	make swagger  --->  生成swagger文档
 
 
@@ -16,7 +18,7 @@
 #要编译的命令名称
 NAME := gomessage
 #版本
-VERSION := 2.0.7
+VERSION := 2.0.9
 #编译输出目录
 OUTPUT_PATH := ./build/${VERSION}
 #是否开启cgo（0代表不开启，1代表开启）

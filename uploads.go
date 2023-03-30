@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"sync"
 	"time"
 )
 
@@ -118,13 +119,14 @@ type releaseResponse struct {
 }
 
 // 创建一个发行版
-func createRelease(tag string) (string, error) {
-	url := "https://api.github.com/repos/gomessage/gomessage/releases"
+func createRelease(owner, repo, branch, tag string) (string, error) {
+	//url := "https://api.github.com/repos/gomessage/gomessage/releases"
+	url := "https://api.github.com/repos/" + owner + "/" + repo + "/releases"
 
 	data := releaseBody{
 		Name:                 tag,
 		TagName:              tag,
-		TargetCommitish:      "master",
+		TargetCommitish:      branch,
 		Body:                 "",
 		Draft:                false,
 		Prerelease:           false,
@@ -161,22 +163,23 @@ func createRelease(tag string) (string, error) {
 }
 
 // 上传软件包
-func upload(version, releaseId, pkgName string) {
-	url := fmt.Sprintf("https://uploads.github.com/repos/gomessage/gomessage/releases/%s/assets?name=%s", releaseId, pkgName)
-	//这里是相对路径，后面如有需要，记得变动
+func upload(owner, repo, version, releaseId, pkgName string) {
+	//url := fmt.Sprintf("https://uploads.github.com/repos/gomessage/gomessage/releases/%s/assets?name=%s", releaseId, pkgName)
+	url := fmt.Sprintf("https://uploads.github.com/repos/%s/%s/releases/%s/assets?name=%s", owner, repo, releaseId, pkgName)
+
 	filePath, _ := os.Getwd()
 	filePath += fmt.Sprintf("/build/%s/%s", version, pkgName)
-
-	fmt.Println(filePath)
 	payload, _ := os.ReadFile(filePath)
+
 	req, err := http.NewRequest("POST", url, bytes.NewReader(payload))
 	if err != nil {
 		fmt.Println(err)
 	}
-	req.Header.Add("Content-Type", "application/octet-stream")
-	req.Header.Add("Accept", "application/vnd.github+json")
-	req.Header.Add("Host", "uploads.github.com")
+
 	req.Header.Add(os.Getenv("Github_Authorization"), os.Getenv("Github_Token"))
+	req.Header.Add("Host", "uploads.github.com")
+	req.Header.Add("Connection", "keep-alive")
+	req.Header.Add("Content-Type", "application/gzip")
 
 	client := &http.Client{}
 	res, err := client.Do(req)
@@ -186,14 +189,14 @@ func upload(version, releaseId, pkgName string) {
 	defer res.Body.Close()
 
 	body2, _ := ioutil.ReadAll(res.Body)
+	fmt.Println("\n", string(body2))
 	fmt.Println(res.Status)
-	fmt.Println(string(body2))
-
 }
 
-// 按照标签查询发行版
-func getReleaseByTag(tag string) (string, bool) {
-	url := fmt.Sprintf("https://api.github.com/repos/gomessage/gomessage/releases/tags/%s", tag)
+// 按照标签查询release
+func getReleaseByTag(owner, repo, tag string) (string, bool) {
+	//url := fmt.Sprintf("https://api.github.com/repos/gomessage/gomessage/releases/tags/%s", tag)
+	url := fmt.Sprintf("https://api.github.com/repos/%s/%s/releases/tags/%s", owner, repo, tag)
 
 	method := "GET"
 	client := &http.Client{}
@@ -221,7 +224,7 @@ func getReleaseByTag(tag string) (string, bool) {
 
 }
 
-func baseDelete(url string) {
+func baseDelete(delName, url string) {
 	client := &http.Client{}
 	method := "DELETE"
 	req, err := http.NewRequest(method, url, nil)
@@ -238,24 +241,27 @@ func baseDelete(url string) {
 	}
 	defer res.Body.Close()
 	if res.StatusCode == 204 {
-		fmt.Println("删除成功...")
+		fmt.Println(delName + "删除成功...")
 	} else {
-		fmt.Println("删除失败...")
+		fmt.Println(delName + "删除失败...")
 	}
 }
 
-// 按照id删除发行版
-func deleteReleaseById(releaseId string) {
-	url := fmt.Sprintf("https://api.github.com/repos/gomessage/gomessage/releases/%s", releaseId)
-	baseDelete(url)
+// 删除指定release
+func deleteReleaseById(owner, repo, releaseId string) {
+	//url := fmt.Sprintf("https://api.github.com/repos/gomessage/gomessage/releases/%s", releaseId)
+	url := fmt.Sprintf("https://api.github.com/repos/%s/%s/releases/%s", owner, repo, releaseId)
+	baseDelete("release", url)
 }
 
 // 删除指定tag
-func deleteTag(tag string) {
-	url := fmt.Sprintf("https://api.github.com/repos/gomessage/gomessage/git/refs/tags/%s", tag)
-	baseDelete(url)
+func deleteTag(owner, repo, tag string) {
+	//url := fmt.Sprintf("https://api.github.com/repos/gomessage/gomessage/git/refs/tags/%s", tag)
+	url := fmt.Sprintf("https://api.github.com/repos/%s/%s/git/refs/tags/%s", owner, repo, tag)
+	baseDelete("tag", url)
 }
 
+// 版本参数
 var versionParam *string
 
 func init() {
@@ -269,37 +275,55 @@ func init() {
 }
 
 func main() {
+	//接收命令行参数
 	version := *versionParam           //纯数字格式：2.0.1
-	tag := fmt.Sprintf("v%s", version) //格式：v2.0.1
+	tag := fmt.Sprintf("v%s", version) //tag格式：v2.0.1
 
+	//owner := "tay3223" //账户
+	//repo := "demo2"    //仓库
+	//branch := "main"   //分支
+
+	owner := "gomessage" //账户
+	repo := "gomessage"  //仓库
+	branch := "master"   //分支
+
+	//动态拼装包名
 	mac := fmt.Sprintf("gomessage-%s-mac-x64.tar.gz", version)
 	linux := fmt.Sprintf("gomessage-%s-linux-x64.tar.gz", version)
 	windows := fmt.Sprintf("gomessage-%s-windows-x64.tar.gz", version)
 
-	releaseId, ok := getReleaseByTag(tag)
+	packageList := []string{mac, linux, windows}
+
+	//判断指定的tag是否存在
+	releaseId, ok := getReleaseByTag(owner, repo, tag)
+
+	var wg sync.WaitGroup
+	wg.Add(len(packageList))
+
 	if !ok {
 		//如果发行版不存在，则直接创建一个新的release并上传包
-		newReleaseId, _ := createRelease(tag)
-		fmt.Println(newReleaseId)
-		for _, pkgName := range []string{mac, linux, windows} {
-			upload(version, newReleaseId, pkgName)
+		newReleaseId, _ := createRelease(owner, repo, branch, tag)
+		for _, pkgName := range packageList {
+			go func(owner, repo, version, releaseId, pkgName string) {
+				upload(owner, repo, version, newReleaseId, pkgName)
+				wg.Done()
+			}(owner, repo, version, newReleaseId, pkgName)
 		}
 
 	} else {
 		//如果发行版存在，则先删除原来的，再重新创建
-		deleteReleaseById(releaseId)
-		deleteTag(tag)
+		deleteReleaseById(owner, repo, releaseId) //删除release
+		deleteTag(owner, repo, tag)               //删除tag
 
-		newReleaseId, _ := createRelease(tag)
-		fmt.Println(newReleaseId)
-		for _, pkgName := range []string{mac, linux, windows} {
-			upload(version, newReleaseId, pkgName)
+		newReleaseId, _ := createRelease(owner, repo, branch, tag)
+		for _, pkgName := range packageList {
+			go func(owner, repo, version, releaseId, pkgName string) {
+				upload(owner, repo, version, newReleaseId, pkgName)
+				wg.Done()
+			}(owner, repo, version, newReleaseId, pkgName)
 		}
 	}
 
-	//releaseId := "95650756"
-	//for _, pkgName := range []string{mac} {
-	//	upload(version, releaseId, pkgName)
-	//}
-
+	wg.Wait()
+	fmt.Println("\n文件上传完成~\n")
 }
