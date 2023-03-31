@@ -112,8 +112,8 @@ build_linux:
 	GOARCH=amd64 \
 	GOOS=linux \
 	CGO_LDFLAGS="-static" \
-    CC=x86_64-linux-musl-gcc \
-    CXX=x86_64-linux-musl-g++ \
+	CC=x86_64-linux-musl-gcc \
+	CXX=x86_64-linux-musl-g++ \
 	CGO_ENABLED=${CGO_STATUS} \
 	go build -ldflags='-s -w -extldflags "-static"' -o "${OUTPUT_PATH}/${packageName}/${NAME}" ./main.go
 	cp -rf ./config "${OUTPUT_PATH}/${packageName}/"
