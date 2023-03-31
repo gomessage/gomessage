@@ -1,6 +1,6 @@
 # GoMessage
 
-## 用途说明：
+### 用途说明：
 
 GoMessage是一款消息转发器，主要功能为：
 
@@ -26,11 +26,11 @@ GoMessage是一款消息转发器，主要功能为：
 <br><br>
 
 
-## 投产架构：
+### 投产架构：
 
 ![](https://img.taycc.com/2021-12-27-GoMessage.png)
 
-## 体验地址
+### 体验地址
 
 点击右侧地址进行体验：[http://47.102.46.109:7077](http://47.102.46.109:7077)
 
@@ -44,7 +44,7 @@ GoMessage是一款消息转发器，主要功能为：
 
 <br><br>
 
-## 安装包下载：
+### 安装包下载：
 
 下载地址（国内）：https://gitee.com/gomessage/gomessage/releases （国内用这个，速度很快~）
 
@@ -52,9 +52,9 @@ GoMessage是一款消息转发器，主要功能为：
 
 <br><br>
 
-## 安装步骤：
+### 安装步骤：
 
-### `Docker方式`·安装和使用（强烈推荐）：
+#### `Docker方式`·安装和使用（强烈推荐）：
 
 快速启动：
 
@@ -84,15 +84,15 @@ docker run -d \
 
 <br>
 
-### `Linux服务器：`
+#### `Linux服务器上进行安装：`
 
 - [Linux环境下的安装](wiki/install.md)
 
-### `Windows服务器：`
+#### `Windows服务器上进行安装：`
 
 - [Windows环境下的安装（文档暂未完成...）](#windows%E6%9C%8D%E5%8A%A1%E5%99%A8)
 
-### `Mac本地电脑：`
+#### `Mac本地电脑安装和启动：`
 
 - [Mac环境下的安装](wiki/install_mac.md)
 
@@ -100,7 +100,7 @@ docker run -d \
 
 <br><br>
 
-## 操作界面展示
+### 操作界面展示
 
 > 自动识别和生成消息推送地址：
 
