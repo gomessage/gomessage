@@ -53,7 +53,7 @@
         <br>
         <br>
 
-
+        <!--因为每一次勾选后，再点击一下保存按钮，让用户体验很不好，因此就修改为了失去焦点自动保存-->
         <!--<el-button round type="info" v-on:click="saveActiveStatus">保存激活状态</el-button>-->
         <el-button round type="primary" v-on:click="addClient">添加新客户端</el-button>
       </el-card>

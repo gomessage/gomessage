@@ -45,6 +45,7 @@ clean:
 	rm -rf ./*.log
 	rm -rf ./*.db
 	rm -rf ./*.tar.gz
+	rm -rf ./config/*.db
 
 
 ######################################

@@ -22,7 +22,7 @@ func setGlobalVarHook(env string, migrate bool) {
 
 	//判断启动参数是否正确（这个if可以随时按照自己的意愿改写）
 	if env == "dev" || env == "fat" || env == "pro" {
-		fmt.Println("启动日志：" + env + "环境运行依赖读取完成...")
+		fmt.Println("启动日志：环境依赖读取完成...")
 
 		//为全局变量赋值
 		GlobalVars.Env = env

@@ -135,6 +135,13 @@ func UpdateClientActive(id int, t *Client) (*Client, error) {
 
 }
 
+func UpdateClientInfo(id int, t *Client) (*Client, error) {
+	client := Client{}
+	updateResult := database.DB.DefaultClient.Model(&client).Where("id = ? ", id).Updates(map[string]any{"is_active": t.IsActive, "client_name": t.ClientName, "client_description": t.ClientDescription})
+	return &client, updateResult.Error
+
+}
+
 func GetClientById(id int) (*Client, error) {
 	var cli Client
 	queryResult := database.DB.DefaultClient.Where("id = ?", id).First(&cli)
