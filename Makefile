@@ -75,7 +75,7 @@ build_mac:
 	GOARCH=amd64 \
 	GOOS=darwin \
 	CGO_ENABLED=${CGO_STATUS} \
-	go build -o "${OUTPUT_PATH}/${packageName}/${NAME}" ./main.go
+	go build -ldflags='-s -w' -o "${OUTPUT_PATH}/${packageName}/${NAME}" ./main.go
 	cp -rf ./config "${OUTPUT_PATH}/${packageName}/"
 	cp -rf ./assets "${OUTPUT_PATH}/${packageName}/"
 	tar -zcvf "${OUTPUT_PATH}/${packageName}.tar.gz" -C ${OUTPUT_PATH} ${packageName}
@@ -95,7 +95,7 @@ build_windows:
 	CC=x86_64-w64-mingw32-gcc \
 	CXX=x86_64-w64-mingw32-g++ \
 	CGO_ENABLED=${CGO_STATUS} \
-	go build -o "${OUTPUT_PATH}/${packageName}/${NAME}.exe" ./main.go
+	go build -ldflags='-s -w -extldflags "-static"' -o "${OUTPUT_PATH}/${packageName}/${NAME}.exe" ./main.go
 	cp -rf ./config "${OUTPUT_PATH}/${packageName}/"
 	cp -rf ./assets "${OUTPUT_PATH}/${packageName}/"
 	tar -zcvf "${OUTPUT_PATH}/${packageName}.tar.gz" -C ${OUTPUT_PATH} ${packageName}
@@ -115,7 +115,7 @@ build_linux:
     CC=x86_64-linux-musl-gcc \
     CXX=x86_64-linux-musl-g++ \
 	CGO_ENABLED=${CGO_STATUS} \
-	go build -ldflags '-extldflags "-static"' -o "${OUTPUT_PATH}/${packageName}/${NAME}" ./main.go
+	go build -ldflags='-s -w -extldflags "-static"' -o "${OUTPUT_PATH}/${packageName}/${NAME}" ./main.go
 	cp -rf ./config "${OUTPUT_PATH}/${packageName}/"
 	cp -rf ./assets "${OUTPUT_PATH}/${packageName}/"
 	tar -zcvf "${OUTPUT_PATH}/${packageName}.tar.gz" -C ${OUTPUT_PATH} ${packageName}
