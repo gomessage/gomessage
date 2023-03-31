@@ -77,33 +77,33 @@ export default {
 
 
       clientList: [
-        {
-          id: 1,
-          client_name: "示例客户端1",
-          client_description: "示例数据，随时可删~",
-          is_active: false,
-          client_type: "dingtalk",
-          client_annotation: "钉钉·机器人",
-          demo_data: true,
-        },
-        {
-          id: 2,
-          client_name: "示例客户端2",
-          client_description: "示例数据，随时可删~",
-          is_active: false,
-          client_type: "wechat",
-          client_annotation: "企业微信·应用号",
-          demo_data: true,
-        },
-        {
-          id: 3,
-          client_name: "示例客户端3",
-          client_description: "示例数据，随时可删~",
-          is_active: true,
-          client_type: "feishu",
-          client_annotation: "飞书·机器人",
-          demo_data: true,
-        },
+        // {
+        //   id: 1,
+        //   client_name: "示例客户端1",
+        //   client_description: "示例数据，随时可删~",
+        //   is_active: false,
+        //   client_type: "dingtalk",
+        //   client_annotation: "钉钉·机器人",
+        //   demo_data: true,
+        // },
+        // {
+        //   id: 2,
+        //   client_name: "示例客户端2",
+        //   client_description: "示例数据，随时可删~",
+        //   is_active: false,
+        //   client_type: "wechat",
+        //   client_annotation: "企业微信·应用号",
+        //   demo_data: true,
+        // },
+        // {
+        //   id: 3,
+        //   client_name: "示例客户端3",
+        //   client_description: "示例数据，随时可删~",
+        //   is_active: true,
+        //   client_type: "feishu",
+        //   client_annotation: "飞书·机器人",
+        //   demo_data: true,
+        // },
       ],
 
       clientOneInfo: {  //传递给子组件用的变量，传过去一个json对象，那边会自动展开来显示的
@@ -159,10 +159,12 @@ export default {
 
     // 删除一行数据：跟后端交互，然后刷新表格
     deleteOneClient(index, rows) {
+      console.log(rows);
       // 此处设定了一个名为demo_data的字段，如果为true则代表是demo示例数据，就不向后端发送删除请求。
       // 避免用户删除新通道下的客户端时，把示例数据的id传递到后端产生误删数据。
-      if (rows["demo_data"] === false) {
+      if (!rows["demo_data"]) {
         let id = rows[index].id;
+        console.log(rows);
         deleteClientOne(this.$store.getters.getNamespace, id, null).then(response => {
           if (response.data.code === 1) {
             this.$message.success("删除一行数据成功...");
@@ -174,6 +176,7 @@ export default {
           console.log(err);
         });
       } else {
+        console.log("进入到了这里")
         // 只是虚假的从UI层删除一条数据
         rows.splice(index, 1);
       }
@@ -197,7 +200,8 @@ export default {
       getClient(this.$store.getters.getNamespace, null).then(response => {
         if (response.data.result.length === 0) {
           console.log("数据库里没有数据");
-          this.$message.error("数据库中没有数据，只显示demo数据...");
+          // this.$message.error("数据库中没有数据，只显示demo数据...");
+          this.$message.info("当前通道中，还没有添加客户端....");
         } else {
           this.clientList = response.data.result;
           this.clientList.forEach(client => {
