@@ -98,6 +98,12 @@ docker run -d \
 
 <br><br>
 
+### 交流和反馈：
+
+微信扫码加入GoMessage作者交流群：
+
+![](https://img.taycc.com/Xnip2023-04-07_14-13-30.jpg)
+
 <br><br>
 
 ### 操作界面展示
