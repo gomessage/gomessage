@@ -102,7 +102,7 @@ docker run -d \
 
 微信扫码加入GoMessage作者交流群：
 
-![](./assets/images/wechat.png)
+<img src="./assets/images/wechat.png" width="300" />
 
 <br><br>
 
