@@ -100,7 +100,7 @@ docker run -d \
 
 ### 交流和反馈：
 
-微信扫码加入GoMessage作者交流群：
+微信扫码加入技术交流群：
 
 <img src="./assets/images/wechat.png" width="300" />
 
