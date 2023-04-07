@@ -44,7 +44,7 @@
 
 
       <router-link to="/request_data">
-        <el-menu-item index="2-1"><i class="el-icon-set-up"></i>模板编写</el-menu-item>
+        <el-menu-item index="2-1"><i class="el-icon-set-up"></i>数据渲染</el-menu-item>
       </router-link>
 
 
