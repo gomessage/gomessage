@@ -5,7 +5,7 @@
     :default-active="getStoreNamespace"
     active-text-color="#ffd04b"
     background-color="#41555d"
-    style="height: 100%"
+    style="height: 100%;border-right: solid 0 red"
     text-color="#fff"
   >
 
@@ -162,6 +162,15 @@ export default {
         if (response.data.code === 1) {
           this.namespaceList = response.data.result;
           // this.$message.success("成功");
+
+          // 根据当前通道名称来缓存通道数据
+          let thisNamespaceName = this.$store.getters.getNamespace;
+          this.namespaceList.forEach((item) => {
+            if (item["name"] === thisNamespaceName) {
+              this.$store.commit("updateNamespaceInfo", item)
+            }
+          })
+
         }
       }).catch(err => {
         console.log(err);
@@ -171,6 +180,7 @@ export default {
       let namespace = item.name;
       console.log(namespace, event);
       this.$store.commit("updateNamespace", namespace);
+      this.$store.commit("updateNamespaceInfo", item)
       //刷新当前页
       location.reload();
     },

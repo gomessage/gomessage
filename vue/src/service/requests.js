@@ -27,5 +27,6 @@ export const deleteClientOne = (namespace, id, params) => http.Delete("/api/v1/"
 //命名空间（完成数据校验）
 export const getNamespace = (params) => http.Get("/api/v1/namespace", params)
 export const postNamespace = (data) => http.Post("/api/v1/namespace", data)
+export const getNamespaceOne = (id, params) => http.Get("/api/v1/namespace/" + id, params)
 export const deleteNamespaceOne = (id) => http.Delete("/api/v1/namespace/" + id)
 export const putNamespaceOne = (id, data) => http.Put("/api/v1/namespace/" + id, data)

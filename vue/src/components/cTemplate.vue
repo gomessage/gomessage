@@ -13,7 +13,7 @@
       </el-tooltip>
 
       <!--标题-->
-      <span style="margin-right: 70px">自定义消息模板</span>
+      <span style="margin-right: 70px">消息渲染模板</span>
 
       <!--保存模板-->
       <el-button style="float: right; padding: 3px 0;" type="text" v-on:click="pushTemplateData()">保存模板</el-button>

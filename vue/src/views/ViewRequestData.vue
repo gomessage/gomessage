@@ -1,17 +1,17 @@
 <template>
   <div>
-    <!--开启或关闭渲染的开关-->
+    <!--单独的一行-->
     <el-row>
+      <!--开关-->
       <el-col style="height: 60px;background-color: #cccccc">
         <el-switch
           v-model="thisRenders"
           inactive-text="基础转发模式"
           active-text="高级渲染模式"
           style="height: 100%"
-          width="40"
-          @change="updateNamespaceIsRenders"
-        >
-        </el-switch>
+          :width="40"
+          @change="updateNamespaceRenders"
+        ></el-switch>
       </el-col>
     </el-row>
 
@@ -19,21 +19,22 @@
     <el-row
       style="padding: 20px 0;margin-left: 0;margin-right: 0"
       :gutter="20"
-      v-loading="getNamespaceIsRenders"
-      element-loading-text='每个通道都可以独立开启【高级渲染模式】借用GoMessage的动态算法把过境数据实时【渲染为人类可读】的信息；若不开启此模式，则当前通道只会将数据"原封不动"的送达至目标客户端。'
+      v-loading="dialogVisible"
+      element-loading-text='每个通道都可以独立开启【高级渲染模式】把过境数据"渲染为人类可读"的信息.... 若不开启此模式则当前通道只会将数据"原封不动"的送达至目标客户端。'
       element-loading-spinner="el-icon-info"
       element-loading-background="rgba(0, 0, 0, 0.9)"
     >
 
-      <!--数据劫持与格式化、用户变量映射-->
-      <el-col span="12">
+      <el-col :span="12">
+        <!--劫持数据-->
         <DataFormat class="shadow"></DataFormat>
         <br>
+        <!--变量映射-->
         <DataMap class="shadow"></DataMap>
       </el-col>
 
-      <!--消息模板-->
       <el-col :span="12">
+        <!--渲染模板-->
         <CTemplate class="shadow"></CTemplate>
       </el-col>
 
@@ -47,6 +48,7 @@
 import DataFormat from "@/components/cCodeFormat";
 import DataMap from "@/components/cConfigMap";
 import CTemplate from "@/components/cTemplate";
+import { getNamespaceOne, putNamespaceOne} from "@/service/requests";
 
 export default {
   name: "ViewRequestData",
@@ -56,25 +58,59 @@ export default {
       dialogVisible: true
     }
   },
-  computed: {
-    getNamespaceIsRenders: function () {
-      // 从vuex中读取当前是否需要开启渲染模式
-      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-      return  !this.$store.getters.getNamespaceIsRenders
-    }
-  },
   components: {
     DataFormat,
     DataMap,
     CTemplate,
   },
-  methods: {
-    updateNamespaceIsRenders: function () {
-      namespace = this.$store.getters.getNamespace
-
+  computed: {
+    //计算属性
+    getThisRenders: function () {
+      return this.$store.getters.getNamespaceInfo["is_renders"]
     }
   },
+  methods: {
+    // 获取通道是否开启渲染模式
+    getNamespaceRenders: function () {
+      let namespaceInfo = this.$store.getters.getNamespaceInfo
+      getNamespaceOne(namespaceInfo.id, null).then(rsp => {
+        this.thisRenders = rsp.data.result.is_renders;
+        this.$store.commit("updateNamespaceInfo", rsp.data.result);
+      })
+    },
+
+    // 更新通道的渲染模式
+    updateNamespaceRenders: function () {
+      // 获取一个namespace的结构体数据（这些数据之前被缓存在vuex中）
+      let namespaceInfo = this.$store.getters.getNamespaceInfo
+      namespaceInfo["is_renders"] = this.thisRenders
+
+      // 提交数据到后端，修改数据状态
+      putNamespaceOne(namespaceInfo.id, namespaceInfo).then(rsp => {
+        this.thisRenders = rsp.data.result["is_renders"]
+        this.$store.commit("updateNamespaceInfo", rsp.data.result)
+      })
+    }
+  },
+  watch: {
+    // 如果thisRenders的值发生变化，则遮罩层的值也将会跟随变化
+    thisRenders: {
+      immediate: true,
+      handler(newVal, oldVal) {
+        console.log(newVal, oldVal);
+        this.dialogVisible = !newVal
+      }
+    },
+    // getThisRenders: {
+    //   immediate: true,
+    //   handler(newVal, oldVal) {
+    //     console.log(newVal, oldVal)
+    //     this.thisRenders = newVal
+    //   }
+    // }
+  },
   created() {
+    this.getNamespaceRenders()
     //修改步骤条的值
     this.$store.commit("updateStepsActive", 1);
   }

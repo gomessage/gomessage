@@ -15,9 +15,9 @@ type Namespace struct {
 	CreatedAt   time.Time      `json:"-"`                               //gorm自带字段，这里粘贴过来，显式的声明出来
 	UpdatedAt   time.Time      `json:"-"`                               //gorm自带字段，这里粘贴过来，显式的声明出来
 	DeletedAt   gorm.DeletedAt `json:"-" gorm:"index"`                  //gorm自带字段，这里粘贴过来，显式的声明出来
+	Name        string         `json:"name" gorm:"unique;not null"`     //通道名称：唯一键、且不能为空
 	IsActive    bool           `json:"is_active" gorm:"default:false"`  //是否激活（默认不激活）
 	IsRenders   bool           `json:"is_renders" gorm:"default:false"` //是否开启渲染模式（默认不开启）
-	Name        string         `json:"name" gorm:"unique;not null"`     //通道名称：唯一键、且不能为空
 	Description string         `json:"description"`                     //通道描述
 }
 
@@ -46,8 +46,14 @@ func DeleteNamespace(id int) (int, error) {
 func UpdateNamespace(id int, newData *Namespace) (*Namespace, error) {
 	var ns Namespace
 	database.DB.DefaultClient.First(&ns, id)
-	updateResult := database.DB.DefaultClient.Model(&ns).Omit("id").Updates(&newData)
-	return &ns, updateResult.Error
+
+	ns.Name = newData.Name
+	ns.IsActive = newData.IsActive
+	ns.IsRenders = newData.IsRenders
+	ns.Description = newData.Description
+	result := database.DB.DefaultClient.Save(&ns)
+
+	return &ns, result.Error
 }
 
 func ListNamespace(isActive string) (*[]Namespace, error) {
