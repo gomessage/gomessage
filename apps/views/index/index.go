@@ -1,4 +1,4 @@
-package httpIndex
+package index
 
 import (
 	"github.com/gin-gonic/gin"

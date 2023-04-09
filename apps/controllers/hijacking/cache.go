@@ -21,7 +21,7 @@ type arbitrarilyJsonData struct {
 	RequestByte []byte         `json:"-"`
 }
 
-var TmpCacheData arbitrarilyJsonData
+var CacheData arbitrarilyJsonData
 
 func SetCacheData(ns string, value any) {
 	key := ns + "_key"

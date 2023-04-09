@@ -1,4 +1,4 @@
-package httpHealth
+package health
 
 import (
 	"github.com/gin-gonic/gin"

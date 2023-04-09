@@ -3,7 +3,7 @@ package middleware
 import (
 	"github.com/gin-gonic/gin"
 	"gomessage/apps/models"
-	"gomessage/apps/views/httpBase"
+	"gomessage/apps/views"
 	"net/http"
 	"time"
 )
@@ -37,7 +37,7 @@ func IsNamespace() gin.HandlerFunc {
 				ErrorTime: time.Now(),
 			}
 			//截断Request请求，直接返回指定状态码和内容
-			c.AbortWithStatusJSON(http.StatusNotFound, httpBase.ResponseFailure("中间件拦截", &rsp))
+			c.AbortWithStatusJSON(http.StatusNotFound, views.ResponseFailure("中间件拦截", &rsp))
 		} else {
 			c.Next()
 		}

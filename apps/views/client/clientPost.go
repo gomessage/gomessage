@@ -1,10 +1,10 @@
-package httpClient
+package client
 
 import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"gomessage/apps/models"
-	"gomessage/apps/views/httpBase"
+	"gomessage/apps/views"
 	"net/http"
 )
 
@@ -75,5 +75,5 @@ func PostClient(g *gin.Context) {
 	//    Client: result,
 	//})
 
-	g.JSON(http.StatusOK, httpBase.ResponseSuccessful("创建成功", result))
+	g.JSON(http.StatusOK, views.ResponseSuccessful("创建成功", result))
 }

@@ -22,7 +22,7 @@
       v-loading="dialogVisible"
       element-loading-text='每个通道都可以独立开启【高级渲染模式】把过境数据"渲染为人类可读"的信息.... 若不开启此模式则当前通道只会将数据"原封不动"的送达至目标客户端。'
       element-loading-spinner="el-icon-info"
-      element-loading-background="rgba(0, 0, 0, 0.9)"
+      element-loading-background="rgba(0, 0, 0, 0.95)"
     >
 
       <el-col :span="12">

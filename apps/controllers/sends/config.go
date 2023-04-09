@@ -1,4 +1,4 @@
-package sendMessage
+package sends
 
 import (
 	"gomessage/apps/models"
@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-type Config struct {
+type UserConfig struct {
 	Namespace       string
 	VariablesMap    []map[string]string
 	MessageTemplate string
@@ -15,8 +15,8 @@ type Config struct {
 }
 
 // GetUserConfig 获取用户在图形界面上设置的各种参数
-func GetUserConfig(ns string) Config {
-	c := Config{Namespace: ns}
+func GetUserConfig(ns string) UserConfig {
+	c := UserConfig{Namespace: ns}
 
 	//获取变量映射（根据命名空间获取）
 	listVariables, err := models.ListVariables(c.Namespace)

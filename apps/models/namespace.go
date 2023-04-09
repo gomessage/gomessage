@@ -71,6 +71,7 @@ func ListNamespace(isActive string) (*[]Namespace, error) {
 	}
 }
 
+// GetNamespaceById 根据id查询namespace
 func GetNamespaceById(id int) (*Namespace, error) {
 	var ns Namespace
 	result := database.DB.DefaultClient.Where(&Namespace{ID: id}).First(&ns)
@@ -78,12 +79,14 @@ func GetNamespaceById(id int) (*Namespace, error) {
 
 }
 
+// GetNamespaceByName 根据name查询namespace
 func GetNamespaceByName(name string) (*Namespace, error) {
 	var ns Namespace
 	result := database.DB.DefaultClient.Where(&Namespace{Name: name}).First(&ns)
 	return &ns, result.Error
 }
 
+// IsNamespaceExist 判断namespace是否存在
 func IsNamespaceExist(nsName string) bool {
 	var ns Namespace
 	result := database.DB.DefaultClient.Where(&Namespace{Name: nsName}).First(&ns)

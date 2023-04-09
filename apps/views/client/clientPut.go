@@ -1,4 +1,4 @@
-package httpClient
+package client
 
 import (
 	"github.com/gin-gonic/gin"

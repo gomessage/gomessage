@@ -5,9 +5,9 @@ import (
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"gomessage/apps/views"
-	"gomessage/apps/views/httpClient"
-	"gomessage/apps/views/httpHealth"
-	"gomessage/apps/views/httpIndex"
+	"gomessage/apps/views/client"
+	"gomessage/apps/views/health"
+	"gomessage/apps/views/index"
 	"gomessage/routers/middleware"
 	"gomessage/utils/log/loggers"
 	"net/http"
@@ -40,11 +40,11 @@ func Path(g *gin.Engine) {
 	//加载静态文件
 	initStatic(g)
 	//路由重定向
-	g.GET("/", httpIndex.Index)
+	g.GET("/", index.Index)
 	g.GET("/docs", func(c *gin.Context) { c.Redirect(http.StatusMovedPermanently, "/swagger/index.html") })
 	//基础URI
-	g.GET("/ok", httpHealth.Health)                                      //健康监测
-	g.GET("/health", httpHealth.Health)                                  //健康监测
+	g.GET("/ok", health.Health)                                          //健康监测
+	g.GET("/health", health.Health)                                      //健康监测
 	g.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler)) //Swagger页面
 
 	//=======================
@@ -65,7 +65,7 @@ func Path(g *gin.Engine) {
 	v1View.Use(middleware.IsNamespace())
 	{
 		//命名空间健康检测
-		v1View.GET("/:namespace/health", httpHealth.Health)
+		v1View.GET("/:namespace/health", health.Health)
 
 		//数据劫持
 		v1View.GET("/:namespace/json", views.GetNamespaceJson)
@@ -79,11 +79,11 @@ func Path(g *gin.Engine) {
 		v1View.POST("/:namespace/template", views.PostTemplate)
 
 		//客户端
-		v1View.GET("/:namespace/client", httpClient.ListClient)          //获取所有客户端
-		v1View.POST("/:namespace/client", httpClient.PostClient)         //新增一个客户端
-		v1View.GET("/:namespace/client/:id", httpClient.GetClient)       //获取客户端详情
-		v1View.PUT("/:namespace/client/:id", httpClient.PutClient)       //更新一个客户端
-		v1View.DELETE("/:namespace/client/:id", httpClient.DeleteClient) //删除一个客户端
+		v1View.GET("/:namespace/client", client.ListClient)          //获取所有客户端
+		v1View.POST("/:namespace/client", client.PostClient)         //新增一个客户端
+		v1View.GET("/:namespace/client/:id", client.GetClient)       //获取客户端详情
+		v1View.PUT("/:namespace/client/:id", client.PutClient)       //更新一个客户端
+		v1View.DELETE("/:namespace/client/:id", client.DeleteClient) //删除一个客户端
 
 	}
 
