@@ -1,5 +1,5 @@
 module.exports = {
-  outputDir: "../assets/vue",    //指定输出目录
+  outputDir: "../assets/vue",     //指定输出目录
   publicPath: "./",               //指定相对于"输出目录"的子目录
   assetsDir: "static",            //指定最终静态文件的存放目录，放置生成的静态资源 (js、css、img、fonts) 的 (相对于 outputDir 的) 目录
   devServer: {
