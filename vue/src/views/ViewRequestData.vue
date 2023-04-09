@@ -4,11 +4,12 @@
     <el-row>
       <el-col style="height: 60px;background-color: #cccccc">
         <el-switch
-          v-model="renders"
-          inactive-text="渲染功能 · 关闭"
-          active-text="渲染功能 · 打开"
+          v-model="thisRenders"
+          inactive-text="基础转发模式"
+          active-text="高级渲染模式"
           style="height: 100%"
           width="40"
+          @change="updateNamespaceIsRenders"
         >
         </el-switch>
       </el-col>
@@ -18,8 +19,8 @@
     <el-row
       style="padding: 20px 0;margin-left: 0;margin-right: 0"
       :gutter="20"
-      v-loading="isRenders"
-      element-loading-text='当前通道已关闭【上层渲染模式】，仅保留【下层转发功能】继续工作，过境数据将"原封不动的"送达至目标客户端，可在"数据分析页面"查看转发记录与统计！'
+      v-loading="getNamespaceIsRenders"
+      element-loading-text='每个通道都可以独立开启【高级渲染模式】借用GoMessage的动态算法把过境数据实时【渲染为人类可读】的信息；若不开启此模式，则当前通道只会将数据"原封不动"的送达至目标客户端。'
       element-loading-spinner="el-icon-info"
       element-loading-background="rgba(0, 0, 0, 0.9)"
     >
@@ -51,19 +52,27 @@ export default {
   name: "ViewRequestData",
   data() {
     return {
-      renders: false,
+      thisRenders: false,
       dialogVisible: true
     }
   },
   computed: {
-    isRenders: function () {
-      return !this.renders
+    getNamespaceIsRenders: function () {
+      // 从vuex中读取当前是否需要开启渲染模式
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      return  !this.$store.getters.getNamespaceIsRenders
     }
   },
   components: {
     DataFormat,
     DataMap,
     CTemplate,
+  },
+  methods: {
+    updateNamespaceIsRenders: function () {
+      namespace = this.$store.getters.getNamespace
+
+    }
   },
   created() {
     //修改步骤条的值

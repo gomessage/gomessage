@@ -9,14 +9,16 @@ import (
 	"time"
 )
 
+// Namespace 这里虽然名字交过namespace有点命名空间的意思，但是实际上就是用户看到的"通道"的概念
 type Namespace struct {
-	ID          int            `json:"id" gorm:"primarykey"`
-	CreatedAt   time.Time      `json:"-"`
-	UpdatedAt   time.Time      `json:"-"`
-	DeletedAt   gorm.DeletedAt `json:"-" gorm:"index"`
-	IsActive    bool           `json:"is_active" gorm:"default:false"`
-	Name        string         `json:"name" gorm:"unique;not null"` //字段约束：唯一键、且不能为空
-	Description string         `json:"description"`
+	ID          int            `json:"id" gorm:"primarykey"`            //gorm自带字段，这里粘贴过来，显式的声明出来
+	CreatedAt   time.Time      `json:"-"`                               //gorm自带字段，这里粘贴过来，显式的声明出来
+	UpdatedAt   time.Time      `json:"-"`                               //gorm自带字段，这里粘贴过来，显式的声明出来
+	DeletedAt   gorm.DeletedAt `json:"-" gorm:"index"`                  //gorm自带字段，这里粘贴过来，显式的声明出来
+	IsActive    bool           `json:"is_active" gorm:"default:false"`  //是否激活（默认不激活）
+	IsRenders   bool           `json:"is_renders" gorm:"default:false"` //是否开启渲染模式（默认不开启）
+	Name        string         `json:"name" gorm:"unique;not null"`     //通道名称：唯一键、且不能为空
+	Description string         `json:"description"`                     //通道描述
 }
 
 func (*Namespace) TableName() string {

@@ -8,9 +8,11 @@ export default new Vuex.Store({
     StepsActive: 0, //步骤
     DrawerStatus: false, //抽屉状态
     Namespace: "default", //命名空间
+    NamespaceIsRenders: false, //命名空间是否开启渲染模式
   },
   getters: {
-    getNamespace: state => state.Namespace
+    getNamespace: state => state.Namespace,
+    getNamespaceIsRenders: state => state.NamespaceIsRenders,
   },
   mutations: {
     updateStepsActive(state, num) {
@@ -21,6 +23,9 @@ export default new Vuex.Store({
     },
     updateNamespace(state, namespace) {
       state.Namespace = namespace
+    },
+    updateNamespaceIsRenders(state, IsRenders) {
+      state.NamespaceIsRenders = IsRenders
     },
   },
   actions: {},
