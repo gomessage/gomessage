@@ -1,4 +1,4 @@
-package sends
+package send
 
 import (
 	"fmt"

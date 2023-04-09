@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"github.com/gin-gonic/gin"
 	"gomessage/apps/controllers/hijacking"
-	"gomessage/apps/controllers/sends"
+	"gomessage/apps/controllers/send"
 	"gomessage/apps/models"
 	"gomessage/utils/log/loggers"
 	"io"
@@ -40,25 +40,34 @@ func GoMessageByPost(g *gin.Context) {
 		hijacking.SetCacheData(namespace, hijacking.CacheData)
 
 		//从数据库中拿到用户当前用户在图形界面上配置的参数
-		userConfig := sends.GetUserConfig(namespace)
+		userConfig := send.GetUserConfig(namespace)
 
 		//创建过境数据与用户变量之间的映射
-		analysisDataList := sends.AnalysisData(userConfig.VariablesMap, hijacking.CacheData.RequestByte)
+		analysisDataList := send.AnalysisData(userConfig.VariablesMap, hijacking.CacheData.RequestByte)
 
 		//得到渲染完成后的消息列表
-		templateMessageList := sends.CompleteMessage(userConfig.MessageTemplate, analysisDataList)
+		templateMessageList := send.CompleteMessage(userConfig.MessageTemplate, analysisDataList)
 
 		//判断消息是否聚合发送
 		if userConfig.MessageMerge {
-			sends.Merge(templateMessageList, userConfig)
+			send.Merge(templateMessageList, userConfig)
 		} else {
-			sends.Disperse(templateMessageList, userConfig)
+			send.Disperse(templateMessageList, userConfig)
 		}
 
 		g.JSON(http.StatusOK, "ok")
 	} else {
-		//如果没有开启渲染开关，则走"转发模式"
+		/*
+		 * 如果没有开启渲染开关，则走"转发模式"
+		 */
 
+		//获取上游信息
+
+		//获取下游客户端
+
+		//推送消息
+
+		//记录器产生一次记录
 	}
 }
 
