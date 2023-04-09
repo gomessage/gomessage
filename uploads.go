@@ -88,7 +88,7 @@ type ResponseReleaseByTag struct {
 	Body       string `json:"body"`
 }
 
-type releaseBody struct {
+type releaseRequest struct {
 	TagName              string `json:"tag_name"`
 	TargetCommitish      string `json:"target_commitish"`
 	Name                 string `json:"name"`
@@ -123,7 +123,7 @@ func createRelease(owner, repo, branch, tag string) (string, error) {
 	//url := "https://api.github.com/repos/gomessage/gomessage/releases"
 	url := "https://api.github.com/repos/" + owner + "/" + repo + "/releases"
 
-	data := releaseBody{
+	data := releaseRequest{
 		Name:                 tag,
 		TagName:              tag,
 		TargetCommitish:      branch,
@@ -224,6 +224,7 @@ func getReleaseByTag(owner, repo, tag string) (string, bool) {
 
 }
 
+// 基础删除
 func baseDelete(delName, url string) {
 	client := &http.Client{}
 	method := "DELETE"
@@ -278,10 +279,6 @@ func main() {
 	//接收命令行参数
 	version := *versionParam           //纯数字格式：2.0.1
 	tag := fmt.Sprintf("v%s", version) //tag格式：v2.0.1
-
-	//owner := "tay3223" //账户
-	//repo := "demo2"    //仓库
-	//branch := "main"   //分支
 
 	owner := "gomessage" //账户
 	repo := "gomessage"  //仓库

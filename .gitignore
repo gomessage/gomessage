@@ -2,8 +2,6 @@
 .idea
 vue/.idea
 vue/node_modules
-vue/.idea
-vue/node_modules
 *.iml
 *.log
 *.db
