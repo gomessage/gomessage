@@ -79,7 +79,7 @@ export default {
       if (secret.length <= 15) {
         this.$message.error("应用Secret的输入长度不符合要求...");
       } else {
-        postClient(this.client).then(response => {
+        postClient(this.$store.getters.getNamespace,this.client).then(response => {
           if (response.data.result) {
             this.$message.success("添加成功...");
             this.getClientList();

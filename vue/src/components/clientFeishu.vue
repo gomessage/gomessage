@@ -133,7 +133,7 @@ export default {
   },
   methods: {
     onSubmit: function () {
-      postClient(this.client).then(response => {
+      postClient(this.$store.getters.getNamespace, this.client).then(response => {
         // console.log(response.data);
         if (response.data.result) {
           this.$message.success("添加成功...")

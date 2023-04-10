@@ -2,6 +2,7 @@ package views
 
 import (
 	"bytes"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"gomessage/apps/controllers/hijacking"
 	"gomessage/apps/controllers/send"
@@ -16,58 +17,71 @@ import (
 // @Tags gomessage
 // @Router /go/:namespace [POST]
 func GoMessageByPost(g *gin.Context) {
-	namespace := g.Param("namespace")
-	if namespace == "message" {
-		namespace = "default"
+
+	/*
+	 *
+	 * TODO: 获取通道信息
+	 *
+	 */
+	namespaceInfo := send.GetNs(g.Param("namespace"))
+
+	/*
+	 *
+	 * TODO: 获取过境数据
+	 *
+	 */
+	//获取请求数据
+	hijacking.CacheData.RequestTime = time.Now()
+	hijacking.CacheData.RequestByte, _ = io.ReadAll(g.Request.Body)                 //g.Request.Body中的数据只能读取一次，是因为"流"的指针被移位了
+	g.Request.Body = io.NopCloser(bytes.NewBuffer(hijacking.CacheData.RequestByte)) //向g.Request.Body回写数据
+	if err := g.ShouldBindJSON(&hijacking.CacheData.RequestJson); err != nil {      //把请求数据绑定到CacheData.RequestJson
+		return
 	}
-	loggers.DefaultLogger.Info("消息发送至" + namespace + "命名空间")
 
-	nsObj, _ := models.GetNamespaceByName(namespace)
+	/*
+	 *
+	 * TODO: 写入缓存便于劫持层读取信息
+	 *
+	 */
+	//把推送过来的数据写入缓存（一个命名空间中，同一时间只能写入一条数据）
+	hijacking.SetCacheData(namespaceInfo.Name, hijacking.CacheData)
 
-	//如果开启数据渲染，则走渲染模式
-	if nsObj.IsRenders {
-		//获取请求数据
-		hijacking.CacheData.RequestTime = time.Now()
-		hijacking.CacheData.RequestByte, _ = io.ReadAll(g.Request.Body)                 //g.Request.Body中的数据只能读取一次，是因为"流"的指针被移位了
-		g.Request.Body = io.NopCloser(bytes.NewBuffer(hijacking.CacheData.RequestByte)) //向g.Request.Body回写数据
+	/*
+	 *
+	 * TODO: 获取当前通道下的用户配置
+	 *
+	 */
+	//从数据库中拿到用户当前用户在图形界面上配置的参数
+	thisNamespaceUserConfig := send.GetNamespaceUserConfig(namespaceInfo.Name)
 
-		//把请求数据绑定到CacheData.RequestJson
-		if err := g.ShouldBindJSON(&hijacking.CacheData.RequestJson); err != nil {
-			return
+	/*
+	 *
+	 * TODO: 渲染数据
+	 *
+	 */
+	rendersDataList := send.RendersRequestData(namespaceInfo.IsRenders, thisNamespaceUserConfig, hijacking.CacheData.RequestByte)
+
+	/*
+	 *
+	 * TODO: 对应客户端的消息体组装
+	 *
+	 */
+	readyClientList := send.BuilderClient(namespaceInfo.IsRenders, thisNamespaceUserConfig, rendersDataList)
+
+	/*
+	 *
+	 * TODO: 推送数据
+	 *
+	 */
+	for _, readyClient := range readyClientList {
+		fmt.Println(readyClient.Name)
+		url := readyClient.Url
+		data := readyClient.Data
+		for _, d := range data {
+			fmt.Println(d)
+			//send.Push(hijacking.CacheData.RequestJson, url)
+			send.Push(d, url)
 		}
-
-		//把推送过来的数据写入缓存（一个命名空间中，同一时间只能写入一条数据）
-		hijacking.SetCacheData(namespace, hijacking.CacheData)
-
-		//从数据库中拿到用户当前用户在图形界面上配置的参数
-		userConfig := send.GetUserConfig(namespace)
-
-		//创建过境数据与用户变量之间的映射
-		analysisDataList := send.AnalysisData(userConfig.VariablesMap, hijacking.CacheData.RequestByte)
-
-		//得到渲染完成后的消息列表
-		templateMessageList := send.CompleteMessage(userConfig.MessageTemplate, analysisDataList)
-
-		//判断消息是否聚合发送
-		if userConfig.MessageMerge {
-			send.Merge(templateMessageList, userConfig)
-		} else {
-			send.Disperse(templateMessageList, userConfig)
-		}
-
-		g.JSON(http.StatusOK, "ok")
-	} else {
-		/*
-		 * 如果没有开启渲染开关，则走"转发模式"
-		 */
-
-		//获取上游信息
-
-		//获取下游客户端
-
-		//推送消息
-
-		//记录器产生一次记录
 	}
 }
 

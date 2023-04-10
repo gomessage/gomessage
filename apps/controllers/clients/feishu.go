@@ -2,8 +2,8 @@ package clients
 
 import "gomessage/apps/models"
 
-// MessageRendersFeishu 飞书消息渲染（这是最终的需要发送出去的消息）包含一些符合对应客户端的工具字段
-func MessageRendersFeishu(userConfigInfo *models.Client, message string) interface{} {
+// PackFeishuMessage 飞书消息渲染（这是最终的需要发送出去的消息）包含一些符合对应客户端的工具字段
+func PackFeishuMessage(userConfigInfo *models.Client, message string) interface{} {
 	//fmt.Println(keyword)
 
 	//普通的文本格式消息

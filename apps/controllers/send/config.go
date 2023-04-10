@@ -6,17 +6,17 @@ import (
 	"time"
 )
 
-type UserConfig struct {
-	Namespace       string
-	VariablesMap    []map[string]string
-	MessageTemplate string
-	MessageMerge    bool
-	ActiveClient    []models.Client
+type ThisNamespaceUserConfig struct {
+	Namespace    string
+	VariablesMap []map[string]string
+	MsgTemplate  string
+	MsgMerge     bool
+	ActiveClient []models.Client
 }
 
-// GetUserConfig 获取用户在图形界面上设置的各种参数
-func GetUserConfig(ns string) UserConfig {
-	c := UserConfig{Namespace: ns}
+// GetNamespaceUserConfig 获取用户在图形界面上设置的各种参数
+func GetNamespaceUserConfig(ns string) ThisNamespaceUserConfig {
+	c := ThisNamespaceUserConfig{Namespace: ns}
 
 	//获取变量映射（根据命名空间获取）
 	listVariables, err := models.ListVariables(c.Namespace)
@@ -36,8 +36,8 @@ func GetUserConfig(ns string) UserConfig {
 	if err != nil {
 		panic(err)
 	}
-	c.MessageTemplate = template.TemplateContent
-	c.MessageMerge = template.TemplateIsMerge
+	c.MsgTemplate = template.TemplateContent
+	c.MsgMerge = template.TemplateIsMerge
 
 	//获取客户端相关（根据命名空间获取）
 	c.ActiveClient, _ = models.GetActiveClient(c.Namespace)

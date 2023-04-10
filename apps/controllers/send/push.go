@@ -11,8 +11,8 @@ import (
 	"time"
 )
 
-// SendMessage 真正发送消息的方法，不做任何形式的数据处理，仅仅只是单纯的发送
-func SendMessage(data interface{}, url string) {
+// Push 真正发送消息的方法，不做任何形式的数据处理，仅仅只是单纯的发送
+func Push(data any, url string) {
 	contentType := "application/json;charset=utf-8"
 
 	//结构体转换为json
@@ -23,7 +23,8 @@ func SendMessage(data interface{}, url string) {
 
 	//发送post请求
 	client := &http.Client{}
-	//response, err := client.Post(url, contentType, bytes.NewBuffer(e)) //post请求时，数据必须是byte
+	//response, err := client.Post(url, contentType, bytes.NewBuffer(e))
+	//response, err := client.Post(url, contentType, strings.NewReader(string(e)))
 	response, err := client.Post(url, contentType, strings.NewReader(string(e)))
 	if err != nil {
 		fmt.Println(err)
@@ -48,5 +49,5 @@ func SendMessage(data interface{}, url string) {
 		"time_now":        time.Now().Format("2006-01-02_15:04:05.000000"),
 	}).Info("推送数据成功")
 
-	fmt.Println(string(body)) //打印的是人类可读的信息
+	fmt.Println(string(body)) //打印人类可读的信息
 }

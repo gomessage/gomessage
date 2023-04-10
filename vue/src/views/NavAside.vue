@@ -137,7 +137,8 @@ export default {
         {
           "name": "default",
           "description": "default",
-          "is_active": true
+          "is_active": true,
+          "is_renders": false
         },
       ],
       dialogFormVisible222: false,
