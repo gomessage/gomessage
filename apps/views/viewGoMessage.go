@@ -78,8 +78,6 @@ func GoMessageByPost(g *gin.Context) {
 		url := readyClient.Url
 		data := readyClient.Data
 		for _, d := range data {
-			fmt.Println(d)
-			//send.Push(hijacking.CacheData.RequestJson, url)
 			send.Push(d, url)
 		}
 	}
