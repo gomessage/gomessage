@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-type ThisNamespaceUserConfig struct {
+type NamespaceUserConfig struct {
 	Namespace    string
 	VariablesMap []map[string]string
 	MsgTemplate  string
@@ -15,8 +15,8 @@ type ThisNamespaceUserConfig struct {
 }
 
 // GetNamespaceUserConfig 获取用户在图形界面上设置的各种参数
-func GetNamespaceUserConfig(ns string) ThisNamespaceUserConfig {
-	c := ThisNamespaceUserConfig{Namespace: ns}
+func GetNamespaceUserConfig(ns string) NamespaceUserConfig {
+	c := NamespaceUserConfig{Namespace: ns}
 
 	//获取变量映射（根据命名空间获取）
 	listVariables, err := models.ListVariables(c.Namespace)

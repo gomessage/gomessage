@@ -17,7 +17,7 @@ func GetNs(namespace string) *models.Namespace {
 }
 
 // RendersRequestData 渲染数据
-func RendersRequestData(isRenders bool, thisNamespaceUserConfig ThisNamespaceUserConfig, requestByte []byte) []string {
+func RendersRequestData(isRenders bool, thisNamespaceUserConfig NamespaceUserConfig, requestByte []byte) []string {
 	var contentList []string
 	//判断是否渲染
 	if isRenders {
@@ -41,7 +41,7 @@ type ReadyClient struct {
 	Data    []any
 }
 
-func BuilderClient(isRenders bool, thisNamespaceUserConfig ThisNamespaceUserConfig, contentList []string) []ReadyClient {
+func AssembledMessage(isRenders bool, thisNamespaceUserConfig NamespaceUserConfig, contentList []string) []ReadyClient {
 	var clientDataList []ReadyClient
 
 	//遍历客户端

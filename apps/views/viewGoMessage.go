@@ -2,7 +2,6 @@ package views
 
 import (
 	"bytes"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"gomessage/apps/controllers/hijacking"
 	"gomessage/apps/controllers/send"
@@ -48,25 +47,25 @@ func GoMessageByPost(g *gin.Context) {
 
 	/*
 	 *
-	 * TODO: 获取当前通道下的用户配置
+	 * TODO: 获取通道的用户配置信息
 	 *
 	 */
 	//从数据库中拿到用户当前用户在图形界面上配置的参数
-	thisNamespaceUserConfig := send.GetNamespaceUserConfig(namespaceInfo.Name)
+	nsUserConfig := send.GetNamespaceUserConfig(namespaceInfo.Name)
 
 	/*
 	 *
 	 * TODO: 渲染数据
 	 *
 	 */
-	rendersDataList := send.RendersRequestData(namespaceInfo.IsRenders, thisNamespaceUserConfig, hijacking.CacheData.RequestByte)
+	rendersDataList := send.RendersRequestData(namespaceInfo.IsRenders, nsUserConfig, hijacking.CacheData.RequestByte)
 
 	/*
 	 *
 	 * TODO: 对应客户端的消息体组装
 	 *
 	 */
-	readyClientList := send.BuilderClient(namespaceInfo.IsRenders, thisNamespaceUserConfig, rendersDataList)
+	readyClientList := send.AssembledMessage(namespaceInfo.IsRenders, nsUserConfig, rendersDataList)
 
 	/*
 	 *
@@ -74,7 +73,6 @@ func GoMessageByPost(g *gin.Context) {
 	 *
 	 */
 	for _, readyClient := range readyClientList {
-		fmt.Println(readyClient.Name)
 		url := readyClient.Url
 		data := readyClient.Data
 		for _, d := range data {
