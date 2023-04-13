@@ -5,11 +5,6 @@ import (
 	"gomessage/apps/models"
 )
 
-// Data 获取过境数据的接口
-//type Data interface {
-//	GetRequestData(b []byte) []byte
-//}
-
 // Renders 内容体渲染接口
 type Renders interface {
 	RendersData(thisNamespaceUserConfig send.NamespaceUserConfig, requestByte []byte) []string
@@ -22,7 +17,7 @@ type Assembled interface {
 
 // Push 消息体推送接口
 type Push interface {
-	PushData(url string, data []any)
+	PushData(url string, data any)
 }
 
 // Record 记录器
@@ -42,7 +37,10 @@ type Action struct {
 func (c *Action) Working(requestByte []byte, thisNamespaceUserConfig send.NamespaceUserConfig, client *models.Client) {
 	contentList := c.renders.RendersData(thisNamespaceUserConfig, requestByte)
 	url, data := c.assembled.AssembledData(thisNamespaceUserConfig.MsgMerge, client, contentList)
-	c.push.PushData(url, data)
+	for _, dd := range data {
+		c.push.PushData(url, dd)
+	}
+
 	c.record.RecordData()
 }
 
@@ -56,30 +54,30 @@ func NewAction(renders Renders, assembled Assembled, push Push, record Record) *
 	}
 }
 
-type GoAction struct {
-	action    Action
-	Id        int
-	Name      string
-	Type      string
-	IsMerge   bool
-	IsRenders bool
-	Url       string
-	Data      []any
-}
-
-// Working 行为对象的工作方法
-func (c *GoAction) Working(requestByte []byte, thisNamespaceUserConfig send.NamespaceUserConfig, client *models.Client) {
-	contentList := c.action.renders.RendersData(thisNamespaceUserConfig, requestByte)
-	url, data := c.action.assembled.AssembledData(thisNamespaceUserConfig.MsgMerge, client, contentList)
-	c.action.push.PushData(url, data)
-	c.action.record.RecordData()
-}
-
-func NewGoAction(renders Renders, assembled Assembled, push Push, record Record) *Action {
-	return &Action{
-		renders:   renders,
-		assembled: assembled,
-		push:      push,
-		record:    record,
-	}
-}
+//type GoAction struct {
+//	action    Action
+//	Id        int
+//	Name      string
+//	Type      string
+//	IsMerge   bool
+//	IsRenders bool
+//	Url       string
+//	Data      []any
+//}
+//
+//// Working 行为对象的工作方法
+//func (c *GoAction) Working(requestByte []byte, thisNamespaceUserConfig send.NamespaceUserConfig, client *models.Client) {
+//	contentList := c.action.renders.RendersData(thisNamespaceUserConfig, requestByte)
+//	url, data := c.action.assembled.AssembledData(thisNamespaceUserConfig.MsgMerge, client, contentList)
+//	c.action.push.PushData(url, data)
+//	c.action.record.RecordData()
+//}
+//
+//func NewGoAction(renders Renders, assembled Assembled, push Push, record Record) *Action {
+//	return &Action{
+//		renders:   renders,
+//		assembled: assembled,
+//		push:      push,
+//		record:    record,
+//	}
+//}

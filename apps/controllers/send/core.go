@@ -3,18 +3,7 @@ package send
 import (
 	"fmt"
 	"gomessage/apps/models"
-	"gomessage/utils/log/loggers"
 )
-
-// GetNs 获取通道信息
-func GetNs(namespace string) *models.Namespace {
-	if namespace == "message" {
-		namespace = "default"
-	}
-	nsInfo, _ := models.GetNamespaceByName(namespace)
-	loggers.DefaultLogger.Info("消息发送至" + namespace + "通道")
-	return nsInfo
-}
 
 // RendersRequestData 渲染数据
 func RendersRequestData(isRenders bool, thisNamespaceUserConfig NamespaceUserConfig, requestByte []byte) []string {

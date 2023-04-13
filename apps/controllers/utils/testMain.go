@@ -31,17 +31,18 @@ Memory接口有两个实现：（IntelMemory 和 KingstonMemory）之间的关�
 
 package main
 
-import (
-	"gomessage/apps/controllers/utils/base"
-	"gomessage/apps/controllers/utils/realized"
-)
-
-func main() {
-	var client2 *base.Action
-
-	client2 = base.NewAction(&realized.GetRendersResult{}, &realized.DingtalkMessageAssembled{}, &realized.GeneralPush{}, &realized.GeneralRecord{})
-	client2.Working()
-
-	client2 = base.NewAction(&realized.GeneralRequestData{}, &realized.NotRenders{}, &realized.DingtalkMessageAssembled{}, &realized.GeneralPush{}, &realized.GeneralRecord{})
-	client2.Working()
-}
+//
+//import (
+//	"gomessage/apps/controllers/utils/base"
+//	"gomessage/apps/controllers/utils/realized"
+//)
+//
+//func main() {
+//	var client2 *base.Action
+//
+//	client2 = base.NewAction(&realized.GetRendersResult{}, &realized.DingtalkMessageAssembled{}, &realized.GeneralPush{}, &realized.GeneralRecord{})
+//	client2.Working()
+//
+//	client2 = base.NewAction(&realized.GeneralRequestData{}, &realized.NotRenders{}, &realized.DingtalkMessageAssembled{}, &realized.GeneralPush{}, &realized.GeneralRecord{})
+//	client2.Working()
+//}

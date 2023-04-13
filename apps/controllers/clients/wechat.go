@@ -10,7 +10,7 @@ import (
 )
 
 // 获取access_token时返回值的结构体
-type getAccessTokenReturn struct {
+type GetAccessTokenReturn struct {
 	ErrCode     int    `json:"errcode"`
 	ErrMsg      string `json:"errmsg"`
 	AccessToken string `json:"access_token"`
@@ -38,7 +38,7 @@ type WeChat struct {
 }
 
 // 向微信发送请求获取access_token
-func (w *WeChat) getAccessToken() getAccessTokenReturn {
+func (w *WeChat) getAccessToken() GetAccessTokenReturn {
 	corpId := w.CorpId
 	agentSecret := w.AgentSecret
 
@@ -56,7 +56,7 @@ func (w *WeChat) getAccessToken() getAccessTokenReturn {
 	}(resp.Body)
 
 	result, err := io.ReadAll(resp.Body)
-	r := getAccessTokenReturn{}
+	r := GetAccessTokenReturn{}
 	json.Unmarshal(result, &r)
 	return r
 }

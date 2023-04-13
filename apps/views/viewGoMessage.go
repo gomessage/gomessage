@@ -53,50 +53,55 @@ func GoMessageByPost(g *gin.Context) {
 	 *
 	 */
 	//从数据库中拿到用户当前用户在图形界面上配置的参数
-	nsUserConfig := send.GetNamespaceUserConfig(namespaceInfo.Name)
+	namespaceUserConfig := send.GetNamespaceUserConfig(namespaceInfo.Name)
+
+	/*
+	 *
+	 * TODO: 渲染数据
+	 *
+	 */
+	//渲染数据与客户端类型无关，只渲染一次，所有类型的客户端都可以使用
+	rendersData := &realized.GetRendersResult{Rds: namespaceInfo.IsRenders}
 
 	/*
 	 *
 	 * TODO: 处理发送行为
 	 *
 	 */
-	//rendersDataList := send.RendersRequestData(namespaceInfo.GetRendersResult, nsUserConfig, hijacking.CacheData.RequestByte)
-	var client2 *base.Action
+	//rendersDataList := send.RendersRequestData(namespaceInfo.GetRendersResult, namespaceUserConfig, hijacking.CacheData.RequestByte)
+	var action *base.Action
 
 	//遍历当前通道下已经被激活的客户端
-	for _, client := range nsUserConfig.ActiveClient {
+	for _, client := range namespaceUserConfig.ActiveClient {
 		//获取客户端详情
 		clientInfo, _ := models.GetClientById(client.ID)
 
-		//根据客户端类型，实例化不同的接口对象
+		//根据客户端类型组装接口对象
 		switch clientInfo.ClientType {
-		case "feishu":
-			client2 = base.NewAction(
-				&realized.GetRendersResult{Rds: namespaceInfo.IsRenders},
-				&realized.FeishuMessageAssembled{},
-				&realized.GeneralPush{},
-				&realized.GeneralRecord{},
-			)
-			client2.Working(hijacking.CacheData.RequestByte, nsUserConfig, clientInfo)
 
 		case "dingtalk":
-			client2 = base.NewAction(
-				&realized.GetRendersResult{Rds: namespaceInfo.IsRenders},
-				&realized.DingtalkMessageAssembled{},
-				&realized.GeneralPush{},
-				&realized.GeneralRecord{},
-			)
-			client2.Working(hijacking.CacheData.RequestByte, nsUserConfig, clientInfo)
+			action = base.NewAction(rendersData, &realized.DingtalkMessageAssembled{}, &realized.GeneralPush{}, &realized.GeneralRecord{})
+
+		case "feishu":
+			action = base.NewAction(rendersData, &realized.FeishuMessageAssembled{}, &realized.GeneralPush{}, &realized.GeneralRecord{})
 
 		case "wechat":
-			client2 = base.NewAction(
-				&realized.GetRendersResult{Rds: namespaceInfo.IsRenders},
+			action = base.NewAction(
+				rendersData,
 				&realized.WechatMessageAssembled{},
-				&realized.GeneralPush{},
-				&realized.GeneralRecord{},
-			)
-			client2.Working(hijacking.CacheData.RequestByte, nsUserConfig, clientInfo)
+				&realized.WechatPush{
+					CorpId:      clientInfo.ExtendWechat.CorpId,
+					AgentId:     clientInfo.ExtendWechat.AgentId,
+					AgentSecret: clientInfo.ExtendWechat.Secret,
+					Touser:      clientInfo.ExtendWechat.Touser,
+				},
+				&realized.GeneralRecord{})
+
+		default:
+			action = base.NewAction(rendersData, &realized.GeneralMessageAssembled{}, &realized.GeneralPush{}, &realized.GeneralRecord{})
+
 		}
+		action.Working(hijacking.CacheData.RequestByte, namespaceUserConfig, clientInfo)
 	}
 
 	///*
@@ -104,7 +109,7 @@ func GoMessageByPost(g *gin.Context) {
 	// * TODO: 对应客户端的消息体组装
 	// *
 	// */
-	//readyClientList := send.AssembledMessage(namespaceInfo.GetRendersResult, nsUserConfig, rendersDataList)
+	//readyClientList := send.AssembledMessage(namespaceInfo.GetRendersResult, namespaceUserConfig, rendersDataList)
 	//
 	///*
 	// *

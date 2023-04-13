@@ -2,6 +2,7 @@ package send
 
 import (
 	"gomessage/apps/models"
+	"gomessage/utils/log/loggers"
 	"math/rand"
 	"time"
 )
@@ -49,4 +50,14 @@ func RobotRandomUrl(rList []string) string {
 	rand.Seed(time.Now().Unix())
 	i := rand.Int() % len(rList)
 	return rList[i]
+}
+
+// GetNs 获取通道信息
+func GetNs(namespace string) *models.Namespace {
+	if namespace == "message" {
+		namespace = "default"
+	}
+	nsInfo, _ := models.GetNamespaceByName(namespace)
+	loggers.DefaultLogger.Info("消息发送至" + namespace + "通道")
+	return nsInfo
 }
