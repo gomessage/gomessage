@@ -71,19 +71,29 @@ func GoMessageByPost(g *gin.Context) {
 	//rendersDataList := send.RendersRequestData(namespaceInfo.GetRendersResult, namespaceUserConfig, hijacking.CacheData.RequestByte)
 	var action *base.Action
 
-	//遍历当前通道下已经被激活的客户端
+	//遍历当前通道下已经被激活的客户端（从这一步开始，后续的所有行为，要根据不同的客户端来动态实例化接口）
 	for _, client := range namespaceUserConfig.ActiveClient {
 		//获取客户端详情
 		clientInfo, _ := models.GetClientById(client.ID)
 
-		//根据客户端类型组装接口对象
+		//根据客户端类型加载不同的实例化对象
 		switch clientInfo.ClientType {
 
 		case "dingtalk":
-			action = base.NewAction(rendersData, &realized.DingtalkMessageAssembled{}, &realized.GeneralPush{}, &realized.GeneralRecord{})
+			action = base.NewAction(
+				rendersData,
+				&realized.DingtalkMessageAssembled{},
+				&realized.GeneralPush{},
+				&realized.GeneralRecord{},
+			)
 
 		case "feishu":
-			action = base.NewAction(rendersData, &realized.FeishuMessageAssembled{}, &realized.GeneralPush{}, &realized.GeneralRecord{})
+			action = base.NewAction(
+				rendersData,
+				&realized.FeishuMessageAssembled{},
+				&realized.GeneralPush{},
+				&realized.GeneralRecord{},
+			)
 
 		case "wechat":
 			action = base.NewAction(
@@ -98,31 +108,22 @@ func GoMessageByPost(g *gin.Context) {
 				&realized.GeneralRecord{})
 
 		default:
-			action = base.NewAction(rendersData, &realized.GeneralMessageAssembled{}, &realized.GeneralPush{}, &realized.GeneralRecord{})
+			action = base.NewAction(
+				rendersData,
+				&realized.GeneralMessageAssembled{},
+				&realized.GeneralPush{},
+				&realized.GeneralRecord{},
+			)
 
 		}
-		action.Working(hijacking.CacheData.RequestByte, namespaceUserConfig, clientInfo)
+		err := action.Working(namespaceInfo.IsRenders, hijacking.CacheData.RequestByte, namespaceUserConfig, clientInfo)
+		if err != nil {
+			g.JSON(http.StatusBadRequest, err.Error())
+			return
+		}
 	}
 
-	///*
-	// *
-	// * TODO: 对应客户端的消息体组装
-	// *
-	// */
-	//readyClientList := send.AssembledMessage(namespaceInfo.GetRendersResult, namespaceUserConfig, rendersDataList)
-	//
-	///*
-	// *
-	// * TODO: 推送数据
-	// *
-	// */
-	//for _, readyClient := range readyClientList {
-	//	url := readyClient.Url
-	//	data := readyClient.Data
-	//	for _, d := range data {
-	//		send.Push(d, url)
-	//	}
-	//}
+	g.JSON(http.StatusOK, "ok")
 }
 
 // GoMessageByGet

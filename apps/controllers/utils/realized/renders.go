@@ -6,12 +6,13 @@ import (
 	"gomessage/apps/controllers/utils/base"
 )
 
-// GetRendersResult 开启渲染的实现
+// GetRendersResult 渲染数据
 type GetRendersResult struct {
 	base.Renders
 	Rds bool
 }
 
+// RendersData 通用渲染方法：如果需要渲染则映射变量和加载内容模板，如果不需要渲染则把原始信息组装为指定格式，然后返回给调用方
 func (d *GetRendersResult) RendersData(thisNamespaceUserConfig send.NamespaceUserConfig, requestByte []byte) []string {
 	fmt.Println("渲染为钉钉需要的内容体...")
 	var contentList []string

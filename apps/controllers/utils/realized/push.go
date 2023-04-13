@@ -18,7 +18,7 @@ type GeneralPush struct {
 
 func (d *GeneralPush) PushData(url string, data any) {
 	fmt.Println("普通的post推送方法...")
-	send.Push(d, url)
+	send.Push(data, url)
 }
 
 type WechatPush struct {
@@ -31,7 +31,9 @@ type WechatPush struct {
 
 func (w *WechatPush) PushData(url string, data any) {
 	byt, err := json.Marshal(data)
+	url = ""
 
+	//要推送的数据
 	msg := clients.PushMessageData{}
 	msg.MsgType = "markdown"
 	msg.Touser = w.Touser

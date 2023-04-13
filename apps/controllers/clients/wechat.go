@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-// 获取access_token时返回值的结构体
+// GetAccessTokenReturn 获取access_token时返回值的结构体
 type GetAccessTokenReturn struct {
 	ErrCode     int    `json:"errcode"`
 	ErrMsg      string `json:"errmsg"`

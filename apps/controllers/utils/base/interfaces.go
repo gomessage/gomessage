@@ -1,6 +1,7 @@
 package base
 
 import (
+	"errors"
 	"gomessage/apps/controllers/send"
 	"gomessage/apps/models"
 )
@@ -12,7 +13,7 @@ type Renders interface {
 
 // Assembled 消息体组装接口
 type Assembled interface {
-	AssembledData(isMerge bool, client *models.Client, contentList []string) (string, []any)
+	AssembledData(isRenders, isMerge bool, client *models.Client, contentList []string) (string, []any)
 }
 
 // Push 消息体推送接口
@@ -34,14 +35,17 @@ type Action struct {
 }
 
 // Working 行为对象的工作方法
-func (c *Action) Working(requestByte []byte, thisNamespaceUserConfig send.NamespaceUserConfig, client *models.Client) {
+func (c *Action) Working(isRenders bool, requestByte []byte, thisNamespaceUserConfig send.NamespaceUserConfig, client *models.Client) error {
 	contentList := c.renders.RendersData(thisNamespaceUserConfig, requestByte)
-	url, data := c.assembled.AssembledData(thisNamespaceUserConfig.MsgMerge, client, contentList)
+	if len(contentList) == 0 {
+		return errors.New("过境数据格式错误，用户变量无法从过境数据中找到可用的映射关系")
+	}
+	url, data := c.assembled.AssembledData(isRenders, thisNamespaceUserConfig.MsgMerge, client, contentList)
 	for _, dd := range data {
 		c.push.PushData(url, dd)
 	}
-
 	c.record.RecordData()
+	return nil
 }
 
 // NewAction 创建一个新的"行为对象"
