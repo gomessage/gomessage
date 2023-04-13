@@ -2,9 +2,47 @@ package base
 
 import (
 	"errors"
+	"fmt"
 	"gomessage/apps/controllers/send"
 	"gomessage/apps/models"
 )
+
+//var RegistrationCenter = map[string]ClientAction{}
+//
+//func init() {
+//	dingtalk := ClientActionDingtalk{}
+//	feishu := ClientActionFeishu{}
+//
+//	RegistrationCenter["dingtalk"] = &dingtalk
+//	RegistrationCenter["feishu"] = &feishu
+//}
+
+type ClientAction interface {
+	RendersMessages()
+	PushMessages()
+}
+
+type ClientActionDingtalk struct{}
+
+func (c *ClientActionDingtalk) RendersMessages() {
+	fmt.Println("渲染消息体成功...")
+}
+
+func (c *ClientActionDingtalk) PushMessages() {
+	fmt.Println("推送消息体成功...")
+}
+
+type ClientActionFeishu struct{}
+
+func (c *ClientActionFeishu) RendersMessages() {
+	fmt.Println("飞书消息体成功...")
+}
+
+func (c *ClientActionFeishu) PushMessages() {
+	fmt.Println("飞书消息体成功...")
+}
+
+/*==============================*/
 
 // Renders 内容体渲染接口
 type Renders interface {
@@ -34,6 +72,16 @@ type Action struct {
 	record    Record    //记录器接口
 }
 
+// NewAction 创建一个新的"行为对象"
+func NewAction(renders Renders, assembled Assembled, push Push, record Record) *Action {
+	return &Action{
+		renders:   renders,
+		assembled: assembled,
+		push:      push,
+		record:    record,
+	}
+}
+
 // Working 行为对象的工作方法
 func (c *Action) Working(isRenders bool, requestByte []byte, thisNamespaceUserConfig send.NamespaceUserConfig, client *models.Client) error {
 	contentList := c.renders.RendersData(thisNamespaceUserConfig, requestByte)
@@ -46,16 +94,6 @@ func (c *Action) Working(isRenders bool, requestByte []byte, thisNamespaceUserCo
 	}
 	c.record.RecordData()
 	return nil
-}
-
-// NewAction 创建一个新的"行为对象"
-func NewAction(renders Renders, assembled Assembled, push Push, record Record) *Action {
-	return &Action{
-		renders:   renders,
-		assembled: assembled,
-		push:      push,
-		record:    record,
-	}
 }
 
 //type GoAction struct {

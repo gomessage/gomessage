@@ -60,7 +60,7 @@ func GoMessageByPost(g *gin.Context) {
 	 * TODO: 渲染数据
 	 *
 	 */
-	//渲染数据与客户端类型无关，只渲染一次，所有类型的客户端都可以使用
+	//渲染出来的"内容体"与客户端类型无关，只渲染一次，所有类型的客户端都可以使用
 	rendersData := &realized.GetRendersResult{Rds: namespaceInfo.IsRenders}
 
 	/*
