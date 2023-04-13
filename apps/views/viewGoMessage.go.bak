@@ -5,8 +5,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"gomessage/apps/controllers/hijacking"
 	"gomessage/apps/controllers/send"
-	"gomessage/apps/controllers/utils/base"
-	"gomessage/apps/controllers/utils/realized"
 	"gomessage/apps/models"
 	"gomessage/utils/log/loggers"
 	"io"
@@ -57,67 +55,30 @@ func GoMessageByPost(g *gin.Context) {
 
 	/*
 	 *
-	 * TODO: 处理发送行为
+	 * TODO: 渲染数据
 	 *
 	 */
-	//rendersDataList := send.RendersRequestData(namespaceInfo.GetRendersResult, nsUserConfig, hijacking.CacheData.RequestByte)
-	var client2 *base.Action
+	rendersDataList := send.RendersRequestData(namespaceInfo.IsRenders, nsUserConfig, hijacking.CacheData.RequestByte)
 
-	//遍历当前通道下已经被激活的客户端
-	for _, client := range nsUserConfig.ActiveClient {
-		//获取客户端详情
-		clientInfo, _ := models.GetClientById(client.ID)
+	/*
+	 *
+	 * TODO: 对应客户端的消息体组装
+	 *
+	 */
+	readyClientList := send.AssembledMessage(namespaceInfo.IsRenders, nsUserConfig, rendersDataList)
 
-		//根据客户端类型，实例化不同的接口对象
-		switch clientInfo.ClientType {
-		case "feishu":
-			client2 = base.NewAction(
-				&realized.GetRendersResult{Rds: namespaceInfo.IsRenders},
-				&realized.FeishuMessageAssembled{},
-				&realized.GeneralPush{},
-				&realized.GeneralRecord{},
-			)
-			client2.Working(hijacking.CacheData.RequestByte, nsUserConfig, clientInfo)
-
-		case "dingtalk":
-			client2 = base.NewAction(
-				&realized.GetRendersResult{Rds: namespaceInfo.IsRenders},
-				&realized.DingtalkMessageAssembled{},
-				&realized.GeneralPush{},
-				&realized.GeneralRecord{},
-			)
-			client2.Working(hijacking.CacheData.RequestByte, nsUserConfig, clientInfo)
-
-		case "wechat":
-			client2 = base.NewAction(
-				&realized.GetRendersResult{Rds: namespaceInfo.IsRenders},
-				&realized.WechatMessageAssembled{},
-				&realized.GeneralPush{},
-				&realized.GeneralRecord{},
-			)
-			client2.Working(hijacking.CacheData.RequestByte, nsUserConfig, clientInfo)
+	/*
+	 *
+	 * TODO: 推送数据
+	 *
+	 */
+	for _, readyClient := range readyClientList {
+		url := readyClient.Url
+		data := readyClient.Data
+		for _, d := range data {
+			send.Push(d, url)
 		}
 	}
-
-	///*
-	// *
-	// * TODO: 对应客户端的消息体组装
-	// *
-	// */
-	//readyClientList := send.AssembledMessage(namespaceInfo.GetRendersResult, nsUserConfig, rendersDataList)
-	//
-	///*
-	// *
-	// * TODO: 推送数据
-	// *
-	// */
-	//for _, readyClient := range readyClientList {
-	//	url := readyClient.Url
-	//	data := readyClient.Data
-	//	for _, d := range data {
-	//		send.Push(d, url)
-	//	}
-	//}
 }
 
 // GoMessageByGet
