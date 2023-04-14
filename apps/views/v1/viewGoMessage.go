@@ -3,10 +3,10 @@ package v1
 import (
 	"bytes"
 	"github.com/gin-gonic/gin"
+	"gomessage/apps/controllers/core/interfaces"
+	"gomessage/apps/controllers/core/realized/v1"
 	"gomessage/apps/controllers/hijacking"
 	"gomessage/apps/controllers/send"
-	"gomessage/apps/controllers/utils/interfaces"
-	"gomessage/apps/controllers/utils/realized/v1"
 	"gomessage/apps/models"
 	"io"
 	"net/http"

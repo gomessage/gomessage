@@ -2,7 +2,7 @@ package v1
 
 import (
 	"fmt"
-	"gomessage/apps/controllers/utils/interfaces"
+	"gomessage/apps/controllers/core/interfaces"
 )
 
 type GeneralRecord struct {

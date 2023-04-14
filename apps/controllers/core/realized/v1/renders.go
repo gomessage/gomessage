@@ -2,8 +2,8 @@ package v1
 
 import (
 	"fmt"
+	"gomessage/apps/controllers/core/interfaces"
 	"gomessage/apps/controllers/send"
-	"gomessage/apps/controllers/utils/interfaces"
 )
 
 // GetRendersResult 渲染数据
