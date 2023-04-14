@@ -1,4 +1,4 @@
-package clients
+package v2
 
 import (
 	"fmt"

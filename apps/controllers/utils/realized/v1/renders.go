@@ -1,14 +1,14 @@
-package realized
+package v1
 
 import (
 	"fmt"
 	"gomessage/apps/controllers/send"
-	"gomessage/apps/controllers/utils/base"
+	"gomessage/apps/controllers/utils/interfaces"
 )
 
 // GetRendersResult 渲染数据
 type GetRendersResult struct {
-	base.Renders
+	interfaces.Renders
 	Rds bool
 }
 

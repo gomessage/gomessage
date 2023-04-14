@@ -1,4 +1,4 @@
-package clients
+package clientFormats
 
 import "gomessage/apps/models"
 

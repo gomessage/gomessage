@@ -1,27 +1,10 @@
-package base
+package interfaces
 
 import (
 	"errors"
 	"gomessage/apps/controllers/send"
 	"gomessage/apps/models"
 )
-
-//var RegistrationCenter = map[string]ClientAction{}
-//
-//func init() {
-//	dingtalk := ClientActionDingtalk{}
-//	feishu := ClientActionFeishu{}
-//
-//	RegistrationCenter["dingtalk"] = &dingtalk
-//	RegistrationCenter["feishu"] = &feishu
-//}
-
-type ClientAction interface {
-	RendersMessages(client *models.Client, isMerge bool, contentList []string) []any
-	PushMessages(messages []any)
-}
-
-/*==============================*/
 
 // Renders 内容体渲染接口
 type Renders interface {
@@ -74,31 +57,3 @@ func (c *Action) Working(isRenders bool, requestByte []byte, thisNamespaceUserCo
 	c.record.RecordData()
 	return nil
 }
-
-//type GoAction struct {
-//	action    Action
-//	Id        int
-//	Name      string
-//	Type      string
-//	IsMerge   bool
-//	IsRenders bool
-//	Url       string
-//	Data      []any
-//}
-//
-//// Working 行为对象的工作方法
-//func (c *GoAction) Working(requestByte []byte, thisNamespaceUserConfig send.NamespaceUserConfig, client *models.Client) {
-//	contentList := c.action.renders.RendersData(thisNamespaceUserConfig, requestByte)
-//	url, data := c.action.assembled.AssembledData(thisNamespaceUserConfig.MsgMerge, client, contentList)
-//	c.action.push.PushData(url, data)
-//	c.action.record.RecordData()
-//}
-//
-//func NewGoAction(renders Renders, assembled Assembled, push Push, record Record) *Action {
-//	return &Action{
-//		renders:   renders,
-//		assembled: assembled,
-//		push:      push,
-//		record:    record,
-//	}
-//}

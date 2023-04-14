@@ -5,8 +5,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"gomessage/apps/controllers/hijacking"
 	"gomessage/apps/controllers/send"
-	"gomessage/apps/controllers/utils/base"
-	"gomessage/apps/controllers/utils/realized/clients"
+	"gomessage/apps/controllers/utils/interfaces"
+	"gomessage/apps/controllers/utils/realized/v2"
 	"gomessage/apps/models"
 	"gomessage/apps/views"
 	"gomessage/utils/log/loggers"
@@ -54,14 +54,14 @@ func GoMessageByTransport(g *gin.Context) {
 		var messages []any
 
 		//获取interface的实例对象（该接口有两个方法：消息体处理的封装方法、推送消息的封装方法）
-		var clientAction base.ClientAction
+		var clientAction interfaces.ClientAction
 		switch clientInfo.ClientType {
 		case "dingtalk":
-			clientAction = &clients.ClientActionDingtalk{Client: clientInfo}
+			clientAction = &v2.ClientActionDingtalk{Client: clientInfo}
 		case "feishu":
-			clientAction = &clients.ClientActionFeishu{Client: clientInfo}
+			clientAction = &v2.ClientActionFeishu{Client: clientInfo}
 		case "wechat":
-			clientAction = &clients.ClientActionWechat{
+			clientAction = &v2.ClientActionWechat{
 				CorpId:      clientInfo.ExtendWechat.CorpId,
 				AgentId:     clientInfo.ExtendWechat.AgentId,
 				AgentSecret: clientInfo.ExtendWechat.Secret,

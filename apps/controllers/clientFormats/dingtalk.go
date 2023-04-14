@@ -1,4 +1,4 @@
-package clients
+package clientFormats
 
 // PackDingtalkMessage 钉钉消息渲染（这是最终的需要发送出去的消息）包含一些符合对应客户端的工具字段
 func PackDingtalkMessage(keyword string, message string) interface{} {

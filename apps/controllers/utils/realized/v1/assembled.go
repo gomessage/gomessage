@@ -1,17 +1,17 @@
-package realized
+package v1
 
 import (
 	"encoding/json"
 	"fmt"
-	"gomessage/apps/controllers/clients"
+	"gomessage/apps/controllers/clientFormats"
 	"gomessage/apps/controllers/send"
-	"gomessage/apps/controllers/utils/base"
+	"gomessage/apps/controllers/utils/interfaces"
 	"gomessage/apps/models"
 )
 
 // GeneralMessageAssembled 通用消息体封装
 type GeneralMessageAssembled struct {
-	base.Assembled
+	interfaces.Assembled
 }
 
 func (d *GeneralMessageAssembled) AssembledData(isRenders, isMerge bool, client *models.Client, contentList []string) (string, []any) {
@@ -30,7 +30,7 @@ func (d *GeneralMessageAssembled) AssembledData(isRenders, isMerge bool, client 
 
 // DingtalkMessageAssembled 钉钉消息体封装
 type DingtalkMessageAssembled struct {
-	base.Assembled
+	interfaces.Assembled
 }
 
 func (d *DingtalkMessageAssembled) AssembledData(isRenders, isMerge bool, client *models.Client, contentList []string) (string, []any) {
@@ -41,11 +41,11 @@ func (d *DingtalkMessageAssembled) AssembledData(isRenders, isMerge bool, client
 	if isRenders {
 		if isMerge {
 			msg := send.MessageJoint(contentList, "dingtalk")
-			data := clients.PackDingtalkMessage(client.ExtendDingtalk.RobotKeyword, msg)
+			data := clientFormats.PackDingtalkMessage(client.ExtendDingtalk.RobotKeyword, msg)
 			msgList = append(msgList, data)
 		} else {
 			for _, msg := range contentList {
-				data := clients.PackDingtalkMessage(client.ExtendDingtalk.RobotKeyword, msg)
+				data := clientFormats.PackDingtalkMessage(client.ExtendDingtalk.RobotKeyword, msg)
 				msgList = append(msgList, data)
 			}
 		}
@@ -63,7 +63,7 @@ func (d *DingtalkMessageAssembled) AssembledData(isRenders, isMerge bool, client
 
 // FeishuMessageAssembled 飞书消息体封装
 type FeishuMessageAssembled struct {
-	base.Assembled
+	interfaces.Assembled
 }
 
 func (d *FeishuMessageAssembled) AssembledData(isRenders, isMerge bool, client *models.Client, contentList []string) (string, []any) {
@@ -74,11 +74,11 @@ func (d *FeishuMessageAssembled) AssembledData(isRenders, isMerge bool, client *
 	if isRenders {
 		if isMerge {
 			msg := send.MessageJoint(contentList, "feishu")
-			data := clients.PackFeishuMessage(client, msg)
+			data := clientFormats.PackFeishuMessage(client, msg)
 			msgList = append(msgList, data)
 		} else {
 			for _, msg := range contentList {
-				data := clients.PackFeishuMessage(client, msg)
+				data := clientFormats.PackFeishuMessage(client, msg)
 				msgList = append(msgList, data)
 			}
 		}
@@ -97,7 +97,7 @@ func (d *FeishuMessageAssembled) AssembledData(isRenders, isMerge bool, client *
 
 // WechatMessageAssembled 企业微信消息体封装
 type WechatMessageAssembled struct {
-	base.Assembled
+	interfaces.Assembled
 }
 
 func (d *WechatMessageAssembled) AssembledData(isRenders, isMerge bool, client *models.Client, contentList []string) (string, []any) {
@@ -130,7 +130,7 @@ func (d *WechatMessageAssembled) AssembledData(isRenders, isMerge bool, client *
 
 // EmailMessageAssembled 邮箱消息体封装
 type EmailMessageAssembled struct {
-	base.Assembled
+	interfaces.Assembled
 }
 
 func (d *EmailMessageAssembled) AssembledData(isRenders, isMerge bool, client *models.Client, contentList []string) (string, []any) {

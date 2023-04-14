@@ -1,7 +1,7 @@
-package clients
+package v2
 
 import (
-	"gomessage/apps/controllers/clients"
+	"gomessage/apps/controllers/clientFormats"
 	"gomessage/apps/controllers/send"
 	"gomessage/apps/models"
 )
@@ -14,11 +14,11 @@ func (c *ClientActionDingtalk) RendersMessages(client *models.Client, isMerge bo
 	var msgList []any
 	if isMerge {
 		msg := send.MessageJoint(contentList, "dingtalk")
-		data := clients.PackDingtalkMessage(client.ExtendDingtalk.RobotKeyword, msg)
+		data := clientFormats.PackDingtalkMessage(client.ExtendDingtalk.RobotKeyword, msg)
 		msgList = append(msgList, data)
 	} else {
 		for _, msg := range contentList {
-			data := clients.PackDingtalkMessage(client.ExtendDingtalk.RobotKeyword, msg)
+			data := clientFormats.PackDingtalkMessage(client.ExtendDingtalk.RobotKeyword, msg)
 			msgList = append(msgList, data)
 		}
 	}

@@ -5,8 +5,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"gomessage/apps/controllers/hijacking"
 	"gomessage/apps/controllers/send"
-	"gomessage/apps/controllers/utils/base"
-	"gomessage/apps/controllers/utils/realized"
+	"gomessage/apps/controllers/utils/interfaces"
+	"gomessage/apps/controllers/utils/realized/v1"
 	"gomessage/apps/models"
 	"io"
 	"net/http"
@@ -60,7 +60,7 @@ func GoMessageByPost(g *gin.Context) {
 	 *
 	 */
 	//渲染出来的"内容体"与客户端类型无关，只渲染一次，所有类型的客户端都可以使用
-	rendersData := &realized.GetRendersResult{Rds: namespaceInfo.IsRenders}
+	rendersData := &v1.GetRendersResult{Rds: namespaceInfo.IsRenders}
 
 	/*
 	 *
@@ -68,7 +68,7 @@ func GoMessageByPost(g *gin.Context) {
 	 *
 	 */
 	//rendersDataList := send.RendersRequestData(namespaceInfo.GetRendersResult, namespaceUserConfig, hijacking.CacheData.RequestByte)
-	var action *base.Action
+	var action *interfaces.Action
 
 	//遍历当前通道下已经被激活的客户端（从这一步开始，后续的所有行为，要根据不同的客户端来动态实例化接口）
 	for _, client := range namespaceUserConfig.ActiveClient {
@@ -79,39 +79,39 @@ func GoMessageByPost(g *gin.Context) {
 		switch clientInfo.ClientType {
 
 		case "dingtalk":
-			action = base.NewAction(
+			action = interfaces.NewAction(
 				rendersData,
-				&realized.DingtalkMessageAssembled{},
-				&realized.GeneralPush{},
-				&realized.GeneralRecord{},
+				&v1.DingtalkMessageAssembled{},
+				&v1.GeneralPush{},
+				&v1.GeneralRecord{},
 			)
 
 		case "feishu":
-			action = base.NewAction(
+			action = interfaces.NewAction(
 				rendersData,
-				&realized.FeishuMessageAssembled{},
-				&realized.GeneralPush{},
-				&realized.GeneralRecord{},
+				&v1.FeishuMessageAssembled{},
+				&v1.GeneralPush{},
+				&v1.GeneralRecord{},
 			)
 
 		case "wechat":
-			action = base.NewAction(
+			action = interfaces.NewAction(
 				rendersData,
-				&realized.WechatMessageAssembled{},
-				&realized.WechatPush{
+				&v1.WechatMessageAssembled{},
+				&v1.WechatPush{
 					CorpId:      clientInfo.ExtendWechat.CorpId,
 					AgentId:     clientInfo.ExtendWechat.AgentId,
 					AgentSecret: clientInfo.ExtendWechat.Secret,
 					Touser:      clientInfo.ExtendWechat.Touser,
 				},
-				&realized.GeneralRecord{})
+				&v1.GeneralRecord{})
 
 		default:
-			action = base.NewAction(
+			action = interfaces.NewAction(
 				rendersData,
-				&realized.GeneralMessageAssembled{},
-				&realized.GeneralPush{},
-				&realized.GeneralRecord{},
+				&v1.GeneralMessageAssembled{},
+				&v1.GeneralPush{},
+				&v1.GeneralRecord{},
 			)
 
 		}

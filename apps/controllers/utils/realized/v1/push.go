@@ -1,11 +1,11 @@
-package realized
+package v1
 
 import (
 	"encoding/json"
 	"fmt"
-	"gomessage/apps/controllers/clients"
+	"gomessage/apps/controllers/clientFormats"
 	"gomessage/apps/controllers/send"
-	"gomessage/apps/controllers/utils/base"
+	"gomessage/apps/controllers/utils/interfaces"
 	"io"
 	"net/http"
 	"strconv"
@@ -13,7 +13,7 @@ import (
 )
 
 type GeneralPush struct {
-	base.Push
+	interfaces.Push
 }
 
 func (d *GeneralPush) PushData(url string, data any) {
@@ -22,7 +22,7 @@ func (d *GeneralPush) PushData(url string, data any) {
 }
 
 type WechatPush struct {
-	base.Push
+	interfaces.Push
 	CorpId      string
 	AgentId     string
 	AgentSecret string
@@ -34,7 +34,7 @@ func (w *WechatPush) PushData(url string, data any) {
 	url = ""
 
 	//要推送的数据
-	msg := clients.PushMessageData{}
+	msg := clientFormats.PushMessageData{}
 	msg.MsgType = "markdown"
 	msg.Touser = w.Touser
 	msg.AgentId, _ = strconv.Atoi(w.AgentId)
@@ -59,7 +59,7 @@ func (w *WechatPush) PushData(url string, data any) {
 }
 
 // 向微信发送请求获取access_token
-func (w *WechatPush) getAccessToken() clients.GetAccessTokenReturn {
+func (w *WechatPush) getAccessToken() clientFormats.GetAccessTokenReturn {
 	corpId := w.CorpId
 	agentSecret := w.AgentSecret
 
@@ -77,7 +77,9 @@ func (w *WechatPush) getAccessToken() clients.GetAccessTokenReturn {
 	}(resp.Body)
 
 	result, err := io.ReadAll(resp.Body)
-	r := clients.GetAccessTokenReturn{}
-	json.Unmarshal(result, &r)
+	r := clientFormats.GetAccessTokenReturn{}
+	if err := json.Unmarshal(result, &r); err != nil {
+		return clientFormats.GetAccessTokenReturn{}
+	}
 	return r
 }
