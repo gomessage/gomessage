@@ -65,6 +65,9 @@ func GoMessageByTransport(g *gin.Context) {
 				AgentSecret: clientInfo.ExtendWechatApplication.Secret,
 				Touser:      clientInfo.ExtendWechatApplication.Touser,
 			}
+		case "wechat_robot":
+			clientAction = &v3.ClientActionWechatRobot{Client: clientInfo}
+
 		default:
 			g.JSON(http.StatusBadRequest, "客户端类型错误")
 			return
