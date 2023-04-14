@@ -6,8 +6,6 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"gomessage/apps/views"
 	"gomessage/apps/views/client"
-	"gomessage/apps/views/health"
-	"gomessage/apps/views/index"
 	v2 "gomessage/apps/views/v2"
 	"gomessage/routers/middleware"
 	"gomessage/utils/log/loggers"
@@ -41,11 +39,11 @@ func Path(g *gin.Engine) {
 	//加载静态文件
 	initStatic(g)
 	//路由重定向
-	g.GET("/", index.Index)
+	g.GET("/", views.Index)
 	g.GET("/docs", func(c *gin.Context) { c.Redirect(http.StatusMovedPermanently, "/swagger/index.html") })
 	//基础URI
-	g.GET("/ok", health.Health)                                          //健康监测
-	g.GET("/health", health.Health)                                      //健康监测
+	g.GET("/ok", views.Health)                                           //健康监测
+	g.GET("/health", views.Health)                                       //健康监测
 	g.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler)) //Swagger页面
 
 	//=======================
@@ -66,7 +64,7 @@ func Path(g *gin.Engine) {
 	v1View.Use(middleware.IsNamespace())
 	{
 		//命名空间健康检测
-		v1View.GET("/:namespace/health", health.Health)
+		v1View.GET("/:namespace/health", views.Health)
 
 		//数据劫持
 		v1View.GET("/:namespace/json", views.GetNamespaceJson)
