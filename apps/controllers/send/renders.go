@@ -91,3 +91,8 @@ func MessageJoint(messageList []string, thisType string) string {
 	}
 	return msg
 }
+
+func RendersContentData(requestByte []byte, varMap []map[string]string, msgTemplate string) []string {
+	analysisDataList := AnalysisData(varMap, requestByte) //得到变量映射
+	return CompleteMessage(msgTemplate, analysisDataList) //得到内容体
+}

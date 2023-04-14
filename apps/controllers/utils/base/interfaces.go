@@ -2,7 +2,6 @@ package base
 
 import (
 	"errors"
-	"fmt"
 	"gomessage/apps/controllers/send"
 	"gomessage/apps/models"
 )
@@ -18,28 +17,8 @@ import (
 //}
 
 type ClientAction interface {
-	RendersMessages()
-	PushMessages()
-}
-
-type ClientActionDingtalk struct{}
-
-func (c *ClientActionDingtalk) RendersMessages() {
-	fmt.Println("渲染消息体成功...")
-}
-
-func (c *ClientActionDingtalk) PushMessages() {
-	fmt.Println("推送消息体成功...")
-}
-
-type ClientActionFeishu struct{}
-
-func (c *ClientActionFeishu) RendersMessages() {
-	fmt.Println("飞书消息体成功...")
-}
-
-func (c *ClientActionFeishu) PushMessages() {
-	fmt.Println("飞书消息体成功...")
+	RendersMessages(client *models.Client, isMerge bool, contentList []string) []any
+	PushMessages(messages []any)
 }
 
 /*==============================*/

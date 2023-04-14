@@ -1,4 +1,4 @@
-package views
+package v1
 
 import (
 	"bytes"
@@ -8,7 +8,6 @@ import (
 	"gomessage/apps/controllers/utils/base"
 	"gomessage/apps/controllers/utils/realized"
 	"gomessage/apps/models"
-	"gomessage/utils/log/loggers"
 	"io"
 	"net/http"
 	"time"
@@ -124,22 +123,4 @@ func GoMessageByPost(g *gin.Context) {
 	}
 
 	g.JSON(http.StatusOK, "ok")
-}
-
-// GoMessageByGet
-// @Tags gomessage
-// @Router /go/message [GET]
-func GoMessageByGet(g *gin.Context) {
-	namespace := g.Param("namespace")
-	if namespace == "message" {
-		namespace = "default"
-	}
-	loggers.DefaultLogger.Info("当前命名空间为：", namespace)
-
-	result, err := models.GetNamespaceByName(namespace)
-	if err != nil {
-		g.JSON(http.StatusBadRequest, ResponseFailure("namespace不存在", err))
-	} else {
-		g.JSON(http.StatusOK, ResponseSuccessful("namespace ready", result))
-	}
 }
