@@ -1,7 +1,7 @@
 package v3
 
 import (
-	"gomessage/apps/controllers/clientFormats"
+	"gomessage/apps/controllers/clientFormat"
 	"gomessage/apps/controllers/core/v1"
 	"gomessage/apps/models"
 )
@@ -14,11 +14,11 @@ func (c *ClientActionFeishu) RendersMessages(client *models.Client, isMerge bool
 	var msgList []any
 	if isMerge {
 		msg := v1.MessageJoint(contentList, "feishu")
-		data := clientFormats.PackFeishuMessage(client, msg)
+		data := clientFormat.PackFeishuMessage(client, msg)
 		msgList = append(msgList, data)
 	} else {
 		for _, msg := range contentList {
-			data := clientFormats.PackFeishuMessage(client, msg)
+			data := clientFormat.PackFeishuMessage(client, msg)
 			msgList = append(msgList, data)
 		}
 	}

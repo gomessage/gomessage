@@ -3,7 +3,7 @@ package v2
 import (
 	"encoding/json"
 	"fmt"
-	"gomessage/apps/controllers/clientFormats"
+	"gomessage/apps/controllers/clientFormat"
 	"gomessage/apps/controllers/core/v1"
 	"io"
 	"net/http"
@@ -33,7 +33,7 @@ func (w *WechatPush) PushData(url string, data any) {
 	url = ""
 
 	//要推送的数据
-	msg := clientFormats.PushMessageData{}
+	msg := clientFormat.PushMessageData{}
 	msg.MsgType = "markdown"
 	msg.Touser = w.Touser
 	msg.AgentId, _ = strconv.Atoi(w.AgentId)
@@ -58,7 +58,7 @@ func (w *WechatPush) PushData(url string, data any) {
 }
 
 // 向微信发送请求获取access_token
-func (w *WechatPush) getAccessToken() clientFormats.GetAccessTokenReturn {
+func (w *WechatPush) getAccessToken() clientFormat.GetAccessTokenReturn {
 	corpId := w.CorpId
 	agentSecret := w.AgentSecret
 
@@ -76,9 +76,9 @@ func (w *WechatPush) getAccessToken() clientFormats.GetAccessTokenReturn {
 	}(resp.Body)
 
 	result, err := io.ReadAll(resp.Body)
-	r := clientFormats.GetAccessTokenReturn{}
+	r := clientFormat.GetAccessTokenReturn{}
 	if err := json.Unmarshal(result, &r); err != nil {
-		return clientFormats.GetAccessTokenReturn{}
+		return clientFormat.GetAccessTokenReturn{}
 	}
 	return r
 }
