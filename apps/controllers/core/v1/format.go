@@ -8,7 +8,7 @@ import (
 
 func FeishuMessageFormat(isRenders bool, isMerge bool, client *models.Client, contentList []string) (string, []any) {
 	var msgList []any
-	url := RobotRandomUrl(client.ExtendFeishu.RobotUrls)
+	url := RobotRandomUrl(client.ExtendFeishu.RobotUrlsList)
 	if isRenders {
 		if isMerge {
 			msg := MessageJoint(contentList, "feishu")
@@ -35,7 +35,7 @@ func FeishuMessageFormat(isRenders bool, isMerge bool, client *models.Client, co
 
 func DingtalkMessageFormat(isRenders, isMerge bool, client *models.Client, contentList []string) (string, []any) {
 	var msgList []any
-	url := RobotRandomUrl(client.ExtendDingtalk.RobotUrlInfoList)
+	url := RobotRandomUrl(client.ExtendDingtalk.RobotUrlsList)
 	if isRenders {
 		if isMerge {
 			msg := MessageJoint(contentList, "dingtalk")

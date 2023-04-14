@@ -10,19 +10,19 @@ import (
 )
 
 type Client struct {
-	ID                      int               `json:"id" gorm:"primarykey"`
-	CreatedAt               time.Time         `json:"-"`
-	UpdatedAt               time.Time         `json:"-"`
-	DeletedAt               gorm.DeletedAt    `json:"-" gorm:"index"`
-	Namespace               string            `json:"namespace"`
-	ClientName              string            `json:"client_name"`
-	ClientDescription       string            `json:"client_description"`
-	ClientType              string            `json:"client_type"`
-	IsActive                bool              `json:"is_active"`
-	ExtendDingtalk          *clients.Dingtalk `json:"-" gorm:"-:all"`
-	ExtendFeishu            *clients.Feishu   `json:"-" gorm:"-:all"`
-	ExtendWechatApplication *clients.Wechat   `json:"-" gorm:"-:all"`
-	//ExtendWechatApplication      *clients.Wechat   `json:"-" gorm:"-:all"`
+	ID                      int                        `json:"id" gorm:"primarykey"`
+	CreatedAt               time.Time                  `json:"-"`
+	UpdatedAt               time.Time                  `json:"-"`
+	DeletedAt               gorm.DeletedAt             `json:"-" gorm:"index"`
+	Namespace               string                     `json:"namespace"`
+	ClientName              string                     `json:"client_name"`
+	ClientDescription       string                     `json:"client_description"`
+	ClientType              string                     `json:"client_type"`
+	IsActive                bool                       `json:"is_active"`
+	ExtendDingtalk          *clients.Dingtalk          `json:"-" gorm:"-:all"`
+	ExtendFeishu            *clients.Feishu            `json:"-" gorm:"-:all"`
+	ExtendWechatApplication *clients.WechatApplication `json:"-" gorm:"-:all"`
+	ExtendWechatRobot       *clients.WechatRobot       `json:"-" gorm:"-:all"`
 }
 
 func (*Client) TableName() string {
@@ -36,30 +36,39 @@ func AddClient(c *Client) (*Client, error) {
 		return c, createResult.Error
 	}
 
-	if c.ClientType == "dingtalk" {
+	switch c.ClientType {
+	case "dingtalk":
 		c.ExtendDingtalk.ClientId = int(c.ID)
-		c.ExtendDingtalk.RobotUrl = strings.Join(c.ExtendDingtalk.RobotUrlInfoList, "\n")
+		c.ExtendDingtalk.RobotUrl = strings.Join(c.ExtendDingtalk.RobotUrlsList, "\n")
 		dingtalkResult := database.DB.DefaultClient.Create(&c.ExtendDingtalk)
 		if dingtalkResult.Error != nil {
 			return c, dingtalkResult.Error
 		}
 
-	} else if c.ClientType == "wechat" {
+	case "feishu":
+		c.ExtendFeishu.ClientId = int(c.ID)
+		c.ExtendFeishu.RobotUrl = strings.Join(c.ExtendFeishu.RobotUrlsList, "\n")
+		feishuResult := database.DB.DefaultClient.Create(&c.ExtendFeishu)
+		if feishuResult.Error != nil {
+			return c, feishuResult.Error
+		}
+
+	case "wechat_robot":
+		c.ExtendWechatRobot.ClientId = int(c.ID)
+		c.ExtendWechatRobot.RobotUrl = strings.Join(c.ExtendWechatRobot.RobotUrlsList, "\n")
+		result := database.DB.DefaultClient.Create(&c.ExtendWechatRobot)
+		if result.Error != nil {
+			return c, result.Error
+		}
+
+	case "wechat":
 		c.ExtendWechatApplication.ClientId = int(c.ID)
 		wechatResult := database.DB.DefaultClient.Create(&c.ExtendWechatApplication)
 		if wechatResult.Error != nil {
 			return c, wechatResult.Error
 		}
 
-	} else if c.ClientType == "feishu" {
-		c.ExtendFeishu.ClientId = int(c.ID)
-		c.ExtendFeishu.RobotUrl = strings.Join(c.ExtendFeishu.RobotUrls, "\n")
-		feishuResult := database.DB.DefaultClient.Create(&c.ExtendFeishu)
-		if feishuResult.Error != nil {
-			return c, feishuResult.Error
-		}
-
-	} else {
+	default:
 		return c, errors.New("未知的ClientType=" + c.ClientType)
 	}
 
@@ -93,33 +102,43 @@ func GetClientById(id int) (*Client, error) {
 		return &cli, queryResult.Error
 	}
 
-	if cli.ClientType == "dingtalk" {
+	switch cli.ClientType {
+	case "dingtalk":
 		dingtalk := clients.Dingtalk{}
 		dingtalkResult := database.DB.DefaultClient.Where("client_id = ?", int(cli.ID)).First(&dingtalk)
 		if dingtalkResult.Error != nil {
 			return &cli, dingtalkResult.Error
 		}
-		dingtalk.RobotUrlInfoList = strings.Split(dingtalk.RobotUrl, "\n") //从数据库中取出机器人地址时，展开赋值给RobotUrlInfoList
+		dingtalk.RobotUrlsList = strings.Split(dingtalk.RobotUrl, "\n") //从数据库中取出机器人地址时，展开赋值给RobotUrlInfoList
 		cli.ExtendDingtalk = &dingtalk
 
-	} else if cli.ClientType == "wechat" {
-		wechat := clients.Wechat{}
+	case "feishu":
+		feishu := clients.Feishu{}
+		feishuResult := database.DB.DefaultClient.Where("client_id = ?", int(cli.ID)).First(&feishu)
+		if feishuResult.Error != nil {
+			return &cli, feishuResult.Error
+		}
+		feishu.RobotUrlsList = strings.Split(feishu.RobotUrl, "\n")
+		cli.ExtendFeishu = &feishu
+
+	case "wechat_robot":
+		wechatRobot := clients.WechatRobot{}
+		wechatRobotResult := database.DB.DefaultClient.Where("client_id = ?", int(cli.ID)).First(&wechatRobot)
+		if wechatRobotResult.Error != nil {
+			return &cli, wechatRobotResult.Error
+		}
+		wechatRobot.RobotUrlsList = strings.Split(wechatRobot.RobotUrl, "\n")
+		cli.ExtendWechatRobot = &wechatRobot
+
+	case "wechat":
+		wechat := clients.WechatApplication{}
 		wechatResult := database.DB.DefaultClient.Where("client_id = ?", int(cli.ID)).First(&wechat)
 		if wechatResult.Error != nil {
 			return &cli, wechatResult.Error
 		}
 		cli.ExtendWechatApplication = &wechat
 
-	} else if cli.ClientType == "feishu" {
-		feishu := clients.Feishu{}
-		feishuResult := database.DB.DefaultClient.Where("client_id = ?", int(cli.ID)).First(&feishu)
-		if feishuResult.Error != nil {
-			return &cli, feishuResult.Error
-		}
-		feishu.RobotUrls = strings.Split(feishu.RobotUrl, "\n")
-		cli.ExtendFeishu = &feishu
-
-	} else {
+	default:
 		return nil, errors.New("未知的ClientTpye=" + cli.ClientType)
 	}
 

@@ -22,11 +22,8 @@ func PostClient(g *gin.Context) {
 	body.Namespace = ns
 
 	switch body.ClientType {
-	/*
-	 * 解析钉钉客户端ClientInfo中的数据
-	 */
 	case "dingtalk":
-		tmpClientData := ClientInfoDingtalk{}
+		tmpClientData := RequestDataDingtalk{}
 		if err := json.Unmarshal(body.ClientInfo, &tmpClientData); err != nil {
 			return
 		}
@@ -34,24 +31,18 @@ func PostClient(g *gin.Context) {
 		for _, v := range tmpClientData.RobotUrlList {
 			urls = append(urls, v.Url)
 		}
-		tmpClientData.Dingtalk.RobotUrlInfoList = urls
+		tmpClientData.Dingtalk.RobotUrlsList = urls
 		body.Client.ExtendDingtalk = tmpClientData.Dingtalk
 
-	/*
-	 * 解析微信客户端ClientInfo中的数据
-	 */
 	case "wechat":
-		clientInfo := clients.Wechat{}
+		clientInfo := clients.WechatApplication{}
 		if err := json.Unmarshal(body.ClientInfo, &clientInfo); err != nil {
 			return
 		}
 		body.Client.ExtendWechatApplication = &clientInfo
 
-	/*
-	 * 解析飞书客户端ClientInfo中的数据
-	 */
-	case "feishu":
-		clientInfo := ClientInfoFeishu{}
+	case "wechat_robot":
+		clientInfo := RequestDataWechatRobot{}
 		if err := json.Unmarshal(body.ClientInfo, &clientInfo); err != nil {
 			return
 		}
@@ -59,7 +50,19 @@ func PostClient(g *gin.Context) {
 		for _, v := range clientInfo.RobotUrlList {
 			urls = append(urls, v.Url)
 		}
-		clientInfo.Feishu.RobotUrls = urls
+		clientInfo.WechatRobot.RobotUrlsList = urls
+		body.Client.ExtendWechatRobot = clientInfo.WechatRobot
+
+	case "feishu":
+		clientInfo := RequestDataFeishu{}
+		if err := json.Unmarshal(body.ClientInfo, &clientInfo); err != nil {
+			return
+		}
+		var urls []string
+		for _, v := range clientInfo.RobotUrlList {
+			urls = append(urls, v.Url)
+		}
+		clientInfo.Feishu.RobotUrlsList = urls
 		body.Client.ExtendFeishu = clientInfo.Feishu
 
 	default:
@@ -70,11 +73,6 @@ func PostClient(g *gin.Context) {
 	if err != nil {
 		return
 	}
-
-	//g.JSON(http.StatusOK, ResponseData{
-	//    Result: true,
-	//    Client: result,
-	//})
 
 	g.JSON(http.StatusOK, views.ResponseSuccessful("创建成功", result))
 }

@@ -26,7 +26,7 @@ func (c *ClientActionFeishu) RendersMessages(client *models.Client, isMerge bool
 }
 
 func (c *ClientActionFeishu) PushMessages(messages []any) {
-	url := v1.RobotRandomUrl(c.Client.ExtendFeishu.RobotUrls)
+	url := v1.RobotRandomUrl(c.Client.ExtendFeishu.RobotUrlsList)
 	for _, msg := range messages {
 		v1.Push(msg, url)
 	}

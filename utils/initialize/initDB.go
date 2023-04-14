@@ -29,7 +29,7 @@ func isAutoMigrateDB(migrate bool) {
 			&models.Variables{},
 			&models.Client{},
 			&clients.Dingtalk{},
-			&clients.Wechat{},
+			&clients.WechatApplication{},
 			&clients.Feishu{},
 		)
 

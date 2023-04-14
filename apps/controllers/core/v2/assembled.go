@@ -35,7 +35,7 @@ type DingtalkMessageAssembled struct {
 func (d *DingtalkMessageAssembled) AssembledData(isRenders, isMerge bool, client *models.Client, contentList []string) (string, []any) {
 	fmt.Println("组装钉钉需要的消息体...")
 	var msgList []any
-	url := v1.RobotRandomUrl(client.ExtendDingtalk.RobotUrlInfoList)
+	url := v1.RobotRandomUrl(client.ExtendDingtalk.RobotUrlsList)
 
 	if isRenders {
 		if isMerge {
@@ -68,7 +68,7 @@ type FeishuMessageAssembled struct {
 func (d *FeishuMessageAssembled) AssembledData(isRenders, isMerge bool, client *models.Client, contentList []string) (string, []any) {
 	fmt.Println("组装飞书需要的消息体...")
 	var msgList []any
-	url := v1.RobotRandomUrl(client.ExtendFeishu.RobotUrls)
+	url := v1.RobotRandomUrl(client.ExtendFeishu.RobotUrlsList)
 
 	if isRenders {
 		if isMerge {
