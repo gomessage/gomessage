@@ -36,8 +36,8 @@ func GetClient(g *gin.Context) {
 			respData.ClientInfo = cInfo
 
 		} else if client.ClientType == "wechat" {
-			client.ExtendWechat.Secret = client.ExtendWechat.Secret[:5] + "*****"
-			respData.ClientInfo = client.ExtendWechat
+			client.ExtendWechatApplication.Secret = client.ExtendWechatApplication.Secret[:5] + "*****"
+			respData.ClientInfo = client.ExtendWechatApplication
 
 		} else if client.ClientType == "feishu" {
 			var urls []OneUrl

@@ -3,6 +3,7 @@ package client
 import (
 	"encoding/json"
 	"gomessage/apps/models"
+	"gomessage/apps/models/clients"
 )
 
 // RequestBody 获取用户提交过来的数据
@@ -17,12 +18,12 @@ type OneUrl struct {
 
 // ClientInfoDingtalk 存放钉钉客户端ClientInfo中的数据
 type ClientInfoDingtalk struct {
-	*models.Dingtalk
+	*clients.Dingtalk
 	RobotUrlList []OneUrl `json:"robot_url_list"`
 }
 
 // ClientInfoFeishu 存放飞书客户端ClientInfo中的数据
 type ClientInfoFeishu struct {
-	*models.Feishu
+	*clients.Feishu
 	RobotUrlList []OneUrl `json:"robot_url_list"`
 }

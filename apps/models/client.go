@@ -2,72 +2,27 @@ package models
 
 import (
 	"errors"
+	"gomessage/apps/models/clients"
 	"gomessage/utils/database"
 	"gorm.io/gorm"
 	"strings"
 	"time"
 )
 
-type Dingtalk struct {
-	ID               int            `json:"id" gorm:"primarykey"`
-	CreatedAt        time.Time      `json:"-"`
-	UpdatedAt        time.Time      `json:"-"`
-	DeletedAt        gorm.DeletedAt `json:"-" gorm:"index"`
-	ClientId         int            `json:"client_id"`
-	RobotKeyword     string         `json:"robot_keyword"`
-	RobotUrl         string         `json:"robot_url"`
-	RobotUrlInfoList []string       `json:"-" gorm:"-:all"`
-}
-
-func (*Dingtalk) TableName() string {
-	return "client_dingtalk"
-}
-
-type Feishu struct {
-	ID           int            `json:"id" gorm:"primarykey"`
-	CreatedAt    time.Time      `json:"-"`
-	UpdatedAt    time.Time      `json:"-"`
-	DeletedAt    gorm.DeletedAt `json:"-" gorm:"index"`
-	ClientId     int            `json:"client_id"`
-	RobotKeyword string         `json:"robot_keyword"`
-	TitleColor   string         `json:"title_color"`
-	RobotUrl     string         `json:"robot_url"`
-	RobotUrls    []string       `json:"-" gorm:"-:all"`
-}
-
-func (*Feishu) TableName() string {
-	return "client_feishu"
-}
-
-type Wechat struct {
-	ID        int            `json:"id" gorm:"primarykey"`
-	CreatedAt time.Time      `json:"-"`
-	UpdatedAt time.Time      `json:"-"`
-	DeletedAt gorm.DeletedAt `json:"-" gorm:"index"`
-	ClientId  int            `json:"client_id"`
-	CorpId    string         `json:"corp_id"`
-	AgentId   string         `json:"agent_id"`
-	Secret    string         `json:"secret"`
-	Touser    string         `json:"touser"`
-}
-
-func (*Wechat) TableName() string {
-	return "client_wechat"
-}
-
 type Client struct {
-	ID                int            `json:"id" gorm:"primarykey"`
-	CreatedAt         time.Time      `json:"-"`
-	UpdatedAt         time.Time      `json:"-"`
-	DeletedAt         gorm.DeletedAt `json:"-" gorm:"index"`
-	Namespace         string         `json:"namespace"`
-	ClientName        string         `json:"client_name"`
-	ClientDescription string         `json:"client_description"`
-	ClientType        string         `json:"client_type"`
-	IsActive          bool           `json:"is_active"`
-	ExtendDingtalk    *Dingtalk      `json:"-" gorm:"-:all"`
-	ExtendWechat      *Wechat        `json:"-" gorm:"-:all"`
-	ExtendFeishu      *Feishu        `json:"-" gorm:"-:all"`
+	ID                      int               `json:"id" gorm:"primarykey"`
+	CreatedAt               time.Time         `json:"-"`
+	UpdatedAt               time.Time         `json:"-"`
+	DeletedAt               gorm.DeletedAt    `json:"-" gorm:"index"`
+	Namespace               string            `json:"namespace"`
+	ClientName              string            `json:"client_name"`
+	ClientDescription       string            `json:"client_description"`
+	ClientType              string            `json:"client_type"`
+	IsActive                bool              `json:"is_active"`
+	ExtendDingtalk          *clients.Dingtalk `json:"-" gorm:"-:all"`
+	ExtendFeishu            *clients.Feishu   `json:"-" gorm:"-:all"`
+	ExtendWechatApplication *clients.Wechat   `json:"-" gorm:"-:all"`
+	//ExtendWechatApplication      *clients.Wechat   `json:"-" gorm:"-:all"`
 }
 
 func (*Client) TableName() string {
@@ -90,8 +45,8 @@ func AddClient(c *Client) (*Client, error) {
 		}
 
 	} else if c.ClientType == "wechat" {
-		c.ExtendWechat.ClientId = int(c.ID)
-		wechatResult := database.DB.DefaultClient.Create(&c.ExtendWechat)
+		c.ExtendWechatApplication.ClientId = int(c.ID)
+		wechatResult := database.DB.DefaultClient.Create(&c.ExtendWechatApplication)
 		if wechatResult.Error != nil {
 			return c, wechatResult.Error
 		}
@@ -118,17 +73,6 @@ func DeleteClient(id int) (int, error) {
 }
 
 func UpdateClientActive(id int, t *Client) (*Client, error) {
-	//client := Client{}
-	//readResult := database.DB.DefaultClient.First(&client, id)
-	//
-	////如果Error不为空
-	//if readResult.Error != nil {
-	//	return &client, readResult.Error
-	//
-	//} else {
-	//	// TODO: 这里的修改逻辑可能有问题，以后找时间修复
-	//	//updateResult := database.DB.DefaultClient.Model(&client).Omit("id").Updates(&t)
-
 	client := Client{}
 	updateResult := database.DB.DefaultClient.Model(&client).Where("id = ? ", id).Update("is_active", t.IsActive)
 	return &client, updateResult.Error
@@ -150,7 +94,7 @@ func GetClientById(id int) (*Client, error) {
 	}
 
 	if cli.ClientType == "dingtalk" {
-		dingtalk := Dingtalk{}
+		dingtalk := clients.Dingtalk{}
 		dingtalkResult := database.DB.DefaultClient.Where("client_id = ?", int(cli.ID)).First(&dingtalk)
 		if dingtalkResult.Error != nil {
 			return &cli, dingtalkResult.Error
@@ -159,15 +103,15 @@ func GetClientById(id int) (*Client, error) {
 		cli.ExtendDingtalk = &dingtalk
 
 	} else if cli.ClientType == "wechat" {
-		wechat := Wechat{}
+		wechat := clients.Wechat{}
 		wechatResult := database.DB.DefaultClient.Where("client_id = ?", int(cli.ID)).First(&wechat)
 		if wechatResult.Error != nil {
 			return &cli, wechatResult.Error
 		}
-		cli.ExtendWechat = &wechat
+		cli.ExtendWechatApplication = &wechat
 
 	} else if cli.ClientType == "feishu" {
-		feishu := Feishu{}
+		feishu := clients.Feishu{}
 		feishuResult := database.DB.DefaultClient.Where("client_id = ?", int(cli.ID)).First(&feishu)
 		if feishuResult.Error != nil {
 			return &cli, feishuResult.Error
@@ -189,18 +133,6 @@ func ListClient(ns string) (*[]Client, error) {
 		return &list, result.Error
 	}
 	return &list, nil
-}
-
-func ActiveClient(id int, active bool) (*Client, error) {
-	cli := Client{}
-	queryResult := database.DB.DefaultClient.First(&cli, id)
-	if queryResult.Error != nil {
-		return &cli, queryResult.Error
-
-	} else {
-		updateResult := database.DB.DefaultClient.Model(&cli).Updates(Client{IsActive: active})
-		return &cli, updateResult.Error
-	}
 }
 
 // GetActiveClient 获取指定命名空间下的处于激活状态的客户端

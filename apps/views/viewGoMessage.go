@@ -60,10 +60,10 @@ func GoMessageByTransport(g *gin.Context) {
 			clientAction = &v3.ClientActionFeishu{Client: clientInfo}
 		case "wechat":
 			clientAction = &v3.ClientActionWechat{
-				CorpId:      clientInfo.ExtendWechat.CorpId,
-				AgentId:     clientInfo.ExtendWechat.AgentId,
-				AgentSecret: clientInfo.ExtendWechat.Secret,
-				Touser:      clientInfo.ExtendWechat.Touser,
+				CorpId:      clientInfo.ExtendWechatApplication.CorpId,
+				AgentId:     clientInfo.ExtendWechatApplication.AgentId,
+				AgentSecret: clientInfo.ExtendWechatApplication.Secret,
+				Touser:      clientInfo.ExtendWechatApplication.Touser,
 			}
 		default:
 			g.JSON(http.StatusBadRequest, "客户端类型错误")

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"gomessage/apps/models"
+	"gomessage/apps/models/clients"
 	"gomessage/apps/views"
 	"net/http"
 )
@@ -40,11 +41,11 @@ func PostClient(g *gin.Context) {
 	 * 解析微信客户端ClientInfo中的数据
 	 */
 	case "wechat":
-		clientInfo := models.Wechat{}
+		clientInfo := clients.Wechat{}
 		if err := json.Unmarshal(body.ClientInfo, &clientInfo); err != nil {
 			return
 		}
-		body.Client.ExtendWechat = &clientInfo
+		body.Client.ExtendWechatApplication = &clientInfo
 
 	/*
 	 * 解析飞书客户端ClientInfo中的数据

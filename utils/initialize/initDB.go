@@ -2,6 +2,7 @@ package initialize
 
 import (
 	"gomessage/apps/models"
+	"gomessage/apps/models/clients"
 	"gomessage/utils/database"
 	"gomessage/utils/log/loggers"
 	"gorm.io/gorm"
@@ -27,9 +28,9 @@ func isAutoMigrateDB(migrate bool) {
 			&models.Template{},
 			&models.Variables{},
 			&models.Client{},
-			&models.Dingtalk{},
-			&models.Wechat{},
-			&models.Feishu{},
+			&clients.Dingtalk{},
+			&clients.Wechat{},
+			&clients.Feishu{},
 		)
 
 		//数据库自动迁移
