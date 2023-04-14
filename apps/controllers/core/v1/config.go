@@ -1,4 +1,4 @@
-package send
+package v1
 
 import (
 	"gomessage/apps/models"

@@ -3,9 +3,9 @@ package v2
 import (
 	"bytes"
 	"github.com/gin-gonic/gin"
+	"gomessage/apps/controllers/core/v1"
 	"gomessage/apps/controllers/core/v3"
 	"gomessage/apps/controllers/hijacking"
-	"gomessage/apps/controllers/send"
 	"gomessage/apps/models"
 	"gomessage/apps/views"
 	"gomessage/utils/log/loggers"
@@ -22,7 +22,7 @@ func GoMessageByTransport(g *gin.Context) {
 	/*
 	 * TODO: 获取通道信息
 	 */
-	nsInfo := send.GetNs(g.Param("namespace"))
+	nsInfo := v1.GetNs(g.Param("namespace"))
 
 	/*
 	 * TODO: 获取过境数据
@@ -43,7 +43,7 @@ func GoMessageByTransport(g *gin.Context) {
 	/*
 	 * TODO: 获取通道的用户配置信息
 	 */
-	nsUserConfig := send.GetNamespaceUserConfig(nsInfo.Name) //"通道自身信息"与"通道中用户添加的信息"不要搞混了
+	nsUserConfig := v1.GetNamespaceUserConfig(nsInfo.Name) //"通道自身信息"与"通道中用户添加的信息"不要搞混了
 
 	/*
 	 * TODO: 根据不同的客户端来产生对应的操作
@@ -82,7 +82,7 @@ func GoMessageByTransport(g *gin.Context) {
 		 */
 		if nsInfo.IsRenders {
 			//渲染出需要的"内容体"
-			contentList := send.RendersContentData(hijacking.CacheData.RequestByte, nsUserConfig.VariablesMap, nsUserConfig.MsgTemplate)
+			contentList := v1.RendersContentData(hijacking.CacheData.RequestByte, nsUserConfig.VariablesMap, nsUserConfig.MsgTemplate)
 			//渲染出需要的"消息体"
 			messages = clientAction.RendersMessages(clientInfo, nsInfo.IsRenders, contentList)
 		}

@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"gomessage/apps/controllers/clientFormats"
-	"gomessage/apps/controllers/send"
+	"gomessage/apps/controllers/core/v1"
 	"io"
 	"net/http"
 	"strconv"
@@ -17,7 +17,7 @@ type GeneralPush struct {
 
 func (d *GeneralPush) PushData(url string, data any) {
 	fmt.Println("普通的post推送方法...")
-	send.Push(data, url)
+	v1.Push(data, url)
 }
 
 type WechatPush struct {

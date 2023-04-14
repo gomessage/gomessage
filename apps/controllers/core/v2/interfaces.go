@@ -2,13 +2,13 @@ package v2
 
 import (
 	"errors"
-	"gomessage/apps/controllers/send"
+	"gomessage/apps/controllers/core/v1"
 	"gomessage/apps/models"
 )
 
 // Renders 内容体渲染接口
 type Renders interface {
-	RendersData(thisNamespaceUserConfig send.NamespaceUserConfig, requestByte []byte) []string
+	RendersData(thisNamespaceUserConfig v1.NamespaceUserConfig, requestByte []byte) []string
 }
 
 // Assembled 消息体组装接口
@@ -45,7 +45,7 @@ func NewAction(renders Renders, assembled Assembled, push Push, record Record) *
 }
 
 // Working 行为对象的工作方法
-func (c *Action) Working(isRenders bool, requestByte []byte, thisNamespaceUserConfig send.NamespaceUserConfig, client *models.Client) error {
+func (c *Action) Working(isRenders bool, requestByte []byte, thisNamespaceUserConfig v1.NamespaceUserConfig, client *models.Client) error {
 	contentList := c.renders.RendersData(thisNamespaceUserConfig, requestByte)
 	if len(contentList) == 0 {
 		return errors.New("过境数据格式错误，用户变量无法从过境数据中找到可用的映射关系")

@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"gomessage/apps/controllers/clientFormats"
-	"gomessage/apps/controllers/send"
+	"gomessage/apps/controllers/core/v1"
 	"gomessage/apps/models"
 )
 
@@ -35,11 +35,11 @@ type DingtalkMessageAssembled struct {
 func (d *DingtalkMessageAssembled) AssembledData(isRenders, isMerge bool, client *models.Client, contentList []string) (string, []any) {
 	fmt.Println("组装钉钉需要的消息体...")
 	var msgList []any
-	url := send.RobotRandomUrl(client.ExtendDingtalk.RobotUrlInfoList)
+	url := v1.RobotRandomUrl(client.ExtendDingtalk.RobotUrlInfoList)
 
 	if isRenders {
 		if isMerge {
-			msg := send.MessageJoint(contentList, "dingtalk")
+			msg := v1.MessageJoint(contentList, "dingtalk")
 			data := clientFormats.PackDingtalkMessage(client.ExtendDingtalk.RobotKeyword, msg)
 			msgList = append(msgList, data)
 		} else {
@@ -68,11 +68,11 @@ type FeishuMessageAssembled struct {
 func (d *FeishuMessageAssembled) AssembledData(isRenders, isMerge bool, client *models.Client, contentList []string) (string, []any) {
 	fmt.Println("组装飞书需要的消息体...")
 	var msgList []any
-	url := send.RobotRandomUrl(client.ExtendFeishu.RobotUrls)
+	url := v1.RobotRandomUrl(client.ExtendFeishu.RobotUrls)
 
 	if isRenders {
 		if isMerge {
-			msg := send.MessageJoint(contentList, "feishu")
+			msg := v1.MessageJoint(contentList, "feishu")
 			data := clientFormats.PackFeishuMessage(client, msg)
 			msgList = append(msgList, data)
 		} else {
@@ -106,7 +106,7 @@ func (d *WechatMessageAssembled) AssembledData(isRenders, isMerge bool, client *
 
 	if isRenders {
 		if isMerge {
-			msg := send.MessageJoint(contentList, "wechat")
+			msg := v1.MessageJoint(contentList, "wechat")
 			msgList = append(msgList, msg)
 		} else {
 			for _, msg := range contentList {

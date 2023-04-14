@@ -3,9 +3,9 @@ package v1
 import (
 	"bytes"
 	"github.com/gin-gonic/gin"
+	"gomessage/apps/controllers/core/v1"
 	"gomessage/apps/controllers/core/v2"
 	"gomessage/apps/controllers/hijacking"
-	"gomessage/apps/controllers/send"
 	"gomessage/apps/models"
 	"io"
 	"net/http"
@@ -22,7 +22,7 @@ func GoMessageByPost(g *gin.Context) {
 	 * TODO: 获取通道信息
 	 *
 	 */
-	namespaceInfo := send.GetNs(g.Param("namespace"))
+	namespaceInfo := v1.GetNs(g.Param("namespace"))
 
 	/*
 	 *
@@ -51,7 +51,7 @@ func GoMessageByPost(g *gin.Context) {
 	 *
 	 */
 	//从数据库中拿到用户当前用户在图形界面上配置的参数
-	namespaceUserConfig := send.GetNamespaceUserConfig(namespaceInfo.Name)
+	namespaceUserConfig := v1.GetNamespaceUserConfig(namespaceInfo.Name)
 
 	/*
 	 *
