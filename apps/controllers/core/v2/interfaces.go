@@ -1,4 +1,4 @@
-package interfaces
+package v2
 
 import (
 	"errors"

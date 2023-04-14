@@ -1,17 +1,16 @@
-package v1
+package v2
 
 import (
 	"encoding/json"
 	"fmt"
 	"gomessage/apps/controllers/clientFormats"
-	"gomessage/apps/controllers/core/interfaces"
 	"gomessage/apps/controllers/send"
 	"gomessage/apps/models"
 )
 
 // GeneralMessageAssembled 通用消息体封装
 type GeneralMessageAssembled struct {
-	interfaces.Assembled
+	Assembled
 }
 
 func (d *GeneralMessageAssembled) AssembledData(isRenders, isMerge bool, client *models.Client, contentList []string) (string, []any) {
@@ -30,7 +29,7 @@ func (d *GeneralMessageAssembled) AssembledData(isRenders, isMerge bool, client 
 
 // DingtalkMessageAssembled 钉钉消息体封装
 type DingtalkMessageAssembled struct {
-	interfaces.Assembled
+	Assembled
 }
 
 func (d *DingtalkMessageAssembled) AssembledData(isRenders, isMerge bool, client *models.Client, contentList []string) (string, []any) {
@@ -63,7 +62,7 @@ func (d *DingtalkMessageAssembled) AssembledData(isRenders, isMerge bool, client
 
 // FeishuMessageAssembled 飞书消息体封装
 type FeishuMessageAssembled struct {
-	interfaces.Assembled
+	Assembled
 }
 
 func (d *FeishuMessageAssembled) AssembledData(isRenders, isMerge bool, client *models.Client, contentList []string) (string, []any) {
@@ -97,7 +96,7 @@ func (d *FeishuMessageAssembled) AssembledData(isRenders, isMerge bool, client *
 
 // WechatMessageAssembled 企业微信消息体封装
 type WechatMessageAssembled struct {
-	interfaces.Assembled
+	Assembled
 }
 
 func (d *WechatMessageAssembled) AssembledData(isRenders, isMerge bool, client *models.Client, contentList []string) (string, []any) {
@@ -130,7 +129,7 @@ func (d *WechatMessageAssembled) AssembledData(isRenders, isMerge bool, client *
 
 // EmailMessageAssembled 邮箱消息体封装
 type EmailMessageAssembled struct {
-	interfaces.Assembled
+	Assembled
 }
 
 func (d *EmailMessageAssembled) AssembledData(isRenders, isMerge bool, client *models.Client, contentList []string) (string, []any) {

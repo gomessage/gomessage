@@ -1,10 +1,9 @@
-package v1
+package v2
 
 import (
 	"encoding/json"
 	"fmt"
 	"gomessage/apps/controllers/clientFormats"
-	"gomessage/apps/controllers/core/interfaces"
 	"gomessage/apps/controllers/send"
 	"io"
 	"net/http"
@@ -13,7 +12,7 @@ import (
 )
 
 type GeneralPush struct {
-	interfaces.Push
+	Push
 }
 
 func (d *GeneralPush) PushData(url string, data any) {
@@ -22,7 +21,7 @@ func (d *GeneralPush) PushData(url string, data any) {
 }
 
 type WechatPush struct {
-	interfaces.Push
+	Push
 	CorpId      string
 	AgentId     string
 	AgentSecret string

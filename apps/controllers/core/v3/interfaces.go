@@ -1,4 +1,4 @@
-package interfaces
+package v3
 
 import "gomessage/apps/models"
 

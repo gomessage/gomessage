@@ -1,12 +1,11 @@
-package v1
+package v2
 
 import (
 	"fmt"
-	"gomessage/apps/controllers/core/interfaces"
 )
 
 type GeneralRecord struct {
-	interfaces.Record
+	Record
 }
 
 // RecordData 实现Renders接口的方法，对通用内容体进行渲染

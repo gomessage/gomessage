@@ -3,8 +3,7 @@ package v1
 import (
 	"bytes"
 	"github.com/gin-gonic/gin"
-	"gomessage/apps/controllers/core/interfaces"
-	"gomessage/apps/controllers/core/realized/v1"
+	"gomessage/apps/controllers/core/v2"
 	"gomessage/apps/controllers/hijacking"
 	"gomessage/apps/controllers/send"
 	"gomessage/apps/models"
@@ -60,7 +59,7 @@ func GoMessageByPost(g *gin.Context) {
 	 *
 	 */
 	//渲染出来的"内容体"与客户端类型无关，只渲染一次，所有类型的客户端都可以使用
-	rendersData := &v1.GetRendersResult{Rds: namespaceInfo.IsRenders}
+	rendersData := &v2.GetRendersResult{Rds: namespaceInfo.IsRenders}
 
 	/*
 	 *
@@ -68,7 +67,7 @@ func GoMessageByPost(g *gin.Context) {
 	 *
 	 */
 	//rendersDataList := send.RendersRequestData(namespaceInfo.GetRendersResult, namespaceUserConfig, hijacking.CacheData.RequestByte)
-	var action *interfaces.Action
+	var action *v2.Action
 
 	//遍历当前通道下已经被激活的客户端（从这一步开始，后续的所有行为，要根据不同的客户端来动态实例化接口）
 	for _, client := range namespaceUserConfig.ActiveClient {
@@ -79,39 +78,39 @@ func GoMessageByPost(g *gin.Context) {
 		switch clientInfo.ClientType {
 
 		case "dingtalk":
-			action = interfaces.NewAction(
+			action = v2.NewAction(
 				rendersData,
-				&v1.DingtalkMessageAssembled{},
-				&v1.GeneralPush{},
-				&v1.GeneralRecord{},
+				&v2.DingtalkMessageAssembled{},
+				&v2.GeneralPush{},
+				&v2.GeneralRecord{},
 			)
 
 		case "feishu":
-			action = interfaces.NewAction(
+			action = v2.NewAction(
 				rendersData,
-				&v1.FeishuMessageAssembled{},
-				&v1.GeneralPush{},
-				&v1.GeneralRecord{},
+				&v2.FeishuMessageAssembled{},
+				&v2.GeneralPush{},
+				&v2.GeneralRecord{},
 			)
 
 		case "wechat":
-			action = interfaces.NewAction(
+			action = v2.NewAction(
 				rendersData,
-				&v1.WechatMessageAssembled{},
-				&v1.WechatPush{
+				&v2.WechatMessageAssembled{},
+				&v2.WechatPush{
 					CorpId:      clientInfo.ExtendWechat.CorpId,
 					AgentId:     clientInfo.ExtendWechat.AgentId,
 					AgentSecret: clientInfo.ExtendWechat.Secret,
 					Touser:      clientInfo.ExtendWechat.Touser,
 				},
-				&v1.GeneralRecord{})
+				&v2.GeneralRecord{})
 
 		default:
-			action = interfaces.NewAction(
+			action = v2.NewAction(
 				rendersData,
-				&v1.GeneralMessageAssembled{},
-				&v1.GeneralPush{},
-				&v1.GeneralRecord{},
+				&v2.GeneralMessageAssembled{},
+				&v2.GeneralPush{},
+				&v2.GeneralRecord{},
 			)
 
 		}
