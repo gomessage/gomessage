@@ -1,4 +1,4 @@
-package v2
+package views
 
 import (
 	"bytes"
@@ -7,7 +7,6 @@ import (
 	"gomessage/apps/controllers/core/v3"
 	"gomessage/apps/controllers/hijacking"
 	"gomessage/apps/models"
-	"gomessage/apps/views"
 	"gomessage/utils/log/loggers"
 	"io"
 	"net/http"
@@ -108,8 +107,8 @@ func GoMessageByGet(g *gin.Context) {
 
 	result, err := models.GetNamespaceByName(namespace)
 	if err != nil {
-		g.JSON(http.StatusBadRequest, views.ResponseFailure("namespace不存在", err))
+		g.JSON(http.StatusBadRequest, ResponseFailure("namespace不存在", err))
 	} else {
-		g.JSON(http.StatusOK, views.ResponseSuccessful("namespace ready", result))
+		g.JSON(http.StatusOK, ResponseSuccessful("namespace ready", result))
 	}
 }

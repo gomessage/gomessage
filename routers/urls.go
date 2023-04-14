@@ -6,7 +6,6 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"gomessage/apps/views"
 	"gomessage/apps/views/client"
-	v2 "gomessage/apps/views/v2"
 	"gomessage/routers/middleware"
 	"gomessage/utils/log/loggers"
 	"net/http"
@@ -49,11 +48,11 @@ func Path(g *gin.Engine) {
 	//=======================
 	// gomessage数据入口
 	//=======================
-	g.GET("/go/:namespace", middleware.IsNamespace(), v2.GoMessageByGet)                                 //给单个路由追加中间件middleware.IsNamespace()
+	g.GET("/go/:namespace", middleware.IsNamespace(), views.GoMessageByGet)                              //给单个路由追加中间件middleware.IsNamespace()
 	g.GET("/go", func(c *gin.Context) { c.Request.URL.Path = "/go/message"; g.HandleContext(c) })        //把"/go"重定向到"/go/message"的路由上
 	g.GET("/gomessage", func(c *gin.Context) { c.Request.URL.Path = "/go/message"; g.HandleContext(c) }) //把"/gomessage"重定向到"/go/message"的路由上
 	//接收数据推送
-	g.POST("/go/:namespace", middleware.IsNamespace(), v2.GoMessageByTransport)                           //给单个路由追加中间件middleware.IsNamespace()
+	g.POST("/go/:namespace", middleware.IsNamespace(), views.GoMessageByTransport)                        //给单个路由追加中间件middleware.IsNamespace()
 	g.POST("/go", func(c *gin.Context) { c.Request.URL.Path = "/go/message"; g.HandleContext(c) })        //把"/go"重定向到"/go/message"的路由上
 	g.POST("/gomessage", func(c *gin.Context) { c.Request.URL.Path = "/go/message"; g.HandleContext(c) }) //把"/gomessage"重定向到"/go/message"的路由上
 
