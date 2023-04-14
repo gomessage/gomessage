@@ -76,7 +76,7 @@ export default {
   methods: {
     onSubmit: function () {
       let secret = this.client.client_info.secret;
-      if (secret.length <= 15) {
+      if (secret.length <= 5) {
         this.$message.error("应用Secret的输入长度不符合要求...");
       } else {
         postClient(this.$store.getters.getNamespace,this.client).then(response => {
