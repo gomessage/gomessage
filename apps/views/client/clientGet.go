@@ -24,7 +24,9 @@ func GetClient(g *gin.Context) {
 		g.JSON(http.StatusBadRequest, views.ResponseFailure("查询错误", err))
 	} else {
 		respData := ResponseData{Client: client}
-		if client.ClientType == "dingtalk" {
+
+		switch client.ClientType {
+		case "dingtalk":
 			var urls []OneUrl
 			for _, urlAddress := range client.ExtendDingtalk.RobotUrlInfoList { //这里的RobotUrlInfoList，是从数据库取出的压缩数据，展开后得到的内容
 				urls = append(urls, OneUrl{Url: urlAddress})
@@ -35,11 +37,7 @@ func GetClient(g *gin.Context) {
 			}
 			respData.ClientInfo = cInfo
 
-		} else if client.ClientType == "wechat" {
-			client.ExtendWechatApplication.Secret = client.ExtendWechatApplication.Secret[:5] + "*****"
-			respData.ClientInfo = client.ExtendWechatApplication
-
-		} else if client.ClientType == "feishu" {
+		case "feishu":
 			var urls []OneUrl
 			for _, v := range client.ExtendFeishu.RobotUrlInfoList {
 				urls = append(urls, OneUrl{Url: v})
@@ -49,6 +47,21 @@ func GetClient(g *gin.Context) {
 				RobotUrlList: urls,
 			}
 			respData.ClientInfo = cInfo
+
+		case "wechat_robot":
+			var urls []OneUrl
+			for _, v := range client.ExtendWechatRobot.RobotUrlInfoList {
+				urls = append(urls, OneUrl{Url: v})
+			}
+			cInfo := RequestDataWechatRobot{
+				WechatRobot:  client.ExtendWechatRobot,
+				RobotUrlList: urls,
+			}
+			respData.ClientInfo = cInfo
+
+		case "wechat":
+			client.ExtendWechatApplication.Secret = client.ExtendWechatApplication.Secret[:5] + "*****"
+			respData.ClientInfo = client.ExtendWechatApplication
 		}
 
 		g.JSON(http.StatusOK, views.ResponseSuccessful("查询成功", respData))

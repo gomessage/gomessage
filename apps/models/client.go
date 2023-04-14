@@ -130,13 +130,13 @@ func GetClientById(id int) (*Client, error) {
 		wechatRobot.RobotUrlInfoList = strings.Split(wechatRobot.RobotUrl, "\n")
 		cli.ExtendWechatRobot = &wechatRobot
 
-	case "wechat":
-		wechat := clients.WechatApplication{}
-		wechatResult := database.DB.DefaultClient.Where("client_id = ?", int(cli.ID)).First(&wechat)
-		if wechatResult.Error != nil {
-			return &cli, wechatResult.Error
+	case "wechatApplication":
+		wechatApplication := clients.WechatApplication{}
+		wechatApplicationResult := database.DB.DefaultClient.Where("client_id = ?", int(cli.ID)).First(&wechatApplication)
+		if wechatApplicationResult.Error != nil {
+			return &cli, wechatApplicationResult.Error
 		}
-		cli.ExtendWechatApplication = &wechat
+		cli.ExtendWechatApplication = &wechatApplication
 
 	default:
 		return nil, errors.New("未知的ClientTpye=" + cli.ClientType)
