@@ -39,7 +39,7 @@ func AddClient(c *Client) (*Client, error) {
 	switch c.ClientType {
 	case "dingtalk":
 		c.ExtendDingtalk.ClientId = int(c.ID)
-		c.ExtendDingtalk.RobotUrl = strings.Join(c.ExtendDingtalk.RobotUrlsList, "\n")
+		c.ExtendDingtalk.RobotUrl = strings.Join(c.ExtendDingtalk.RobotUrlInfoList, "\n")
 		dingtalkResult := database.DB.DefaultClient.Create(&c.ExtendDingtalk)
 		if dingtalkResult.Error != nil {
 			return c, dingtalkResult.Error
@@ -47,7 +47,7 @@ func AddClient(c *Client) (*Client, error) {
 
 	case "feishu":
 		c.ExtendFeishu.ClientId = int(c.ID)
-		c.ExtendFeishu.RobotUrl = strings.Join(c.ExtendFeishu.RobotUrlsList, "\n")
+		c.ExtendFeishu.RobotUrl = strings.Join(c.ExtendFeishu.RobotUrlInfoList, "\n")
 		feishuResult := database.DB.DefaultClient.Create(&c.ExtendFeishu)
 		if feishuResult.Error != nil {
 			return c, feishuResult.Error
@@ -55,7 +55,7 @@ func AddClient(c *Client) (*Client, error) {
 
 	case "wechat_robot":
 		c.ExtendWechatRobot.ClientId = int(c.ID)
-		c.ExtendWechatRobot.RobotUrl = strings.Join(c.ExtendWechatRobot.RobotUrlsList, "\n")
+		c.ExtendWechatRobot.RobotUrl = strings.Join(c.ExtendWechatRobot.RobotUrlInfoList, "\n")
 		result := database.DB.DefaultClient.Create(&c.ExtendWechatRobot)
 		if result.Error != nil {
 			return c, result.Error
@@ -109,7 +109,7 @@ func GetClientById(id int) (*Client, error) {
 		if dingtalkResult.Error != nil {
 			return &cli, dingtalkResult.Error
 		}
-		dingtalk.RobotUrlsList = strings.Split(dingtalk.RobotUrl, "\n") //从数据库中取出机器人地址时，展开赋值给RobotUrlInfoList
+		dingtalk.RobotUrlInfoList = strings.Split(dingtalk.RobotUrl, "\n") //从数据库中取出机器人地址时，展开赋值给RobotUrlInfoList
 		cli.ExtendDingtalk = &dingtalk
 
 	case "feishu":
@@ -118,7 +118,7 @@ func GetClientById(id int) (*Client, error) {
 		if feishuResult.Error != nil {
 			return &cli, feishuResult.Error
 		}
-		feishu.RobotUrlsList = strings.Split(feishu.RobotUrl, "\n")
+		feishu.RobotUrlInfoList = strings.Split(feishu.RobotUrl, "\n")
 		cli.ExtendFeishu = &feishu
 
 	case "wechat_robot":
@@ -127,7 +127,7 @@ func GetClientById(id int) (*Client, error) {
 		if wechatRobotResult.Error != nil {
 			return &cli, wechatRobotResult.Error
 		}
-		wechatRobot.RobotUrlsList = strings.Split(wechatRobot.RobotUrl, "\n")
+		wechatRobot.RobotUrlInfoList = strings.Split(wechatRobot.RobotUrl, "\n")
 		cli.ExtendWechatRobot = &wechatRobot
 
 	case "wechat":

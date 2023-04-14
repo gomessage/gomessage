@@ -29,8 +29,9 @@ func isAutoMigrateDB(migrate bool) {
 			&models.Variables{},
 			&models.Client{},
 			&clients.Dingtalk{},
-			&clients.WechatApplication{},
 			&clients.Feishu{},
+			&clients.WechatApplication{},
+			&clients.WechatRobot{},
 		)
 
 		//数据库自动迁移

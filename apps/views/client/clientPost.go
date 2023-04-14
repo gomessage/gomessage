@@ -14,56 +14,57 @@ import (
 // @Summary 新增一个客户端
 // @Router /api/v1/:namespace/client [POST]
 func PostClient(g *gin.Context) {
-	ns := g.Param("namespace")
 	body := RequestBody{}
 	if err := g.ShouldBindJSON(&body); err != nil {
 		return
 	}
-	body.Namespace = ns
+	body.Namespace = g.Param("namespace")
 
 	switch body.ClientType {
+
 	case "dingtalk":
-		tmpClientData := RequestDataDingtalk{}
-		if err := json.Unmarshal(body.ClientInfo, &tmpClientData); err != nil {
+		requestClient := RequestDataDingtalk{}
+		if err := json.Unmarshal(body.ClientInfo, &requestClient); err != nil {
 			return
 		}
 		var urls []string
-		for _, v := range tmpClientData.RobotUrlList {
+		for _, v := range requestClient.RobotUrlList {
 			urls = append(urls, v.Url)
 		}
-		tmpClientData.Dingtalk.RobotUrlsList = urls
-		body.Client.ExtendDingtalk = tmpClientData.Dingtalk
-
-	case "wechat":
-		clientInfo := clients.WechatApplication{}
-		if err := json.Unmarshal(body.ClientInfo, &clientInfo); err != nil {
-			return
-		}
-		body.Client.ExtendWechatApplication = &clientInfo
+		requestClient.Dingtalk.RobotUrlInfoList = urls
+		body.Client.ExtendDingtalk = requestClient.Dingtalk
 
 	case "wechat_robot":
-		clientInfo := RequestDataWechatRobot{}
-		if err := json.Unmarshal(body.ClientInfo, &clientInfo); err != nil {
+		requestClient := RequestDataWechatRobot{}
+		if err := json.Unmarshal(body.ClientInfo, &requestClient); err != nil {
 			return
 		}
 		var urls []string
-		for _, v := range clientInfo.RobotUrlList {
+		for _, v := range requestClient.RobotUrlList {
 			urls = append(urls, v.Url)
 		}
-		clientInfo.WechatRobot.RobotUrlsList = urls
-		body.Client.ExtendWechatRobot = clientInfo.WechatRobot
+		requestClient.WechatRobot.RobotUrlInfoList = make([]string, 0)
+		requestClient.WechatRobot.RobotUrlInfoList = urls
+		body.Client.ExtendWechatRobot = requestClient.WechatRobot
 
 	case "feishu":
-		clientInfo := RequestDataFeishu{}
-		if err := json.Unmarshal(body.ClientInfo, &clientInfo); err != nil {
+		requestClient := RequestDataFeishu{}
+		if err := json.Unmarshal(body.ClientInfo, &requestClient); err != nil {
 			return
 		}
 		var urls []string
-		for _, v := range clientInfo.RobotUrlList {
+		for _, v := range requestClient.RobotUrlList {
 			urls = append(urls, v.Url)
 		}
-		clientInfo.Feishu.RobotUrlsList = urls
-		body.Client.ExtendFeishu = clientInfo.Feishu
+		requestClient.Feishu.RobotUrlInfoList = urls
+		body.Client.ExtendFeishu = requestClient.Feishu
+
+	case "wechat":
+		requestClient := clients.WechatApplication{}
+		if err := json.Unmarshal(body.ClientInfo, &requestClient); err != nil {
+			return
+		}
+		body.Client.ExtendWechatApplication = &requestClient
 
 	default:
 		return

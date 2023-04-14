@@ -26,7 +26,7 @@ func GetClient(g *gin.Context) {
 		respData := ResponseData{Client: client}
 		if client.ClientType == "dingtalk" {
 			var urls []OneUrl
-			for _, urlAddress := range client.ExtendDingtalk.RobotUrlsList { //这里的RobotUrlInfoList，是从数据库取出的压缩数据，展开后得到的内容
+			for _, urlAddress := range client.ExtendDingtalk.RobotUrlInfoList { //这里的RobotUrlInfoList，是从数据库取出的压缩数据，展开后得到的内容
 				urls = append(urls, OneUrl{Url: urlAddress})
 			}
 			cInfo := RequestDataDingtalk{
@@ -41,7 +41,7 @@ func GetClient(g *gin.Context) {
 
 		} else if client.ClientType == "feishu" {
 			var urls []OneUrl
-			for _, v := range client.ExtendFeishu.RobotUrlsList {
+			for _, v := range client.ExtendFeishu.RobotUrlInfoList {
 				urls = append(urls, OneUrl{Url: v})
 			}
 			cInfo := RequestDataFeishu{
