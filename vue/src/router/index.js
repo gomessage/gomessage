@@ -28,7 +28,7 @@ const routes = [
     //客户端配置页面
     path: '/request_data',
     name: '2-1',
-    component: () => import( '../views/ViewRequestData.vue')
+    component: () => import( '../views/ViewJson.vue')
   },
   {
     //客户端配置页面

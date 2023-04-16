@@ -87,6 +87,8 @@ func GoMessageByTransport(g *gin.Context) {
 			contentList := v1.RendersContentData(hijacking.CacheData.RequestByte, nsUserConfig.VariablesMap, nsUserConfig.MsgTemplate)
 			//渲染出需要的"消息体"
 			messages = clientAction.RendersMessages(clientInfo, nsUserConfig.MsgMerge, contentList)
+		} else {
+			messages = append(messages, hijacking.CacheData.RequestJson)
 		}
 
 		// TODO：推送消息
