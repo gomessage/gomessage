@@ -13,12 +13,12 @@ type ClientActionWechatRobot struct {
 func (c *ClientActionWechatRobot) RendersMessages(client *models.Client, isMerge bool, contentList []string) []any {
 	var msgList []any
 	if isMerge {
-		msg := v1.MessageJoint(contentList, "dingtalk")
-		data := clientFormat.PackWechatRobotMessage(client.ExtendDingtalk.RobotKeyword, msg)
+		msg := v1.MessageJoint(contentList, "wechat_robot")
+		data := clientFormat.PackWechatRobotMessage(client.ExtendWechatRobot.RobotKeyword, msg)
 		msgList = append(msgList, data)
 	} else {
 		for _, msg := range contentList {
-			data := clientFormat.PackWechatRobotMessage(client.ExtendDingtalk.RobotKeyword, msg)
+			data := clientFormat.PackWechatRobotMessage(client.ExtendWechatRobot.RobotKeyword, msg)
 			msgList = append(msgList, data)
 		}
 	}

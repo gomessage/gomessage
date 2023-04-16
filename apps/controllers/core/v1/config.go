@@ -52,8 +52,8 @@ func RobotRandomUrl(rList []string) string {
 	return rList[i]
 }
 
-// GetNs 获取通道信息
-func GetNs(namespace string) *models.Namespace {
+// GetNsInfo 获取通道信息
+func GetNsInfo(namespace string) *models.Namespace {
 	if namespace == "message" {
 		namespace = "default"
 	}

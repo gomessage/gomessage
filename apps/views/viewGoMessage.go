@@ -21,7 +21,7 @@ func GoMessageByTransport(g *gin.Context) {
 	/*
 	 * TODO: 获取通道信息
 	 */
-	nsInfo := v1.GetNs(g.Param("namespace"))
+	nsInfo := v1.GetNsInfo(g.Param("namespace"))
 
 	/*
 	 * TODO: 获取过境数据

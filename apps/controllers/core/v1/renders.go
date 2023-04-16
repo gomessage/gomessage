@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"github.com/tidwall/gjson"
+	"gomessage/utils/log/loggers"
 	"html/template"
 	"strconv"
 	"strings"
@@ -77,18 +78,24 @@ func AnalysisData(keyValueList []map[string]string, requestData []byte) []map[st
 // MessageJoint 按照不同的客户端类型，选择不同的拼接和聚合形式
 func MessageJoint(messageList []string, thisType string) string {
 	var msg string
-	if thisType == "dingtalk" {
+
+	switch thisType {
+	case "dingtalk":
 		msg = strings.Join(messageList, "\n * * * \n")
 
-	} else if thisType == "wechat" {
+	case "feishu":
+		msg = strings.Join(messageList, "\n --------------- \n")
+
+	case "wechat_robot":
+		msg = strings.Join(messageList, "\n\n·\n\n")
+
+	case "wechat":
 		msg = strings.Join(messageList, "\n · \n")
 
-	} else if thisType == "feishu" {
-		msg = strings.Join(messageList, "\n -------------- \n")
-
-	} else {
-		fmt.Println("客户端类型错误")
+	default:
+		loggers.DefaultLogger.Errorln("消息聚合时，客户端类型错误")
 	}
+
 	return msg
 }
 

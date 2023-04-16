@@ -49,6 +49,8 @@
 
         </el-table>
 
+
+
         <br>
         <br>
         <br>
@@ -127,6 +129,7 @@ export default {
       let type_map = {
         "dingtalk": "钉钉·机器人",
         "wechat": "企业微信·应用号",
+        "wechat_robot": "企业微信·机器人",
         "feishu": "飞书·机器人",
       }
       return type_map[client_type]
