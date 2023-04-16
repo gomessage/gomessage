@@ -130,7 +130,7 @@ func GetClientById(id int) (*Client, error) {
 		wechatRobot.RobotUrlInfoList = strings.Split(wechatRobot.RobotUrl, "\n")
 		cli.ExtendWechatRobot = &wechatRobot
 
-	case "wechatApplication":
+	case "wechat":
 		wechatApplication := clients.WechatApplication{}
 		wechatApplicationResult := database.DB.DefaultClient.Where("client_id = ?", int(cli.ID)).First(&wechatApplication)
 		if wechatApplicationResult.Error != nil {

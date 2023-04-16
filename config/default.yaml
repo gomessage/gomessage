@@ -5,7 +5,7 @@ global:
   appName: "GoMessage"           # 应用名称，可以随意修改，如果同一台机器上启动多个GoMessage服务，请不要让该名称冲突
   appDescription: "消息转发器"     # 应用说明，可以随意修改
   env: "dev"                      # 当前运行环境（这里是的第二优先级，如果启动时的命令行参数时没有指定--env=dev时，则这里的才会生效）
-  ginMode: "release"              # 运行模式（debug、test、release），如果不是二次开发该项目，则不用关注这个参数。
+  ginMode: "debug"              # 运行模式（debug、test、release），如果不是二次开发该项目，则不用关注这个参数。
 
 
 #--------------------

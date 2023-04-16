@@ -24,7 +24,6 @@ func Push(data any, url string) {
 	//发送post请求
 	client := &http.Client{}
 	//response, err := client.Post(url, contentType, bytes.NewBuffer(e))
-	//response, err := client.Post(url, contentType, strings.NewReader(string(e)))
 	response, err := client.Post(url, contentType, strings.NewReader(string(e)))
 	if err != nil {
 		fmt.Println(err)
@@ -35,6 +34,7 @@ func Push(data any, url string) {
 			panic(err)
 		}
 	}(response.Body)
+
 	body, err2 := io.ReadAll(response.Body)
 	if err2 != nil {
 		fmt.Println(err2)
@@ -49,5 +49,6 @@ func Push(data any, url string) {
 		"time_now":        time.Now().Format("2006-01-02_15:04:05.000000"),
 	}).Info("推送数据成功")
 
-	fmt.Println(string(body)) //打印人类可读的信息
+	//打印人类可读的信息
+	fmt.Println(string(body))
 }

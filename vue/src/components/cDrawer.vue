@@ -3,14 +3,15 @@
     title="添加客户端"
     :visible="getDrawerStatus"
     :before-close="handleClose"
-    :destroy-on-close="true">
+    :destroy-on-close="true"
+    size="40%">
     <el-tabs :tab-position="tabPosition" style="margin: 20px">
 
-      <el-tab-pane label="钉钉">
+      <el-tab-pane label="钉钉 · 群机器人">
         <clientDingtalk v-bind:getClientList="getClientList"></clientDingtalk>
       </el-tab-pane>
 
-      <el-tab-pane label="飞书">
+      <el-tab-pane label="飞书 · 群机器人">
         <clientFeishu v-bind:getClientList="getClientList"></clientFeishu>
       </el-tab-pane>
 

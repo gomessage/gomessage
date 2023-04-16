@@ -48,23 +48,26 @@ func GoMessageByTransport(g *gin.Context) {
 	 * TODO: 根据不同的客户端来产生对应的操作
 	 */
 	for _, client := range nsUserConfig.ActiveClient {
-		clientInfo, _ := models.GetClientById(client.ID)
 		var messages []any
+		clientInfo, _ := models.GetClientById(client.ID)
 
 		//获取interface的实例对象（该接口有两个方法：消息体处理的封装方法、推送消息的封装方法）
 		var clientAction v3.ClientAction
 		switch clientInfo.ClientType {
 		case "dingtalk":
 			clientAction = &v3.ClientActionDingtalk{Client: clientInfo}
+
 		case "feishu":
 			clientAction = &v3.ClientActionFeishu{Client: clientInfo}
+
 		case "wechat":
-			clientAction = &v3.ClientActionWechat{
+			clientAction = &v3.ClientActionWechatApplication{
 				CorpId:      clientInfo.ExtendWechatApplication.CorpId,
 				AgentId:     clientInfo.ExtendWechatApplication.AgentId,
 				AgentSecret: clientInfo.ExtendWechatApplication.Secret,
 				Touser:      clientInfo.ExtendWechatApplication.Touser,
 			}
+
 		case "wechat_robot":
 			clientAction = &v3.ClientActionWechatRobot{Client: clientInfo}
 

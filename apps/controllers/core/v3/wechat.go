@@ -12,14 +12,14 @@ import (
 	"strings"
 )
 
-type ClientActionWechat struct {
+type ClientActionWechatApplication struct {
 	CorpId      string
 	AgentId     string
 	AgentSecret string
 	Touser      string
 }
 
-func (c *ClientActionWechat) RendersMessages(client *models.Client, isMerge bool, contentList []string) []any {
+func (c *ClientActionWechatApplication) RendersMessages(client *models.Client, isMerge bool, contentList []string) []any {
 	var msgList []any
 	//是否聚合
 	if isMerge {
@@ -50,7 +50,7 @@ func (c *ClientActionWechat) RendersMessages(client *models.Client, isMerge bool
 	return msgList
 }
 
-func (c *ClientActionWechat) PushMessages(messages []any) {
+func (c *ClientActionWechatApplication) PushMessages(messages []any) {
 	for _, msg2 := range messages {
 		MyByte, _ := json.Marshal(msg2)
 		url := "https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=" + c.getAccessToken().AccessToken
@@ -72,7 +72,7 @@ func (c *ClientActionWechat) PushMessages(messages []any) {
 }
 
 // 向微信发送请求获取access_token
-func (c *ClientActionWechat) getAccessToken() clientFormat.GetAccessTokenReturn {
+func (c *ClientActionWechatApplication) getAccessToken() clientFormat.GetAccessTokenReturn {
 	corpId := c.CorpId
 	agentSecret := c.AgentSecret
 
