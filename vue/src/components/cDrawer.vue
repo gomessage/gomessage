@@ -5,7 +5,7 @@
     :before-close="handleClose"
     :destroy-on-close="true"
     size="40%">
-    <el-tabs :tab-position="tabPosition" style="margin: 20px">
+    <el-tabs :tab-position="tabPosition" style="margin: 1px 20px">
 
       <el-tab-pane label="钉钉 · 群机器人">
         <clientDingtalk v-bind:getClientList="getClientList"></clientDingtalk>
@@ -15,11 +15,11 @@
         <clientFeishu v-bind:getClientList="getClientList"></clientFeishu>
       </el-tab-pane>
 
-      <el-tab-pane label="企微 · 群机器人">
+      <el-tab-pane label="企业微信 · 群机器人">
         <clientWechatRobot v-bind:getClientList="getClientList"></clientWechatRobot>
       </el-tab-pane>
 
-      <el-tab-pane label="企微 · 应用号">
+      <el-tab-pane label="企业微信 · 应用号">
         <clientWechat v-bind:getClientList="getClientList"></clientWechat>
       </el-tab-pane>
 
