@@ -17,7 +17,7 @@
     <!--左侧logo-->
     <el-menu-item>
       <router-link to="/">
-        <img height="90%" src="../assets/logo.svg">
+        <img height="90%" src="../../assets/logo.svg">
         &nbsp;&nbsp;
         <span style="font-size: 15px;">GoMessage · 消息转发器</span>
       </router-link>

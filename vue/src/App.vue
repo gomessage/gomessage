@@ -36,9 +36,9 @@
 </template>
 
 <script>
-import NavHeader from './views/NavHeader.vue'
-import NavFooter from "./views/NavFooter";
-import NavAside from "@/views/NavAside.vue";
+import NavHeader from './views/navs/NavHeader.vue'
+import NavFooter from "./views/navs/NavFooter.vue";
+import NavAside from "@/views/navs/NavAside.vue";
 // import CSteps from "./views/cSteps";
 
 export default {

@@ -10,13 +10,19 @@
         <clientDingtalk v-bind:getClientList="getClientList"></clientDingtalk>
       </el-tab-pane>
 
-      <el-tab-pane label="企业微信">
-        <clientWechat v-bind:getClientList="getClientList"></clientWechat>
-      </el-tab-pane>
-
       <el-tab-pane label="飞书">
         <clientFeishu v-bind:getClientList="getClientList"></clientFeishu>
       </el-tab-pane>
+
+      <el-tab-pane label="企微 · 群机器人">
+        <clientWechatRobot v-bind:getClientList="getClientList"></clientWechatRobot>
+      </el-tab-pane>
+
+      <el-tab-pane label="企微 · 应用号">
+        <clientWechat v-bind:getClientList="getClientList"></clientWechat>
+      </el-tab-pane>
+
+
 
       <el-tab-pane label="其它" style="text-align: left">
         <clientOther v-bind:getClientList="getClientList"></clientOther>
@@ -27,10 +33,11 @@
 </template>
 
 <script>
-import clientDingtalk from "./clientDingtalk";
-import clientWechat from "./clientWechat";
-import clientOther from "./clientOther";
-import clientFeishu from "./clientFeishu";
+import clientDingtalk from "./clients/clientDingtalk.vue";
+import clientWechat from "./clients/clientWechat.vue";
+import clientOther from "./clients/clientOther.vue";
+import clientFeishu from "./clients/clientFeishu.vue";
+import clientWechatRobot from "@/components/clients/clientWechatRobot.vue";
 
 export default {
   name: "cDrawer",
@@ -46,6 +53,7 @@ export default {
     clientWechat,
     clientOther,
     clientFeishu,
+    clientWechatRobot,
   },
   computed: {
     getDrawerStatus: function () {
