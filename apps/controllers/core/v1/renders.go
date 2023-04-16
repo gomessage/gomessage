@@ -87,7 +87,7 @@ func MessageJoint(messageList []string, thisType string) string {
 		msg = strings.Join(messageList, "\n --------------- \n")
 
 	case "wechat_robot":
-		msg = strings.Join(messageList, "\n\n·\n\n")
+		msg = strings.Join(messageList, "\n\n \n\n")
 
 	case "wechat":
 		msg = strings.Join(messageList, "\n · \n")
