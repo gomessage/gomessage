@@ -322,5 +322,5 @@ func main() {
 	}
 
 	wg.Wait()
-	fmt.Println("\n文件上传完成~\n")
+	fmt.Println("\n文件上传完成~ \n")
 }
