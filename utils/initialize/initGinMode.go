@@ -24,5 +24,5 @@ func InitGinMode() {
 		//默认为"release"
 		gin.SetMode(gin.ReleaseMode)
 	}
-	loggers.DefaultLogger.Info("运行模式初始化完成...")
+	loggers.DefaultLogger.Info("RunMode初始化完成...")
 }
