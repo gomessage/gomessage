@@ -48,14 +48,14 @@
 import DataFormat from "@/components/cCodeFormat";
 import DataMap from "@/components/cConfigMap";
 import CTemplate from "@/components/cTemplate";
-import { getNamespaceOne, putNamespaceOne} from "@/service/requests";
+import {getNamespaceOne, putNamespaceOne} from "@/service/requests";
 
 export default {
   name: "ViewRequestData",
   data() {
     return {
-      thisRenders: false,
-      dialogVisible: true
+      thisRenders: false, //开关样式
+      dialogVisible: false //遮罩层是否显示
     }
   },
   components: {
