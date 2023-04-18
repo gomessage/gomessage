@@ -74,7 +74,9 @@ GoMessage是一款消息转发器，主要功能为：
 前台启动，只运行一次（容器停止后自动删除，不残留和污染本地环境）：
 
 ```bash
-docker run -p 7077:7077 --rm gomessage/gomessage:latest 
+docker run --rm \
+    -p 7077:7077 \
+    gomessage/gomessage:latest 
 ```
 
 后台运行，只运行一次（容器停止后自动删除，不残留和污染本地环境）：
