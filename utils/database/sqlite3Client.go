@@ -6,15 +6,26 @@ import (
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
+	"os"
+	"path"
 )
 
 func sqlite3Client() *gorm.DB {
 	return openSqlite3Connector()
 }
 
-// Mysql的数据库连接
+// sqlite3的数据库连接
 func openSqlite3Connector() *gorm.DB {
-	database, err := gorm.Open(sqlite.Open(viper.GetString("sqlite3.path")), &gorm.Config{
+
+	dataPath := viper.GetString("sqlite3.path")
+	//确保存放日志文件的目录始终存在
+	dataPathDir := path.Dir(dataPath)                             //返回路径中除去最后一个元素的剩余部分，也就是路径最后一个元素所在的目录
+	if err := os.MkdirAll(dataPathDir, os.ModePerm); err != nil { //创建目录类似于（mkdir -p /aaa/bbb的效果）
+		fmt.Println("创建目录失败：", err)
+		os.Exit(3)
+	}
+
+	database, err := gorm.Open(sqlite.Open(dataPath), &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Silent), //设置日志默认模式为Silent
 	})
 	if err != nil {

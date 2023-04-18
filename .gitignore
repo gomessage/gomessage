@@ -32,4 +32,6 @@ routers/commentsRouter______________________Users_tay_go_src_GoMessage_controlle
 GoMessage
 *prof
 .DS_Store
+data
+data/*.db
 
