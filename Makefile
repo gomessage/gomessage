@@ -61,7 +61,7 @@ start:
 ######################################
 .PHONY: swagger
 swagger:
-	go install github.com/swaggo/swag/cmd/swag@latest
+	go install github.com/swaggo/swag/cmd/swag@v1.8.12
 	mkdir -p assets
 	swag init -o assets/docs
 
