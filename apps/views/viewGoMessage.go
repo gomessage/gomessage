@@ -42,7 +42,7 @@ func GoMessageByTransport(g *gin.Context) {
 	/*
 	 * TODO: 获取通道的用户配置信息
 	 */
-	nsUserConfig := v1.GetNamespaceUserConfig(nsInfo.Name) //"通道自身信息"与"通道中用户添加的信息"不要搞混了
+	nsUserConfig := v1.GetNamespaceUserConfig(nsInfo.Name, nsInfo.IsRenders) //"通道自身信息"与"通道中用户添加的信息"不要搞混了
 
 	/*
 	 * TODO: 根据不同的客户端来产生对应的操作
@@ -87,9 +87,9 @@ func GoMessageByTransport(g *gin.Context) {
 		 */
 		if nsInfo.IsRenders {
 			//渲染出需要的"内容体"
-			contentList := v1.RendersContentData(hijacking.CacheData.RequestByte, nsUserConfig.VariablesMap, nsUserConfig.MsgTemplate)
+			contentList := v1.RendersContentData(hijacking.CacheData.RequestByte, nsUserConfig.VariablesMap, nsUserConfig.MessageTemplate)
 			//渲染出需要的"消息体"
-			messages = clientAction.RendersMessages(clientInfo, nsUserConfig.MsgMerge, contentList)
+			messages = clientAction.RendersMessages(clientInfo, nsUserConfig.IsMerge, contentList)
 		} else {
 			messages = append(messages, hijacking.CacheData.RequestJson)
 		}
