@@ -95,12 +95,17 @@ func FlatteningJson(requestByte []byte) {
 	if err != nil {
 		fmt.Println(err)
 	} else {
-		//fmt.Println(flattenedData)
 		d, _ := json.MarshalIndent(flattenedData, "", "  ")
 		fmt.Println(string(d))
 	}
-	hijacking.CacheData.KeyValueList = make(map[string]any)
+
+	hijacking.CacheData.KeyValueMap = make(map[string]any)
 	for key, value := range flattenedData {
-		hijacking.CacheData.KeyValueList[key] = value
+		tmpMap := hijacking.Mappings{
+			Key:   key,
+			Value: value,
+		}
+		hijacking.CacheData.KeyValueList = append(hijacking.CacheData.KeyValueList, tmpMap)
+		hijacking.CacheData.KeyValueMap[key] = value
 	}
 }

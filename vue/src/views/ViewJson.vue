@@ -30,7 +30,8 @@
         <DataFormat class="shadow"></DataFormat>
         <br>
         <!--变量映射-->
-        <DataMap class="shadow"></DataMap>
+        <!--<DataMap class="shadow"></DataMap>-->
+        <DataMap2 class="shadow"></DataMap2>
       </el-col>
 
       <el-col :span="12">
@@ -46,7 +47,8 @@
 
 <script>
 import DataFormat from "@/components/cCodeFormat";
-import DataMap from "@/components/cConfigMap";
+// import DataMap from "@/components/cConfigMap";
+import DataMap2 from "@/components/cConfigMap2";
 import CTemplate from "@/components/cTemplate";
 import {getNamespaceOne, putNamespaceOne} from "@/service/requests";
 
@@ -60,8 +62,9 @@ export default {
   },
   components: {
     DataFormat,
-    DataMap,
+    // DataMap,
     CTemplate,
+    DataMap2,
   },
   computed: {
     //计算属性

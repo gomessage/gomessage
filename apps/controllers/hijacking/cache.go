@@ -15,11 +15,17 @@ func init() {
 	})
 }
 
+type Mappings struct {
+	Key   string `json:"key"`
+	Value any    `json:"value"`
+}
+
 type arbitrarilyJsonData struct {
 	RequestJson  map[string]any `json:"request_json"`
 	RequestTime  time.Time      `json:"request_time"`
 	RequestByte  []byte         `json:"-"`
-	KeyValueList map[string]any `json:"key_value_list"`
+	KeyValueMap  map[string]any `json:"-"`
+	KeyValueList []Mappings     `json:"key_value_list"`
 }
 
 var CacheData arbitrarilyJsonData

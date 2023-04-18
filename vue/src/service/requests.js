@@ -6,6 +6,7 @@ export const postDemoData = (namespace, data) => http.Post("/go/" + namespace, d
 
 //劫持过境数据
 export const queryJson = (namespace, params) => http.Get("/api/v1/" + namespace + "/json", params)
+export const queryFlattening = (namespace, params) => http.Get("/api/v1/" + namespace + "/flattening", params)
 
 //用户变量相关（完成数据校验）
 export const queryVars = (namespace, params) => http.Get("/api/v1/" + namespace + "/vars", params)
