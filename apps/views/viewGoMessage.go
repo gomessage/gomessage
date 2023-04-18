@@ -30,6 +30,7 @@ func GoMessageByTransport(g *gin.Context) {
 	hijacking.CacheData.RequestTime = time.Now()
 	hijacking.CacheData.RequestByte, _ = io.ReadAll(g.Request.Body)                 //g.Request.Body中的数据只能读取一次，是因为"流"的指针被移位了
 	g.Request.Body = io.NopCloser(bytes.NewBuffer(hijacking.CacheData.RequestByte)) //向g.Request.Body回写数据
+	v3.FlatteningJson(hijacking.CacheData.RequestByte)                              //解析json
 	if err := g.ShouldBindJSON(&hijacking.CacheData.RequestJson); err != nil {      //把请求数据绑定到CacheData.RequestJson
 		return
 	}
