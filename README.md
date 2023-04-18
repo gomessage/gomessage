@@ -25,12 +25,23 @@ GoMessage是一款消息转发器，主要功能为：
 
 <br><br>
 
-
 ### 投产架构：
 
 ![](https://img.taycc.com/2021-12-27-GoMessage.png)
 
-### 体验地址
+
+<br>
+
+### 版本说明：
+
+> 假设当前版本为：`v2.5.7`
+> - 2代表大版本：表示底层架构发生了`向前不兼容`的更新或变动。
+> - 5代表中版本：表示底层架构依然`向前兼容`，但是`增加了新的功能`。
+> - 7代表小版本：表示`没有增加`任何新功能，只是`对已知的问题和BUG进行了修复`。
+
+<br><br>
+
+### 体验地址：
 
 点击右侧地址进行体验：[http://47.102.46.109:7077](http://47.102.46.109:7077)
 
@@ -54,15 +65,17 @@ GoMessage是一款消息转发器，主要功能为：
 
 ### 安装步骤：
 
-#### `Docker方式`·安装和使用（强烈推荐）：
+<br>
 
-快速启动：
+#### Docker方式（强烈推荐）：
+
+前台启动，只运行一次（容器停止后自动删除，不残留和污染本地环境）：
 
 ```bash
-docker run -d -p 7077:7077 gomessage/gomessage:latest 
+docker run -p 7077:7077 --rm gomessage/gomessage:latest 
 ```
 
-只运行一次（容器停止后自动删除，不残留和污染本地环境）：
+后台运行，只运行一次（容器停止后自动删除，不残留和污染本地环境）：
 
 ```bash
 docker run -d \
@@ -72,7 +85,7 @@ docker run -d \
     gomessage/gomessage:latest
 ```
 
-稳定的运行（且设定为开机启动）：
+后台运行，稳定的运行（且设定为开机启动）：
 
 ```bash
 docker run -d \
@@ -82,17 +95,28 @@ docker run -d \
     gomessage/gomessage:latest
 ```
 
-<br>
+后台运行，稳定的运行（且设定为开机启动）同时保存数据文件到宿主机上，下次使用新版本容器镜像时，原来的数据不丢失
 
-#### `Linux服务器上进行安装：`
+```bash
+docker run -d \
+    -p 7077:7077 \
+    -v /data:/opt/gomessage/data \
+    --restart=always \
+    --name=gomessage \
+    gomessage/gomessage:latest
+```
+
+<br><br>
+
+#### Linux服务器上进行安装：
 
 - [Linux环境下的安装](wiki/install.md)
 
-#### `Windows服务器上进行安装：`
+#### Windows服务器上进行安装：
 
 - [Windows环境下的安装（文档暂未完成...）](#windows%E6%9C%8D%E5%8A%A1%E5%99%A8)
 
-#### `Mac本地电脑安装和启动：`
+#### Mac本地电脑安装和启动：
 
 - [Mac环境下的安装](wiki/install_mac.md)
 
