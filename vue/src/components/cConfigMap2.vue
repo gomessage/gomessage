@@ -64,7 +64,8 @@ export default {
       // 这里如果使用funciton(response){}这个种模式，那么this指的就不是vue实例了，
       // 如果下面这样使用箭头函数，就可以实现上下文穿透，this就可以代指vue实例本身了，然后就有$router方法了
       queryFlattening(this.$store.getters.getNamespace, null).then(response => {
-        const jsonData = response.data.result["key_value_list"];
+        // const jsonData = response.data.result["key_value_list"];
+        const jsonData = response.data.result["key_value_map"];
         const t = response.data.result["request_time"];
 
         if (jsonData === null || jsonData.length === 0) {
@@ -74,14 +75,35 @@ export default {
           });
         } else {
           let tmpDataList = []
-          jsonData.forEach(data => {
+          // jsonData.forEach(data => {
+          //   let tmpDict = {
+          //     "key": "{{ ." + data["key"] + " }}",
+          //     "value": data["value"],
+          //   };
+          //   //把这个临时的字典追加到tmpDataList的list中
+          //   tmpDataList.push(tmpDict);
+          // })
+
+          let key_list = Object.keys(jsonData)
+
+          key_list.forEach(key => {
             let tmpDict = {
-              "key": "{{ ." + data["key"] + " }}",
-              "value": data["value"],
+              "key": "{{ ." + key + " }}",
+              "value": jsonData[key],
             };
-            //把这个临时的字典追加到tmpDataList的list中
             tmpDataList.push(tmpDict);
           })
+
+          // jsonData.forEach(data => {
+          //   let key = Object.keys(data)[0]
+          //   console.log(key)
+          //   let tmpDict = {
+          //     "key": "{{ ." + key + " }}",
+          //     "value": jsonData[key],
+          //   };
+          //   tmpDataList.push(tmpDict);
+          // })
+
 
           this.configList = tmpDataList;
           this.codeUpdateTime = this.dateFormat(new Date(t));

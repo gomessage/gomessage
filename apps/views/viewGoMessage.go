@@ -88,7 +88,7 @@ func GoMessageByTransport(g *gin.Context) {
 		 */
 		if nsInfo.IsRenders {
 			//渲染出需要的"内容体"
-			contentList := v1.RendersContentData(hijacking.CacheData.RequestByte, nsUserConfig.VariablesMap, nsUserConfig.MsgTemplate)
+			contentList := v3.RendersContentData(hijacking.CacheData.RequestByte, nsUserConfig.VariablesMap, nsUserConfig.MsgTemplate)
 			//渲染出需要的"消息体"
 			messages = clientAction.RendersMessages(clientInfo, nsUserConfig.MsgMerge, contentList)
 		} else {

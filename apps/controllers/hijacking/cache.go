@@ -24,7 +24,7 @@ type arbitrarilyJsonData struct {
 	RequestJson  map[string]any `json:"request_json"`
 	RequestTime  time.Time      `json:"request_time"`
 	RequestByte  []byte         `json:"-"`
-	KeyValueMap  map[string]any `json:"-"`
+	KeyValueMap  map[string]any `json:"key_value_map"`
 	KeyValueList []Mappings     `json:"key_value_list"`
 }
 
