@@ -50,7 +50,7 @@ func (c *Action) Working(isRenders bool, requestByte []byte, thisNamespaceUserCo
 	if len(contentList) == 0 {
 		return errors.New("过境数据格式错误，用户变量无法从过境数据中找到可用的映射关系")
 	}
-	url, data := c.assembled.AssembledData(isRenders, thisNamespaceUserConfig.MsgMerge, client, contentList)
+	url, data := c.assembled.AssembledData(isRenders, thisNamespaceUserConfig.IsMerge, client, contentList)
 	for _, dd := range data {
 		c.push.PushData(url, dd)
 	}

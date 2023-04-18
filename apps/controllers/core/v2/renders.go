@@ -20,7 +20,7 @@ func (d *GetRendersResult) RendersData(thisNamespaceUserConfig v1.NamespaceUserC
 		//得到变量映射
 		analysisDataList := v1.AnalysisData(thisNamespaceUserConfig.VariablesMap, requestByte)
 		//得到内容体
-		contentList = v1.CompleteMessage(thisNamespaceUserConfig.MsgTemplate, analysisDataList)
+		contentList = v1.CompleteMessage(thisNamespaceUserConfig.MessageTemplate, analysisDataList)
 	} else {
 		contentList = append(contentList, string(requestByte))
 	}

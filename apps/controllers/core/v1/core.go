@@ -13,7 +13,7 @@ func RendersRequestData(isRenders bool, thisNamespaceUserConfig NamespaceUserCon
 		//得到变量映射
 		analysisDataList := AnalysisData(thisNamespaceUserConfig.VariablesMap, requestByte)
 		//得到内容体
-		contentList = CompleteMessage(thisNamespaceUserConfig.MsgTemplate, analysisDataList)
+		contentList = CompleteMessage(thisNamespaceUserConfig.MessageTemplate, analysisDataList)
 	} else {
 		//不渲染数据
 		contentList = append(contentList, string(requestByte))
@@ -40,7 +40,7 @@ func AssembledMessage(isRenders bool, thisNamespaceUserConfig NamespaceUserConfi
 		cd := ReadyClient{
 			Id:      clientInfo.ID,
 			Name:    clientInfo.ClientName,
-			IsMerge: thisNamespaceUserConfig.MsgMerge,
+			IsMerge: thisNamespaceUserConfig.IsMerge,
 			Type:    clientInfo.ClientType,
 		}
 
