@@ -6,11 +6,12 @@ export const postDemoData = (namespace, data) => http.Post("/go/" + namespace, d
 
 //劫持过境数据
 export const queryJson = (namespace, params) => http.Get("/api/v1/" + namespace + "/json", params)
-export const queryFlattening = (namespace, params) => http.Get("/api/v1/" + namespace + "/flattening", params)
+
 
 //用户变量相关（完成数据校验）
-export const queryVars = (namespace, params) => http.Get("/api/v1/" + namespace + "/vars", params)
-export const postVars = (namespace, data) => http.Post("/api/v1/" + namespace + "/vars", data)
+export const queryVars = (namespace, params) => http.Get("/api/v1/" + namespace + "/vars", params) //查询用户变量映射
+export const postVars = (namespace, data) => http.Post("/api/v1/" + namespace + "/vars", data) //添加用户变量映射
+export const queryFlattening = (namespace, params) => http.Get("/api/v1/" + namespace + "/flattening", params) //展开过境数据
 
 //用户模板相关
 export const getTemplate = (namespace, params) => http.Get("/api/v1/" + namespace + "/template", params)

@@ -67,11 +67,11 @@ func Path(g *gin.Engine) {
 
 		//数据劫持
 		v1View.GET("/:namespace/json", views.GetNamespaceJson)
-		v1View.GET("/:namespace/flattening", views.GetNamespaceFlatteningJson)
 
 		//用户变量
-		v1View.GET("/:namespace/vars", views.ListVariables)
-		v1View.POST("/:namespace/vars", views.PostVariables)
+		v1View.GET("/:namespace/vars", views.ListVariables)                    //获取变量映射
+		v1View.POST("/:namespace/vars", views.PostVariables)                   //添加变量映射
+		v1View.GET("/:namespace/flattening", views.GetNamespaceFlatteningJson) //展开过境数据
 
 		//消息模板
 		v1View.GET("/:namespace/template", views.ListTemplate)

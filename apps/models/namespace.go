@@ -11,14 +11,14 @@ import (
 
 // Namespace 这里虽然名字交过namespace有点命名空间的意思，但是实际上就是用户看到的"通道"的概念
 type Namespace struct {
-	ID          int            `json:"id" gorm:"primarykey"`            //gorm自带字段，这里粘贴过来，显式的声明出来
-	CreatedAt   time.Time      `json:"-"`                               //gorm自带字段，这里粘贴过来，显式的声明出来
-	UpdatedAt   time.Time      `json:"-"`                               //gorm自带字段，这里粘贴过来，显式的声明出来
-	DeletedAt   gorm.DeletedAt `json:"-" gorm:"index"`                  //gorm自带字段，这里粘贴过来，显式的声明出来
-	Name        string         `json:"name" gorm:"unique;not null"`     //通道名称：唯一键、且不能为空
-	IsActive    bool           `json:"is_active" gorm:"default:false"`  //是否激活（默认不激活）
-	IsRenders   bool           `json:"is_renders" gorm:"default:false"` //是否开启渲染模式（默认不开启）
-	Description string         `json:"description"`                     //通道描述
+	ID          int            `json:"id" gorm:"primarykey"`           //gorm自带字段，这里粘贴过来，显式的声明出来
+	CreatedAt   time.Time      `json:"-"`                              //gorm自带字段，这里粘贴过来，显式的声明出来
+	UpdatedAt   time.Time      `json:"-"`                              //gorm自带字段，这里粘贴过来，显式的声明出来
+	DeletedAt   gorm.DeletedAt `json:"-" gorm:"index"`                 //gorm自带字段，这里粘贴过来，显式的声明出来
+	Name        string         `json:"name" gorm:"unique;not null"`    //通道名称：唯一键、且不能为空
+	IsActive    bool           `json:"is_active" gorm:"default:true"`  //是否激活（默认激活）
+	IsRenders   bool           `json:"is_renders" gorm:"default:true"` //是否开启渲染模式（默认开启）
+	Description string         `json:"description"`                    //通道描述
 }
 
 func (*Namespace) TableName() string {

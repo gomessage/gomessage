@@ -11,8 +11,13 @@
       :border="true"
       :data="configList"
       style="width: 100%">
-      <el-table-column label="Key (把下面的值，粘贴到右侧模板内使用，充当占位符)" prop="key"></el-table-column>
-      <el-table-column label="Value (最终发出去的消息中，就会被渲染成下列的值)" prop="value"></el-table-column>
+      <el-table-column label="Key" prop="key" ></el-table-column>
+      <!--<el-table-column label="Value" prop="value"></el-table-column>-->
+      <el-table-column label="Value" prop="value">
+        <template slot-scope="scope">
+          <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{scope.row.value}}</div>
+        </template>
+      </el-table-column>
     </el-table>
   </el-card>
 </template>

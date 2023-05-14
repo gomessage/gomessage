@@ -145,7 +145,7 @@ export default {
       namespaceForm: {
         name: '',
         description: '',
-        is_active: false,
+        is_active: true,
       },
       namespaceRules: {
         name: [

@@ -34,14 +34,6 @@ func init() {
 }
 
 func main() {
-	//https://docs.sentry.io/platforms/go/guides/gin/
-	//if err := sentry.Init(sentry.ClientOptions{
-	//	Dsn:              "http://22ed2923f8684297af22da4d313fb2df@192.168.55.201:9000/2",
-	//	EnableTracing:    true,
-	//	TracesSampleRate: 1.0,
-	//}); err != nil {
-	//	fmt.Printf("Sentry initialization failed: %v\n", err)
-	//}
 
 	//创建gin实例
 	r := gin.Default()

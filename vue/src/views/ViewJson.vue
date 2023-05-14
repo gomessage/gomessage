@@ -30,8 +30,13 @@
         <DataFormat class="shadow"></DataFormat>
         <br>
         <!--变量映射-->
-        <!--<DataMap class="shadow"></DataMap>-->
-        <DataMap2 class="shadow"></DataMap2>
+        <template v-if="configMapType===false">
+          <DataMap class="shadow"></DataMap>
+        </template>
+
+        <template v-else>
+          <DataMap2 class="shadow"></DataMap2>
+        </template>
       </el-col>
 
       <el-col :span="12">
@@ -47,7 +52,7 @@
 
 <script>
 import DataFormat from "@/components/cCodeFormat";
-// import DataMap from "@/components/cConfigMap";
+import DataMap from "@/components/cConfigMap";
 import DataMap2 from "@/components/cConfigMap2";
 import CTemplate from "@/components/cTemplate";
 import {getNamespaceOne, putNamespaceOne} from "@/service/requests";
@@ -56,13 +61,14 @@ export default {
   name: "ViewRequestData",
   data() {
     return {
-      thisRenders: false, //开关样式
-      dialogVisible: false //遮罩层是否显示
+      thisRenders: false, //是否渲染的开关样式
+      dialogVisible: false, //遮罩层是否显示
+      configMapType: false
     }
   },
   components: {
     DataFormat,
-    // DataMap,
+    DataMap,
     CTemplate,
     DataMap2,
   },
