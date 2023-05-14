@@ -69,8 +69,9 @@ func Path(g *gin.Engine) {
 		v1View.GET("/:namespace/json", views.GetNamespaceJson)
 
 		//用户变量
-		v1View.GET("/:namespace/vars", views.ListVariables)                    //获取变量映射
-		v1View.POST("/:namespace/vars", views.PostVariables)                   //添加变量映射
+		v1View.GET("/:namespace/vars", views.ListVariables)  //获取变量映射
+		v1View.POST("/:namespace/vars", views.PostVariables) //添加变量映射
+		//TODO: 这个功能虽然后端完成了，但是前端ui层面没有启动这个接口对应的功能，有空时再过来修改一下
 		v1View.GET("/:namespace/flattening", views.GetNamespaceFlatteningJson) //展开过境数据
 
 		//消息模板
