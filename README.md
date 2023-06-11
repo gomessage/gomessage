@@ -114,7 +114,10 @@ docker run -d \
 
 #### Kubernetes内部署（完美支持）:
 
-方式一：使用helm部署
+##### 方式一：使用Helm部署
+
+如果您的k8s版本低于1.26.x，那么作者已经封装好的helm chart可能您无法使用，因为在1.26.x版本中k8s官方变动了一些api；此时您可以自己封装一个老版本的helm chart（或）喊作者帮您封装（作者微信：`SPE3SRU3STAY`）；要是您想时间上快速部署起来，也可以直接查看`方式二：使用原生yaml脚本部署`的方式来进行操作。
+
 ```bash
 #添加 GoMessage Helm Chart 仓库
 helm repo add gomessage "https://occos-helm.pkg.coding.net/repos/gomessage"
@@ -128,14 +131,13 @@ helm install gomessage-service gomessage/gomessage \
   --set ingress.domain="gomessage.taycc.top" \      #指定gomessage暴露至k8s外的访问域名
   --set ingress.ingressClassName="nginx"            #指定k8s中的 Ingress Classes 名称（低版本的k8s可能没有这个东西）
 ```
-> - 如果您的k8s版本较低，那么作者已经封装好的helm chart包您可能无法使用；     
-> - 因此可能需要您自己手动封装一个属于自己的helm chart；     
-> - 您可以参考 /helm 目录内的文件，尝试封装自己的helm chart；     
-> - 如果您不想操作helm，则可以查看`方式二：使用原生yaml脚本部署`的方式来进行部署。
+
+<br>
 
 方式二：使用原生yaml脚本部署     
 > 这里建议您把GoMessage服务部署成为一个StatefulSet服务；     
-> 若您只是临时测试，暂不担心GoMessage的数据丢失，则部署为Deployment也未尝不可。      
+> 若您只是临时测试，不担心GoMessage的数据丢失，则部署为Deployment也未尝不可。  
+>      
 > 完整的投产，需要部署四个服务：
 > - 部署一个StatefulSet服务
 > - 创建一个PVC存储卷
