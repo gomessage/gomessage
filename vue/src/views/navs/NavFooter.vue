@@ -13,7 +13,7 @@
         or
         <el-link href="https://gitee.com/gomessage/gomessage" type="primary">&nbsp;Gitee&nbsp;&nbsp;</el-link>
         Version:
-        <el-link href="https://github.com/gomessage/gomessage/releases" type="primary">v2.x&nbsp;&nbsp;</el-link>
+        <el-link href="https://github.com/gomessage/gomessage/releases" type="primary">v{{ version }}&nbsp;&nbsp;</el-link>
         Give feedback and Suggestions to the author:
         <el-link href="mailto:taycc3223@gmail.com" type="primary">Email</el-link>
 
@@ -32,6 +32,7 @@ export default {
   name: "NavFooter",
   data() {
     return {
+      version: "",
       activeIndex: '1',
       activeIndex2: '1'
     };
@@ -41,6 +42,9 @@ export default {
       console.log(key, keyPath);
     }
   },
+  created() {
+    this.version = process.env.VUE_APP_VERSION;
+  }
   // components: {
   //     Image
   // }

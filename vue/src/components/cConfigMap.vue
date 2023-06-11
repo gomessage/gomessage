@@ -13,9 +13,9 @@
 
     <!--Table表格-->
     <el-table
-      :border="true"
-      :data="configList"
-      style="width: 100%">
+        :border="true"
+        :data="configList"
+        style="width: 100%">
       <el-table-column label="Key（自定义变量名）" prop="key"></el-table-column>
       <el-table-column label="Value（原始数据中的索引）" prop="value"></el-table-column>
       <el-table-column fixed="right" label="操作" width="100">
@@ -158,7 +158,7 @@ export default {
     },
 
     // 提交数据
-    post_data: function () {
+    post_data: function (updateData = true) {
       const dataList = [];
       for (let i = 0; i < this.configList.length; i++) {
         let mapKey = this.configList[i].key;
@@ -175,7 +175,9 @@ export default {
 
       postVars(this.$store.getters.getNamespace, {"key_value_list": dataList}).then(response => {
         console.log(response.data);
-        this.$message.success("数据库更新成功...")
+        if (updateData) {
+          this.$message.success("数据库更新成功...")
+        }
       }).catch(err => {
         console.log(err);
       });
@@ -189,6 +191,7 @@ export default {
         //判断response的长度是否为0，如果为0，则代表数据库中没有查询到数据
         if (response.data.result.length === 0) {
           console.log("数据库里没有数据")
+          this.post_data(false); //如果数据库里没有数据，则把前端的demo数据存入进去
         } else {
           //遍历response中的数据
           response.data.result.forEach(iData => {

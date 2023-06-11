@@ -27,11 +27,11 @@
 
     <div>
       <el-input
-        v-model="template.template_content"
-        :autosize="{ minRows: 10, maxRows: 200}"
-        placeholder="请输入Golang语法的模板内容"
-        resize="none"
-        type="textarea">
+          v-model="template.template_content"
+          :autosize="{ minRows: 10, maxRows: 200}"
+          placeholder="请输入Golang语法的模板内容"
+          resize="none"
+          type="textarea">
       </el-input>
     </div>
   </el-card>
@@ -48,40 +48,40 @@ export default {
       template: {
         template_is_merge: false,
         template_content: '{{ if eq .N6 "firing" }}\n' +
-          '\n' +
-          '## <font color=\'#FF0000\'>【报警中】服务器{{ .N3 }}</font>\n' +
-          '\n' +
-          '{{ else if eq .N6 "resolved" }}\n' +
-          '\n' +
-          '## <font color=\'#20B2AA\'>【已恢复】服务器{{ .N3 }}</font>\n' +
-          '\n' +
-          '{{ else }}\n' +
-          '\n' +
-          '## 标题：信息通知\n' +
-          '\n' +
-          '{{ end }}\n' +
-          '\n' +
-          '====================\n' +
-          '\n' +
-          '**告警规则**：{{ .N1 }}\n' +
-          '\n' +
-          '**告警级别**：{{ .N2 }}\n' +
-          '\n' +
-          '**主机名称**：{{ .N3 }} \n' +
-          '\n' +
-          '**主机地址**：{{ .N4 }}\n' +
-          '\n' +
-          '**告警详情**：{{ .N5 }}\n' +
-          '\n' +
-          '**告警状态**：{{ .N6 }}\n' +
-          '\n' +
-          '**触发时间**：{{ .N7 }}\n' +
-          '\n' +
-          '**发送时间**：{{ .N8 }}\n' +
-          '\n' +
-          '**规则详情**：[Prometheus控制台](https://www.baidu.com)\n' +
-          '\n' +
-          '**报警详情**：[Alertmanager控制台](https://www.baidu.com)\n',
+            '\n' +
+            '## <font color=\'#FF0000\'>【报警中】服务器{{ .N3 }}</font>\n' +
+            '\n' +
+            '{{ else if eq .N6 "resolved" }}\n' +
+            '\n' +
+            '## <font color=\'#20B2AA\'>【已恢复】服务器{{ .N3 }}</font>\n' +
+            '\n' +
+            '{{ else }}\n' +
+            '\n' +
+            '## 标题：信息通知\n' +
+            '\n' +
+            '{{ end }}\n' +
+            '\n' +
+            '====================\n' +
+            '\n' +
+            '**告警规则**：{{ .N1 }}\n' +
+            '\n' +
+            '**告警级别**：{{ .N2 }}\n' +
+            '\n' +
+            '**主机名称**：{{ .N3 }} \n' +
+            '\n' +
+            '**主机地址**：{{ .N4 }}\n' +
+            '\n' +
+            '**告警详情**：{{ .N5 }}\n' +
+            '\n' +
+            '**告警状态**：{{ .N6 }}\n' +
+            '\n' +
+            '**触发时间**：{{ .N7 }}\n' +
+            '\n' +
+            '**发送时间**：{{ .N8 }}\n' +
+            '\n' +
+            '**规则详情**：[Prometheus控制台](https://www.baidu.com)\n' +
+            '\n' +
+            '**报警详情**：[Alertmanager控制台](https://www.baidu.com)\n',
       }
     }
   },
@@ -93,10 +93,12 @@ export default {
     },
 
     //保存模板数据
-    pushTemplateData: function () {
+    pushTemplateData: function (updateData = true) {
       postTemplate(this.$store.getters.getNamespace, this.template).then(response => {
         console.log(response.data.result);
-        this.$message.success("数据库更新成功...")
+        if (updateData) {
+          this.$message.success("数据库更新成功...")
+        }
       }).catch(err => {
         console.log(err);
       });
@@ -110,6 +112,7 @@ export default {
 
         if (temp === undefined || temp === null || temp === "") {
           console.log("数据库里没有数据")
+          this.pushTemplateData(false); //如果数据库中没有数据，则把本地的demo数据存储过去。
         } else {
           this.template.template_content = temp;
           this.template.template_is_merge = isMerge;

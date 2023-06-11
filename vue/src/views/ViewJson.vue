@@ -1,19 +1,20 @@
 <template>
   <div>
-    <!--单独的一行-->
-    <el-row>
-      <!--开关-->
-      <el-col style="height: 60px;background-color: #cccccc">
-        <el-switch
-          v-model="thisRenders"
-          inactive-text="基础转发模式"
-          active-text="高级渲染模式"
-          style="height: 100%"
-          :width="40"
-          @change="updateNamespaceRenders"
-        ></el-switch>
-      </el-col>
-    </el-row>
+
+    <!--单独的一行，控制转发模式的开关-->
+    <!--<el-row>-->
+    <!--  &lt;!&ndash;开关&ndash;&gt;-->
+    <!--  <el-col style="height: 60px;background-color: #cccccc">-->
+    <!--    <el-switch-->
+    <!--      v-model="thisRenders"-->
+    <!--      inactive-text="基础转发模式"-->
+    <!--      active-text="高级渲染模式"-->
+    <!--      style="height: 100%"-->
+    <!--      :width="40"-->
+    <!--      @change="updateNamespaceRenders"-->
+    <!--    ></el-switch>-->
+    <!--  </el-col>-->
+    <!--</el-row>-->
 
     <!--渲染相关的功能设置-->
     <el-row
@@ -31,10 +32,12 @@
         <br>
         <!--变量映射-->
         <template v-if="configMapType===false">
+          <!--用户填写变量-->
           <DataMap class="shadow"></DataMap>
         </template>
 
         <template v-else>
+          <!--后端自动扁平化展开-->
           <DataMap2 class="shadow"></DataMap2>
         </template>
       </el-col>
@@ -61,7 +64,7 @@ export default {
   name: "ViewRequestData",
   data() {
     return {
-      thisRenders: false, //是否渲染的开关样式
+      thisRenders: true, //是否渲染的开关样式
       dialogVisible: false, //遮罩层是否显示
       configMapType: false
     }

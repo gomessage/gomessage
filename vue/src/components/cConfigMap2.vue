@@ -26,7 +26,7 @@
 
 import {queryFlattening, queryVars} from '@/service/requests'
 
-
+// TODO: 这个是后台自动展开变量（不过由于列表太长，用户体验不好，因此暂时先隐藏起来，并未启用）
 export default {
   name: "cConfigMap2",
   data() {
