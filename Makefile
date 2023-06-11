@@ -48,6 +48,7 @@ clean:
 	rm -rf ./*.db
 	rm -rf ./*.tar.gz
 	rm -rf ./config/*.db
+	rm -rf ./*.tgz
 
 
 ######################################
