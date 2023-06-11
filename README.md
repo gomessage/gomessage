@@ -128,7 +128,7 @@ docker run -d \
 
 ### 交流和反馈：
 
-微信扫码加入技术交流群：
+微信扫码加入GoMessage技术交流群：
 > 如果二维码失效可以添加作者微信号 `SPE3SRU3STAY` 邀请您进群。
 
 <img src="./assets/images/wechat.png" width="300" />
