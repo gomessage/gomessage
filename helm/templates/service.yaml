@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-{{ .Values.AppName }}
+  labels:
+    app: svc-{{ .Values.AppName }}
+spec:
+  selector:
+    app: sts-{{ .Values.AppName }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetPort }}
+      name: svc-{{ .Values.AppName }}
+      protocol: TCP
+  clusterIP: None

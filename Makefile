@@ -167,3 +167,12 @@ docker_push:
 .PHONY: package_push
 package_push:
 	@go run uploads.go --version=${VERSION}
+
+
+######################################
+# Target：推送到gomessage helm chart仓库
+######################################
+.PHONY: helm
+helm:
+	helm package helm
+	helm coding-push gomessage-${VERSION}.tgz gomessage

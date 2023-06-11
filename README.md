@@ -110,6 +110,41 @@ docker run -d \
     gomessage/gomessage:latest
 ```
 
+<br>
+
+#### Kubernetes内部署（完美支持）:
+
+方式一：使用helm部署
+```bash
+#添加 GoMessage Helm Chart 仓库
+helm repo add gomessage "https://occos-helm.pkg.coding.net/repos/gomessage"
+
+#更新helm索引
+helm repo update
+
+#安装gomessage到您的集群中
+helm install gomessage-service gomessage/gomessage \
+  --namespace="default" \                           #指定namespace
+  --set ingress.domain="gomessage.taycc.top" \      #指定gomessage暴露至k8s外的访问域名
+  --set ingress.ingressClassName="nginx"            #指定k8s中的 Ingress Classes 名称（低版本的k8s可能没有这个东西）
+```
+> - 如果您的k8s版本较低，那么作者已经封装好的helm chart包您可能无法使用；     
+> - 因此可能需要您自己手动封装一个属于自己的helm chart；     
+> - 您可以参考 /helm 目录内的文件，尝试封装自己的helm chart；     
+> - 如果您不想操作helm，则可以查看`方式二：使用原生yaml脚本部署`的方式来进行部署。
+
+方式二：使用原生yaml脚本部署     
+> 这里建议您把GoMessage服务部署成为一个StatefulSet服务；     
+> 若您只是临时测试，暂不担心GoMessage的数据丢失，则部署为Deployment也未尝不可。      
+> 完整的投产，需要部署四个服务：
+> - 部署一个StatefulSet服务
+> - 创建一个PVC存储卷
+> - 部署一个Service无头服务
+> - 部署一个Ingress，把`GoMessage服务`开放到集群外部可以被访问到。
+
+具体的脚本内容：`有空再补充...`
+
+
 <br><br>
 
 #### Linux服务器上进行安装：

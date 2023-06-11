@@ -4,6 +4,8 @@ vue/.idea
 vue/node_modules
 *.iml
 *.log
+*.tgz
+*/*.tgz
 *.db
 ./config/*.db
 *.sqlite
