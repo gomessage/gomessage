@@ -144,7 +144,10 @@ systemctl restart gomessage.service
 假定此时您部署GoMessage的服务器地址为`192.168.88.33`，您打开浏览器访问`http://192.168.88.33:7077`
 地址，就可以成功访问GoMessage的服务啦~
 
-第一次访问GoMessage的页面显示如下：
+
+## 访问界面
+
+第一次访问GoMessage的页面显示如下（这是v1.0版的界面，以后得界面可能会有变化）：
 
 ![image-20211223161137899](https://img.taycc.com/picgo/image-20211223161137899.png)
 

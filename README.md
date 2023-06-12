@@ -55,8 +55,6 @@ GoMessage是一款消息转发器，主要功能为：
 > - 加作者微信 `SPE3SRU3STAY` 进入GoMessage技术交流群。
 
 
-<br><br>
-
 
 
 <br><br>
