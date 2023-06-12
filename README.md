@@ -68,7 +68,7 @@ GoMessage是一款消息转发器，主要功能为：
 - [在Linux裸机上部署（稳定性经过生产验证，部署过程略微繁琐）](wiki/install_linux.md)
 
 
-- [使用Helm Chart在Kubernetes集群中部署（完美支持）](wiki/install_helm.md)
+- [使用Helm Chart在Kubernetes集群中部署（不完美支持、还在不断封装中）](wiki/install_helm.md)
 
 
 - [使用Yaml脚本在Kubernetes集群中部署（完美支持）](wiki/install_yaml.md)
