@@ -82,7 +82,7 @@ GoMessage是一款消息转发器，主要功能为：
 
 <br><br>
 
-# 安装包下载：
+### 安装包下载：
 
 安装包下载地址（国内）：https://gitee.com/gomessage/gomessage/releases （这个地址国内访问速度快~）
 
