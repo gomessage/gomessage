@@ -106,21 +106,27 @@ GoMessage是一款消息转发器，主要功能为：
 
 每个通道都会自动生成一个独立的消息入口，如上图所示的那样：
 
-- `default通道`消息入口：http://gomessage.taycc.top/go/message 
-- `prometheus通道`消息入口：http://gomessage.taycc.top/go/prometheus
+- `default通道`消息入口：`http://gomessage.taycc.top/go/message` 
+- `prometheus通道`消息入口：`http://gomessage.taycc.top/go/prometheus`
 
 
 
 通道的命名规则为：`http://<您的服务器地址>/go/<您的通道名称>`，例如：
 
 ```bash
-- http://192.168.33.201:7077/go/message 
+- http://192.168.33.201:7077/go/message
+ 
+- http://192.168.33.201:7077/go/default 
+
 - http://192.168.33.201:7077/go/<prometheus>
+
 - http://192.168.33.201:7077/go/<zabbix>
+
 - http://192.168.33.201:7077/go/<dev>
+
 - http://192.168.33.201:7077/go/<fat>
+
 - http://192.168.33.201:7077/go/<prod>
-- 等等...
 ```
 
 
@@ -131,9 +137,9 @@ GoMessage是一款消息转发器，主要功能为：
 >
 > 也就是说，您向以下两个地址推送消息时，效果是等价的：
 >
-> - http://192.168.33.201:7077/go/message 
+> - `http://192.168.33.201:7077/go/message` 
 >
-> - http://192.168.33.201:7077/go/defautl
+> - `http://192.168.33.201:7077/go/default`
 >
 >   
 >
