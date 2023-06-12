@@ -147,7 +147,7 @@ systemctl restart gomessage.service
 
 ## 访问界面
 
-第一次访问GoMessage的页面显示如下（这是v1.0版的界面，以后得界面可能会有变化）：
+第一次访问GoMessage的页面显示如下（这是v1.0版的界面，不排除以后的界面可能会有变化）
 
 ![image-20211223161137899](https://img.taycc.com/picgo/image-20211223161137899.png)
 
