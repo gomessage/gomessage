@@ -121,9 +121,7 @@ GoMessage是一款消息转发器，主要功能为：
 - http://192.168.33.201:7077/go/<prod>
 - 等等...
 
-> PS：
->
-> 当`通道名称`为`default`时，GoMessage的域名生成模块会用`message`来代替`default`这个单词拼写显示在UI界面上，二者在路由层面的功能是一样的，此时 `路由/go/message` == `路由/go/default` ; 
+> PS：当`通道名称`为`default`时，GoMessage的域名生成模块会用`message`来代替`default`这个单词拼写显示在UI界面上，二者在路由层面的功能是一样的，此时 `路由/go/message` == `路由/go/default` ; 
 >
 > 
 >
