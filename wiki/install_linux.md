@@ -32,6 +32,8 @@ cd ~/
 wget https://github.com/gomessage/gomessage/releases/download/版本号/gomessage-版本号-linux-x64.tar.gz
 ```
 
+<br>
+
 ### 创建工作目录
 
 （作者推荐您将工作目录设置在 /opt/gomessage/ 目录中，可以干净清爽一些，不会污染系统上干的其它目录）
@@ -40,6 +42,8 @@ wget https://github.com/gomessage/gomessage/releases/download/版本号/gomessag
 # 创建一个新目录/opt/gomessage
 mkdir -p /opt/gomessage
 ```
+
+<br>
 
 ### 解压安装包
 
@@ -67,7 +71,7 @@ sudo chmod +x /opt/gomessage/gomessage
 假设此时我的服务器地址为：`192.168.33.201`，那么我访问GoMessage的地址就应该是：`http://192.168.33.201:7077`
 
 
-<br><br><br><br>
+<br>
 
 
 > 虽然GoMessage服务已经可以正常启动了；     
@@ -75,6 +79,8 @@ sudo chmod +x /opt/gomessage/gomessage
 > 
 > Linux会有一套自己的QOS机制来管理自身的资源分配和回收；     
 > 因此作者推荐您将GoMessage服务封装为`Systemd守护进程`的方式来运行。
+
+<br><br>
 
 ## 封装systemd守护进程（以守护进程的方式来运行GoMessage）
 
@@ -133,6 +139,8 @@ systemctl enable  gomessage.service   #设置gomessage服务为开机启动
 systemctl disable gomessage.service.  #取消gomessage服务的开机启动
 ```
 
+<br><br>
+
 ## 重启服务
 
 执行如下命令启动GoMessage服务
@@ -141,9 +149,11 @@ systemctl disable gomessage.service.  #取消gomessage服务的开机启动
 systemctl restart gomessage.service
 ```
 
-假定此时您部署GoMessage的服务器地址为`192.168.88.33`，您打开浏览器访问`http://192.168.88.33:7077`
-地址，就可以成功访问GoMessage的服务啦~
+假定此时您部署GoMessage的服务器地址为`192.168.33.201`；
 
+您打开浏览器访问 `http://192.168.33.201:7077` 这个地址地址，就可以成功的访问GoMessage的服务啦~
+
+<br><br>
 
 ## 访问界面
 
