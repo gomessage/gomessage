@@ -80,6 +80,15 @@ GoMessage是一款消息转发器，主要功能为：
 - [在Mac机器上启动](wiki/install_mac.md)
 
 
+<br><br>
+
+# 安装包下载：
+
+安装包下载地址（国内）：https://gitee.com/gomessage/gomessage/releases （这个地址国内访问速度快~）
+
+安装包下载地址（国外）：https://github.com/gomessage/gomessage/releases
+
+> 目前提供有Linux、Mac、Windows三个版本的安装包（x86_64架构），如需支持其它版本，可以自行下载源码编译，也可以直接联系作者编译出指定版本的安装包。
 
 
 <br><br>
