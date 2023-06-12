@@ -57,7 +57,7 @@ metadata:
   namespace: default
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteMany    #由于要在多个pod之间共享元数据信息，这里必须选择"ReadWriteMany"，有的云厂商提供的存储类型不让选这个，那就找一个nfs类型的存储类，绝对是可以的。
   resources:
     requests:
       storage: 100Mi
