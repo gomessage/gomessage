@@ -57,101 +57,51 @@ GoMessage是一款消息转发器，主要功能为：
 
 <br><br>
 
-### 安装包下载：
 
-下载地址（国内）：https://gitee.com/gomessage/gomessage/releases （国内用这个，速度很快~）
-
-下载地址（国外）：https://github.com/gomessage/gomessage/releases
 
 <br><br>
 
 ### 安装步骤：
 
+
+- [使用Docker部署（强烈推荐，满足日常内网使用场景）](wiki/install_docker.md)
+
+
+- [在Linux裸机上部署（稳定性经过生产验证，部署过程略微繁琐）](wiki/install_linux.md)
+
+
+- [使用Helm Chart在Kubernetes集群中部署（完美支持）](wiki/install_helm.md)
+
+
+- [使用Yaml脚本在Kubernetes集群中部署（完美支持）](wiki/install_yaml.md)
+
+
+- [在Windows机器上启动](wiki/install_windows.md)
+
+
+- [在Mac机器上启动](wiki/install_mac.md)
+
+
+
+
 <br>
 
-#### Docker方式（强烈推荐）：
 
-前台启动，只运行一次 (容器停止后自动删除，不残留和污染本地环境)：
-
-```bash
-docker run --rm \
-    -p 7077:7077 \
-    gomessage/gomessage:latest 
-```
-
-后台运行，只运行一次 (容器停止后自动删除，不残留和污染本地环境)：
-
-```bash
-docker run -d \
-    -p 7077:7077 \
-    --rm \
-    --name=gomessage \
-    gomessage/gomessage:latest
-```
-
-稳定的运行 (且设定为开机启动)：
-
-```bash
-docker run -d \
-    -p 7077:7077 \
-    --restart=always \
-    --name=gomessage \
-    gomessage/gomessage:latest
-```
-
-稳定的运行 (且设定为开机启动)；同时保存数据文件到宿主机上，下次使用新版镜像时，原来的数据不丢失
-
-```bash
-docker run -d \
-    -p 7077:7077 \
-    -v /data:/opt/gomessage/data \
-    --restart=always \
-    --name=gomessage \
-    gomessage/gomessage:latest
-```
 
 <br>
 
 #### Kubernetes内部署（完美支持）:
 
-##### 方式一：使用Helm部署
 
-如果您的k8s版本低于1.26.x，那么作者已经封装好的helm chart可能您无法使用，因为在1.26.x版本中k8s官方变动了一些api；此时您可以自己封装一个老版本的helm chart（或）喊作者帮您封装（作者微信：`SPE3SRU3STAY`）；要是您想时间上快速部署起来，也可以直接查看`方式二：使用原生yaml脚本部署`的方式来进行操作。
 
-```bash
-#添加 GoMessage Helm Chart 仓库
-helm repo add gomessage "https://occos-helm.pkg.coding.net/repos/gomessage"
 
-#更新helm索引
-helm repo update
-
-#安装gomessage到您的集群中
-helm install gomessage-service gomessage/gomessage \
-  --namespace="default" \                           #指定namespace
-  --set ingress.domain="gomessage.taycc.top" \      #指定gomessage暴露至k8s外的访问域名
-  --set ingress.ingressClassName="nginx"            #指定k8s中的 Ingress Classes 名称（低版本的k8s可能没有这个东西）
-```
-
-<br>
-
-方式二：使用原生yaml脚本部署     
-> 这里建议您把GoMessage服务部署成为一个StatefulSet服务；     
-> 若您只是临时测试，不担心GoMessage的数据丢失，则部署为Deployment也未尝不可。  
->      
-> 完整的投产，需要部署四个服务：
-> - 部署一个StatefulSet服务
-> - 创建一个PVC存储卷
-> - 部署一个Service无头服务
-> - 部署一个Ingress，把`GoMessage服务`开放到集群外部可以被访问到。
-
-具体的脚本内容：`有空再补充...`
 
 
 <br><br>
 
 #### Linux服务器上进行安装：
 
-- [Linux环境下的安装](wiki/install.md)
+- [Linux环境下的安装](wiki/install_linux.md)
 
 #### Windows服务器上进行安装：
 
