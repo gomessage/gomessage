@@ -24,7 +24,9 @@ helm install \
     --namespace="default"
 ```
 
-参数说明
+<br>
+
+参数说明：
 
 `gomessage-service`：代表GoMessage服务，安装到您的k8s集群里时的名字，您可以自定义。     
 `gomessage/gomessage`：是GoMessage服务的官方仓库。     
