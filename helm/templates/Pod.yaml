@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: {{ .Values.AppName }}
+  labels:
+    app: {{ .Values.AppName }}
+spec:
+  containers:
+    - name: {{ .Values.AppName }}
+      image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+      ports:
+        - containerPort: {{ .Values.service.targetPort }}
+      env:
+        - name: version
+          value: {{ .Values.image.tag }}
