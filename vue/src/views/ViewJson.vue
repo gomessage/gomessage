@@ -2,19 +2,19 @@
   <div>
 
     <!--单独的一行，控制转发模式的开关-->
-    <el-row>
-      <!--开关-->
-      <el-col style="height: 60px;background-color: #cccccc">
-        <el-switch
-          v-model="thisRenders"
-          inactive-text="关闭渲染"
-          active-text="开启渲染"
-          style="height: 100%"
-          :width="40"
-          @change="updateNamespaceRenders"
-        ></el-switch>
-      </el-col>
-    </el-row>
+    <!--<el-row>-->
+    <!--  &lt;!&ndash;开关&ndash;&gt;-->
+    <!--  <el-col style="height: 60px;background-color: #cccccc">-->
+    <!--    <el-switch-->
+    <!--      v-model="thisRenders"-->
+    <!--      inactive-text="关闭渲染"-->
+    <!--      active-text="开启渲染"-->
+    <!--      style="height: 100%"-->
+    <!--      :width="40"-->
+    <!--      @change="updateNamespaceRenders"-->
+    <!--    ></el-switch>-->
+    <!--  </el-col>-->
+    <!--</el-row>-->
 
     <!--渲染相关的功能设置-->
     <el-row
