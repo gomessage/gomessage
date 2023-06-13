@@ -6,7 +6,7 @@ metadata:
   labels:
     app: {{ .Chart.Name }}
 spec:
-  type: ClusterIP
+  type: NodePort
   selector:
     app: {{ .Chart.Name }}
   ports:
