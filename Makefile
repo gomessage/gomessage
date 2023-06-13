@@ -160,6 +160,12 @@ docker_push:
 	@echo "\n---------推送镜像完成，版本${VERSION}---------\n"
 	@docker push gomessage/gomessage:latest
 	@echo "\n---------推送镜像完成，版本latest---------\n"
+	@gsed -i '/version:/c version: ${VERSION}' ./helm/Chart.yaml
+	@gsed -i '/appVersion:/c appVersion: ${VERSION}' ./helm/Chart.yaml
+	helm package helm
+	helm coding-push gomessage-${VERSION}.tgz gomessage
+	rm -rf ./*.tgz
+	@echo "\n---------制作 Helm Chart 并推送到仓库---------\n"
 
 
 ######################################
@@ -175,5 +181,8 @@ package_push:
 ######################################
 .PHONY: helm
 helm:
+	@gsed -i '/version:/c version: ${VERSION}' ./helm/Chart.yaml
+	@gsed -i '/appVersion:/c appVersion: ${VERSION}' ./helm/Chart.yaml
 	helm package helm
 	helm coding-push gomessage-${VERSION}.tgz gomessage
+	rm -rf ./*.tgz
