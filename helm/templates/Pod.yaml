@@ -1,15 +1,15 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: {{ .Values.AppName }}
+  name: {{ .Chart.Name }}
   labels:
-    app: {{ .Values.AppName }}
+    app: {{ .Chart.Name }}
 spec:
   containers:
-    - name: {{ .Values.AppName }}
-      image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+    - name: {{ .Chart.Name }}
+      image: "gomessage/gomessage:{{ .Chart.AppVersion }}"
       ports:
         - containerPort: {{ .Values.service.targetPort }}
       env:
         - name: version
-          value: {{ .Values.image.tag }}
+          value: {{ .Chart.AppVersion }}

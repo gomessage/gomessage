@@ -2,14 +2,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.AppName }}
+  name: {{ .Chart.Name }}
   labels:
-    app: {{ .Values.AppName }}
+    app: {{ .Chart.Name }}
 spec:
   type: ClusterIP
   selector:
-    app: {{ .Values.AppName }}
+    app: {{ .Chart.Name }}
   ports:
     - port: {{ .Values.service.port }}
       targetPort: {{ .Values.service.targetPort }}
-      name: {{ .Values.AppName }}
+      name: {{ .Chart.Name }}
