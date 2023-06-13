@@ -3,17 +3,12 @@
 # Declare variables to be passed into your templates.
 
 AppName: gomessage
-version: "2.1.5"
-
-replicaCount: 2
 image:
   repository: gomessage/gomessage
   tag: "2.1.5"
-
 service:
   port: 80
   targetPort: 7077
-
 ingress:
-  domain: gomessage.taycc.top
-  ingressClassName: nginx
+  domain: gomessage.example.com
+  ingressClassName: qcloud

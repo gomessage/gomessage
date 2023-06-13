@@ -2,15 +2,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: svc-{{ .Values.AppName }}
+  name: {{ .Values.AppName }}
   labels:
-    app: svc-{{ .Values.AppName }}
+    app: {{ .Values.AppName }}
 spec:
+  type: ClusterIP
   selector:
-    app: sts-{{ .Values.AppName }}
+    app: {{ .Values.AppName }}
   ports:
     - port: {{ .Values.service.port }}
       targetPort: {{ .Values.service.targetPort }}
-      name: svc-{{ .Values.AppName }}
-      protocol: TCP
-  clusterIP: None
+      name: {{ .Values.AppName }}
