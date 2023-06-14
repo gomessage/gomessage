@@ -18,8 +18,18 @@ helm repo add gomessage "https://occos-helm.pkg.coding.net/repos/gomessage"
 helm repo update
 
 #安装gomessage到您的集群中
-helm install gomessage-service gomessage/gomessage \
-  --namespace="default" \                           #指定namespace
-  --set ingress.domain="gomessage.taycc.top" \      #指定gomessage暴露至k8s外的访问域名
-  --set ingress.ingressClassName="nginx"            #指定k8s中的 Ingress Classes 名称（低版本的k8s可能没有这个东西）
+helm install \
+    gomessage-service \
+    gomessage/gomessage \
+    --namespace="default"
 ```
+
+<br>
+
+参数说明：
+
+`gomessage-service`：代表GoMessage服务，安装到您的k8s集群里时的名字，您可以自定义。     
+`gomessage/gomessage`：是GoMessage服务的官方仓库。     
+`--namespace`：代表您这个将会把服务安装到哪个命名空间下（如果不需要这个参数，那么会默认安装到`default`命名空间下）。     
+
+

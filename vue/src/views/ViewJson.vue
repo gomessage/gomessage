@@ -7,8 +7,8 @@
     <!--  <el-col style="height: 60px;background-color: #cccccc">-->
     <!--    <el-switch-->
     <!--      v-model="thisRenders"-->
-    <!--      inactive-text="基础转发模式"-->
-    <!--      active-text="高级渲染模式"-->
+    <!--      inactive-text="关闭渲染"-->
+    <!--      active-text="开启渲染"-->
     <!--      style="height: 100%"-->
     <!--      :width="40"-->
     <!--      @change="updateNamespaceRenders"-->
@@ -21,7 +21,7 @@
       style="padding: 20px 0;margin-left: 0;margin-right: 0"
       :gutter="20"
       v-loading="dialogVisible"
-      element-loading-text='每个通道都可以独立开启【高级渲染模式】把过境数据"渲染为人类可读"的信息.... 若不开启此模式则当前通道只会将数据"原封不动"的送达至目标客户端。'
+      element-loading-text='启用【渲染功能】会把过境数据"渲染为人类可读"的信息；若不开启则只会将数据"原封不动"的送达至目标客户端！'
       element-loading-spinner="el-icon-info"
       element-loading-background="rgba(0, 0, 0, 0.95)"
     >
