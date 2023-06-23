@@ -46,9 +46,11 @@ docker run -d \
 稳定的运行 (且设定为开机启动)；同时保存数据文件到宿主机上，下次使用新版镜像时，原来的数据不丢失
 
 ```bash
+mkdir -p /opt/gomessage/data
+
 docker run -d \
     -p 7077:7077 \
-    -v /data:/opt/gomessage/data \
+    -v /opt/gomessage/data:/opt/gomessage/data \
     --restart=always \
     --name=gomessage \
     gomessage/gomessage:latest
