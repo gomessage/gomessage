@@ -3,6 +3,7 @@ package views
 import (
 	"bytes"
 	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 	"gomessage/apps/controllers/core/v1"
 	"gomessage/apps/controllers/core/v3"
 	"gomessage/apps/controllers/hijacking"
@@ -21,7 +22,7 @@ func GoMessageByTransport(g *gin.Context) {
 	/*
 	 * TODO: 获取通道信息
 	 */
-	nsInfo := v1.GetNsInfo(g.Param("namespace"))
+	nsObject := v1.GetNsInfo(g.Param("namespace"))
 
 	/*
 	 * TODO: 获取过境数据
@@ -35,15 +36,20 @@ func GoMessageByTransport(g *gin.Context) {
 		return
 	}
 
+	loggers.PushLogger.WithFields(logrus.Fields{
+		"namespace": nsObject.Name,
+		"content":   string(hijacking.CacheData.RequestByte),
+	}).Info("接收消息推送")
+
 	/*
 	 * TODO: 写入缓存便于劫持层读取信息
 	 */
-	hijacking.SetCacheData(nsInfo.Name, hijacking.CacheData) //把推送过来的数据写入缓存（一个命名空间中，同一时间只能写入一条数据）
+	hijacking.SetCacheData(nsObject.Name, hijacking.CacheData) //把推送过来的数据写入缓存（一个命名空间中，同一时间只能写入一条数据）
 
 	/*
 	 * TODO: 获取通道的用户配置信息
 	 */
-	nsUserConfig := v1.GetNamespaceUserConfig(nsInfo.Name, nsInfo.IsRenders) //"通道自身信息"与"通道中用户添加的信息"不要搞混了
+	nsUserConfig := v1.GetNamespaceUserConfig(nsObject.Name, nsObject.IsRenders) //"通道自身信息"与"通道中用户添加的信息"不要搞混了
 
 	/*
 	 * TODO: 根据不同的客户端来产生对应的操作
@@ -86,7 +92,7 @@ func GoMessageByTransport(g *gin.Context) {
 		 * 如果此时用户打开"渲染开关"，则过境数据会被"渲染层"捞走，借用GoMessage强大的渲染能力把原始json信息转染成"人类可读"的很美观的信息格式
 		 * 最后再下沉到"转发层"继续向后推送
 		 */
-		if nsInfo.IsRenders {
+		if nsObject.IsRenders {
 			//渲染出需要的"内容体"
 			contentList := v3.RendersContentData(hijacking.CacheData.RequestByte, nsUserConfig.VariablesMap, nsUserConfig.MessageTemplate)
 			//渲染出需要的"消息体"

@@ -12,7 +12,7 @@ func InitConfig() {
 	//默认配置文件路径（以后可以被其它形式替换掉，这样就可以支持多配置文件了）
 	defaultConfigPath := "config/default.yaml"
 
-	//加载的配置文件（写法二）
+	//加载的配置文件
 	viper.SetConfigFile(defaultConfigPath)
 
 	//读取配置文件（读取上面指定的配置文件）

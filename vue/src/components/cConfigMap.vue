@@ -4,7 +4,7 @@
     <!--卡片标题-->
     <div slot="header" class="clearfix">
       <span style="padding-left: 50px">自定义变量映射</span>
-      <el-button style="float: right; padding: 3px 0" type="text" v-on:click="post_data">保存变量</el-button>
+      <el-button style="float: right; padding: 3px 0" type="text" v-on:click="PushVarData">保存变量</el-button>
     </div>
 
     <!--        <el-row style="color: #C0C4CC;font-size: 12px;line-height: 1.7;padding-bottom: 20px">-->
@@ -144,7 +144,7 @@ export default {
             this.newMap.mapValue = "";
 
             this.$message.success("添加成功...");
-            this.post_data()
+            this.PushVarData()
           }
         }
       })
@@ -154,11 +154,11 @@ export default {
     // 因为每次提交到后端的变量映射，都会再数据库中删除全部的映射，重新再保存一份当前的最新映射
     deleteRow(index, rows) {
       rows.splice(index, 1);
-      this.post_data()
+      this.PushVarData()
     },
 
     // 提交数据
-    post_data: function (updateData = true) {
+    PushVarData: function (updateData = true) {
       const dataList = [];
       for (let i = 0; i < this.configList.length; i++) {
         let mapKey = this.configList[i].key;
@@ -184,15 +184,15 @@ export default {
     },
 
     //拉取后端数据库中的数据
-    pullMapData: function () {
+    PullVarData: function () {
       queryVars(this.$store.getters.getNamespace, null).then(response => {
-        //声明一个空的list便于下文存放数据
-        let tmpDataList = [];
+
         //判断response的长度是否为0，如果为0，则代表数据库中没有查询到数据
         if (response.data.result.length === 0) {
-          console.log("数据库里没有数据")
-          this.post_data(false); //如果数据库里没有数据，则把前端的demo数据存入进去
+          this.PushVarData(false); //如果数据库里没有数据，则把前端的demo数据存入进去
         } else {
+          //声明一个空的list便于下文存放数据
+          let tmpDataList = [];
           //遍历response中的数据
           response.data.result.forEach(iData => {
             //声明一个临时的字典
@@ -214,7 +214,7 @@ export default {
 
   //created生命周期
   created() {
-    this.pullMapData();
+    this.PullVarData();
   }
 }
 </script>

@@ -12,16 +12,18 @@ func ResponseSuccessful(msg string, result any) ResponseTemplate {
 	return ResponseTemplate{
 		Code:   1,
 		Msg:    msg,
+		Result: result, //响应成功要把result附上
+		Error:  nil,
 		Help:   "帮助信息请查看：https://github.com/gomessage/gomessage/blob/master/wiki/response.md ",
-		Result: result,
 	}
 }
 
 func ResponseFailure(msg string, error any) ResponseTemplate {
 	return ResponseTemplate{
-		Code:  0,
-		Msg:   msg,
-		Help:  "帮助信息请查看：https://github.com/gomessage/gomessage/blob/master/wiki/response.md ",
-		Error: error,
+		Code:   0,
+		Msg:    msg,
+		Result: nil,
+		Error:  error, //响应失败要把error附上
+		Help:   "帮助信息请查看：https://github.com/gomessage/gomessage/blob/master/wiki/response.md ",
 	}
 }

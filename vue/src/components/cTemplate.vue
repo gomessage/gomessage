@@ -3,7 +3,7 @@
     <div slot="header" class="clearfix">
 
       <!--是否聚合发送信息-->
-      <el-switch v-model="template.template_is_merge" inactive-text="聚合发送" style="float: left; padding: 3px 0;" @change="pushTemplateData"></el-switch>
+      <el-switch v-model="template.template_is_merge" inactive-text="聚合发送" style="float: left; padding: 3px 0;" @change="PushTemplateData"></el-switch>
 
       <!--教程提示按钮，跳转代码-->
       <el-tooltip class="item" content='跳转到新页面：查看"消息模板"编写教程' effect="dark" placement="bottom" style="float: left;margin-left: 30px;padding-top: 3px;">
@@ -16,7 +16,7 @@
       <span style="margin-right: 70px">消息渲染模板</span>
 
       <!--保存模板-->
-      <el-button style="float: right; padding: 3px 0;" type="text" v-on:click="pushTemplateData()">保存模板</el-button>
+      <el-button style="float: right; padding: 3px 0;" type="text" v-on:click="PushTemplateData()">保存模板</el-button>
     </div>
 
     <!--<el-row style="color: #C0C4CC;font-size: 12px;line-height: 1.7;padding-bottom: 20px">-->
@@ -93,7 +93,7 @@ export default {
     },
 
     //保存模板数据
-    pushTemplateData: function (updateData = true) {
+    PushTemplateData: function (updateData = true) {
       postTemplate(this.$store.getters.getNamespace, this.template).then(response => {
         console.log(response.data.result);
         if (updateData) {
@@ -105,15 +105,13 @@ export default {
     },
 
     //拉取数据
-    pullTemplateData: function () {
+    PullTemplateData: function () {
       getTemplate(this.$store.getters.getNamespace, null).then(response => {
-        let temp = response.data.result[0]["template_content"]
-        let isMerge = response.data.result[0]["template_is_merge"]
-
-        if (temp === undefined || temp === null || temp === "") {
-          console.log("数据库里没有数据")
-          this.pushTemplateData(false); //如果数据库中没有数据，则把本地的demo数据存储过去。
+        if (response.data.result.length === 0) {
+          this.PushTemplateData(false); //如果数据库中没有数据，则把本地的demo数据存储过去。
         } else {
+          let temp = response.data.result[0]["template_content"]
+          let isMerge = response.data.result[0]["template_is_merge"]
           this.template.template_content = temp;
           this.template.template_is_merge = isMerge;
         }
@@ -127,7 +125,7 @@ export default {
     //修改步骤条的值
     this.$store.commit("updateStepsActive", 2);
     //拉取数据
-    this.pullTemplateData();
+    this.PullTemplateData();
   }
 }
 </script>
