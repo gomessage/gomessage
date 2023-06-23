@@ -23,8 +23,12 @@ log:
   runtimeLogFile: ./gomessage-runtime.log     # 该文件记录"运行时"的日志
   accessLogFile: ./gomessage-access.log       # 该文件记录"access"的日志
   pushLogFile: ./gomessage-push.log           # 该文件记录"推送数据"的日志
-  #这是一个开关，如果设定为true则会把日志也送入es中，如果为false则什么也不做（索引格式：gomessage-runtime-2022.03.05、gomessage-access-2022.03.05、gomessage-push-2022.03.05）
-  log2es: true                                # （仅支持Elasticsearch 7.x以上的版本）
+  # log2es 这个参数是一个开关；
+  # 如果设定为true则会把日志也送入es中；
+  # 如果为false则什么也不做；
+  # 索引格式：gomessage-runtime-2022.03.05、gomessage-access-2022.03.05、gomessage-push-2022.03.05。
+  #（仅支持Elasticsearch 7.x以上的版本）
+  log2es: false
   es:                                         # 如果 log2es==true 时，下面的es相关的信息才会生效。
     username: "elastic"                       # 如果您的es连接不需要账号密码，请把这里设置为""
     password: "123456"                        # 如果您的es连接不需要账号密码，请把这里设置为""
