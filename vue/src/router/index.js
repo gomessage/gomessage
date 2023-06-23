@@ -12,12 +12,12 @@ const routes = [
     name: '1-1',
     component: Home
   },
-  {
-    //数据格式化页面
-    path: '/data_format',
-    name: 'DataFormat',
-    component: () => import( '@/components/cCodeFormat.vue')
-  },
+  // {
+  //   //数据格式化页面
+  //   path: '/data_format',
+  //   name: 'DataFormat',
+  //   component: () => import( '@/components/cCodeFormat.vue')
+  // },
   // {
   //     //消息模板页面
   //     path: '/data_template',
@@ -26,13 +26,13 @@ const routes = [
   // },
   {
     //客户端配置页面
-    path: '/request_data',
+    path: '/renders',
     name: '2-1',
     component: () => import( '../views/ViewJson.vue')
   },
   {
     //客户端配置页面
-    path: '/data_client',
+    path: '/clients',
     name: '3-1',
     component: () => import( '../views/ViewClient.vue')
   }

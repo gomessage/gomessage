@@ -18,7 +18,7 @@
             </router-link>
 
             <!-- 按钮 -->
-            <router-link to="/request_data">
+            <router-link to="/renders">
                 <el-menu-item index="33">RequestData</el-menu-item>
             </router-link>
 
@@ -29,7 +29,7 @@
             </router-link>
 
             <!-- 按钮 -->
-            <router-link to="/data_client">
+            <router-link to="/clients">
                 <el-menu-item index="4">客户端配置</el-menu-item>
             </router-link>
 

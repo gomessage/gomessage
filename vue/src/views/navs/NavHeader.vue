@@ -43,12 +43,12 @@
       </router-link>
 
 
-      <router-link to="/request_data">
+      <router-link to="/renders">
         <el-menu-item index="2-1"><i class="el-icon-set-up"></i>数据渲染</el-menu-item>
       </router-link>
 
 
-      <router-link to="/data_client">
+      <router-link to="/clients">
         <el-menu-item index="3-1"><i class="el-icon-chat-dot-square"></i>接收客户端</el-menu-item>
       </router-link>
 
