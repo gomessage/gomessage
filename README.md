@@ -247,5 +247,5 @@ GoMessage尽可能的设计了比较`简约、简单、且有广泛兼容性`的
 
 > 如果二维码失效可以添加作者微信号 `SPE3SRU3STAY` 邀请您进群。
 
-<img src="./wiki/images/image-20230625003012178.png" width="300" />
+<img src="wiki/images/wechat.png" width="300" />
 
