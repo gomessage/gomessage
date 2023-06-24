@@ -2,15 +2,15 @@
   <!--#303133-->
   <!--#000000-->
   <el-menu
-    :collapse-transition="true"
-    :default-active="$route.name"
-    active-text-color="#ffd04b"
-    background-color="#161823"
-    mode="horizontal"
-    router
-    style="height: 100%;"
-    text-color="#fff"
-    @select="handleSelect"
+      :collapse-transition="true"
+      :default-active="$route.name"
+      active-text-color="#ffd04b"
+      background-color="#161823"
+      mode="horizontal"
+      router
+      style="height: 100%;"
+      text-color="#fff"
+      @select="handleSelect"
   >
     <!-- background-color="#303133" text-color="#fff" active-text-color="#ffd04b" collapse-transition=true style="height: 100%">-->
 
@@ -26,9 +26,9 @@
     <el-menu-item style="padding: 0;">
       <router-link to="/">
         <el-button
-          type="text"
-          icon="el-icon-location"
-          style="color: #fff;margin-left: 10px;">
+            type="text"
+            icon="el-icon-location"
+            style="color: #fff;margin-left: 10px;">
           {{ getStoreNamespace }}
         </el-button>
       </router-link>
@@ -52,19 +52,19 @@
         <el-menu-item index="3-1"><i class="el-icon-chat-dot-square"></i>接收客户端</el-menu-item>
       </router-link>
 
-      <!--            <el-link href="https://gitee.com/gomessage/gomessage#gomessage" :underline="false" type="primary" target="_blank">-->
-      <!--                <el-menu-item><i class="el-icon-notebook-2"></i>文档</el-menu-item>-->
-      <!--            </el-link>-->
+      <!--指向Github的文档地址-->
+      <!--<el-menu-item>-->
+      <!--  <el-link :underline="false" href="https://github.com/gomessage/gomessage#gomessage" target="_blank" type="primary">-->
+      <!--    <i class="el-icon-document"></i>文档-->
+      <!--  </el-link>-->
+      <!--</el-menu-item>-->
 
+      <!--指向语雀的文档地址-->
       <el-menu-item>
-        <el-link :underline="false" href="https://github.com/gomessage/gomessage#gomessage" target="_blank"
-                 type="primary"><i class="el-icon-document"></i>文档
+        <el-link :underline="false" href="https://www.yuque.com/osoc/gomessage" target="_blank" type="primary">
+          <i class="el-icon-document"></i>文档
         </el-link>
       </el-menu-item>
-
-      <!--            <el-link href="https://gitee.com/gomessage/gomessage#gomessage" :underline="false" type="primary" target="_blank">-->
-      <!--                <el-menu-item><i class="el-icon-notebook-2"></i>文档</el-menu-item>-->
-      <!--            </el-link>-->
 
     </el-row>
 

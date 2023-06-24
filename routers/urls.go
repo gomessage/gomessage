@@ -11,7 +11,7 @@ import (
 	"net/http"
 )
 
-func initStatic(g *gin.Engine) {
+func AddStatic(g *gin.Engine) {
 	g.StaticFile("/favicon.ico", "./assets/favicon.ico")
 	g.Static("/static", "assets/vue/static")
 	g.LoadHTMLGlob("assets/vue/*.html")
@@ -25,18 +25,9 @@ func Path(g *gin.Engine) {
 	//中间件
 	g.Use(middleware.Cors())
 	g.Use(middleware.AccessLog())
-
-	// Once it's done, you can attach the handler as one of your middleware
-	//g.Use(sentrygin.New(sentrygin.Options{}))
-	//g.Use(func(ctx *gin.Context) {
-	//	if hub := sentrygin.GetHubFromContext(ctx); hub != nil {
-	//		hub.Scope().SetTag("someRandomTag", "maybeYouNeedIt")
-	//	}
-	//	ctx.Next()
-	//})
-
 	//加载静态文件
-	initStatic(g)
+	AddStatic(g)
+
 	//路由重定向
 	g.GET("/", api.Index)
 	g.GET("/docs", func(c *gin.Context) { c.Redirect(http.StatusMovedPermanently, "/swagger/index.html") })
@@ -48,11 +39,11 @@ func Path(g *gin.Engine) {
 	//=======================
 	// gomessage数据入口
 	//=======================
-	g.GET("/go/:namespace", middleware.IsNamespace(), api.GoMessageByGet)                                //给单个路由追加中间件middleware.IsNamespace()
+	g.GET("/go/:namespace", middleware.CheckNamespace(), api.GoMessageByGet)                             //给单个路由追加中间件middleware.CheckNamespace()
 	g.GET("/go", func(c *gin.Context) { c.Request.URL.Path = "/go/message"; g.HandleContext(c) })        //把"/go"重定向到"/go/message"的路由上
 	g.GET("/gomessage", func(c *gin.Context) { c.Request.URL.Path = "/go/message"; g.HandleContext(c) }) //把"/gomessage"重定向到"/go/message"的路由上
 	//接收数据推送
-	g.POST("/go/:namespace", middleware.IsNamespace(), api.GoMessageByTransport)                          //给单个路由追加中间件middleware.IsNamespace()
+	g.POST("/go/:namespace", middleware.CheckNamespace(), api.GoMessageByTransport)                       //给单个路由追加中间件middleware.CheckNamespace()
 	g.POST("/go", func(c *gin.Context) { c.Request.URL.Path = "/go/message"; g.HandleContext(c) })        //把"/go"重定向到"/go/message"的路由上
 	g.POST("/gomessage", func(c *gin.Context) { c.Request.URL.Path = "/go/message"; g.HandleContext(c) }) //把"/gomessage"重定向到"/go/message"的路由上
 
@@ -60,7 +51,7 @@ func Path(g *gin.Engine) {
 	// 用户操作接口：v1版本
 	//=======================
 	v1View := g.Group("/api/v1")
-	v1View.Use(middleware.IsNamespace())
+	v1View.Use(middleware.CheckNamespace())
 	{
 		//命名空间健康检测
 		v1View.GET("/:namespace/health", api.Health)

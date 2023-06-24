@@ -45,15 +45,15 @@ func AccessLog() gin.HandlerFunc {
 
 		//记录日志
 		loggers.AccessLogger.WithFields(logrus.Fields{
-			"start_time":   startTime.Format("2006-01-02_15:04:05.000000"), //开始时间
-			"end_time":     endTime.Format("2006-01-02_15:04:05.000000"),   //结束时间
-			"latency":      latency.String(),                               //延迟
-			"status_code":  c.Writer.Status(),                              //状态码
-			"client_ip":    c.ClientIP(),                                   //客户端ip
-			"method":       c.Request.Method,                               //请求方法
-			"path":         uriPath,                                        //uri路径
-			"router":       c.FullPath(),                                   //路由
-			"request_body": string(body),                                   //请求数据
+			"start_time":   startTime.Format("2006-01-02_15:04:05.000000"),
+			"end_time":     endTime.Format("2006-01-02_15:04:05.000000"),
+			"latency":      latency.String(),  //延迟
+			"status_code":  c.Writer.Status(), //状态码
+			"client_ip":    c.ClientIP(),      //客户端ip
+			"method":       c.Request.Method,  //请求方法
+			"path":         uriPath,           //uri路径
+			"router":       c.FullPath(),      //路由
+			"request_body": string(body),      //请求数据
 		}).Info("access日志记录")
 
 	}

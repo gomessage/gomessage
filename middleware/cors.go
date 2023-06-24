@@ -16,9 +16,10 @@ func Cors() gin.HandlerFunc {
 		c.Header("Access-Control-Expose-Headers", "Content-Length, Access-Control-Allow-Origin, Access-Control-Allow-Headers, Content-Type")
 		c.Header("Access-Control-Allow-Credentials", "true")
 
-		// 放行所有OPTIONS方法，因为有的模板是要请求两次的
+		// 放行所有OPTIONS方法
 		if method == "OPTIONS" {
 			c.AbortWithStatusJSON(http.StatusOK, "ok")
+			return
 		}
 
 		// 处理请求

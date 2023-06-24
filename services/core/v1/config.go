@@ -2,7 +2,6 @@ package v1
 
 import (
 	"gomessage/models"
-	"gomessage/pkg/log/loggers"
 	"math/rand"
 	"time"
 )
@@ -63,6 +62,5 @@ func GetNsInfo(namespace string) *models.Namespace {
 		namespace = "default"
 	}
 	nsInfo, _ := models.GetNamespaceByName(namespace)
-	loggers.DefaultLogger.Info("消息发送至" + namespace + "通道")
 	return nsInfo
 }
