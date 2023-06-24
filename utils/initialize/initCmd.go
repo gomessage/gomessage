@@ -22,7 +22,7 @@ func setGlobalVarHook(env string, migrate bool) {
 
 	//判断启动参数是否正确（这个if可以随时按照自己的意愿改写）
 	if env == "dev" || env == "fat" || env == "pro" {
-		fmt.Println("启动日志：环境依赖读取完成...")
+		fmt.Println("启动日志：env环境依赖读取完成...")
 
 		//为全局变量赋值
 		GlobalVars.Env = env
@@ -31,7 +31,6 @@ func setGlobalVarHook(env string, migrate bool) {
 		fmt.Println("启动日志：--env参数错误，只能是dev、fat、pro...")
 		os.Exit(3)
 	}
-
 }
 
 // 标准化参数名称（容错：下划线、点号、减号、等等）
@@ -46,27 +45,20 @@ func wordSepNormalizeFunc(f *pflag.FlagSet, name string) pflag.NormalizedName {
 
 // InitCmd 初始化环境
 func InitCmd() {
-	/*
-	 *
-	 * 命令行参数（启动时可以通过 --xxx=aaa 的方式来调用，优先级最高，可以覆盖config/default.yaml中的变量）
-	 *
-	 */
-	var env = pflag.StringP("env", "e", "", "启动环境（dev、fat、uat、pro）")
 
 	/*
+	 * 命令行参数（启动时可以通过 --xxx=aaa 的方式来调用，优先级最高，可以覆盖config/default.yaml中的变量）
+	 *
 	 * 考虑到GoMessage自身的元数据对用户来说不怎么关注；
 	 * 因此这个默认设置为true，也就是说每次都迁移数据库进行幂等性对齐，这样可以对元数据的存储更具有广泛的支持性
 	 * 如果不需要可以通过参数--migrate=false来取消。
 	 */
+	var env = pflag.StringP("env", "e", "", "启动环境（dev、fat、uat、pro）")
+	var ginMode = pflag.StringP("ginMode", "g", "", "Gin框架运行模式（debug、test、release）")
 	var migrate = pflag.BoolP("migrate", "m", true, "是否迁移数据库（true、false）")
 	var log2es = pflag.BoolP("log2es", "l", false, "是否上传数据到es中（true、false）")
-	var ginMode = pflag.StringP("ginMode", "g", "", "Gin框架运行模式（debug、test、release）")
 
-	/*
-	 *
-	 * 设置命令行参数标准化兼容函数（防止用户手滑填写错误，可以兼容：下划线、点号、减号、等等）
-	 *
-	 */
+	//设置命令行参数标准化兼容函数（防止用户手滑填写错误，可以兼容：下划线、点号、减号、等等）
 	pflag.CommandLine.SetNormalizeFunc(wordSepNormalizeFunc)
 
 	//解析命令行参数

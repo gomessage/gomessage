@@ -37,7 +37,6 @@ func InitAccessLog() {
 	}
 
 	//设定日志输出位置
-	//AccessLogger.SetOutput(io.MultiWriter(writer1, writer2))
 	AccessLogger.SetOutput(io.MultiWriter(writer2))
 
 	//设定输出日志中是否要携带上文件名与行号

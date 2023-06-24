@@ -18,8 +18,8 @@ func (esHook *PushToEsHook) Levels() []logrus.Level {
 func (esHook *PushToEsHook) Fire(entry *logrus.Entry) error {
 	ctx, cancel := context.WithTimeout(context.TODO(), 5*time.Second)
 	defer cancel()
-	SyncIndex(GetIndexName("gomessage-push"))
-	_, err := esHook.client.Index().Index(GetIndexName("gomessage-push")).BodyJson(*CreateMessage(entry)).Do(ctx)
+	SyncIndex(JoinIndexName("gomessage-push"))
+	_, err := esHook.client.Index().Index(JoinIndexName("gomessage-push")).BodyJson(*CreateRecord(entry)).Do(ctx)
 	return err
 }
 

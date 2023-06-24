@@ -9,17 +9,17 @@ import (
 	"time"
 )
 
-type BaseMessage struct {
-	Timestamp string `json:"@timestamp"`        //时间戳
-	Host      string `json:"Host,omitempty"`    //主机（omitempty：如果不存在则忽略，连空字符串都不显示）
-	File      string `json:"File,omitempty"`    //文件名（omitempty：如果不存在则忽略，连空字符串都不显示）
-	Func      string `json:"Func,omitempty"`    //函数名（omitempty：如果不存在则忽略，连空字符串都不显示）
-	Message   string `json:"Message,omitempty"` //日志内容（omitempty：如果不存在则忽略，连空字符串都不显示）
-	Level     string `json:"Level,omitempty"`   //日志级别（omitempty：如果不存在则忽略，连空字符串都不显示）
-	Data      logrus.Fields
+type Record struct {
+	Timestamp string        `json:"@timestamp"`        //时间戳
+	Host      string        `json:"Host,omitempty"`    //主机（omitempty：如果不存在则忽略，连空字符串都不显示）
+	File      string        `json:"File,omitempty"`    //文件名（omitempty：如果不存在则忽略，连空字符串都不显示）
+	Func      string        `json:"Func,omitempty"`    //函数名（omitempty：如果不存在则忽略，连空字符串都不显示）
+	Message   string        `json:"Message,omitempty"` //日志内容（omitempty：如果不存在则忽略，连空字符串都不显示）
+	Level     string        `json:"Level,omitempty"`   //日志级别（omitempty：如果不存在则忽略，连空字符串都不显示）
+	Data      logrus.Fields `json:"data,omitempty"`
 }
 
-func CreateMessage(entry *logrus.Entry) *BaseMessage {
+func CreateRecord(entry *logrus.Entry) *Record {
 	level := entry.Level.String()
 	if e, ok := entry.Data[logrus.ErrorKey]; ok && e != nil {
 		if err, ok := e.(error); ok {
@@ -37,7 +37,7 @@ func CreateMessage(entry *logrus.Entry) *BaseMessage {
 	if err != nil {
 		host = "localhost"
 	}
-	return &BaseMessage{
+	return &Record{
 		Host:      host,
 		Timestamp: entry.Time.UTC().Format(time.RFC3339Nano),
 		File:      file,
@@ -66,6 +66,6 @@ func SyncIndex(indexName string) {
 	}
 }
 
-func GetIndexName(indexName string) string {
+func JoinIndexName(indexName string) string {
 	return fmt.Sprintf("%s-%s", indexName, time.Now().Format("2006.01.02"))
 }

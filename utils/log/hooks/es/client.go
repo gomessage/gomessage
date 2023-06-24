@@ -11,11 +11,9 @@ import (
 )
 
 /*
- *
  * 如果需要一个开关，来控制日志写入es的功能是否启用，那么这个开关应该控制两个地方：
- * - es初始化的位置
- * - es钩子是否被加载的位置
- *
+ * >>> es初始化的位置（后来证明这个位置不需要用开关来控制了）
+ * >>> es钩子是否被加载的位置（只需要控制这一个位置就行）
  */
 
 var elasticsearchClient *elastic.Client
@@ -23,10 +21,7 @@ var once sync.Once
 
 func GetEsClient() *elastic.Client {
 	once.Do(func() {
-		if viper.GetBool("log.log2es") {
-			//如果log.log2es==true，则开启向es的投放日志，初始化es客户端
-			initClient()
-		}
+		initClient() //初始化es客户端
 	})
 	return elasticsearchClient
 }
@@ -57,7 +52,7 @@ func initClient() {
 		elastic.SetGzip(true),
 		elastic.SetHealthcheckInterval(2*time.Second),
 		elastic.SetErrorLog(log.New(os.Stderr, "ELASTIC：", log.LstdFlags)),
-		//elastic.SetInfoLog(log.New(os.Stdout, "", log.LstdFlags)), //平时调试的时候开启，发行版中不用开启
+		//elastic.SetInfoLog(log.New(os.Stdout, "", log.LstdFlags)),  	//平时调试的时候开启，发行版中不用开启
 		elastic.SetSniff(false),
 	)
 
@@ -68,7 +63,7 @@ func initClient() {
 	}
 
 	//创建多个索引
-	for _, indexName := range []string{GetIndexName("gomessage-access"), GetIndexName("gomessage-runtime"), GetIndexName("gomessage-push")} {
+	for _, indexName := range []string{JoinIndexName("gomessage-access"), JoinIndexName("gomessage-runtime"), JoinIndexName("gomessage-push")} {
 		SyncIndex(indexName)
 	}
 }
