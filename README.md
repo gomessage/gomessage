@@ -2,7 +2,7 @@
 
 <br>
 
-项目提供中英双语文档：
+详细文档地址：
 
 - [中文文档](https://www.yuque.com/osoc/gomessage)     
 - [English Document](https://www.yuque.com/osoc/gomessage-en)    
