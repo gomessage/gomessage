@@ -4,10 +4,10 @@ import (
 	"bytes"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
-	models2 "gomessage/models"
+	"gomessage/models"
 	"gomessage/pkg/log/loggers"
 	"gomessage/services/core/v1"
-	v32 "gomessage/services/core/v3"
+	"gomessage/services/core/v3"
 	"gomessage/services/hijacking"
 	"io"
 	"net/http"
@@ -31,7 +31,7 @@ func GoMessageByTransport(g *gin.Context) {
 	hijacking.CacheData.RequestTime = time.Now()
 	hijacking.CacheData.RequestByte, _ = io.ReadAll(g.Request.Body)                 //g.Request.Body中的数据只能读取一次，是因为"流"的指针被移位了
 	g.Request.Body = io.NopCloser(bytes.NewBuffer(hijacking.CacheData.RequestByte)) //向g.Request.Body回写数据
-	v32.FlatteningJson(hijacking.CacheData.RequestByte)                             //解析json
+	v3.FlatteningJson(hijacking.CacheData.RequestByte)                              //解析json
 	if err := g.ShouldBindJSON(&hijacking.CacheData.RequestJson); err != nil {      //把请求数据绑定到CacheData.RequestJson
 		return
 	}
@@ -56,19 +56,19 @@ func GoMessageByTransport(g *gin.Context) {
 	 */
 	for _, client := range nsUserConfig.ActiveClient {
 		var messages []any
-		clientInfo, _ := models2.GetClientById(client.ID)
+		clientInfo, _ := models.GetClientById(client.ID)
 
 		//获取interface的实例对象（该接口有两个方法：消息体处理的封装方法、推送消息的封装方法）
-		var clientAction v32.ClientAction
+		var clientAction v3.ClientAction
 		switch clientInfo.ClientType {
 		case "dingtalk":
-			clientAction = &v32.ClientActionDingtalk{Client: clientInfo}
+			clientAction = &v3.ClientActionDingtalk{Client: clientInfo}
 
 		case "feishu":
-			clientAction = &v32.ClientActionFeishu{Client: clientInfo}
+			clientAction = &v3.ClientActionFeishu{Client: clientInfo}
 
 		case "wechat":
-			clientAction = &v32.ClientActionWechatApplication{
+			clientAction = &v3.ClientActionWechatApplication{
 				CorpId:      clientInfo.ExtendWechatApplication.CorpId,
 				AgentId:     clientInfo.ExtendWechatApplication.AgentId,
 				AgentSecret: clientInfo.ExtendWechatApplication.Secret,
@@ -76,7 +76,7 @@ func GoMessageByTransport(g *gin.Context) {
 			}
 
 		case "wechat_robot":
-			clientAction = &v32.ClientActionWechatRobot{Client: clientInfo}
+			clientAction = &v3.ClientActionWechatRobot{Client: clientInfo}
 
 		default:
 			g.JSON(http.StatusBadRequest, "客户端类型错误")
@@ -94,7 +94,7 @@ func GoMessageByTransport(g *gin.Context) {
 		 */
 		if nsObject.IsRenders {
 			//渲染出需要的"内容体"
-			contentList := v32.RendersContentData(hijacking.CacheData.RequestByte, nsUserConfig.VariablesMap, nsUserConfig.MessageTemplate)
+			contentList := v3.RendersContentData(hijacking.CacheData.RequestByte, nsUserConfig.VariablesMap, nsUserConfig.MessageTemplate)
 			//渲染出需要的"消息体"
 			messages = clientAction.RendersMessages(clientInfo, nsUserConfig.IsMerge, contentList)
 		} else {
@@ -120,7 +120,7 @@ func GoMessageByGet(g *gin.Context) {
 	}
 	loggers.DefaultLogger.Info("当前命名空间为：", namespace)
 
-	result, err := models2.GetNamespaceByName(namespace)
+	result, err := models.GetNamespaceByName(namespace)
 	if err != nil {
 		g.JSON(http.StatusBadRequest, ResponseFailure("namespace不存在", err))
 	} else {

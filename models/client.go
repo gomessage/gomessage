@@ -2,7 +2,7 @@ package models
 
 import (
 	"errors"
-	clients2 "gomessage/models/clients"
+	"gomessage/models/clients"
 	"gomessage/pkg/database"
 	"gorm.io/gorm"
 	"strings"
@@ -10,19 +10,19 @@ import (
 )
 
 type Client struct {
-	ID                      int                         `json:"id" gorm:"primarykey"`
-	CreatedAt               time.Time                   `json:"-"`
-	UpdatedAt               time.Time                   `json:"-"`
-	DeletedAt               gorm.DeletedAt              `json:"-" gorm:"index"`
-	Namespace               string                      `json:"namespace"`
-	ClientName              string                      `json:"client_name"`
-	ClientDescription       string                      `json:"client_description"`
-	ClientType              string                      `json:"client_type"`
-	IsActive                bool                        `json:"is_active"`
-	ExtendDingtalk          *clients2.Dingtalk          `json:"-" gorm:"-:all"`
-	ExtendFeishu            *clients2.Feishu            `json:"-" gorm:"-:all"`
-	ExtendWechatApplication *clients2.WechatApplication `json:"-" gorm:"-:all"`
-	ExtendWechatRobot       *clients2.WechatRobot       `json:"-" gorm:"-:all"`
+	ID                      int                        `json:"id" gorm:"primarykey"`
+	CreatedAt               time.Time                  `json:"-"`
+	UpdatedAt               time.Time                  `json:"-"`
+	DeletedAt               gorm.DeletedAt             `json:"-" gorm:"index"`
+	Namespace               string                     `json:"namespace"`
+	ClientName              string                     `json:"client_name"`
+	ClientDescription       string                     `json:"client_description"`
+	ClientType              string                     `json:"client_type"`
+	IsActive                bool                       `json:"is_active"`
+	ExtendDingtalk          *clients.Dingtalk          `json:"-" gorm:"-:all"`
+	ExtendFeishu            *clients.Feishu            `json:"-" gorm:"-:all"`
+	ExtendWechatApplication *clients.WechatApplication `json:"-" gorm:"-:all"`
+	ExtendWechatRobot       *clients.WechatRobot       `json:"-" gorm:"-:all"`
 }
 
 func (*Client) TableName() string {
@@ -104,7 +104,7 @@ func GetClientById(id int) (*Client, error) {
 
 	switch cli.ClientType {
 	case "dingtalk":
-		dingtalk := clients2.Dingtalk{}
+		dingtalk := clients.Dingtalk{}
 		dingtalkResult := database.DB.DefaultClient.Where("client_id = ?", int(cli.ID)).First(&dingtalk)
 		if dingtalkResult.Error != nil {
 			return &cli, dingtalkResult.Error
@@ -113,7 +113,7 @@ func GetClientById(id int) (*Client, error) {
 		cli.ExtendDingtalk = &dingtalk
 
 	case "feishu":
-		feishu := clients2.Feishu{}
+		feishu := clients.Feishu{}
 		feishuResult := database.DB.DefaultClient.Where("client_id = ?", int(cli.ID)).First(&feishu)
 		if feishuResult.Error != nil {
 			return &cli, feishuResult.Error
@@ -122,7 +122,7 @@ func GetClientById(id int) (*Client, error) {
 		cli.ExtendFeishu = &feishu
 
 	case "wechat_robot":
-		wechatRobot := clients2.WechatRobot{}
+		wechatRobot := clients.WechatRobot{}
 		wechatRobotResult := database.DB.DefaultClient.Where("client_id = ?", int(cli.ID)).First(&wechatRobot)
 		if wechatRobotResult.Error != nil {
 			return &cli, wechatRobotResult.Error
@@ -131,7 +131,7 @@ func GetClientById(id int) (*Client, error) {
 		cli.ExtendWechatRobot = &wechatRobot
 
 	case "wechat":
-		wechatApplication := clients2.WechatApplication{}
+		wechatApplication := clients.WechatApplication{}
 		wechatApplicationResult := database.DB.DefaultClient.Where("client_id = ?", int(cli.ID)).First(&wechatApplication)
 		if wechatApplicationResult.Error != nil {
 			return &cli, wechatApplicationResult.Error

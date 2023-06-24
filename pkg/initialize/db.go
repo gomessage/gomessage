@@ -1,8 +1,8 @@
 package initialize
 
 import (
-	models2 "gomessage/models"
-	clients2 "gomessage/models/clients"
+	"gomessage/models"
+	"gomessage/models/clients"
 	"gomessage/pkg/database"
 	"gomessage/pkg/log/loggers"
 	"gorm.io/gorm"
@@ -24,14 +24,14 @@ func isAutoMigrateDB(migrate bool) {
 		//迁移数据库表结构（把需要迁移的表结构体，追加到下文括号中，有点类似于Django注册app的感觉）
 		var DbList []any
 		DbList = append(DbList,
-			&models2.Namespace{},
-			&models2.Template{},
-			&models2.Variables{},
-			&models2.Client{},
-			&clients2.Dingtalk{},
-			&clients2.Feishu{},
-			&clients2.WechatApplication{},
-			&clients2.WechatRobot{},
+			&models.Namespace{},
+			&models.Template{},
+			&models.Variables{},
+			&models.Client{},
+			&clients.Dingtalk{},
+			&clients.Feishu{},
+			&clients.WechatApplication{},
+			&clients.WechatRobot{},
 		)
 
 		//数据库自动迁移
@@ -42,7 +42,7 @@ func isAutoMigrateDB(migrate bool) {
 	}
 
 	//创建默认的Namespace（只有真正迁移数据库时，才会创建default命名空间）
-	models2.InitNamespace()
+	models.InitNamespace()
 }
 
 // 具体的迁移方法

@@ -3,7 +3,7 @@ package client
 import (
 	"encoding/json"
 	"gomessage/models"
-	clients2 "gomessage/models/clients"
+	"gomessage/models/clients"
 )
 
 type RequestBody struct {
@@ -16,16 +16,16 @@ type OneUrl struct {
 }
 
 type RequestDataDingtalk struct {
-	*clients2.Dingtalk
+	*clients.Dingtalk
 	RobotUrlList []OneUrl `json:"robot_url_list"`
 }
 
 type RequestDataFeishu struct {
-	*clients2.Feishu
+	*clients.Feishu
 	RobotUrlList []OneUrl `json:"robot_url_list"`
 }
 
 type RequestDataWechatRobot struct {
-	*clients2.WechatRobot
+	*clients.WechatRobot
 	RobotUrlList []OneUrl `json:"robot_url_list"`
 }
