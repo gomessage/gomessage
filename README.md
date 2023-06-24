@@ -1,9 +1,10 @@
 # GoMessage
 
-<br>
+
 
 [中文文档](https://www.yuque.com/osoc/gomessage) | [English Document](https://www.yuque.com/osoc/gomessage-en)
 
+<br>
 
 ## 用途说明：
 
