@@ -3,7 +3,7 @@ package v1
 import (
 	"encoding/json"
 	"gomessage/models"
-	clientFormat2 "gomessage/services/clientFormat"
+	"gomessage/services/format"
 )
 
 func FeishuMessageFormat(isRenders bool, isMerge bool, client *models.Client, contentList []string) (string, []any) {
@@ -12,11 +12,11 @@ func FeishuMessageFormat(isRenders bool, isMerge bool, client *models.Client, co
 	if isRenders {
 		if isMerge {
 			msg := MessageJoint(contentList, "feishu")
-			data := clientFormat2.PackFeishuMessage(client, msg)
+			data := format.PackFeishuMessage(client, msg)
 			msgList = append(msgList, data)
 		} else {
 			for _, msg := range contentList {
-				data := clientFormat2.PackFeishuMessage(client, msg)
+				data := format.PackFeishuMessage(client, msg)
 				msgList = append(msgList, data)
 			}
 		}
@@ -39,11 +39,11 @@ func DingtalkMessageFormat(isRenders, isMerge bool, client *models.Client, conte
 	if isRenders {
 		if isMerge {
 			msg := MessageJoint(contentList, "dingtalk")
-			data := clientFormat2.PackDingtalkMessage(client.ExtendDingtalk.RobotKeyword, msg)
+			data := format.PackDingtalkMessage(client.ExtendDingtalk.RobotKeyword, msg)
 			msgList = append(msgList, data)
 		} else {
 			for _, msg := range contentList {
-				data := clientFormat2.PackDingtalkMessage(client.ExtendDingtalk.RobotKeyword, msg)
+				data := format.PackDingtalkMessage(client.ExtendDingtalk.RobotKeyword, msg)
 				msgList = append(msgList, data)
 			}
 		}

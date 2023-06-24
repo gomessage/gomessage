@@ -1,4 +1,4 @@
-package clientFormat
+package format
 
 import "fmt"
 

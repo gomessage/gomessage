@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"gomessage/models"
-	clientFormat2 "gomessage/services/clientFormat"
-	v12 "gomessage/services/core/v1"
+	"gomessage/services/core/v1"
+	"gomessage/services/format"
 )
 
 // GeneralMessageAssembled 通用消息体封装
@@ -35,16 +35,16 @@ type DingtalkMessageAssembled struct {
 func (d *DingtalkMessageAssembled) AssembledData(isRenders, isMerge bool, client *models.Client, contentList []string) (string, []any) {
 	fmt.Println("组装钉钉需要的消息体...")
 	var msgList []any
-	url := v12.RobotRandomUrl(client.ExtendDingtalk.RobotUrlInfoList)
+	url := v1.RobotRandomUrl(client.ExtendDingtalk.RobotUrlInfoList)
 
 	if isRenders {
 		if isMerge {
-			msg := v12.MessageJoint(contentList, "dingtalk")
-			data := clientFormat2.PackDingtalkMessage(client.ExtendDingtalk.RobotKeyword, msg)
+			msg := v1.MessageJoint(contentList, "dingtalk")
+			data := format.PackDingtalkMessage(client.ExtendDingtalk.RobotKeyword, msg)
 			msgList = append(msgList, data)
 		} else {
 			for _, msg := range contentList {
-				data := clientFormat2.PackDingtalkMessage(client.ExtendDingtalk.RobotKeyword, msg)
+				data := format.PackDingtalkMessage(client.ExtendDingtalk.RobotKeyword, msg)
 				msgList = append(msgList, data)
 			}
 		}
@@ -68,16 +68,16 @@ type FeishuMessageAssembled struct {
 func (d *FeishuMessageAssembled) AssembledData(isRenders, isMerge bool, client *models.Client, contentList []string) (string, []any) {
 	fmt.Println("组装飞书需要的消息体...")
 	var msgList []any
-	url := v12.RobotRandomUrl(client.ExtendFeishu.RobotUrlInfoList)
+	url := v1.RobotRandomUrl(client.ExtendFeishu.RobotUrlInfoList)
 
 	if isRenders {
 		if isMerge {
-			msg := v12.MessageJoint(contentList, "feishu")
-			data := clientFormat2.PackFeishuMessage(client, msg)
+			msg := v1.MessageJoint(contentList, "feishu")
+			data := format.PackFeishuMessage(client, msg)
 			msgList = append(msgList, data)
 		} else {
 			for _, msg := range contentList {
-				data := clientFormat2.PackFeishuMessage(client, msg)
+				data := format.PackFeishuMessage(client, msg)
 				msgList = append(msgList, data)
 			}
 		}
@@ -106,7 +106,7 @@ func (d *WechatMessageAssembled) AssembledData(isRenders, isMerge bool, client *
 
 	if isRenders {
 		if isMerge {
-			msg := v12.MessageJoint(contentList, "wechat")
+			msg := v1.MessageJoint(contentList, "wechat")
 			msgList = append(msgList, msg)
 		} else {
 			for _, msg := range contentList {

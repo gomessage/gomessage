@@ -2,8 +2,8 @@ package v3
 
 import (
 	"gomessage/models"
-	"gomessage/services/clientFormat"
-	v12 "gomessage/services/core/v1"
+	"gomessage/services/core/v1"
+	"gomessage/services/format"
 )
 
 type ClientActionWechatRobot struct {
@@ -13,12 +13,12 @@ type ClientActionWechatRobot struct {
 func (c *ClientActionWechatRobot) RendersMessages(client *models.Client, isMerge bool, contentList []string) []any {
 	var msgList []any
 	if isMerge {
-		msg := v12.MessageJoint(contentList, "wechat_robot")
-		data := clientFormat.PackWechatRobotMessage(client.ExtendWechatRobot.RobotKeyword, msg)
+		msg := v1.MessageJoint(contentList, "wechat_robot")
+		data := format.PackWechatRobotMessage(client.ExtendWechatRobot.RobotKeyword, msg)
 		msgList = append(msgList, data)
 	} else {
 		for _, msg := range contentList {
-			data := clientFormat.PackWechatRobotMessage(client.ExtendWechatRobot.RobotKeyword, msg)
+			data := format.PackWechatRobotMessage(client.ExtendWechatRobot.RobotKeyword, msg)
 			msgList = append(msgList, data)
 		}
 	}
@@ -26,8 +26,8 @@ func (c *ClientActionWechatRobot) RendersMessages(client *models.Client, isMerge
 }
 
 func (c *ClientActionWechatRobot) PushMessages(messages []any) {
-	url := v12.RobotRandomUrl(c.Client.ExtendWechatRobot.RobotUrlInfoList)
+	url := v1.RobotRandomUrl(c.Client.ExtendWechatRobot.RobotUrlInfoList)
 	for _, msg := range messages {
-		v12.Push(msg, url)
+		v1.Push(msg, url)
 	}
 }

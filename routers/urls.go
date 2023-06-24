@@ -5,8 +5,8 @@ import (
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"gomessage/api"
-	client2 "gomessage/api/client"
-	middleware2 "gomessage/middleware"
+	"gomessage/api/client"
+	"gomessage/middleware"
 	"gomessage/pkg/log/loggers"
 	"net/http"
 )
@@ -23,8 +23,8 @@ func Path(g *gin.Engine) {
 	// 全局路由：基础部分
 	//=======================
 	//中间件
-	g.Use(middleware2.Cors())
-	g.Use(middleware2.AccessLog())
+	g.Use(middleware.Cors())
+	g.Use(middleware.AccessLog())
 
 	// Once it's done, you can attach the handler as one of your middleware
 	//g.Use(sentrygin.New(sentrygin.Options{}))
@@ -48,11 +48,11 @@ func Path(g *gin.Engine) {
 	//=======================
 	// gomessage数据入口
 	//=======================
-	g.GET("/go/:namespace", middleware2.IsNamespace(), api.GoMessageByGet)                               //给单个路由追加中间件middleware.IsNamespace()
+	g.GET("/go/:namespace", middleware.IsNamespace(), api.GoMessageByGet)                                //给单个路由追加中间件middleware.IsNamespace()
 	g.GET("/go", func(c *gin.Context) { c.Request.URL.Path = "/go/message"; g.HandleContext(c) })        //把"/go"重定向到"/go/message"的路由上
 	g.GET("/gomessage", func(c *gin.Context) { c.Request.URL.Path = "/go/message"; g.HandleContext(c) }) //把"/gomessage"重定向到"/go/message"的路由上
 	//接收数据推送
-	g.POST("/go/:namespace", middleware2.IsNamespace(), api.GoMessageByTransport)                         //给单个路由追加中间件middleware.IsNamespace()
+	g.POST("/go/:namespace", middleware.IsNamespace(), api.GoMessageByTransport)                          //给单个路由追加中间件middleware.IsNamespace()
 	g.POST("/go", func(c *gin.Context) { c.Request.URL.Path = "/go/message"; g.HandleContext(c) })        //把"/go"重定向到"/go/message"的路由上
 	g.POST("/gomessage", func(c *gin.Context) { c.Request.URL.Path = "/go/message"; g.HandleContext(c) }) //把"/gomessage"重定向到"/go/message"的路由上
 
@@ -60,7 +60,7 @@ func Path(g *gin.Engine) {
 	// 用户操作接口：v1版本
 	//=======================
 	v1View := g.Group("/api/v1")
-	v1View.Use(middleware2.IsNamespace())
+	v1View.Use(middleware.IsNamespace())
 	{
 		//命名空间健康检测
 		v1View.GET("/:namespace/health", api.Health)
@@ -72,18 +72,18 @@ func Path(g *gin.Engine) {
 		v1View.GET("/:namespace/vars", api.ListVariables)  //获取变量映射
 		v1View.POST("/:namespace/vars", api.PostVariables) //添加变量映射
 		//TODO: 这个功能虽然后端完成了，但是前端ui层面没有启动这个接口对应的功能，有空时再过来修改一下
-		v1View.GET("/:namespace/flattening", api.GetNamespaceFlatteningJson) //展开过境数据
+		v1View.GET("/:namespace/flattening", api.GetNamespaceFlatteningJson)
 
 		//消息模板
 		v1View.GET("/:namespace/template", api.ListTemplate)
 		v1View.POST("/:namespace/template", api.PostTemplate)
 
 		//客户端
-		v1View.GET("/:namespace/client", client2.ListClient)          //获取所有客户端
-		v1View.POST("/:namespace/client", client2.PostClient)         //新增一个客户端
-		v1View.GET("/:namespace/client/:id", client2.GetClient)       //获取客户端详情
-		v1View.PUT("/:namespace/client/:id", client2.PutClient)       //更新一个客户端
-		v1View.DELETE("/:namespace/client/:id", client2.DeleteClient) //删除一个客户端
+		v1View.GET("/:namespace/client", client.ListClient)          //获取所有客户端
+		v1View.POST("/:namespace/client", client.PostClient)         //新增一个客户端
+		v1View.GET("/:namespace/client/:id", client.GetClient)       //获取客户端详情
+		v1View.PUT("/:namespace/client/:id", client.PutClient)       //更新一个客户端
+		v1View.DELETE("/:namespace/client/:id", client.DeleteClient) //删除一个客户端
 
 	}
 

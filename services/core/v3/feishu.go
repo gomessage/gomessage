@@ -2,8 +2,8 @@ package v3
 
 import (
 	"gomessage/models"
-	"gomessage/services/clientFormat"
-	v12 "gomessage/services/core/v1"
+	"gomessage/services/core/v1"
+	"gomessage/services/format"
 )
 
 type ClientActionFeishu struct {
@@ -13,12 +13,12 @@ type ClientActionFeishu struct {
 func (c *ClientActionFeishu) RendersMessages(client *models.Client, isMerge bool, contentList []string) []any {
 	var msgList []any
 	if isMerge {
-		msg := v12.MessageJoint(contentList, "feishu")
-		data := clientFormat.PackFeishuMessage(client, msg)
+		msg := v1.MessageJoint(contentList, "feishu")
+		data := format.PackFeishuMessage(client, msg)
 		msgList = append(msgList, data)
 	} else {
 		for _, msg := range contentList {
-			data := clientFormat.PackFeishuMessage(client, msg)
+			data := format.PackFeishuMessage(client, msg)
 			msgList = append(msgList, data)
 		}
 	}
@@ -26,8 +26,8 @@ func (c *ClientActionFeishu) RendersMessages(client *models.Client, isMerge bool
 }
 
 func (c *ClientActionFeishu) PushMessages(messages []any) {
-	url := v12.RobotRandomUrl(c.Client.ExtendFeishu.RobotUrlInfoList)
+	url := v1.RobotRandomUrl(c.Client.ExtendFeishu.RobotUrlInfoList)
 	for _, msg := range messages {
-		v12.Push(msg, url)
+		v1.Push(msg, url)
 	}
 }

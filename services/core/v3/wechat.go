@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"gomessage/models"
-	"gomessage/services/clientFormat"
 	"gomessage/services/core/v1"
+	"gomessage/services/format"
 	"io"
 	"net/http"
 	"strconv"
@@ -27,7 +27,7 @@ func (c *ClientActionWechatApplication) RendersMessages(client *models.Client, i
 		msg := v1.MessageJoint(contentList, "wechat")
 
 		//把普通的内容体渲染成符合微信应用号的消息体
-		message := clientFormat.PushMessageData{}
+		message := format.PushMessageData{}
 		message.MsgType = "markdown"
 		message.Touser = c.Touser
 		message.AgentId, _ = strconv.Atoi(c.AgentId)
@@ -38,7 +38,7 @@ func (c *ClientActionWechatApplication) RendersMessages(client *models.Client, i
 		for _, msg := range contentList {
 
 			//把普通的内容体渲染成符合微信应用号的消息体
-			message := clientFormat.PushMessageData{}
+			message := format.PushMessageData{}
 			message.MsgType = "markdown"
 			message.Touser = c.Touser
 			message.AgentId, _ = strconv.Atoi(c.AgentId)
@@ -72,7 +72,7 @@ func (c *ClientActionWechatApplication) PushMessages(messages []any) {
 }
 
 // 向微信发送请求获取access_token
-func (c *ClientActionWechatApplication) getAccessToken() clientFormat.GetAccessTokenReturn {
+func (c *ClientActionWechatApplication) getAccessToken() format.GetAccessTokenReturn {
 	corpId := c.CorpId
 	agentSecret := c.AgentSecret
 
@@ -90,7 +90,7 @@ func (c *ClientActionWechatApplication) getAccessToken() clientFormat.GetAccessT
 	}(resp.Body)
 
 	result, err := io.ReadAll(resp.Body)
-	r := clientFormat.GetAccessTokenReturn{}
+	r := format.GetAccessTokenReturn{}
 	json.Unmarshal(result, &r)
 	return r
 }
