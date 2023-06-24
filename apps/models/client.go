@@ -139,7 +139,7 @@ func GetClientById(id int) (*Client, error) {
 		cli.ExtendWechatApplication = &wechatApplication
 
 	default:
-		return nil, errors.New("未知的ClientTpye=" + cli.ClientType)
+		return nil, errors.New("未知的ClientType=" + cli.ClientType)
 	}
 
 	return &cli, nil

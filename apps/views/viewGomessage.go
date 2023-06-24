@@ -20,7 +20,7 @@ import (
 func GoMessageByTransport(g *gin.Context) {
 
 	/*
-	 * TODO: 获取通道信息
+	 * TODO: 获取通道对象
 	 */
 	nsObject := v1.GetNsInfo(g.Param("namespace"))
 
@@ -39,7 +39,7 @@ func GoMessageByTransport(g *gin.Context) {
 	loggers.PushLogger.WithFields(logrus.Fields{
 		"namespace": nsObject.Name,
 		"content":   string(hijacking.CacheData.RequestByte),
-	}).Info("接收消息推送")
+	}).Info("上游消息")
 
 	/*
 	 * TODO: 写入缓存便于劫持层读取信息

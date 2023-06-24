@@ -21,11 +21,11 @@ type Mappings struct {
 }
 
 type arbitrarilyJsonData struct {
-	RequestJson  map[string]any `json:"request_json"`
-	RequestTime  time.Time      `json:"request_time"`
-	RequestByte  []byte         `json:"-"`
-	KeyValueMap  map[string]any `json:"key_value_map"`
-	KeyValueList []Mappings     `json:"key_value_list"`
+	RequestByte  []byte         `json:"-"`              //请求数据[]byte格式
+	RequestJson  map[string]any `json:"request_json"`   //请求数据json格式
+	RequestTime  time.Time      `json:"request_time"`   //请求时间
+	KeyValueMap  map[string]any `json:"key_value_map"`  //展开解析后的key:value
+	KeyValueList []Mappings     `json:"key_value_list"` //展开解析后的key:value切片
 }
 
 var CacheData arbitrarilyJsonData
