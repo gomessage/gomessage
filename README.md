@@ -2,9 +2,12 @@
 
 <br>
 
-[中文文档](https://www.yuque.com/osoc/gomessage) | [English Document](https://www.yuque.com/osoc/gomessage-en)
+项目提供中英双语文档：
 
-<br><br>
+- [中文文档](https://www.yuque.com/osoc/gomessage)     
+- [English Document](https://www.yuque.com/osoc/gomessage-en)    
+
+<br>
 
 ## 用途说明：
 
