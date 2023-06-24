@@ -6,7 +6,9 @@
 
 FROM alpine:3.15.7
 
-RUN mkdir -p /opt/gomessage && rm -rf /opt/gomessage/*
+RUN mkdir -p /opt/gomessage \
+    && rm -rf /opt/gomessage/* \
+    && mkdir -p /opt/gomessage/data
 
 WORKDIR /opt/gomessage
 
