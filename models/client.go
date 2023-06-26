@@ -31,7 +31,7 @@ func (*Client) TableName() string {
 
 func AddClient(c *Client) (*Client, error) {
 	c.IsActive = false
-	createResult := database.DB.DefaultClient.Create(&c)
+	createResult := database.DB.Default.Create(&c)
 	if createResult.Error != nil {
 		return c, createResult.Error
 	}
@@ -40,7 +40,7 @@ func AddClient(c *Client) (*Client, error) {
 	case "dingtalk":
 		c.ExtendDingtalk.ClientId = int(c.ID)
 		c.ExtendDingtalk.RobotUrl = strings.Join(c.ExtendDingtalk.RobotUrlInfoList, "\n")
-		dingtalkResult := database.DB.DefaultClient.Create(&c.ExtendDingtalk)
+		dingtalkResult := database.DB.Default.Create(&c.ExtendDingtalk)
 		if dingtalkResult.Error != nil {
 			return c, dingtalkResult.Error
 		}
@@ -48,7 +48,7 @@ func AddClient(c *Client) (*Client, error) {
 	case "feishu":
 		c.ExtendFeishu.ClientId = int(c.ID)
 		c.ExtendFeishu.RobotUrl = strings.Join(c.ExtendFeishu.RobotUrlInfoList, "\n")
-		feishuResult := database.DB.DefaultClient.Create(&c.ExtendFeishu)
+		feishuResult := database.DB.Default.Create(&c.ExtendFeishu)
 		if feishuResult.Error != nil {
 			return c, feishuResult.Error
 		}
@@ -56,14 +56,14 @@ func AddClient(c *Client) (*Client, error) {
 	case "wechat_robot":
 		c.ExtendWechatRobot.ClientId = int(c.ID)
 		c.ExtendWechatRobot.RobotUrl = strings.Join(c.ExtendWechatRobot.RobotUrlInfoList, "\n")
-		result := database.DB.DefaultClient.Create(&c.ExtendWechatRobot)
+		result := database.DB.Default.Create(&c.ExtendWechatRobot)
 		if result.Error != nil {
 			return c, result.Error
 		}
 
 	case "wechat":
 		c.ExtendWechatApplication.ClientId = int(c.ID)
-		wechatResult := database.DB.DefaultClient.Create(&c.ExtendWechatApplication)
+		wechatResult := database.DB.Default.Create(&c.ExtendWechatApplication)
 		if wechatResult.Error != nil {
 			return c, wechatResult.Error
 		}
@@ -77,27 +77,27 @@ func AddClient(c *Client) (*Client, error) {
 
 func DeleteClient(id int) (int, error) {
 	var cli Client
-	result := database.DB.DefaultClient.Delete(&cli, id)
+	result := database.DB.Default.Delete(&cli, id)
 	return int(result.RowsAffected), result.Error
 }
 
 func UpdateClientActive(id int, t *Client) (*Client, error) {
 	client := Client{}
-	updateResult := database.DB.DefaultClient.Model(&client).Where("id = ? ", id).Update("is_active", t.IsActive)
+	updateResult := database.DB.Default.Model(&client).Where("id = ? ", id).Update("is_active", t.IsActive)
 	return &client, updateResult.Error
 
 }
 
 func UpdateClientInfo(id int, t *Client) (*Client, error) {
 	client := Client{}
-	updateResult := database.DB.DefaultClient.Model(&client).Where("id = ? ", id).Updates(map[string]any{"is_active": t.IsActive, "client_name": t.ClientName, "client_description": t.ClientDescription})
+	updateResult := database.DB.Default.Model(&client).Where("id = ? ", id).Updates(map[string]any{"is_active": t.IsActive, "client_name": t.ClientName, "client_description": t.ClientDescription})
 	return &client, updateResult.Error
 
 }
 
 func GetClientById(id int) (*Client, error) {
 	var cli Client
-	queryResult := database.DB.DefaultClient.Where("id = ?", id).First(&cli)
+	queryResult := database.DB.Default.Where("id = ?", id).First(&cli)
 	if queryResult.Error != nil {
 		return &cli, queryResult.Error
 	}
@@ -105,7 +105,7 @@ func GetClientById(id int) (*Client, error) {
 	switch cli.ClientType {
 	case "dingtalk":
 		dingtalk := clients.Dingtalk{}
-		dingtalkResult := database.DB.DefaultClient.Where("client_id = ?", int(cli.ID)).First(&dingtalk)
+		dingtalkResult := database.DB.Default.Where("client_id = ?", int(cli.ID)).First(&dingtalk)
 		if dingtalkResult.Error != nil {
 			return &cli, dingtalkResult.Error
 		}
@@ -114,7 +114,7 @@ func GetClientById(id int) (*Client, error) {
 
 	case "feishu":
 		feishu := clients.Feishu{}
-		feishuResult := database.DB.DefaultClient.Where("client_id = ?", int(cli.ID)).First(&feishu)
+		feishuResult := database.DB.Default.Where("client_id = ?", int(cli.ID)).First(&feishu)
 		if feishuResult.Error != nil {
 			return &cli, feishuResult.Error
 		}
@@ -123,7 +123,7 @@ func GetClientById(id int) (*Client, error) {
 
 	case "wechat_robot":
 		wechatRobot := clients.WechatRobot{}
-		wechatRobotResult := database.DB.DefaultClient.Where("client_id = ?", int(cli.ID)).First(&wechatRobot)
+		wechatRobotResult := database.DB.Default.Where("client_id = ?", int(cli.ID)).First(&wechatRobot)
 		if wechatRobotResult.Error != nil {
 			return &cli, wechatRobotResult.Error
 		}
@@ -132,7 +132,7 @@ func GetClientById(id int) (*Client, error) {
 
 	case "wechat":
 		wechatApplication := clients.WechatApplication{}
-		wechatApplicationResult := database.DB.DefaultClient.Where("client_id = ?", int(cli.ID)).First(&wechatApplication)
+		wechatApplicationResult := database.DB.Default.Where("client_id = ?", int(cli.ID)).First(&wechatApplication)
 		if wechatApplicationResult.Error != nil {
 			return &cli, wechatApplicationResult.Error
 		}
@@ -147,7 +147,7 @@ func GetClientById(id int) (*Client, error) {
 
 func ListClient(ns string) (*[]Client, error) {
 	var list []Client
-	result := database.DB.DefaultClient.Where(&Client{Namespace: ns}).Order("id desc").Find(&list)
+	result := database.DB.Default.Where(&Client{Namespace: ns}).Order("id desc").Find(&list)
 	if result.Error != nil {
 		return &list, result.Error
 	}
@@ -157,7 +157,7 @@ func ListClient(ns string) (*[]Client, error) {
 // GetActiveClient 获取指定命名空间下的处于激活状态的客户端
 func GetActiveClient(ns string) ([]Client, error) {
 	var list []Client
-	result := database.DB.DefaultClient.Where(&Client{IsActive: true, Namespace: ns}).Find(&list)
+	result := database.DB.Default.Where(&Client{IsActive: true, Namespace: ns}).Find(&list)
 	if result.Error != nil {
 		return list, result.Error
 	}

@@ -2,8 +2,8 @@ package client
 
 import (
 	"github.com/gin-gonic/gin"
-	"gomessage/api"
 	"gomessage/models"
+	"gomessage/pkg/general"
 	"net/http"
 )
 
@@ -14,5 +14,5 @@ import (
 func ListClient(g *gin.Context) {
 	ns := g.Param("namespace")
 	result, _ := models.ListClient(ns)
-	g.JSON(http.StatusOK, api.ResponseSuccessful("获取成功", result))
+	g.JSON(http.StatusOK, general.ResponseSuccessful("获取成功", result))
 }

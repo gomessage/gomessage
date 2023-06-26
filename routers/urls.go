@@ -6,6 +6,7 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"gomessage/api"
 	"gomessage/api/client"
+	"gomessage/authorization"
 	"gomessage/middleware"
 	"gomessage/pkg/log/loggers"
 	"net/http"
@@ -19,39 +20,44 @@ func AddStatic(g *gin.Engine) {
 
 func Path(g *gin.Engine) {
 
-	//=======================
-	// 全局路由：基础部分
-	//=======================
-	//中间件
-	g.Use(middleware.Cors())
-	g.Use(middleware.AccessLog())
 	//加载静态文件
 	AddStatic(g)
 
-	//路由重定向
+	//中间件
+	g.Use(middleware.Cors())
+	g.Use(middleware.AccessLog())
+
+	//健康检测
+	g.GET("/ok", api.Hello)
+	g.GET("/health", api.Health)
+
+	//首页
 	g.GET("/", api.Index)
+
+	//swagger文档
 	g.GET("/docs", func(c *gin.Context) { c.Redirect(http.StatusMovedPermanently, "/swagger/index.html") })
-	//基础URI
-	g.GET("/ok", api.Health)                                             //健康监测
-	g.GET("/health", api.Health)                                         //健康监测
 	g.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler)) //Swagger页面
 
-	//=======================
-	// gomessage数据入口
-	//=======================
+	//数据入口Get方法
 	g.GET("/go/:namespace", middleware.CheckNamespace(), api.GoMessageByGet)                             //给单个路由追加中间件middleware.CheckNamespace()
 	g.GET("/go", func(c *gin.Context) { c.Request.URL.Path = "/go/message"; g.HandleContext(c) })        //把"/go"重定向到"/go/message"的路由上
 	g.GET("/gomessage", func(c *gin.Context) { c.Request.URL.Path = "/go/message"; g.HandleContext(c) }) //把"/gomessage"重定向到"/go/message"的路由上
-	//接收数据推送
+	//数据入口Post方法
 	g.POST("/go/:namespace", middleware.CheckNamespace(), api.GoMessageByTransport)                       //给单个路由追加中间件middleware.CheckNamespace()
 	g.POST("/go", func(c *gin.Context) { c.Request.URL.Path = "/go/message"; g.HandleContext(c) })        //把"/go"重定向到"/go/message"的路由上
 	g.POST("/gomessage", func(c *gin.Context) { c.Request.URL.Path = "/go/message"; g.HandleContext(c) }) //把"/gomessage"重定向到"/go/message"的路由上
 
+	//登录注册相关
+	g.POST("/auth/login", authorization.Login)
+	g.POST("/auth/logout", authorization.Logout)
+	g.POST("/auth/register", authorization.Register)
+
 	//=======================
-	// 用户操作接口：v1版本
+	// 用户操作：v1版本
 	//=======================
 	v1View := g.Group("/api/v1")
 	v1View.Use(middleware.CheckNamespace())
+	v1View.Use(middleware.AuthMiddleware())
 	{
 		//命名空间健康检测
 		v1View.GET("/:namespace/health", api.Health)
@@ -79,9 +85,10 @@ func Path(g *gin.Engine) {
 	}
 
 	//=======================
-	// 命名空间操作接口：v1版本
+	// 命名空间操作：v1版本
 	//=======================
 	v1Namespace := g.Group("/api/v1")
+	v1Namespace.Use(middleware.AuthMiddleware())
 	{
 		//命名空间
 		v1Namespace.GET("/namespace", api.ListNamespace)

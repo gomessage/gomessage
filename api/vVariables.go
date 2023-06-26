@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"gomessage/models"
+	"gomessage/pkg/general"
 	"net/http"
 	"strconv"
 )
@@ -15,7 +16,7 @@ import (
 func ListVariables(g *gin.Context) {
 	ns := g.Param("namespace")
 	listVariables, _ := models.ListVariables(ns)
-	g.JSON(http.StatusOK, ResponseSuccessful("数据拉取成功", listVariables))
+	g.JSON(http.StatusOK, general.ResponseSuccessful("数据拉取成功", listVariables))
 }
 
 // PostVariables
@@ -52,7 +53,7 @@ func PostVariables(g *gin.Context) {
 		}
 	}
 
-	g.JSON(http.StatusOK, ResponseSuccessful("用户变量映射成功", ResponseVars))
+	g.JSON(http.StatusOK, general.ResponseSuccessful("用户变量映射成功", ResponseVars))
 }
 
 // GetVariables

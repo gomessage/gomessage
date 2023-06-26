@@ -2,8 +2,8 @@ package client
 
 import (
 	"github.com/gin-gonic/gin"
-	"gomessage/api"
 	"gomessage/models"
+	"gomessage/pkg/general"
 	"net/http"
 	"strconv"
 )
@@ -21,7 +21,7 @@ func GetClient(g *gin.Context) {
 	id, _ := strconv.Atoi(g.Param("id"))
 	client, err := models.GetClientById(id)
 	if err != nil {
-		g.JSON(http.StatusBadRequest, api.ResponseFailure("查询错误", err))
+		g.JSON(http.StatusBadRequest, general.ResponseFailure("查询错误", err))
 	} else {
 		respData := ResponseData{Client: client}
 
@@ -64,7 +64,7 @@ func GetClient(g *gin.Context) {
 			respData.ClientInfo = client.ExtendWechatApplication
 		}
 
-		g.JSON(http.StatusOK, api.ResponseSuccessful("查询成功", respData))
+		g.JSON(http.StatusOK, general.ResponseSuccessful("查询成功", respData))
 	}
 	return
 }

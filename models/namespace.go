@@ -26,7 +26,7 @@ func (*Namespace) TableName() string {
 }
 
 func AddNamespace(n *Namespace) (*Namespace, error) {
-	createResult := database.DB.DefaultClient.Create(&n)
+	createResult := database.DB.Default.Create(&n)
 	if createResult.Error != nil {
 		return nil, createResult.Error
 	} else {
@@ -39,19 +39,19 @@ func AddNamespace(n *Namespace) (*Namespace, error) {
 
 func DeleteNamespace(id int) (int, error) {
 	var ns Namespace
-	result := database.DB.DefaultClient.Delete(&ns, id)
+	result := database.DB.Default.Delete(&ns, id)
 	return int(result.RowsAffected), result.Error
 }
 
 func UpdateNamespace(id int, newData *Namespace) (*Namespace, error) {
 	var ns Namespace
-	database.DB.DefaultClient.First(&ns, id)
+	database.DB.Default.First(&ns, id)
 
 	ns.Name = newData.Name
 	ns.IsActive = newData.IsActive
 	ns.IsRenders = newData.IsRenders
 	ns.Description = newData.Description
-	result := database.DB.DefaultClient.Save(&ns)
+	result := database.DB.Default.Save(&ns)
 
 	return &ns, result.Error
 }
@@ -61,12 +61,12 @@ func ListNamespace(isActive string) (*[]Namespace, error) {
 
 	//如果这里的查询参数is_active中是空字符串，则查询全部返回出去
 	if len(isActive) == 0 {
-		result := database.DB.DefaultClient.Find(&nsList)
+		result := database.DB.Default.Find(&nsList)
 		return &nsList, result.Error
 
 	} else { //如果不是空字符串，则把字符串转换为布尔值，然后再进行查询.
 		status, _ := strconv.ParseBool(isActive) //字符串转布尔值（1=True，0=False）
-		result := database.DB.DefaultClient.Where("is_active", status).Find(&nsList)
+		result := database.DB.Default.Where("is_active", status).Find(&nsList)
 		return &nsList, result.Error
 	}
 }
@@ -74,7 +74,7 @@ func ListNamespace(isActive string) (*[]Namespace, error) {
 // GetNamespaceById 根据id查询namespace
 func GetNamespaceById(id int) (*Namespace, error) {
 	var ns Namespace
-	result := database.DB.DefaultClient.Where(&Namespace{ID: id}).First(&ns)
+	result := database.DB.Default.Where(&Namespace{ID: id}).First(&ns)
 	return &ns, result.Error
 
 }
@@ -82,14 +82,14 @@ func GetNamespaceById(id int) (*Namespace, error) {
 // GetNamespaceByName 根据name查询namespace
 func GetNamespaceByName(name string) (*Namespace, error) {
 	var ns Namespace
-	result := database.DB.DefaultClient.Where(&Namespace{Name: name}).First(&ns)
+	result := database.DB.Default.Where(&Namespace{Name: name}).First(&ns)
 	return &ns, result.Error
 }
 
 // IsNamespaceExist 判断namespace是否存在
 func IsNamespaceExist(nsName string) bool {
 	var ns Namespace
-	result := database.DB.DefaultClient.Where(&Namespace{Name: nsName}).First(&ns)
+	result := database.DB.Default.Where(&Namespace{Name: nsName}).First(&ns)
 	if result.RowsAffected == 1 {
 		return true
 	} else {
@@ -100,14 +100,14 @@ func IsNamespaceExist(nsName string) bool {
 // InitNamespace 在main函数中被调用，全局只被调用一次，创建一些默认的Namespace
 func InitNamespace() {
 	var queryNamespace Namespace
-	result := database.DB.DefaultClient.Where(&Namespace{Name: "default"}).First(&queryNamespace)
+	result := database.DB.Default.Where(&Namespace{Name: "default"}).First(&queryNamespace)
 	if result.Error != nil {
 		newNamespace := Namespace{
 			IsActive:    true,
 			Name:        "default",
 			Description: "系统自动创建的\"默认通道\"，可通过 /go/message 或 /go/default 接收消息推送。",
 		}
-		database.DB.DefaultClient.Create(&newNamespace)
+		database.DB.Default.Create(&newNamespace)
 		loggers.DefaultLogger.Info("创建default命名空间...")
 	} else {
 		loggers.DefaultLogger.Info("default命名空间已存在...")

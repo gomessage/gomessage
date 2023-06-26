@@ -22,42 +22,42 @@ func (*Variables) TableName() string {
 }
 
 func AddVariables(v *Variables) (*Variables, error) {
-	createResult := database.DB.DefaultClient.Create(&v)
+	createResult := database.DB.Default.Create(&v)
 	return v, createResult.Error
 }
 
 func DeleteVariables(id int) (int, error) {
 	var vv Variables
-	result := database.DB.DefaultClient.Delete(&vv, id)
+	result := database.DB.Default.Delete(&vv, id)
 	return int(result.RowsAffected), result.Error
 }
 
 func DeleteVariablesByNs(namespace string) (int, error) {
 	var vv Variables
-	result := database.DB.DefaultClient.Where("namespace = ?", namespace).Delete(&vv)
+	result := database.DB.Default.Where("namespace = ?", namespace).Delete(&vv)
 	return int(result.RowsAffected), result.Error
 }
 
 func UpdateVariables(id int, v *Variables) (*Variables, error) {
 	vv := Variables{}
-	readResult := database.DB.DefaultClient.First(&vv, id)
+	readResult := database.DB.Default.First(&vv, id)
 	if readResult.Error != nil {
 		return &vv, readResult.Error
 
 	} else {
-		updateResult := database.DB.DefaultClient.Model(&vv).Omit("id").Updates(&v)
+		updateResult := database.DB.Default.Model(&vv).Omit("id").Updates(&v)
 		return &vv, updateResult.Error
 	}
 }
 
 func GetVariablesById(id int) (Variables, error) {
 	var vv Variables
-	queryResult := database.DB.DefaultClient.Where(&Variables{ID: id}).First(&vv)
+	queryResult := database.DB.Default.Where(&Variables{ID: id}).First(&vv)
 	return vv, queryResult.Error
 }
 
 func ListVariables(ns string) (*[]Variables, error) {
 	var vv []Variables
-	queryResult := database.DB.DefaultClient.Where(Variables{Namespace: ns}).Order("id").Find(&vv)
+	queryResult := database.DB.Default.Where(Variables{Namespace: ns}).Order("id").Find(&vv)
 	return &vv, queryResult.Error
 }

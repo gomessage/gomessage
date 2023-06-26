@@ -20,7 +20,7 @@ func Health(g *gin.Context) {
 // @Accept json
 // @Produce json
 // @Success 200 {string} {string}
-// @Router /api/v1/:namespace/health [GET]
+// @Router /ok [GET]
 func Hello(g *gin.Context) {
 	g.JSON(http.StatusOK, "Health monitoring is normal")
 }

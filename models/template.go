@@ -22,50 +22,50 @@ func (*Template) TableName() string {
 }
 
 func AddTemplate(t *Template) (*Template, error) {
-	createResult := database.DB.DefaultClient.Create(&t)
+	createResult := database.DB.Default.Create(&t)
 	return t, createResult.Error
 }
 
 func DeleteTemplate(id int) (int, error) {
 	var template Template
-	result := database.DB.DefaultClient.Delete(&template, id)
+	result := database.DB.Default.Delete(&template, id)
 	return int(result.RowsAffected), result.Error
 }
 
 func DeleteTemplateByNs(ns string) (int, error) {
 	var template Template
-	result := database.DB.DefaultClient.Where("namespace = ?", ns).Delete(&template)
+	result := database.DB.Default.Where("namespace = ?", ns).Delete(&template)
 	return int(result.RowsAffected), result.Error
 }
 
 func UpdateTemplate(id int, t *Template) (*Template, error) {
 	template := Template{}
-	readResult := database.DB.DefaultClient.First(&template, id)
+	readResult := database.DB.Default.First(&template, id)
 
 	//如果Error不为空
 	if readResult.Error != nil {
 		return &template, readResult.Error
 
 	} else {
-		updateResult := database.DB.DefaultClient.Model(&template).Omit("id").Updates(&t)
+		updateResult := database.DB.Default.Model(&template).Omit("id").Updates(&t)
 		return &template, updateResult.Error
 	}
 }
 
 func ListTemplate(ns string) (*[]Template, error) {
 	var templates []Template
-	queryResult := database.DB.DefaultClient.Where(Template{Namespace: ns}).Find(&templates)
+	queryResult := database.DB.Default.Where(Template{Namespace: ns}).Find(&templates)
 	return &templates, queryResult.Error
 }
 
 func GetTemplateById(id int) (Template, error) {
 	var template Template
-	queryResult := database.DB.DefaultClient.Where(&Template{ID: id}).First(&template)
+	queryResult := database.DB.Default.Where(&Template{ID: id}).First(&template)
 	return template, queryResult.Error
 }
 
 func GetTemplateByNamespace(ns string) (Template, error) {
 	var template Template
-	queryResult := database.DB.DefaultClient.Where(&Template{Namespace: ns}).First(&template)
+	queryResult := database.DB.Default.Where(&Template{Namespace: ns}).First(&template)
 	return template, queryResult.Error
 }
