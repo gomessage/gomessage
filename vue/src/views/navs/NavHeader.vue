@@ -38,17 +38,17 @@
     <!--右侧按钮-->
     <el-row justify="end" type="flex">
 
-      <router-link to="/">
+      <router-link to="/main/">
         <el-menu-item index="1-1"><i class="el-icon-position"></i>消息入口</el-menu-item>
       </router-link>
 
 
-      <router-link to="/renders">
+      <router-link to="/main/renders">
         <el-menu-item index="2-1"><i class="el-icon-set-up"></i>数据渲染</el-menu-item>
       </router-link>
 
 
-      <router-link to="/clients">
+      <router-link to="/main/clients">
         <el-menu-item index="3-1"><i class="el-icon-chat-dot-square"></i>接收客户端</el-menu-item>
       </router-link>
 

@@ -32,3 +32,7 @@ export const postNamespace = (data) => http.Post("/api/v1/namespace", data)
 export const getNamespaceOne = (id, params) => http.Get("/api/v1/namespace/" + id, params)
 export const deleteNamespaceOne = (id) => http.Delete("/api/v1/namespace/" + id)
 export const putNamespaceOne = (id, data) => http.Put("/api/v1/namespace/" + id, data)
+
+
+//用户登录相关
+export const login = (data) => http.Post("/auth/login", data)
