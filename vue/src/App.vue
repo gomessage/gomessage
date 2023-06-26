@@ -1,54 +1,15 @@
 <template>
   <div id="app">
-
-    <!--容器布局：全局-->
-    <el-container id="MyContainer-Container">
-
-      <!--容器布局：Header-->
-      <el-header id="MyContainer-Header">
-        <NavHeader/>
-      </el-header>
-
-
-      <el-container>
-        <!--容器布局：Aside-->
-        <el-aside id="MyContainer-Aside" width="275px">
-          <NavAside/>
-        </el-aside>
-
-
-        <!--容器布局：Main-->
-        <el-main id="MyContainer-Main">
-          <!-- 路由匹配到的组件将渲染在这里 -->
-          <router-view></router-view>
-        </el-main>
-
-      </el-container>
-
-      <!--容器布局：Footer-->
-      <el-footer id="MyContainer-Footer">
-        <NavFooter/>
-      </el-footer>
-
-    </el-container>
-
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import NavHeader from './views/navs/NavHeader.vue'
-import NavFooter from "./views/navs/NavFooter.vue";
-import NavAside from "@/views/navs/NavAside.vue";
-// import CSteps from "./views/cSteps";
+
 
 export default {
   name: 'app',
-  components: {
-    NavHeader, //导航栏组件
-    NavFooter, //底部栏组件
-    NavAside, //左侧边栏
-    // CSteps, //步骤条
-  },
+  components: {},
   created() {
     //在页面加载时读取sessionStorage里的状态信息
     if (sessionStorage.getItem("store")) {
