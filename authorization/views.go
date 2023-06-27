@@ -74,7 +74,10 @@ func Logout(g *gin.Context) {
 	tokenStringList, _ := g.Request.Header["Authorization"]
 	tokenString = tokenStringList[0]
 
-	DeleteSession(tokenString)
+	//前端会有特殊情况下携带空字符串过来，这里判断一下，只有token不为空的情况下，才会删除session表中的token
+	if len(tokenString) != 0 {
+		DeleteSession(tokenString)
+	}
 
 	g.JSON(http.StatusOK, general.ResponseSuccessful("登出成功", true))
 }

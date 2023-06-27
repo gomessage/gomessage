@@ -46,6 +46,8 @@ func isAutoMigrateDB(migrate bool) {
 
 	//创建默认的Namespace（只有真正迁移数据库时，才会创建default命名空间）
 	models.InitNamespace()
+	//创建默认的admin账户（只有真正迁移数据库时，才会初始化创建admin账户，若admin已存在则跳过初始化）
+	authorization.InitAdmin()
 }
 
 // 具体的迁移方法

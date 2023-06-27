@@ -66,6 +66,31 @@
         </el-link>
       </el-menu-item>
 
+      <!--<el-avatar>User</el-avatar>-->
+
+      <!--<el-submenu index="99" style="margin: 0;padding: 0;">-->
+      <!--  <template slot="title">-->
+      <!--    <el-avatar>User</el-avatar>-->
+      <!--  </template>-->
+      <!--  <el-menu-item index="99-1">个人中心</el-menu-item>-->
+      <!--  <el-menu-item index="99-2">管理员界面</el-menu-item>-->
+      <!--  <el-menu-item index="99-3" @click="logout">退出登录</el-menu-item>-->
+      <!--</el-submenu>-->
+
+      <el-dropdown>
+        <el-menu-item>
+          <el-avatar :src="image001" v-if="isToken"></el-avatar>
+          <el-avatar v-else>User</el-avatar>
+        </el-menu-item>
+        <el-dropdown-menu>
+          <el-dropdown-item>
+            <el-button type="text" @click="router2login">登录</el-button>
+          </el-dropdown-item>
+          <el-dropdown-item>
+            <el-button type="text" @click="user_logout">退出登录</el-button>
+          </el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
     </el-row>
 
 
@@ -73,12 +98,15 @@
 </template>
 
 <script>
+import image001 from "@/assets/image001.jpeg"
+import {logout} from "@/service/requests";
 
 export default {
   name: "NavHeader",
   data() {
     return {
       // activeIndex: this.getActiveIndex,
+      image001: image001,
     };
   },
   components: {
@@ -88,12 +116,34 @@ export default {
     // 计算属性：动态获取vuex中的值
     getStoreNamespace: function () {
       return this.$store.getters.getNamespace
+    },
+    isToken: function () {
+      let token = this.$store.getters.getToken
+      if (token === "") {
+        return false
+      } else {
+        return true
+      }
     }
   },
   methods: {
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
-    }
+    },
+    user_logout() {
+      logout({"demo": "demo"}).then(resp => {
+        if (resp.data.code === 1) {
+          this.$store.commit("updateToken", "")
+          this.$message.success("注销成功...")
+        } else {
+          this.$message.error("退出登录失败...")
+        }
+      })
+
+    },
+    router2login() {
+      this.$router.push("/login")
+    },
   }
 }
 </script>

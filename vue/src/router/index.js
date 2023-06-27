@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import store from "@/store";
 
 
 Vue.use(VueRouter)
@@ -55,6 +56,19 @@ const routes = [
 const router = new VueRouter({
     // mode: 'history', //这个模式可以不带#号
     routes
+})
+
+router.beforeEach((to, form, next) => {
+    if (to.path === "/login") {
+        return next();
+    } else {
+        let token = store.getters.getToken;
+        if (token === "") {
+            return next('/login')
+        } else {
+            return next()
+        }
+    }
 })
 
 export default router

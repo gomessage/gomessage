@@ -2,6 +2,7 @@ package authorization
 
 import (
 	"gomessage/pkg/database"
+	"gomessage/pkg/log/loggers"
 	"gorm.io/gorm"
 	"time"
 )
@@ -59,6 +60,26 @@ func QueryUserByUsername(username string) (*Users, error) {
 	var user *Users
 	result := database.DB.Default.Where("username = ?", username).First(&user)
 	return user, result.Error
+}
+
+func InitAdmin() {
+	var userList []Users
+	database.DB.Default.Where("username = ?", "admin").Find(&userList)
+
+	if len(userList) == 0 {
+		user := Users{
+			Username:     "admin",
+			Nickname:     "admin",
+			PasswordHash: HashAndSalt("admin"),
+			Email:        "admin@example.com",
+			Phone:        "18512345678",
+			Description:  "超级管理员账号",
+		}
+		database.DB.Default.Create(&user)
+		loggers.DefaultLogger.Info("创建admin账户...")
+	} else {
+		loggers.DefaultLogger.Info("admin账户已存在...")
+	}
 }
 
 type Sessions struct {

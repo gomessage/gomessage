@@ -1,43 +1,30 @@
 <template>
-  <el-card class="shadow" style="width: 50%;margin-left: 25%;margin-top: 100px;height: 600px">
+  <div style="width: 50%;margin-left: 25%;margin-top: 100px;height: 500px">
+    <h3>用户登录</h3>
+    <el-divider></el-divider>
 
-    <el-row :gutter="20">
-      <el-col :span="10">
-        <img src="@/assets/image002.webp" alt="" width="350px">
-      </el-col>
-
-      <el-col :span="12">
-
-        <h3 style="margin-top: 100px;margin-left: 0;padding-left: 0">GoMessage登录</h3>
-
-        <br>
-
-        <!--登录-->
+    <el-row>
+      <el-col span="12" offset="6">
         <el-form label-position="right" :model="user_info">
-
           <el-form-item label="账号">
             <el-input v-model="user_info.username"></el-input>
           </el-form-item>
-
           <el-form-item label="密码">
             <el-input v-model="user_info.password" type="password" @keyup.enter.native="onSubmit" show-password></el-input>
           </el-form-item>
-
           <br>
-
           <el-form-item>
             <el-button type="primary" @click="onSubmit" style="width: 150px">登录</el-button>
           </el-form-item>
         </el-form>
-
-
       </el-col>
     </el-row>
-  </el-card>
+
+  </div>
 </template>
 
 <script>
-import {login} from "@/service/requests";
+import {login, logout} from "@/service/requests";
 
 export default {
   name: 'login',
@@ -54,13 +41,18 @@ export default {
   methods: {
     onSubmit: function () {
 
+      // 先注销一下登录（这里不管返回的是什么，不管注销成功与否都交给后端来处理，前端不用管）
+      logout({"demo": "demo"}).then(resp => {
+        console.log(resp)
+      })
+
+      // 然后再开始登录
       login(this.user_info).then(resp => {
         if (resp.data.code === 1) {
-          let token = resp.data.result.token;
-          console.log(token)
-          // this.$message.success("登录成功")
-          // this.sleep(1000)
+
+          this.$store.commit("updateToken", resp.data.result.token);
           this.$router.push("/main/")
+
         } else if (resp.data.code === 0) {
           this.$message.error("登录失败")
         }

@@ -55,29 +55,6 @@ const docTemplate = `{
                 "responses": {}
             }
         },
-        "/api/v1/:namespace/health": {
-            "get": {
-                "description": "访问该接口将返回：Hello World",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Health"
-                ],
-                "summary": "命名空间健康检测",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
         "/api/v1/:namespace/template": {
             "get": {
                 "tags": [
@@ -218,6 +195,29 @@ const docTemplate = `{
                 ],
                 "summary": "全局健康检测",
                 "responses": {}
+            }
+        },
+        "/ok": {
+            "get": {
+                "description": "访问该接口将返回：Hello World",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Health"
+                ],
+                "summary": "命名空间健康检测",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
             }
         }
     }
