@@ -25,7 +25,7 @@
 #要编译的命令名称
 NAME := gomessage
 #版本
-VERSION := 2.3.0
+VERSION := 2.3.1
 #编译输出目录
 OUTPUT_PATH := ./build/${VERSION}
 #是否开启cgo（0代表不开启，1代表开启）
@@ -170,7 +170,7 @@ docker_push:
 	helm package helm
 	helm coding-push gomessage-${VERSION}.tgz gomessage
 	rm -rf ./*.tgz
-	@echo "\n---------制作 Helm Chart 并推送到仓库---------\n"
+	@echo "\n---------制作Helm Chart完成，版本${VERSION}---------\n"
 
 
 ######################################

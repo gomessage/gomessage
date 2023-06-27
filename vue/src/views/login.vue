@@ -1,6 +1,6 @@
 <template>
   <div style="width: 50%;margin-left: 25%;margin-top: 100px;height: 500px">
-    <h3>用户登录</h3>
+    <h3>GoMessage 用户登录</h3>
     <el-divider></el-divider>
 
     <el-row>
@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import {login, logout} from "@/service/requests";
+import {login} from "@/service/requests";
 
 export default {
   name: 'login',
@@ -41,12 +41,13 @@ export default {
   methods: {
     onSubmit: function () {
 
+      //TODO：后端逻辑还没处理好，暂时先注释掉
       // 先注销一下登录（这里不管返回的是什么，不管注销成功与否都交给后端来处理，前端不用管）
-      logout({"demo": "demo"}).then(resp => {
-        console.log(resp)
-      })
+      // logout({"demo": "demo"}).then(resp => {
+      //   console.log(resp)
+      // })
 
-      // 然后再开始登录
+      // 登录
       login(this.user_info).then(resp => {
         if (resp.data.code === 1) {
 
@@ -58,6 +59,7 @@ export default {
         }
       })
     },
+
     //参数n为休眠时间，单位为毫秒:
     sleep: function (n) {
       let start = new Date().getTime();

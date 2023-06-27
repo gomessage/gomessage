@@ -77,19 +77,30 @@
       <!--  <el-menu-item index="99-3" @click="logout">退出登录</el-menu-item>-->
       <!--</el-submenu>-->
 
+      <!--用户头像，下拉菜单-->
       <el-dropdown>
+
+        <!--动态显示头像-->
         <el-menu-item>
           <el-avatar :src="image001" v-if="isToken"></el-avatar>
           <el-avatar v-else>User</el-avatar>
         </el-menu-item>
+
+        <!--下拉菜单内容-->
         <el-dropdown-menu>
-          <el-dropdown-item>
-            <el-button type="text" @click="router2login">登录</el-button>
-          </el-dropdown-item>
-          <el-dropdown-item>
+
+          <!--如果存在token，就代表已经登录了，只显示退出登录按钮-->
+          <el-dropdown-item v-if="isToken">
             <el-button type="text" @click="user_logout">退出登录</el-button>
           </el-dropdown-item>
+
+          <!--如果不存在token，则显示"用户登录"按钮-->
+          <el-dropdown-item v-else>
+            <el-button type="text" @click="router2login">用户登录</el-button>
+          </el-dropdown-item>
+
         </el-dropdown-menu>
+
       </el-dropdown>
     </el-row>
 
