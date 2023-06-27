@@ -4,7 +4,7 @@
     <el-divider></el-divider>
 
     <el-row>
-      <el-col span="12" offset="6">
+      <el-col :span="12" :offset="6">
         <el-form label-position="right" :model="user_info">
           <el-form-item label="账号">
             <el-input v-model="user_info.username"></el-input>

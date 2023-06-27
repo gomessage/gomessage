@@ -1,30 +1,37 @@
 <template>
   <el-row style="margin-top: 20px;margin-bottom: 20px;">
     <el-col :offset="4" :span="16">
+
       <!--右侧抽屉：添加客户端-->
-      <CDrawer v-bind:getClientList="getClientList"></CDrawer>
+      <CDrawer
+          v-bind:getClientList="GetClientList"
+          v-bind:OperateType="'create'"
+      ></CDrawer>
+
       <!--右侧抽屉：显示客户端详情-->
-      <CDrawerOneDataInfo
-        v-bind:oneClientInfo="clientOneInfo"
-        v-bind:thisClose="thisClose"
-        v-bind:visibleStatus="visibleStatus">
-      </CDrawerOneDataInfo>
+      <CDrawerOneDataInfo2
+          v-bind:CloseBeforeFunc="thisClose"
+          v-bind:isShow="visibleStatus"
+          v-bind:OneClientObject="clientOneInfo"
+          v-bind:OneClientType="clientOneInfo.client_type"
+          v-bind:OperateType="'show'"
+      ></CDrawerOneDataInfo2>
 
       <!--中间卡片：客户端列表-->
       <el-card style="box-shadow: #ccc 0px 30px 30px;">
         <div slot="header" class="clearfix">
           <span style="padding-left: 50px">客户端 · 列表</span>
-          <el-button style="float: right; padding: 3px 0" type="text" v-on:click="getClientList">刷新列表</el-button>
+          <el-button style="float: right; padding: 3px 0" type="text" v-on:click="GetClientList">刷新列表</el-button>
         </div>
         <!-- ------------------------------------------------------- -->
 
         <!--Table表格-->
         <el-table
-          :border="true"
-          :data="clientList"
-          :header-cell-style="{background:'#2f2f35',color:'#fff'}"
-          :stripe="true"
-          style="width: 100%"
+            :border="true"
+            :data="clientList"
+            :header-cell-style="{background:'#2f2f35',color:'#fff'}"
+            :stripe="true"
+            style="width: 100%"
         >
 
           <el-table-column label="客户端名称" prop="client_name"></el-table-column>
@@ -50,7 +57,6 @@
         </el-table>
 
 
-
         <br>
         <br>
         <br>
@@ -68,7 +74,7 @@
 
 <script>
 import CDrawer from "@/components/cDrawer";
-import CDrawerOneDataInfo from "@/components/cDrawerOneDataInfo";
+import CDrawerOneDataInfo2 from "@/components/cDrawerOneDataInfo2";
 import {deleteClientOne, getClient, getClientOne, putClientOne} from '@/service/requests'
 
 export default {
@@ -121,7 +127,7 @@ export default {
   },
   components: {
     CDrawer,
-    CDrawerOneDataInfo,
+    CDrawerOneDataInfo2,
   },
   methods: {
     //根据客户端类型，获取对应的客户端注解名称，转换成人类可读的样子
@@ -155,7 +161,7 @@ export default {
       this.$store.commit("updateDrawerStatus", true);
     },
 
-    //关闭抽屉
+    //关闭抽屉前的回调，不管那个子元素关闭，都要调用这个方法，把这一层的"父变量"也设定为关闭状态。
     thisClose: function () {
       this.visibleStatus = false;
     },
@@ -199,11 +205,10 @@ export default {
     },
 
     //拉取客户端列表
-    getClientList: function () {
+    GetClientList: function () {
       getClient(this.$store.getters.getNamespace, null).then(response => {
         if (response.data.result.length === 0) {
           console.log("数据库里没有数据");
-          // this.$message.error("数据库中没有数据，只显示demo数据...");
           this.$message.info("当前通道中，还没有添加客户端....");
         } else {
           this.clientList = response.data.result;
@@ -223,7 +228,7 @@ export default {
     //修改步骤条的值
     this.$store.commit("updateStepsActive", 3);
     //拉取客户端列表
-    this.getClientList();
+    this.GetClientList();
   }
 }
 </script>
@@ -254,3 +259,4 @@ export default {
   margin-bottom: 20px;
 }
 </style>
+

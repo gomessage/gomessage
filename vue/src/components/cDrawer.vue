@@ -1,32 +1,35 @@
 <template>
   <el-drawer
-    title="添加客户端"
-    :visible="getDrawerStatus"
-    :before-close="handleClose"
-    :destroy-on-close="true"
-    size="40%">
+      title="添加客户端"
+      :visible="getDrawerStatus"
+      :before-close="handleClose"
+      :destroy-on-close="true"
+      size="40%">
     <el-tabs :tab-position="tabPosition" style="margin: 1px 20px">
 
       <el-tab-pane label="钉钉 · 群机器人">
-        <clientDingtalk v-bind:getClientList="getClientList"></clientDingtalk>
+        <clientDingtalk v-bind="$attrs"></clientDingtalk>
       </el-tab-pane>
 
       <el-tab-pane label="飞书 · 群机器人">
-        <clientFeishu v-bind:getClientList="getClientList"></clientFeishu>
+        <!--<clientFeishu v-bind:getClientList="getClientList"></clientFeishu>-->
+        <clientFeishu v-bind="$attrs"></clientFeishu>
       </el-tab-pane>
 
-      <el-tab-pane label="企业微信 · 群机器人">
-        <clientWechatRobot v-bind:getClientList="getClientList"></clientWechatRobot>
+      <el-tab-pane label="企微 · 群机器人">
+        <!--<clientWechatRobot v-bind:getClientList="getClientList"></clientWechatRobot>-->
+        <clientWechatRobot v-bind="$attrs"></clientWechatRobot>
       </el-tab-pane>
 
-      <el-tab-pane label="企业微信 · 应用号">
-        <clientWechat v-bind:getClientList="getClientList"></clientWechat>
+      <el-tab-pane label="企微 · 应用号">
+        <!--<clientWechat v-bind:getClientList="getClientList"></clientWechat>-->
+        <clientWechat v-bind="$attrs"></clientWechat>
       </el-tab-pane>
-
 
 
       <el-tab-pane label="其它" style="text-align: left">
-        <clientOther v-bind:getClientList="getClientList"></clientOther>
+        <!--<clientOther v-bind:getClientList="getClientList"></clientOther>-->
+        <clientOther v-bind="$attrs"></clientOther>
       </el-tab-pane>
 
     </el-tabs>
@@ -46,8 +49,6 @@ export default {
     return {
       tabPosition: "top",
     }
-  }, props: {
-    getClientList: Function,
   },
   components: {
     clientDingtalk,
@@ -71,13 +72,8 @@ export default {
         console.log(_);
       });
     },
-    // getClientList2: function () {
-    //     this.$parent.getClientList();
-    // }
   }
 }
 </script>
 
-<style scoped>
 
-</style>
