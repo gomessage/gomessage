@@ -24,7 +24,7 @@ export default {
     Domain,
   }, methods: {
     simulation: function () {
-      let jsonData = require('./A2-template.json');
+      let jsonData = require('./a2template.json');
       postDemoData(this.$store.getters.getNamespace, jsonData).then(response => {
         console.log(response)
         this.$message.success("模拟消息推送成功...")
