@@ -21,7 +21,7 @@ axiosInstance.interceptors.request.use(config => {
 
         //如果token为空字符串，则跳转到登录页面
         if (token === "") {
-            router.push("/main/")
+            router.push("/login")
         } else {
             config.headers = {
                 'Content-Type': 'application/json',
