@@ -9,6 +9,14 @@ type Url struct {
 	Url string `json:"url"`
 }
 
+func JoinUrl(urls []Url) []string {
+	var uList []string
+	for _, v := range urls {
+		uList = append(uList, v.Url)
+	}
+	return uList
+}
+
 type Dingtalk struct {
 	ID                 int            `json:"id" gorm:"primarykey"`
 	CreatedAt          time.Time      `json:"-"`
@@ -17,8 +25,8 @@ type Dingtalk struct {
 	ClientId           int            `json:"client_id"`
 	RobotKeyword       string         `json:"robot_keyword"`
 	RobotUrl           string         `json:"robot_url"`
-	RobotUrlList       []Url          `json:"robot_url_list" gorm:"-:all"`
-	RobotUrlRandomList []string       `json:"-" gorm:"-:all"`
+	RobotUrlList       []Url          `gorm:"-:all" json:"robot_url_list"` //得到前端提交过来的robot_url_list字段
+	RobotUrlRandomList []string       `gorm:"-:all" json:"-"`              //根据robot_url_list，得到一个url随机列表
 }
 
 func (*Dingtalk) TableName() string {

@@ -40,6 +40,7 @@ func AddClient(c *Client) (*Client, error) {
 	switch c.ClientType {
 	case "dingtalk":
 		c.ExtendDingtalk.ClientId = int(c.ID)
+		c.ExtendDingtalk.RobotUrlRandomList = JoinUrl(c.ExtendDingtalk.RobotUrlList) //url随机列表
 		c.ExtendDingtalk.RobotUrl = strings.Join(c.ExtendDingtalk.RobotUrlRandomList, "\n")
 		dingtalkResult := database.DB.Default.Create(&c.ExtendDingtalk)
 		if dingtalkResult.Error != nil {
@@ -48,6 +49,7 @@ func AddClient(c *Client) (*Client, error) {
 
 	case "feishu":
 		c.ExtendFeishu.ClientId = int(c.ID)
+		c.ExtendFeishu.RobotUrlRandomList = JoinUrl(c.ExtendFeishu.RobotUrlList) //url随机列表
 		c.ExtendFeishu.RobotUrl = strings.Join(c.ExtendFeishu.RobotUrlRandomList, "\n")
 		feishuResult := database.DB.Default.Create(&c.ExtendFeishu)
 		if feishuResult.Error != nil {
@@ -56,6 +58,7 @@ func AddClient(c *Client) (*Client, error) {
 
 	case "wechat_robot":
 		c.ExtendWechatRobot.ClientId = int(c.ID)
+		c.ExtendWechatRobot.RobotUrlRandomList = JoinUrl(c.ExtendWechatRobot.RobotUrlList) //url随机列表
 		c.ExtendWechatRobot.RobotUrl = strings.Join(c.ExtendWechatRobot.RobotUrlRandomList, "\n")
 		result := database.DB.Default.Create(&c.ExtendWechatRobot)
 		if result.Error != nil {
@@ -93,6 +96,7 @@ func UpdateClientInfo(id int, newClient *Client) (*Client, error) {
 	case "dingtalk":
 		dingtalk := Dingtalk{}
 		database.DB.Default.Model(&dingtalk).Where("client_id = ?", oldClient.ID).First(&dingtalk)
+		newClient.ExtendDingtalk.RobotUrlRandomList = JoinUrl(newClient.ExtendDingtalk.RobotUrlList) //url随机列表
 		database.DB.Default.Model(&dingtalk).Updates(Dingtalk{
 			RobotKeyword: newClient.ExtendDingtalk.RobotKeyword,
 			RobotUrl:     strings.Join(newClient.ExtendDingtalk.RobotUrlRandomList, "\n"),
@@ -101,6 +105,7 @@ func UpdateClientInfo(id int, newClient *Client) (*Client, error) {
 	case "feishu":
 		feishu := Feishu{}
 		database.DB.Default.Model(&feishu).Where("client_id = ?", oldClient.ID).First(&feishu)
+		newClient.ExtendFeishu.RobotUrlRandomList = JoinUrl(newClient.ExtendFeishu.RobotUrlList) //url随机列表
 		database.DB.Default.Model(&feishu).Updates(Feishu{
 			RobotKeyword: newClient.ExtendFeishu.RobotKeyword,
 			TitleColor:   newClient.ExtendFeishu.TitleColor,
@@ -110,6 +115,7 @@ func UpdateClientInfo(id int, newClient *Client) (*Client, error) {
 	case "wechat_robot":
 		wechatRobot := WechatRobot{}
 		database.DB.Default.Model(&wechatRobot).Where("client_id = ?", oldClient.ID).First(&wechatRobot)
+		newClient.ExtendWechatRobot.RobotUrlRandomList = JoinUrl(newClient.ExtendWechatRobot.RobotUrlList) //url随机列表
 		database.DB.Default.Model(&wechatRobot).Updates(WechatRobot{
 			RobotKeyword: newClient.ExtendWechatRobot.RobotKeyword,
 			RobotUrl:     strings.Join(newClient.ExtendWechatRobot.RobotUrlRandomList, "\n"),

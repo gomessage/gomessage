@@ -22,68 +22,30 @@ func PostClient(g *gin.Context) {
 	//获取url中的namespace
 	clientRequestBody.Namespace = g.Param("namespace")
 
-	//判断客户端类型（主要是用来处理客客户端多url的问题）
+	//判断客户端类型（绑定客户端信息到client的Extend延伸信息中）
 	switch clientRequestBody.ClientType {
 	case "dingtalk":
-		//绑定钉钉客户端的信息
+		//钉钉机器人
 		dingtalk := models.Dingtalk{}
-		if err := json.Unmarshal(clientRequestBody.ClientInfo, &dingtalk); err != nil {
-			return
-		}
-
-		//为随机数组赋值
-		var urls []string
-		for _, v := range dingtalk.RobotUrlList {
-			urls = append(urls, v.Url)
-		}
-		dingtalk.RobotUrlRandomList = make([]string, 0)
-		dingtalk.RobotUrlRandomList = urls
-
-		//客户端延伸信息
+		json.Unmarshal(clientRequestBody.ClientInfo, &dingtalk)
 		clientRequestBody.ExtendDingtalk = &dingtalk
 
 	case "wechat_robot":
-		//绑定微信机器人客户端信息
+		//微信机器人
 		wechatRobot := models.WechatRobot{}
-		if err := json.Unmarshal(clientRequestBody.ClientInfo, &wechatRobot); err != nil {
-			return
-		}
-
-		//为随机数组赋值
-		var urls []string
-		for _, v := range wechatRobot.RobotUrlList {
-			urls = append(urls, v.Url)
-		}
-		wechatRobot.RobotUrlRandomList = make([]string, 0)
-		wechatRobot.RobotUrlRandomList = urls
-
-		//客户端延伸信息
+		json.Unmarshal(clientRequestBody.ClientInfo, &wechatRobot)
 		clientRequestBody.ExtendWechatRobot = &wechatRobot
 
 	case "feishu":
-		//绑定飞书客户端信息
+		//飞书机器人
 		feishu := models.Feishu{}
-		if err := json.Unmarshal(clientRequestBody.ClientInfo, &feishu); err != nil {
-			return
-		}
-
-		//为随机数组赋值
-		var urls []string
-		for _, v := range feishu.RobotUrlList {
-			urls = append(urls, v.Url)
-		}
-		feishu.RobotUrlRandomList = make([]string, 0)
-		feishu.RobotUrlRandomList = urls
-
-		//客户端延伸信息
+		json.Unmarshal(clientRequestBody.ClientInfo, &feishu)
 		clientRequestBody.ExtendFeishu = &feishu
 
 	case "wechat":
 		//微信应用号
 		wechatApplication := models.WechatApplication{}
-		if err := json.Unmarshal(clientRequestBody.ClientInfo, &wechatApplication); err != nil {
-			return
-		}
+		json.Unmarshal(clientRequestBody.ClientInfo, &wechatApplication)
 		clientRequestBody.ExtendWechatApplication = &wechatApplication
 
 	default:

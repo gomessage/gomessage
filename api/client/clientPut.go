@@ -2,7 +2,6 @@ package client
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"gomessage/models"
 	"gomessage/pkg/general"
@@ -39,7 +38,6 @@ func PutClientInfo(g *gin.Context) {
 
 	//获取url中的客户端id
 	id, _ := strconv.Atoi(g.Param("id"))
-	fmt.Println(id)
 
 	//获取clientBody信息
 	clientRequestBody := models.Client{}
@@ -54,21 +52,15 @@ func PutClientInfo(g *gin.Context) {
 	switch clientRequestBody.ClientType {
 	case "dingtalk":
 		//绑定钉钉客户端的信息
-		dingtalk := models.Dingtalk{}
-		if err := json.Unmarshal(clientRequestBody.ClientInfo, &dingtalk); err != nil {
+		if err := json.Unmarshal(clientRequestBody.ClientInfo, &clientRequestBody.ExtendDingtalk); err != nil {
 			return
 		}
 
-		//为随机数组赋值
-		var urls []string
-		for _, v := range dingtalk.RobotUrlList {
-			urls = append(urls, v.Url)
+	case "feishu":
+		//绑定飞书客户端信息
+		if err := json.Unmarshal(clientRequestBody.ClientInfo, &clientRequestBody.ExtendFeishu); err != nil {
+			return
 		}
-		dingtalk.RobotUrlRandomList = make([]string, 0)
-		dingtalk.RobotUrlRandomList = urls
-
-		//客户端延伸信息
-		clientRequestBody.ExtendDingtalk = &dingtalk
 
 	case "wechat_robot":
 		//绑定微信机器人客户端信息
@@ -76,35 +68,7 @@ func PutClientInfo(g *gin.Context) {
 		if err := json.Unmarshal(clientRequestBody.ClientInfo, &wechatRobot); err != nil {
 			return
 		}
-
-		//为随机数组赋值
-		var urls []string
-		for _, v := range wechatRobot.RobotUrlList {
-			urls = append(urls, v.Url)
-		}
-		wechatRobot.RobotUrlRandomList = make([]string, 0)
-		wechatRobot.RobotUrlRandomList = urls
-
-		//客户端延伸信息
 		clientRequestBody.ExtendWechatRobot = &wechatRobot
-
-	case "feishu":
-		//绑定飞书客户端信息
-		feishu := models.Feishu{}
-		if err := json.Unmarshal(clientRequestBody.ClientInfo, &feishu); err != nil {
-			return
-		}
-
-		//为随机数组赋值
-		var urls []string
-		for _, v := range feishu.RobotUrlList {
-			urls = append(urls, v.Url)
-		}
-		feishu.RobotUrlRandomList = make([]string, 0)
-		feishu.RobotUrlRandomList = urls
-
-		//客户端延伸信息
-		clientRequestBody.ExtendFeishu = &feishu
 
 	case "wechat":
 		//微信应用号
