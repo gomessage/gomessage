@@ -71,7 +71,7 @@ export default {
       },
     }
   }, props: {
-    getClientList: Function,
+    cli_GetClientList: Function,
   },
   methods: {
     onSubmit: function () {
@@ -82,11 +82,11 @@ export default {
         postClient(this.$store.getters.getNamespace, this.client).then(response => {
           if (response.data.result) {
             this.$message.success("添加成功...");
-            this.getClientList();
+            this.cli_GetClientList();
             this.$store.commit("updateDrawerStatus", false);
           } else {
             this.$message.error("添加失败...");
-            this.getClientList();
+            this.cli_GetClientList();
             this.$store.commit("updateDrawerStatus", false);
           }
         }).catch(err => {
@@ -95,7 +95,7 @@ export default {
       }
     },
     closeDrawer: function () {
-      this.getClientList();
+      this.cli_GetClientList();
       this.$store.commit("updateDrawerStatus", false);
     },
   }

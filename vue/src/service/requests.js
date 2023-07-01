@@ -23,6 +23,7 @@ export const getClient = (namespace, params) => http.Get("/api/v1/" + namespace 
 export const postClient = (namespace, data) => http.Post("/api/v1/" + namespace + "/client", data)
 export const getClientOne = (namespace, id, params) => http.Get("/api/v1/" + namespace + "/client/" + id, params)
 export const putClientOne = (namespace, id, data) => http.Put("/api/v1/" + namespace + "/client/" + id, data)
+export const putClientInfoOne = (namespace, id, data) => http.Put("/api/v1/" + namespace + "/client-info/" + id, data)
 export const deleteClientOne = (namespace, id, params) => http.Delete("/api/v1/" + namespace + "/client/" + id, params)
 
 

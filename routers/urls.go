@@ -80,7 +80,7 @@ func Path(g *gin.Engine) {
 		v1View.GET("/:namespace/client", client.ListClient)             //获取所有客户端
 		v1View.POST("/:namespace/client", client.PostClient)            //新增一个客户端
 		v1View.GET("/:namespace/client/:id", client.GetClient)          //获取客户端详情
-		v1View.PUT("/:namespace/client/:id", client.PutClient)          //更新一个客户端
+		v1View.PUT("/:namespace/client/:id", client.PutClientActive)    //更新一个客户端
 		v1View.PUT("/:namespace/client-info/:id", client.PutClientInfo) //更新一个客户端
 		v1View.DELETE("/:namespace/client/:id", client.DeleteClient)    //删除一个客户端
 

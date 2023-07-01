@@ -76,19 +76,19 @@ export default {
       }
     }
   }, props: {
-    getClientList: Function,
+    cli_GetClientList: Function,
   },
   methods: {
     onSubmit: function () {
       postClient(this.$store.getters.getNamespace, this.client).then(response => {
         if (response.data.code === 1) {
           this.$message.success("添加成功...")
-          this.getClientList();
+          this.cli_GetClientList();
           this.$store.commit("updateDrawerStatus", false);
 
         } else {
           this.$message.error("添加失败...");
-          this.getClientList();
+          this.cli_GetClientList();
           this.$store.commit("updateDrawerStatus", false);
         }
       }).catch(err => {
@@ -111,7 +111,7 @@ export default {
       // console.log(this.mylist);
     },
     closeDrawer: function () {
-      this.getClientList();
+      this.cli_GetClientList();
       this.$store.commit("updateDrawerStatus", false);
     },
   }

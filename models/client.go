@@ -19,11 +19,11 @@ type Client struct {
 	ClientDescription       string             `json:"client_description"`
 	ClientType              string             `json:"client_type"`
 	IsActive                bool               `json:"is_active"`
-	ClientInfo              json.RawMessage    `json:"client_info" gorm:"-:all"`
-	ExtendDingtalk          *Dingtalk          `json:"-" gorm:"-:all"`
-	ExtendFeishu            *Feishu            `json:"-" gorm:"-:all"`
-	ExtendWechatApplication *WechatApplication `json:"-" gorm:"-:all"`
-	ExtendWechatRobot       *WechatRobot       `json:"-" gorm:"-:all"`
+	ClientInfo              json.RawMessage    `gorm:"-:all" json:"client_info"`
+	ExtendDingtalk          *Dingtalk          `gorm:"-:all" json:"-"`
+	ExtendFeishu            *Feishu            `gorm:"-:all" json:"-"`
+	ExtendWechatApplication *WechatApplication `gorm:"-:all" json:"-"`
+	ExtendWechatRobot       *WechatRobot       `gorm:"-:all" json:"-"`
 }
 
 func (*Client) TableName() string {
@@ -76,6 +76,63 @@ func AddClient(c *Client) (*Client, error) {
 	return c, nil
 }
 
+func UpdateClientInfo(id int, newClient *Client) (*Client, error) {
+	oldClient := Client{}
+	result := database.DB.Default.Model(&oldClient).Where("id = ? ", id).First(&oldClient)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	database.DB.Default.Model(&oldClient).Updates(Client{
+		ClientName:        newClient.ClientName,
+		ClientDescription: newClient.ClientDescription,
+		IsActive:          newClient.IsActive,
+	})
+
+	switch newClient.ClientType {
+	case "dingtalk":
+		dingtalk := Dingtalk{}
+		database.DB.Default.Model(&dingtalk).Where("client_id = ?", oldClient.ID).First(&dingtalk)
+		database.DB.Default.Model(&dingtalk).Updates(Dingtalk{
+			RobotKeyword: newClient.ExtendDingtalk.RobotKeyword,
+			RobotUrl:     strings.Join(newClient.ExtendDingtalk.RobotUrlRandomList, "\n"),
+		})
+
+	case "feishu":
+		feishu := Feishu{}
+		database.DB.Default.Model(&feishu).Where("client_id = ?", oldClient.ID).First(&feishu)
+		database.DB.Default.Model(&feishu).Updates(Feishu{
+			RobotKeyword: newClient.ExtendFeishu.RobotKeyword,
+			TitleColor:   newClient.ExtendFeishu.TitleColor,
+			RobotUrl:     strings.Join(newClient.ExtendFeishu.RobotUrlRandomList, "\n"),
+		})
+
+	case "wechat_robot":
+		wechatRobot := WechatRobot{}
+		database.DB.Default.Model(&wechatRobot).Where("client_id = ?", oldClient.ID).First(&wechatRobot)
+		database.DB.Default.Model(&wechatRobot).Updates(WechatRobot{
+			RobotKeyword: newClient.ExtendWechatRobot.RobotKeyword,
+			RobotUrl:     strings.Join(newClient.ExtendWechatRobot.RobotUrlRandomList, "\n"),
+		})
+
+	case "wechat":
+		wechatApp := WechatApplication{}
+		database.DB.Default.Model(&wechatApp).Where("client_id = ?", oldClient.ID).First(&wechatApp)
+		database.DB.Default.Model(&wechatApp).Updates(WechatApplication{
+			CorpId:  newClient.ExtendWechatApplication.CorpId,
+			AgentId: newClient.ExtendWechatApplication.AgentId,
+			Secret:  newClient.ExtendWechatApplication.Secret,
+			Touser:  newClient.ExtendWechatApplication.Touser,
+		})
+
+	default:
+		return newClient, errors.New("未知的ClientType=" + newClient.ClientType)
+	}
+
+	return &oldClient, result.Error
+
+}
+
 func DeleteClient(id int) (int, error) {
 	var cli Client
 	result := database.DB.Default.Delete(&cli, id)
@@ -85,13 +142,6 @@ func DeleteClient(id int) (int, error) {
 func UpdateClientActive(id int, t *Client) (*Client, error) {
 	client := Client{}
 	updateResult := database.DB.Default.Model(&client).Where("id = ? ", id).Update("is_active", t.IsActive)
-	return &client, updateResult.Error
-
-}
-
-func UpdateClientInfo(id int, t *Client) (*Client, error) {
-	client := Client{}
-	updateResult := database.DB.Default.Model(&client).Where("id = ? ", id).Updates(map[string]any{"is_active": t.IsActive, "client_name": t.ClientName, "client_description": t.ClientDescription})
 	return &client, updateResult.Error
 
 }

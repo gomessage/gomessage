@@ -10,11 +10,11 @@ import (
 	"strconv"
 )
 
-// PutClient
+// PutClientActive
 // @Tags Client
 // @Summary 修改一个客户端
 // @Router /api/v1/:namespace/client/:id [PUT]
-func PutClient(g *gin.Context) {
+func PutClientActive(g *gin.Context) {
 	//更新客户端的激活状态
 	id, _ := strconv.Atoi(g.Param("id"))
 	client := models.Client{}
@@ -118,10 +118,10 @@ func PutClientInfo(g *gin.Context) {
 		return
 	}
 
-	result, err := models.AddClient(&clientRequestBody)
+	result, err := models.UpdateClientInfo(id, &clientRequestBody)
 	if err != nil {
 		return
 	}
 
-	g.JSON(http.StatusOK, general.ResponseSuccessful("创建成功", result))
+	g.JSON(http.StatusOK, general.ResponseSuccessful("更新成功", result))
 }

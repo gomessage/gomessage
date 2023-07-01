@@ -3,19 +3,21 @@
     <el-col :offset="4" :span="16">
 
       <!--右侧抽屉：添加客户端-->
-      <CDrawer
-          v-bind:getClientList="GetClientList"
-          v-bind:OperateType="'create'"
-      ></CDrawer>
+      <CDrawerAll
+          v-bind:cli_GetClientList="GetClientList"
+          v-bind:cli_OperateType="'create'"
+      ></CDrawerAll>
 
       <!--右侧抽屉：显示客户端详情-->
-      <CDrawerOneDataInfo2
-          v-bind:CloseBeforeFunc="thisClose"
-          v-bind:isShow="visibleStatus"
-          v-bind:OneClientObject="clientOneInfo"
-          v-bind:OneClientType="clientOneInfo.client_type"
-          v-bind:OperateType="'show'"
-      ></CDrawerOneDataInfo2>
+      <CDrawerOne
+          v-bind:cd_isShow="visibleStatus"
+          v-bind:cd_closeBeforeFunc="thisClose"
+          v-bind:cd_clientType="clientOneInfo.client_type"
+
+          v-bind:cli_OneClientObject="clientOneInfo"
+          v-bind:cli_OperateType="'show'"
+          v-bind:cli_GetClientList="GetClientList"
+      ></CDrawerOne>
 
       <!--中间卡片：客户端列表-->
       <el-card style="box-shadow: #ccc 0px 30px 30px;">
@@ -73,8 +75,8 @@
 </template>
 
 <script>
-import CDrawer from "@/components/cDrawerAll.vue";
-import CDrawerOneDataInfo2 from "@/components/cDrawerOne.vue";
+import CDrawerAll from "@/components/cDrawerAll.vue";
+import CDrawerOne from "@/components/cDrawerOne.vue";
 import {deleteClientOne, getClient, getClientOne, putClientOne} from '@/service/requests'
 
 export default {
@@ -126,8 +128,8 @@ export default {
     }
   },
   components: {
-    CDrawer,
-    CDrawerOneDataInfo2,
+    CDrawerAll,
+    CDrawerOne,
   },
   methods: {
     //根据客户端类型，获取对应的客户端注解名称，转换成人类可读的样子
@@ -164,6 +166,7 @@ export default {
     //关闭抽屉前的回调，不管那个子元素关闭，都要调用这个方法，把这一层的"父变量"也设定为关闭状态。
     thisClose: function () {
       this.visibleStatus = false;
+
     },
 
     // 删除一行数据：跟后端交互，然后刷新表格
