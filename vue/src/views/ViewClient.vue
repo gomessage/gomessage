@@ -73,8 +73,8 @@
 </template>
 
 <script>
-import CDrawer from "@/components/cDrawer";
-import CDrawerOneDataInfo2 from "@/components/cDrawerOneDataInfo2";
+import CDrawer from "@/components/cDrawerAll.vue";
+import CDrawerOneDataInfo2 from "@/components/cDrawerOne.vue";
 import {deleteClientOne, getClient, getClientOne, putClientOne} from '@/service/requests'
 
 export default {

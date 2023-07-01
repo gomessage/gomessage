@@ -8,6 +8,21 @@ import (
 	"strconv"
 )
 
+type RequestDataDingtalk struct {
+	*models.Dingtalk
+	RobotUrlList []models.Url `json:"robot_url_list"`
+}
+
+type RequestDataFeishu struct {
+	*models.Feishu
+	RobotUrlList []models.Url `json:"robot_url_list"`
+}
+
+type RequestDataWechatRobot struct {
+	*models.WechatRobot
+	RobotUrlList []models.Url `json:"robot_url_list"`
+}
+
 // GetClient
 // @Tags Client
 // @Summary 查询一个客户端
@@ -27,9 +42,9 @@ func GetClient(g *gin.Context) {
 
 		switch client.ClientType {
 		case "dingtalk":
-			var urls []OneUrl
-			for _, urlAddress := range client.ExtendDingtalk.RobotUrlInfoList { //这里的RobotUrlInfoList，是从数据库取出的压缩数据，展开后得到的内容
-				urls = append(urls, OneUrl{Url: urlAddress})
+			var urls []models.Url
+			for _, urlAddress := range client.ExtendDingtalk.RobotUrlRandomList { //这里的RobotUrlInfoList，是从数据库取出的压缩数据，展开后得到的内容
+				urls = append(urls, models.Url{Url: urlAddress})
 			}
 			cInfo := RequestDataDingtalk{
 				Dingtalk:     client.ExtendDingtalk,
@@ -38,9 +53,9 @@ func GetClient(g *gin.Context) {
 			respData.ClientInfo = cInfo
 
 		case "feishu":
-			var urls []OneUrl
-			for _, v := range client.ExtendFeishu.RobotUrlInfoList {
-				urls = append(urls, OneUrl{Url: v})
+			var urls []models.Url
+			for _, v := range client.ExtendFeishu.RobotUrlRandomList {
+				urls = append(urls, models.Url{Url: v})
 			}
 			cInfo := RequestDataFeishu{
 				Feishu:       client.ExtendFeishu,
@@ -49,9 +64,9 @@ func GetClient(g *gin.Context) {
 			respData.ClientInfo = cInfo
 
 		case "wechat_robot":
-			var urls []OneUrl
-			for _, v := range client.ExtendWechatRobot.RobotUrlInfoList {
-				urls = append(urls, OneUrl{Url: v})
+			var urls []models.Url
+			for _, v := range client.ExtendWechatRobot.RobotUrlRandomList {
+				urls = append(urls, models.Url{Url: v})
 			}
 			cInfo := RequestDataWechatRobot{
 				WechatRobot:  client.ExtendWechatRobot,

@@ -26,7 +26,7 @@ func (c *ClientActionWechatRobot) RendersMessages(client *models.Client, isMerge
 }
 
 func (c *ClientActionWechatRobot) PushMessages(messages []any) {
-	url := v1.RobotRandomUrl(c.Client.ExtendWechatRobot.RobotUrlInfoList)
+	url := v1.RobotRandomUrl(c.Client.ExtendWechatRobot.RobotUrlRandomList)
 	for _, msg := range messages {
 		v1.Push(msg, url)
 	}

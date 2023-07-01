@@ -3,7 +3,6 @@ package initialize
 import (
 	"gomessage/authorization"
 	"gomessage/models"
-	"gomessage/models/clients"
 	"gomessage/pkg/database"
 	"gomessage/pkg/log/loggers"
 	"gorm.io/gorm"
@@ -29,10 +28,10 @@ func isAutoMigrateDB(migrate bool) {
 			&models.Template{},
 			&models.Variables{},
 			&models.Client{},
-			&clients.Dingtalk{},
-			&clients.Feishu{},
-			&clients.WechatApplication{},
-			&clients.WechatRobot{},
+			&models.Dingtalk{},
+			&models.Feishu{},
+			&models.WechatApplication{},
+			&models.WechatRobot{},
 			&authorization.Users{},
 			&authorization.Sessions{},
 		)

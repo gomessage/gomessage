@@ -26,7 +26,7 @@ func (c *ClientActionDingtalk) RendersMessages(client *models.Client, isMerge bo
 }
 
 func (c *ClientActionDingtalk) PushMessages(messages []any) {
-	url := v1.RobotRandomUrl(c.Client.ExtendDingtalk.RobotUrlInfoList)
+	url := v1.RobotRandomUrl(c.Client.ExtendDingtalk.RobotUrlRandomList)
 	for _, msg := range messages {
 		v1.Push(msg, url)
 	}

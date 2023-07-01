@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"gomessage/models"
-	"gomessage/models/clients"
 	"gomessage/pkg/general"
 	"net/http"
 )
@@ -14,63 +13,84 @@ import (
 // @Summary 新增一个客户端
 // @Router /api/v1/:namespace/client [POST]
 func PostClient(g *gin.Context) {
-	body := RequestBody{}
-	if err := g.ShouldBindJSON(&body); err != nil {
+	//获取clientBody信息
+	clientRequestBody := models.Client{}
+	if err := g.ShouldBindJSON(&clientRequestBody); err != nil {
 		return
 	}
-	body.Namespace = g.Param("namespace")
 
-	switch body.ClientType {
+	//获取url中的namespace
+	clientRequestBody.Namespace = g.Param("namespace")
 
+	//判断客户端类型（主要是用来处理客客户端多url的问题）
+	switch clientRequestBody.ClientType {
 	case "dingtalk":
-		requestClient := RequestDataDingtalk{}
-		if err := json.Unmarshal(body.ClientInfo, &requestClient); err != nil {
+		//绑定钉钉客户端的信息
+		dingtalk := models.Dingtalk{}
+		if err := json.Unmarshal(clientRequestBody.ClientInfo, &dingtalk); err != nil {
 			return
 		}
+
+		//为随机数组赋值
 		var urls []string
-		for _, v := range requestClient.RobotUrlList {
+		for _, v := range dingtalk.RobotUrlList {
 			urls = append(urls, v.Url)
 		}
-		requestClient.Dingtalk.RobotUrlInfoList = urls
-		body.Client.ExtendDingtalk = requestClient.Dingtalk
+		dingtalk.RobotUrlRandomList = make([]string, 0)
+		dingtalk.RobotUrlRandomList = urls
+
+		//客户端延伸信息
+		clientRequestBody.ExtendDingtalk = &dingtalk
 
 	case "wechat_robot":
-		requestClient := RequestDataWechatRobot{}
-		if err := json.Unmarshal(body.ClientInfo, &requestClient); err != nil {
+		//绑定微信机器人客户端信息
+		wechatRobot := models.WechatRobot{}
+		if err := json.Unmarshal(clientRequestBody.ClientInfo, &wechatRobot); err != nil {
 			return
 		}
+
+		//为随机数组赋值
 		var urls []string
-		for _, v := range requestClient.RobotUrlList {
+		for _, v := range wechatRobot.RobotUrlList {
 			urls = append(urls, v.Url)
 		}
-		requestClient.WechatRobot.RobotUrlInfoList = make([]string, 0)
-		requestClient.WechatRobot.RobotUrlInfoList = urls
-		body.Client.ExtendWechatRobot = requestClient.WechatRobot
+		wechatRobot.RobotUrlRandomList = make([]string, 0)
+		wechatRobot.RobotUrlRandomList = urls
+
+		//客户端延伸信息
+		clientRequestBody.ExtendWechatRobot = &wechatRobot
 
 	case "feishu":
-		requestClient := RequestDataFeishu{}
-		if err := json.Unmarshal(body.ClientInfo, &requestClient); err != nil {
+		//绑定飞书客户端信息
+		feishu := models.Feishu{}
+		if err := json.Unmarshal(clientRequestBody.ClientInfo, &feishu); err != nil {
 			return
 		}
+
+		//为随机数组赋值
 		var urls []string
-		for _, v := range requestClient.RobotUrlList {
+		for _, v := range feishu.RobotUrlList {
 			urls = append(urls, v.Url)
 		}
-		requestClient.Feishu.RobotUrlInfoList = urls
-		body.Client.ExtendFeishu = requestClient.Feishu
+		feishu.RobotUrlRandomList = make([]string, 0)
+		feishu.RobotUrlRandomList = urls
+
+		//客户端延伸信息
+		clientRequestBody.ExtendFeishu = &feishu
 
 	case "wechat":
-		requestClient := clients.WechatApplication{}
-		if err := json.Unmarshal(body.ClientInfo, &requestClient); err != nil {
+		//微信应用号
+		wechatApplication := models.WechatApplication{}
+		if err := json.Unmarshal(clientRequestBody.ClientInfo, &wechatApplication); err != nil {
 			return
 		}
-		body.Client.ExtendWechatApplication = &requestClient
+		clientRequestBody.ExtendWechatApplication = &wechatApplication
 
 	default:
 		return
 	}
 
-	result, err := models.AddClient(body.Client)
+	result, err := models.AddClient(&clientRequestBody)
 	if err != nil {
 		return
 	}

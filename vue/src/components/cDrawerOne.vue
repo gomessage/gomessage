@@ -27,7 +27,7 @@ import ClientWechatRobot from "@/components/clients/clientWechatRobot.vue";
 import ClientWechat from "@/components/clients/clientWechat.vue";
 
 export default {
-  name: "cDrawerOneDataInfo2",
+  name: "cDrawerAll",
   props: {
     //控制抽屉是否显示
     isShow: Boolean,

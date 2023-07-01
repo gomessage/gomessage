@@ -68,6 +68,7 @@ func Path(g *gin.Engine) {
 		//用户变量
 		v1View.GET("/:namespace/vars", api.ListVariables)  //获取变量映射
 		v1View.POST("/:namespace/vars", api.PostVariables) //添加变量映射
+
 		//TODO: 这个功能虽然后端完成了，但是前端ui层面没有启动这个接口对应的功能，有空时再过来修改一下
 		v1View.GET("/:namespace/flattening", api.GetNamespaceFlatteningJson)
 
@@ -76,11 +77,12 @@ func Path(g *gin.Engine) {
 		v1View.POST("/:namespace/template", api.PostTemplate)
 
 		//客户端
-		v1View.GET("/:namespace/client", client.ListClient)          //获取所有客户端
-		v1View.POST("/:namespace/client", client.PostClient)         //新增一个客户端
-		v1View.GET("/:namespace/client/:id", client.GetClient)       //获取客户端详情
-		v1View.PUT("/:namespace/client/:id", client.PutClient)       //更新一个客户端
-		v1View.DELETE("/:namespace/client/:id", client.DeleteClient) //删除一个客户端
+		v1View.GET("/:namespace/client", client.ListClient)             //获取所有客户端
+		v1View.POST("/:namespace/client", client.PostClient)            //新增一个客户端
+		v1View.GET("/:namespace/client/:id", client.GetClient)          //获取客户端详情
+		v1View.PUT("/:namespace/client/:id", client.PutClient)          //更新一个客户端
+		v1View.PUT("/:namespace/client-info/:id", client.PutClientInfo) //更新一个客户端
+		v1View.DELETE("/:namespace/client/:id", client.DeleteClient)    //删除一个客户端
 
 	}
 
