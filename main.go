@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
-	initialize2 "gomessage/src/pkg/initialize"
-	loggers2 "gomessage/src/pkg/log/loggers"
-	"gomessage/src/routers"
+	"gomessage/pkg/routers"
+	initialize2 "gomessage/pkg/utils/initialize"
+	loggers2 "gomessage/pkg/utils/log/loggers"
 )
 
 func init() {
