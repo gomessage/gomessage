@@ -7,6 +7,7 @@ import (
 	"gomessage/models"
 	"gomessage/pkg/general"
 	"gomessage/pkg/log/loggers"
+	"gomessage/pkg/utils"
 	"gomessage/services/core/v1"
 	"gomessage/services/core/v3"
 	"gomessage/services/hijacking"
@@ -62,13 +63,13 @@ func GoMessageByTransport(g *gin.Context) {
 		//获取interface的实例对象（该接口有两个方法：消息体处理的封装方法、推送消息的封装方法）
 		var clientAction v3.ClientAction
 		switch clientInfo.ClientType {
-		case "dingtalk":
+		case utils.VarDingtalk:
 			clientAction = &v3.ClientActionDingtalk{Client: clientInfo}
 
-		case "feishu":
+		case utils.VarFeishu:
 			clientAction = &v3.ClientActionFeishu{Client: clientInfo}
 
-		case "wechat":
+		case utils.VarWechatApplication:
 			clientAction = &v3.ClientActionWechatApplication{
 				CorpId:      clientInfo.ExtendWechatApplication.CorpId,
 				AgentId:     clientInfo.ExtendWechatApplication.AgentId,
@@ -76,7 +77,7 @@ func GoMessageByTransport(g *gin.Context) {
 				Touser:      clientInfo.ExtendWechatApplication.Touser,
 			}
 
-		case "wechat_robot":
+		case utils.VarWechatRobot:
 			clientAction = &v3.ClientActionWechatRobot{Client: clientInfo}
 
 		default:

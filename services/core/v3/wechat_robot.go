@@ -2,6 +2,7 @@ package v3
 
 import (
 	"gomessage/models"
+	"gomessage/pkg/utils"
 	"gomessage/services/core/v1"
 	"gomessage/services/format"
 )
@@ -13,7 +14,7 @@ type ClientActionWechatRobot struct {
 func (c *ClientActionWechatRobot) RendersMessages(client *models.Client, isMerge bool, contentList []string) []any {
 	var msgList []any
 	if isMerge {
-		msg := v1.MessageJoint(contentList, "wechat_robot")
+		msg := v1.MessageJoint(contentList, utils.VarWechatRobot)
 		data := format.PackWechatRobotMessage(client.ExtendWechatRobot.RobotKeyword, msg)
 		msgList = append(msgList, data)
 	} else {

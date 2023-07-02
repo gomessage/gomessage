@@ -1,8 +1,5 @@
 <template>
-  <el-drawer title="添加客户端"
-      :visible="getDrawerStatus"
-      :before-close="handleClose"
-      :destroy-on-close="true" size="40%">
+  <el-drawer title="添加客户端" :visible="getDrawerStatus" :before-close="handleClose" :destroy-on-close="true" size="40%">
 
     <el-tabs tab-position="top" style="margin: 1px 20px">
       <el-tab-pane label="钉钉 · 群机器人">

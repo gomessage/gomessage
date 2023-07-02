@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/tidwall/gjson"
 	"gomessage/pkg/log/loggers"
+	"gomessage/pkg/utils"
 	"html/template"
 	"strconv"
 	"strings"
@@ -80,16 +81,16 @@ func MessageJoint(messageList []string, thisType string) string {
 	var msg string
 
 	switch thisType {
-	case "dingtalk":
+	case utils.VarDingtalk:
 		msg = strings.Join(messageList, "\n * * * \n")
 
-	case "feishu":
+	case utils.VarFeishu:
 		msg = strings.Join(messageList, "\n --------------- \n")
 
-	case "wechat_robot":
+	case utils.VarWechatRobot:
 		msg = strings.Join(messageList, "\n\n \n\n")
 
-	case "wechat":
+	case utils.VarWechatApplication:
 		msg = strings.Join(messageList, "\n · \n")
 
 	default:

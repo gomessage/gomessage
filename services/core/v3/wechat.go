@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"gomessage/models"
+	"gomessage/pkg/utils"
 	"gomessage/services/core/v1"
 	"gomessage/services/format"
 	"io"
@@ -24,7 +25,7 @@ func (c *ClientActionWechatApplication) RendersMessages(client *models.Client, i
 	//是否聚合
 	if isMerge {
 		//把多个消息拼接成一个长字符串
-		msg := v1.MessageJoint(contentList, "wechat")
+		msg := v1.MessageJoint(contentList, utils.VarWechatApplication)
 
 		//把普通的内容体渲染成符合微信应用号的消息体
 		message := format.PushMessageData{}

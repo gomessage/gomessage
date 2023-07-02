@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"gomessage/models"
 	"gomessage/pkg/general"
+	"gomessage/pkg/utils"
 	"net/http"
 )
 
@@ -24,20 +25,16 @@ func PostClient(g *gin.Context) {
 
 	//判断客户端类型（绑定客户端信息到client的Extend延伸信息中）
 	switch clientRequestBody.ClientType {
-	case "dingtalk":
-		//钉钉机器人
+	case utils.VarDingtalk:
 		json.Unmarshal(clientRequestBody.ClientInfo, &clientRequestBody.ExtendDingtalk)
 
-	case "wechat_robot":
-		//微信机器人
+	case utils.VarWechatRobot:
 		json.Unmarshal(clientRequestBody.ClientInfo, &clientRequestBody.ExtendWechatRobot)
 
-	case "feishu":
-		//飞书机器人
+	case utils.VarFeishu:
 		json.Unmarshal(clientRequestBody.ClientInfo, &clientRequestBody.ExtendFeishu)
 
-	case "wechat":
-		//微信应用号
+	case utils.VarWechatApplication:
 		json.Unmarshal(clientRequestBody.ClientInfo, &clientRequestBody.ExtendWechatApplication)
 
 	default:

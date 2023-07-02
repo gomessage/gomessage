@@ -4,8 +4,7 @@
       :model="client"
       :rules="clientRules"
       label-width="100px"
-      style="text-align: left;
-      padding: 0 20px">
+      style="text-align: left;padding: 0 20px">
 
     <!--客户端ID：只有show时才会显示-->
     <el-form-item label="客户端ID:" prop="id" v-if="cli_OperateType==='show'">
@@ -215,7 +214,6 @@ export default {
       this.client = this.cli_OneClientObject;
     }
   },
-
   watch: {
     //监听pops传入的值是否发生了变化，则刷新表单内容
     cli_OneClientObject: {

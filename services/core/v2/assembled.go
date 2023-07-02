@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"gomessage/models"
+	"gomessage/pkg/utils"
 	"gomessage/services/core/v1"
 	"gomessage/services/format"
 )
@@ -39,7 +40,7 @@ func (d *DingtalkMessageAssembled) AssembledData(isRenders, isMerge bool, client
 
 	if isRenders {
 		if isMerge {
-			msg := v1.MessageJoint(contentList, "dingtalk")
+			msg := v1.MessageJoint(contentList, utils.VarDingtalk)
 			data := format.PackDingtalkMessage(client.ExtendDingtalk.RobotKeyword, msg)
 			msgList = append(msgList, data)
 		} else {
@@ -72,7 +73,7 @@ func (d *FeishuMessageAssembled) AssembledData(isRenders, isMerge bool, client *
 
 	if isRenders {
 		if isMerge {
-			msg := v1.MessageJoint(contentList, "feishu")
+			msg := v1.MessageJoint(contentList, utils.VarFeishu)
 			data := format.PackFeishuMessage(client, msg)
 			msgList = append(msgList, data)
 		} else {
@@ -106,7 +107,7 @@ func (d *WechatMessageAssembled) AssembledData(isRenders, isMerge bool, client *
 
 	if isRenders {
 		if isMerge {
-			msg := v1.MessageJoint(contentList, "wechat")
+			msg := v1.MessageJoint(contentList, utils.VarWechatApplication)
 			msgList = append(msgList, msg)
 		} else {
 			for _, msg := range contentList {

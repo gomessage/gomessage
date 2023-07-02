@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"gomessage/models"
 	"gomessage/pkg/general"
+	"gomessage/pkg/utils"
 	"net/http"
 	"strconv"
 )
@@ -20,16 +21,16 @@ func PutClientInfo(g *gin.Context) {
 	}
 	clientRequestBody.Namespace = g.Param("namespace")
 	switch clientRequestBody.ClientType {
-	case "dingtalk":
+	case utils.VarDingtalk:
 		json.Unmarshal(clientRequestBody.ClientInfo, &clientRequestBody.ExtendDingtalk)
 
-	case "feishu":
+	case utils.VarFeishu:
 		json.Unmarshal(clientRequestBody.ClientInfo, &clientRequestBody.ExtendFeishu)
 
-	case "wechat_robot":
+	case utils.VarWechatRobot:
 		json.Unmarshal(clientRequestBody.ClientInfo, &clientRequestBody.ExtendWechatRobot)
 
-	case "wechat":
+	case utils.VarWechatApplication:
 		json.Unmarshal(clientRequestBody.ClientInfo, &clientRequestBody.ExtendWechatApplication)
 
 	default:

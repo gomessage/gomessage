@@ -3,6 +3,7 @@ package v1
 import (
 	"fmt"
 	"gomessage/models"
+	"gomessage/pkg/utils"
 )
 
 // RendersRequestData 渲染数据
@@ -45,13 +46,13 @@ func AssembledMessage(isRenders bool, thisNamespaceUserConfig NamespaceUserConfi
 		}
 
 		switch clientInfo.ClientType {
-		case "feishu":
+		case utils.VarFeishu:
 			cd.Url, cd.Data = FeishuMessageFormat(isRenders, cd.IsMerge, clientInfo, contentList)
 
-		case "dingtalk":
+		case utils.VarDingtalk:
 			cd.Url, cd.Data = DingtalkMessageFormat(isRenders, cd.IsMerge, clientInfo, contentList)
 
-		case "wechat":
+		case utils.VarWechatRobot:
 			fmt.Println("后面补充")
 		}
 		clientDataList = append(clientDataList, cd)

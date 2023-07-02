@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"gomessage/models"
 	"gomessage/pkg/general"
+	"gomessage/pkg/utils"
 	"net/http"
 	"strconv"
 )
@@ -41,7 +42,7 @@ func GetClient(g *gin.Context) {
 		respData := ResponseData{Client: client}
 
 		switch client.ClientType {
-		case "dingtalk":
+		case utils.VarDingtalk:
 			var urls []models.Url
 			for _, urlAddress := range client.ExtendDingtalk.RobotUrlRandomList { //这里的RobotUrlInfoList，是从数据库取出的压缩数据，展开后得到的内容
 				urls = append(urls, models.Url{Url: urlAddress})
@@ -52,7 +53,7 @@ func GetClient(g *gin.Context) {
 			}
 			respData.ClientInfo = cInfo
 
-		case "feishu":
+		case utils.VarFeishu:
 			var urls []models.Url
 			for _, v := range client.ExtendFeishu.RobotUrlRandomList {
 				urls = append(urls, models.Url{Url: v})
@@ -63,7 +64,7 @@ func GetClient(g *gin.Context) {
 			}
 			respData.ClientInfo = cInfo
 
-		case "wechat_robot":
+		case utils.VarWechatRobot:
 			var urls []models.Url
 			for _, v := range client.ExtendWechatRobot.RobotUrlRandomList {
 				urls = append(urls, models.Url{Url: v})
@@ -74,7 +75,7 @@ func GetClient(g *gin.Context) {
 			}
 			respData.ClientInfo = cInfo
 
-		case "wechat":
+		case utils.VarWechatApplication:
 			client.ExtendWechatApplication.Secret = client.ExtendWechatApplication.Secret[:5] + "*****"
 			respData.ClientInfo = client.ExtendWechatApplication
 		}
