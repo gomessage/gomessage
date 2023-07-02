@@ -26,27 +26,19 @@ func PostClient(g *gin.Context) {
 	switch clientRequestBody.ClientType {
 	case "dingtalk":
 		//钉钉机器人
-		dingtalk := models.Dingtalk{}
-		json.Unmarshal(clientRequestBody.ClientInfo, &dingtalk)
-		clientRequestBody.ExtendDingtalk = &dingtalk
+		json.Unmarshal(clientRequestBody.ClientInfo, &clientRequestBody.ExtendDingtalk)
 
 	case "wechat_robot":
 		//微信机器人
-		wechatRobot := models.WechatRobot{}
-		json.Unmarshal(clientRequestBody.ClientInfo, &wechatRobot)
-		clientRequestBody.ExtendWechatRobot = &wechatRobot
+		json.Unmarshal(clientRequestBody.ClientInfo, &clientRequestBody.ExtendWechatRobot)
 
 	case "feishu":
 		//飞书机器人
-		feishu := models.Feishu{}
-		json.Unmarshal(clientRequestBody.ClientInfo, &feishu)
-		clientRequestBody.ExtendFeishu = &feishu
+		json.Unmarshal(clientRequestBody.ClientInfo, &clientRequestBody.ExtendFeishu)
 
 	case "wechat":
 		//微信应用号
-		wechatApplication := models.WechatApplication{}
-		json.Unmarshal(clientRequestBody.ClientInfo, &wechatApplication)
-		clientRequestBody.ExtendWechatApplication = &wechatApplication
+		json.Unmarshal(clientRequestBody.ClientInfo, &clientRequestBody.ExtendWechatApplication)
 
 	default:
 		return

@@ -12,6 +12,12 @@ paths:
       summary: 新增一个客户端
       tags:
       - Client
+  /api/v1/:namespace/client-info/:id:
+    put:
+      responses: {}
+      summary: 修改一个客户端
+      tags:
+      - Client
   /api/v1/:namespace/client/:id:
     delete:
       responses: {}
@@ -25,7 +31,7 @@ paths:
       - Client
     put:
       responses: {}
-      summary: 修改一个客户端
+      summary: 修改客户端激活状态
       tags:
       - Client
   /api/v1/:namespace/template:

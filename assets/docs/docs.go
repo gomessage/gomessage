@@ -32,6 +32,15 @@ const docTemplate = `{
                 "responses": {}
             }
         },
+        "/api/v1/:namespace/client-info/:id": {
+            "put": {
+                "tags": [
+                    "Client"
+                ],
+                "summary": "修改一个客户端",
+                "responses": {}
+            }
+        },
         "/api/v1/:namespace/client/:id": {
             "get": {
                 "tags": [
@@ -44,7 +53,7 @@ const docTemplate = `{
                 "tags": [
                     "Client"
                 ],
-                "summary": "修改一个客户端",
+                "summary": "修改客户端激活状态",
                 "responses": {}
             },
             "delete": {
