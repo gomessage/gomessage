@@ -5,7 +5,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 	"gomessage/models"
-	"gomessage/pkg/general"
 	"gomessage/pkg/log/loggers"
 	"gomessage/pkg/utils"
 	"gomessage/services/core/v1"
@@ -124,8 +123,8 @@ func GoMessageByGet(g *gin.Context) {
 
 	result, err := models.GetNamespaceByName(namespace)
 	if err != nil {
-		g.JSON(http.StatusBadRequest, general.ResponseFailure("namespace不存在", err))
+		g.JSON(http.StatusBadRequest, utils.ResponseFailure("namespace不存在", err))
 	} else {
-		g.JSON(http.StatusOK, general.ResponseSuccessful("namespace ready", result))
+		g.JSON(http.StatusOK, utils.ResponseSuccessful("namespace ready", result))
 	}
 }

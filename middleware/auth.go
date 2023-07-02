@@ -5,7 +5,7 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"gomessage/authorization"
-	"gomessage/pkg/general"
+	"gomessage/pkg/utils"
 	"net/http"
 )
 
@@ -16,11 +16,11 @@ func AuthMiddleware() gin.HandlerFunc {
 		if ok {
 			tokenString = tokenStringList[0]
 			if tokenString == "" {
-				c.AbortWithStatusJSON(http.StatusUnauthorized, general.ResponseFailure("需要Authorization请求头", nil))
+				c.AbortWithStatusJSON(http.StatusUnauthorized, utils.ResponseFailure("需要Authorization请求头", nil))
 				return
 			}
 		} else {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, general.ResponseFailure("需要Authorization请求头", nil))
+			c.AbortWithStatusJSON(http.StatusUnauthorized, utils.ResponseFailure("需要Authorization请求头", nil))
 			return
 		}
 
@@ -37,15 +37,15 @@ func AuthMiddleware() gin.HandlerFunc {
 
 			if err != nil {
 				if err == jwt.ErrSignatureInvalid {
-					c.AbortWithStatusJSON(http.StatusUnauthorized, general.ResponseFailure("未授权", err))
+					c.AbortWithStatusJSON(http.StatusUnauthorized, utils.ResponseFailure("未授权", err))
 					return
 				}
-				c.AbortWithStatusJSON(http.StatusBadRequest, general.ResponseFailure("令牌异常", err))
+				c.AbortWithStatusJSON(http.StatusBadRequest, utils.ResponseFailure("令牌异常", err))
 				return
 			}
 
 			if !withClaims.Valid {
-				c.AbortWithStatusJSON(http.StatusUnauthorized, general.ResponseFailure("令牌无效", nil))
+				c.AbortWithStatusJSON(http.StatusUnauthorized, utils.ResponseFailure("令牌无效", nil))
 				return
 			}
 
@@ -54,7 +54,7 @@ func AuthMiddleware() gin.HandlerFunc {
 			c.Next()
 		} else {
 			//如果token在session表中被标记为"不活跃"，则代表这个token已经"注销"了，不能再使用了
-			c.AbortWithStatusJSON(http.StatusUnauthorized, general.ResponseFailure("令牌已过期，请重新登陆", nil))
+			c.AbortWithStatusJSON(http.StatusUnauthorized, utils.ResponseFailure("令牌已过期，请重新登陆", nil))
 			return
 		}
 	}

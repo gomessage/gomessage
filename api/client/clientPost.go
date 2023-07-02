@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"gomessage/models"
-	"gomessage/pkg/general"
 	"gomessage/pkg/utils"
 	"net/http"
 )
@@ -46,5 +45,5 @@ func PostClient(g *gin.Context) {
 		return
 	}
 
-	g.JSON(http.StatusOK, general.ResponseSuccessful("创建成功", result))
+	g.JSON(http.StatusOK, utils.ResponseSuccessful("创建成功", result))
 }

@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"gomessage/models"
-	"gomessage/pkg/general"
 	"gomessage/pkg/utils"
 	"net/http"
 	"strconv"
@@ -40,10 +39,10 @@ func PutClientInfo(g *gin.Context) {
 	id, _ := strconv.Atoi(g.Param("id"))
 	result, err := models.UpdateClientInfo(id, &clientRequestBody)
 	if err != nil {
-		g.JSON(http.StatusBadRequest, general.ResponseFailure("更新失败", err))
+		g.JSON(http.StatusBadRequest, utils.ResponseFailure("更新失败", err))
 		return
 	}
-	g.JSON(http.StatusOK, general.ResponseSuccessful("更新成功", result))
+	g.JSON(http.StatusOK, utils.ResponseSuccessful("更新成功", result))
 }
 
 // PutClientActive
@@ -61,8 +60,8 @@ func PutClientActive(g *gin.Context) {
 
 	result, err := models.UpdateClientActive(id, &client)
 	if err != nil {
-		g.JSON(http.StatusBadRequest, general.ResponseFailure("", err))
+		g.JSON(http.StatusBadRequest, utils.ResponseFailure("", err))
 	} else {
-		g.JSON(http.StatusOK, general.ResponseSuccessful("", result))
+		g.JSON(http.StatusOK, utils.ResponseSuccessful("", result))
 	}
 }

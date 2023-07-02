@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"gomessage/models"
-	"gomessage/pkg/general"
+	"gomessage/pkg/utils"
 	"net/http"
 	"strconv"
 )
@@ -16,7 +16,7 @@ import (
 func ListTemplate(g *gin.Context) {
 	ns := g.Param("namespace")
 	listTemplate, _ := models.ListTemplate(ns)
-	g.JSON(http.StatusOK, general.ResponseSuccessful("数据查询成功", listTemplate))
+	g.JSON(http.StatusOK, utils.ResponseSuccessful("数据查询成功", listTemplate))
 }
 
 // PostTemplate
@@ -41,7 +41,7 @@ func PostTemplate(g *gin.Context) {
 	if err != nil {
 		return
 	}
-	g.JSON(http.StatusOK, general.ResponseSuccessful("模板添加成功", &template))
+	g.JSON(http.StatusOK, utils.ResponseSuccessful("模板添加成功", &template))
 }
 
 // GetTemplate

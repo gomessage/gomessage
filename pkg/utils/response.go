@@ -1,4 +1,4 @@
-package general
+package utils
 
 type ResponseTemplate struct {
 	Code   int    `json:"code"`   //此处约定：1代表成功，0代表失败

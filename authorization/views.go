@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
-	"gomessage/pkg/general"
+	"gomessage/pkg/utils"
 	"net/http"
 	"strconv"
 	"time"
@@ -14,31 +14,31 @@ func Register(g *gin.Context) {
 	var user Account
 	err := g.ShouldBindJSON(&user)
 	if err != nil {
-		g.JSON(http.StatusBadRequest, general.ResponseFailure("请求内容错误", err))
+		g.JSON(http.StatusBadRequest, utils.ResponseFailure("请求内容错误", err))
 		return
 	}
 
 	user.PasswordHash = HashAndSalt(user.Password)
 	createUser, err := CreateUser(user.Users)
 	if err != nil {
-		g.JSON(http.StatusBadRequest, general.ResponseFailure("数据入库时出现错误", err))
+		g.JSON(http.StatusBadRequest, utils.ResponseFailure("数据入库时出现错误", err))
 		return
 	}
 
-	g.JSON(http.StatusOK, general.ResponseSuccessful("注册成功", createUser))
+	g.JSON(http.StatusOK, utils.ResponseSuccessful("注册成功", createUser))
 }
 
 func Login(g *gin.Context) {
 	var user Account
 	err := g.ShouldBindJSON(&user)
 	if err != nil {
-		g.JSON(http.StatusBadRequest, general.ResponseFailure("请求内容错误", err))
+		g.JSON(http.StatusBadRequest, utils.ResponseFailure("请求内容错误", err))
 		return
 	}
 
 	userObject, err := QueryUserByUsername(user.Username)
 	if err != nil {
-		g.JSON(http.StatusUnauthorized, general.ResponseFailure("账号不存在", err))
+		g.JSON(http.StatusUnauthorized, utils.ResponseFailure("账号不存在", err))
 		return
 	}
 
@@ -53,18 +53,18 @@ func Login(g *gin.Context) {
 		token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 		tokenString, err := token.SignedString(JwtKey)
 		if err != nil {
-			g.JSON(http.StatusInternalServerError, general.ResponseFailure("服务器内部错误", err))
+			g.JSON(http.StatusInternalServerError, utils.ResponseFailure("服务器内部错误", err))
 			return
 		}
 
 		CreateSession(userObject.Username, tokenString)
 
-		g.JSON(http.StatusOK, general.ResponseSuccessful("登录成功", map[string]string{
+		g.JSON(http.StatusOK, utils.ResponseSuccessful("登录成功", map[string]string{
 			"token": tokenString,
 		}))
 		return
 	} else {
-		g.JSON(http.StatusUnauthorized, general.ResponseFailure("密码错误", nil))
+		g.JSON(http.StatusUnauthorized, utils.ResponseFailure("密码错误", nil))
 		return
 	}
 }
@@ -81,7 +81,7 @@ func Logout(g *gin.Context) {
 		DeleteSession(tokenString)
 	}
 
-	g.JSON(http.StatusOK, general.ResponseSuccessful("登出成功", true))
+	g.JSON(http.StatusOK, utils.ResponseSuccessful("登出成功", true))
 }
 
 func PostUser(g *gin.Context) {
