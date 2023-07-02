@@ -1,0 +1,28 @@
+{
+  "key_value_list": [
+    {
+      "N1": "alerts.#.labels.alertname"
+    },
+    {
+      "N2": "alerts.#.labels.severity"
+    },
+    {
+      "N3": "alerts.#.labels.hostname"
+    },
+    {
+      "N4": "alerts.#.labels.ping"
+    },
+    {
+      "N5": "alerts.#.annotations.description"
+    },
+    {
+      "N6": "status"
+    },
+    {
+      "N7": "alerts.#.startsAt"
+    },
+    {
+      "N8": "alerts.#.endsAt"
+    }
+  ]
+}

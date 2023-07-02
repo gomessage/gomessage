@@ -31,17 +31,19 @@ func PostTemplate(g *gin.Context) {
 	}
 	g.ShouldBindJSON(&body)
 
+	template := UpdateAddTemp(ns, body)
+
+	g.JSON(http.StatusOK, utils.ResponseSuccessful("模板添加成功", &template))
+}
+
+func UpdateAddTemp(ns string, body models.Template) models.Template {
 	//删除指定namespace中的模板
 	listTemps, _ := models.ListTemplate(ns)
 	for _, temp := range *listTemps {
 		models.DeleteTemplate(temp.ID)
 	}
-
-	template, err := models.AddTemplate(&body)
-	if err != nil {
-		return
-	}
-	g.JSON(http.StatusOK, utils.ResponseSuccessful("模板添加成功", &template))
+	template, _ := models.AddTemplate(&body)
+	return *template
 }
 
 // GetTemplate

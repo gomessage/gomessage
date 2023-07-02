@@ -33,6 +33,12 @@ func PostVariables(g *gin.Context) {
 	body := requestData{}
 	g.ShouldBindJSON(&body)
 
+	ResponseVars := UpdateAddVars(ns, body.KeyValueList)
+
+	g.JSON(http.StatusOK, utils.ResponseSuccessful("用户变量映射成功", ResponseVars))
+}
+
+func UpdateAddVars(ns string, keyValueList []map[string]string) []models.Variables {
 	//遍历删除当前namespace下的所有用户变量
 	listVars, _ := models.ListVariables(ns)
 	for _, vars := range *listVars {
@@ -41,7 +47,7 @@ func PostVariables(g *gin.Context) {
 
 	var ResponseVars []models.Variables
 	//批量写入新的配置
-	for _, oneVar := range body.KeyValueList {
+	for _, oneVar := range keyValueList {
 		for kk, vv := range oneVar {
 			v := models.Variables{
 				Namespace: ns,
@@ -53,7 +59,7 @@ func PostVariables(g *gin.Context) {
 		}
 	}
 
-	g.JSON(http.StatusOK, utils.ResponseSuccessful("用户变量映射成功", ResponseVars))
+	return ResponseVars
 }
 
 // GetVariables

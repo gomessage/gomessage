@@ -1,7 +1,7 @@
 package v1
 
 import (
-	models2 "gomessage/pkg/models"
+	"gomessage/pkg/models"
 	"math/rand"
 	"time"
 )
@@ -11,7 +11,7 @@ type NamespaceUserConfig struct {
 	VariablesMap    []map[string]string //用户变量映射
 	MessageTemplate string              //信息模板
 	IsMerge         bool                //是否合并
-	ActiveClient    []models2.Client    //激活的客户端
+	ActiveClient    []models.Client     //激活的客户端
 }
 
 // GetNamespaceUserConfig 获取用户在图形界面上设置的各种参数
@@ -19,13 +19,13 @@ func GetNamespaceUserConfig(ns string, IsRenders bool) NamespaceUserConfig {
 	c := NamespaceUserConfig{Namespace: ns}
 
 	//获取客户端相关（根据命名空间获取）
-	c.ActiveClient, _ = models2.GetActiveClient(c.Namespace)
+	c.ActiveClient, _ = models.GetActiveClient(c.Namespace)
 
 	//判断是否要启用渲染功能
 	if IsRenders {
 
 		//获取变量映射（根据命名空间获取）
-		listVariables, err := models2.ListVariables(c.Namespace)
+		listVariables, err := models.ListVariables(c.Namespace)
 		if err != nil {
 			panic(err)
 		}
@@ -38,7 +38,7 @@ func GetNamespaceUserConfig(ns string, IsRenders bool) NamespaceUserConfig {
 		c.VariablesMap = varList
 
 		//获取消息模板（根据命名空间获取）
-		template, err := models2.GetTemplateByNamespace(c.Namespace)
+		template, err := models.GetTemplateByNamespace(c.Namespace)
 		if err != nil {
 			panic(err)
 		}
@@ -57,10 +57,10 @@ func RobotRandomUrl(rList []string) string {
 }
 
 // GetNsInfo 获取通道信息
-func GetNsInfo(namespace string) *models2.Namespace {
+func GetNsInfo(namespace string) *models.Namespace {
 	if namespace == "message" {
 		namespace = "default"
 	}
-	nsInfo, _ := models2.GetNamespaceByName(namespace)
+	nsInfo, _ := models.GetNamespaceByName(namespace)
 	return nsInfo
 }
