@@ -31,13 +31,10 @@ func InitPushLogger() {
 
 	//指定日志输出方式
 	//writer1 := os.Stdout
-	writer2, err := os.OpenFile(logFile, os.O_WRONLY|os.O_CREATE, 0644) //写入到文件中；此处不使用追加写入，每一次都是覆盖式写入，便于每一次运行时都得到的是干净的日志文件
+	writer2, err := os.OpenFile(logFile, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
 	if err != nil {
 		fmt.Println("创建文件日志文件失败: ", err)
 	}
-
-	//设定日志输出位置
-	PushLogger.SetOutput(io.MultiWriter(writer2))
 
 	//设定输出日志中是否要携带上文件名与行号
 	PushLogger.SetReportCaller(false)
@@ -55,4 +52,7 @@ func InitPushLogger() {
 	if viper.GetBool("log.log2es") {
 		PushLogger.AddHook(es.NewPushToEsHook())
 	}
+
+	//设定日志输出位置
+	PushLogger.SetOutput(io.MultiWriter(writer2))
 }
