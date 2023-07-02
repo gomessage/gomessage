@@ -40,7 +40,7 @@ func AuthMiddleware() gin.HandlerFunc {
 					c.AbortWithStatusJSON(http.StatusUnauthorized, utils.ResponseFailure("未授权", err))
 					return
 				}
-				c.AbortWithStatusJSON(http.StatusBadRequest, utils.ResponseFailure("令牌异常", err))
+				c.AbortWithStatusJSON(http.StatusUnauthorized, utils.ResponseFailure("令牌异常", err))
 				return
 			}
 

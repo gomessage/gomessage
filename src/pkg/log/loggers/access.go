@@ -44,7 +44,7 @@ func InitAccessLog() {
 
 	//设定日志输出格式
 	AccessLogger.SetFormatter(
-		&logrus.TextFormatter{
+		&logrus.JSONFormatter{
 			TimestampFormat: "2006-01-02 15:04:05.000 -0700 MST",
 		},
 	)

@@ -75,7 +75,7 @@ func GetClient(g *gin.Context) {
 			respData.ClientInfo = cInfo
 
 		case utils2.VarWechatApplication:
-			client.ExtendWechatApplication.Secret = client.ExtendWechatApplication.Secret[:5] + "*****"
+			//client.ExtendWechatApplication.Secret = client.ExtendWechatApplication.Secret[:5] + "*****"
 			respData.ClientInfo = client.ExtendWechatApplication
 		}
 

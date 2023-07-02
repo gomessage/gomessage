@@ -16,19 +16,19 @@ const axiosInstance = axios.create({
     timeout: 60 * 1000,
 });
 
-axiosInstance.interceptors.request.use(config => {
+axiosInstance.interceptors.request.use(request => {
         let token = store.getters.getToken
 
         //如果token为空字符串，则跳转到登录页面
         if (token === "") {
             router.push("/login")
         } else {
-            config.headers = {
+            request.headers = {
                 'Content-Type': 'application/json',
                 'Authorization': token
             };
         }
-        return config;
+        return request;
     },
     error => {
         return Promise.reject(error);
@@ -36,34 +36,26 @@ axiosInstance.interceptors.request.use(config => {
 );
 
 
-axiosInstance.interceptors.response.use(
-    response => {
+axiosInstance.interceptors.response.use(response => {
         return response;
     },
     error => {
+        switch (error.response.status) {
+            case 403:
+                console.log("没有权限")
+                router.push("/login")
+                break;
+            case 401:
+                console.log("没有权限")
+                router.push("/login")
+                break;
+            default:
+                break;
+        }
         return Promise.reject(error);
     }
 );
 
-// Plugin.install = function (Vue, options) {
-//     console.log(options)
-//     Vue.axios = _axios;
-//     window.axios = _axios;
-//     Object.defineProperties(Vue.prototype, {
-//         axios: {
-//             get() {
-//                 return _axios;
-//             }
-//         },
-//         $axios: {
-//             get() {
-//                 return _axios;
-//             }
-//         },
-//     });
-// };
-// Vue.use(Plugin)
-// export default Plugin;
 
 export default {
     Get(url, params, headers) {
