@@ -12,9 +12,6 @@
 #
 #	make swagger
 #
-#	make helm
-
-#
 
 
 
@@ -147,9 +144,9 @@ docker: DOCKER_SCAN_SUGGEST := False
 docker: packageName := ${NAME}-${VERSION}-linux-x64
 docker:
 	@echo "\n---------版本latest---------\n"
-	@docker build -t gomessage/gomessage:latest -f ./Dockerfile  "${OUTPUT_PATH}/${packageName}"
+	@docker build -t gomessage/gomessage:latest -f ./docker/Dockerfile  "${OUTPUT_PATH}/${packageName}"
 	@echo "\n---------开始制作镜像，版本${VERSION}---------\n"
-	@docker build -t gomessage/gomessage:${VERSION} -f ./Dockerfile  "${OUTPUT_PATH}/${packageName}"
+	@docker build -t gomessage/gomessage:${VERSION} -f ./docker/Dockerfile  "${OUTPUT_PATH}/${packageName}"
 	@echo "\n---------镜像制作完成，版本${VERSION}---------\n"
 
 
@@ -165,9 +162,10 @@ docker_push:
 	@echo "\n---------推送镜像完成，版本${VERSION}---------\n"
 	@docker push gomessage/gomessage:latest
 	@echo "\n---------推送镜像完成，版本latest---------\n"
-	@gsed -i '/version:/c version: ${VERSION}' ./helm/Chart.yaml
-	@gsed -i '/appVersion:/c appVersion: ${VERSION}' ./helm/Chart.yaml
-	helm package helm
+	@echo
+	@gsed -i '/version:/c version: ${VERSION}' ./docker/helm/Chart.yaml
+	@gsed -i '/appVersion:/c appVersion: ${VERSION}' ./docker/helm/Chart.yaml
+	helm package ./docker/helm
 	helm coding-push gomessage-${VERSION}.tgz gomessage
 	rm -rf ./*.tgz
 	@echo "\n---------制作Helm Chart完成，版本${VERSION}---------\n"
@@ -179,15 +177,3 @@ docker_push:
 .PHONY: package_push
 package_push:
 	@go run uploads.go --version=${VERSION}
-
-
-######################################
-# Target：推送到gomessage helm chart仓库
-######################################
-.PHONY: helm
-helm:
-	@gsed -i '/version:/c version: ${VERSION}' ./helm/Chart.yaml
-	@gsed -i '/appVersion:/c appVersion: ${VERSION}' ./helm/Chart.yaml
-	helm package helm
-	helm coding-push gomessage-${VERSION}.tgz gomessage
-	rm -rf ./*.tgz
