@@ -1,13 +1,11 @@
 package api
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"gomessage/pkg/models"
 	"gomessage/pkg/utils"
-	"io/ioutil"
 	"net/http"
 	"strconv"
 )
@@ -47,24 +45,43 @@ func PostNamespace(g *gin.Context) {
 
 		//TODO: 如果命名空间创建成功，则自动添加一条"template"进去
 		//============================
-		body := models.Template{
-			Namespace:    namespace.Name,
-			TemplateName: namespace.Name,
+		body1 := models.Template{
+			Namespace:       namespace.Name,
+			TemplateName:    namespace.Name,
+			TemplateContent: "{{ if eq .N6 \"firing\" }}\n\n## <font color='#FF0000'>【报警中】服务器{{ .N3 }}</font>\n\n{{ else if eq .N6 \"resolved\" }}\n\n## <font color='#20B2AA'>【已恢复】服务器{{ .N3 }}</font>\n\n{{ else }}\n\n## 标题：信息通知\n\n{{ end }}\n\n====================\n\n**告警规则**：{{ .N1 }}\n\n**告警级别**：{{ .N2 }}\n\n**主机名称**：{{ .N3 }} \n\n**主机地址**：{{ .N4 }}\n\n**告警详情**：{{ .N5 }}\n\n**告警状态**：{{ .N6 }}\n\n**触发时间**：{{ .N7 }}\n\n**发送时间**：{{ .N8 }}\n\n**规则详情**：[Prometheus控制台](https://www.baidu.com)\n\n**报警详情**：[Alertmanager控制台](https://www.baidu.com)\n",
+			TemplateIsMerge: false,
 		}
-		// 读取 JSON 文件
-		data, _ := ioutil.ReadFile("pkg/utils/template.json")
-		json.Unmarshal(data, &body)
-		UpdateAddTemp(namespace.Name, body)
+		//读取JSON文件
+		UpdateAddTemp(namespace.Name, body1)
 
 		//TODO: 如果命名空间创建成功，则自动添加一串"变量映射"进去
-		//============================
-		type requestData struct {
-			KeyValueList []map[string]string `json:"key_value_list"`
+		keyValueList := []map[string]string{
+			{
+				"N1": "alerts.#.labels.alertname",
+			},
+			{
+				"N2": "alerts.#.labels.severity",
+			},
+			{
+				"N3": "alerts.#.labels.hostname",
+			},
+			{
+				"N4": "alerts.#.labels.ping",
+			},
+			{
+				"N5": "alerts.#.annotations.description",
+			},
+			{
+				"N6": "status",
+			},
+			{
+				"N7": "alerts.#.startsAt",
+			},
+			{
+				"N8": "alerts.#.endsAt",
+			},
 		}
-		body2 := requestData{}
-		data2, _ := ioutil.ReadFile("pkg/utils/vars.json")
-		json.Unmarshal(data2, &body2)
-		UpdateAddVars(namespace.Name, body2.KeyValueList)
+		UpdateAddVars(namespace.Name, keyValueList)
 
 		//给出返回值
 		//============================
