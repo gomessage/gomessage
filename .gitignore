@@ -29,8 +29,8 @@ build
 .env
 *.tar.gz
 lastupdate.tmp
-routers/commentsRouter_controllers.go
-routers/commentsRouter______________________Users_tay_go_src_GoMessage_controllers.go
+src/routers/commentsRouter_controllers.go
+src/routers/commentsRouter______________________Users_tay_go_src_GoMessage_controllers.go
 GoMessage
 *prof
 .DS_Store
