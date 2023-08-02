@@ -2,25 +2,25 @@ package client
 
 import (
 	"github.com/gin-gonic/gin"
-	models2 "gomessage/pkg/models"
+	"gomessage/pkg/models"
 	"gomessage/pkg/utils"
 	"net/http"
 	"strconv"
 )
 
 type RequestDataDingtalk struct {
-	*models2.Dingtalk
-	RobotUrlList []models2.Url `json:"robot_url_list"`
+	*models.Dingtalk
+	RobotUrlList []models.Url `json:"robot_url_list"`
 }
 
 type RequestDataFeishu struct {
-	*models2.Feishu
-	RobotUrlList []models2.Url `json:"robot_url_list"`
+	*models.Feishu
+	RobotUrlList []models.Url `json:"robot_url_list"`
 }
 
 type RequestDataWechatRobot struct {
-	*models2.WechatRobot
-	RobotUrlList []models2.Url `json:"robot_url_list"`
+	*models.WechatRobot
+	RobotUrlList []models.Url `json:"robot_url_list"`
 }
 
 // GetClient
@@ -29,12 +29,12 @@ type RequestDataWechatRobot struct {
 // @Router /api/v1/:namespace/client/:id [GET]
 func GetClient(g *gin.Context) {
 	type ResponseData struct {
-		*models2.Client
+		*models.Client
 		ClientInfo any `json:"client_info"`
 	}
 
 	id, _ := strconv.Atoi(g.Param("id"))
-	client, err := models2.GetClientById(id)
+	client, err := models.GetClientById(id)
 	if err != nil {
 		g.JSON(http.StatusBadRequest, utils.ResponseFailure("查询错误", err))
 	} else {
@@ -42,9 +42,9 @@ func GetClient(g *gin.Context) {
 
 		switch client.ClientType {
 		case utils.VarDingtalk:
-			var urls []models2.Url
+			var urls []models.Url
 			for _, urlAddress := range client.ExtendDingtalk.RobotUrlRandomList { //这里的RobotUrlInfoList，是从数据库取出的压缩数据，展开后得到的内容
-				urls = append(urls, models2.Url{Url: urlAddress})
+				urls = append(urls, models.Url{Url: urlAddress})
 			}
 			cInfo := RequestDataDingtalk{
 				Dingtalk:     client.ExtendDingtalk,
@@ -53,9 +53,9 @@ func GetClient(g *gin.Context) {
 			respData.ClientInfo = cInfo
 
 		case utils.VarFeishu:
-			var urls []models2.Url
+			var urls []models.Url
 			for _, v := range client.ExtendFeishu.RobotUrlRandomList {
-				urls = append(urls, models2.Url{Url: v})
+				urls = append(urls, models.Url{Url: v})
 			}
 			cInfo := RequestDataFeishu{
 				Feishu:       client.ExtendFeishu,
@@ -64,9 +64,9 @@ func GetClient(g *gin.Context) {
 			respData.ClientInfo = cInfo
 
 		case utils.VarWechatRobot:
-			var urls []models2.Url
+			var urls []models.Url
 			for _, v := range client.ExtendWechatRobot.RobotUrlRandomList {
-				urls = append(urls, models2.Url{Url: v})
+				urls = append(urls, models.Url{Url: v})
 			}
 			cInfo := RequestDataWechatRobot{
 				WechatRobot:  client.ExtendWechatRobot,
