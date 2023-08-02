@@ -1,6 +1,7 @@
 package models
 
 import (
+	"gorm.io/datatypes"
 	"gorm.io/gorm"
 	"time"
 )
@@ -25,6 +26,8 @@ type Dingtalk struct {
 	ClientId           int            `json:"client_id"`
 	RobotKeyword       string         `json:"robot_keyword"`
 	RobotUrl           string         `json:"robot_url"`
+	AtAll              bool           `json:"at_all"`
+	AtMobiles          datatypes.JSON `json:"at_mobiles"`
 	RobotUrlList       []Url          `gorm:"-:all" json:"robot_url_list"` //得到前端提交过来的robot_url_list字段
 	RobotUrlRandomList []string       `gorm:"-:all" json:"-"`              //根据robot_url_list，得到一个url随机列表
 }

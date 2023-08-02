@@ -2,7 +2,7 @@ package initialize
 
 import (
 	"gomessage/pkg/authorization"
-	models2 "gomessage/pkg/models"
+	"gomessage/pkg/models"
 	"gomessage/pkg/utils/database"
 	"gomessage/pkg/utils/log/loggers"
 	"gorm.io/gorm"
@@ -24,14 +24,14 @@ func isAutoMigrateDB(migrate bool) {
 		//迁移数据库表结构（把需要迁移的表结构体，追加到下文括号中，有点类似于Django注册app的感觉）
 		var DbList []any
 		DbList = append(DbList,
-			&models2.Namespace{},
-			&models2.Template{},
-			&models2.Variables{},
-			&models2.Client{},
-			&models2.Dingtalk{},
-			&models2.Feishu{},
-			&models2.WechatApplication{},
-			&models2.WechatRobot{},
+			&models.Namespace{},
+			&models.Template{},
+			&models.Variables{},
+			&models.Client{},
+			&models.Dingtalk{},
+			&models.Feishu{},
+			&models.WechatApplication{},
+			&models.WechatRobot{},
 			&authorization.Users{},
 			&authorization.Sessions{},
 		)
@@ -44,7 +44,7 @@ func isAutoMigrateDB(migrate bool) {
 	}
 
 	//创建默认的Namespace（只有真正迁移数据库时，才会创建default命名空间）
-	models2.InitNamespace()
+	models.InitNamespace()
 	//创建默认的admin账户（只有真正迁移数据库时，才会初始化创建admin账户，若admin已存在则跳过初始化）
 	authorization.InitAdmin()
 }

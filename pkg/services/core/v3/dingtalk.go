@@ -2,7 +2,7 @@ package v3
 
 import (
 	"gomessage/pkg/models"
-	v12 "gomessage/pkg/services/core/v1"
+	"gomessage/pkg/services/core/v1"
 	"gomessage/pkg/services/format"
 	"gomessage/pkg/utils"
 )
@@ -13,13 +13,14 @@ type ClientActionDingtalk struct {
 
 func (c *ClientActionDingtalk) RendersMessages(client *models.Client, isMerge bool, contentList []string) []any {
 	var msgList []any
+	//判断是否把消息聚合后发送
 	if isMerge {
-		msg := v12.MessageJoint(contentList, utils.VarDingtalk)
-		data := format.PackDingtalkMessage(client.ExtendDingtalk.RobotKeyword, msg)
+		msg := v1.MessageJoint(contentList, utils.VarDingtalk)
+		data := format.PackDingtalkMessage(client.ExtendDingtalk.RobotKeyword, msg, false, nil)
 		msgList = append(msgList, data)
 	} else {
 		for _, msg := range contentList {
-			data := format.PackDingtalkMessage(client.ExtendDingtalk.RobotKeyword, msg)
+			data := format.PackDingtalkMessage(client.ExtendDingtalk.RobotKeyword, msg, false, nil)
 			msgList = append(msgList, data)
 		}
 	}
@@ -27,8 +28,8 @@ func (c *ClientActionDingtalk) RendersMessages(client *models.Client, isMerge bo
 }
 
 func (c *ClientActionDingtalk) PushMessages(messages []any) {
-	url := v12.RobotRandomUrl(c.Client.ExtendDingtalk.RobotUrlRandomList)
+	url := v1.RobotRandomUrl(c.Client.ExtendDingtalk.RobotUrlRandomList)
 	for _, msg := range messages {
-		v12.Push(msg, url)
+		v1.Push(msg, url)
 	}
 }
