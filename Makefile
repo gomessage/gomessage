@@ -22,7 +22,7 @@
 #要编译的命令名称
 NAME := gomessage
 #版本
-VERSION := 2.3.5
+VERSION := 2.3.6
 #编译输出目录
 OUTPUT_PATH := ./build/${VERSION}
 #是否开启cgo（0代表不开启，1代表开启）
@@ -34,7 +34,7 @@ DATE_NOW := $(shell date "+%Y%m%d_%H%M%S")
 ######################################
 # 指定缺省状态下执行哪些Target
 ######################################
-all: clean start swagger build_mac build_windows build_linux end
+all: clean start swagger build_mac_arm64 build_windows build_linux end
 
 
 ######################################
@@ -75,7 +75,7 @@ swagger:
 # Target：编译为Mac发行版（本地调试使用）
 ######################################
 .PHONY: build_mac
-build_mac: packageName:=${NAME}-${VERSION}-mac-x64
+build_mac: packageName:=${NAME}-${VERSION}-mac-amd64
 build_mac:
 	mkdir -p "${OUTPUT_PATH}/${packageName}"
 	GOARCH=amd64 \
@@ -89,10 +89,27 @@ build_mac:
 
 
 ######################################
+# Target：编译为Mac的arm发行版（本地调试使用）
+######################################
+.PHONY: build_mac_arm64
+build_mac_arm64: packageName:=${NAME}-${VERSION}-mac-arm64
+build_mac_arm64:
+	mkdir -p "${OUTPUT_PATH}/${packageName}"
+	GOARCH=arm64 \
+	GOOS=darwin \
+	CGO_ENABLED=${CGO_STATUS} \
+	go build -ldflags='-s -w' -o "${OUTPUT_PATH}/${packageName}/${NAME}" ./main.go
+	cp -rf ./config "${OUTPUT_PATH}/${packageName}/"
+	cp -rf ./assets "${OUTPUT_PATH}/${packageName}/"
+	tar -zcvf "${OUTPUT_PATH}/${packageName}.tar.gz" -C ${OUTPUT_PATH} ${packageName}
+	ls -alh "${OUTPUT_PATH}/${packageName}/"
+
+
+######################################
 # Target：编译为Windows发行版
 ######################################
 .PHONY: build_windows
-build_windows: packageName:=${NAME}-${VERSION}-windows-x64
+build_windows: packageName:=${NAME}-${VERSION}-windows-amd64
 build_windows:
 	mkdir -p "${OUTPUT_PATH}/${packageName}"
 	GOARCH=amd64 \
@@ -112,7 +129,7 @@ build_windows:
 # Target：编译为Linux发行版（实际封装到容器里的内容）
 ######################################
 .PHONY: build_linux
-build_linux: packageName:=${NAME}-${VERSION}-linux-x64
+build_linux: packageName:=${NAME}-${VERSION}-linux-amd64
 build_linux:
 	mkdir -p "${OUTPUT_PATH}/${packageName}"
 	GOARCH=amd64 \

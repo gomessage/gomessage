@@ -1,12 +1,11 @@
 module gomessage
 
-go 1.20
+go 1.21
 
 require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gin-gonic/gin v1.9.0
 	github.com/olivere/elastic/v7 v7.0.32
-	github.com/patrickmn/go-cache v2.1.0+incompatible
 	github.com/sirupsen/logrus v1.9.0
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.14.0
@@ -15,6 +14,7 @@ require (
 	github.com/swaggo/swag v1.8.1
 	github.com/tidwall/gjson v1.14.4
 	golang.org/x/crypto v0.7.0
+	gorm.io/datatypes v1.2.0
 	gorm.io/driver/mysql v1.4.7
 	gorm.io/driver/sqlite v1.4.3
 	gorm.io/gorm v1.24.7-0.20230306060331-85eaf9eeda11
@@ -71,5 +71,4 @@ require (
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	gorm.io/datatypes v1.2.0 // indirect
 )
