@@ -158,7 +158,7 @@ end:
 ######################################
 .PHONY: docker
 docker: DOCKER_SCAN_SUGGEST := False
-docker: packageName := ${NAME}-${VERSION}-linux-x64
+docker: packageName := ${NAME}-${VERSION}-linux-amd64
 docker:
 	@echo "\n---------版本latest---------\n"
 	@docker build -t gomessage/gomessage:latest -f ./docker/Dockerfile  "${OUTPUT_PATH}/${packageName}"
@@ -172,7 +172,7 @@ docker:
 ######################################
 .PHONY: docker_push
 docker_push: DOCKER_SCAN_SUGGEST := False
-docker_push: packageName := ${NAME}-${VERSION}-linux-x64
+docker_push: packageName := ${NAME}-${VERSION}-linux-amd64
 docker_push:
 	docker login -u $(DOCKER_HUB_USERNAME) -p $(DOCKER_HUB_PASSWORD)
 	@docker push gomessage/gomessage:${VERSION}

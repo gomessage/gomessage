@@ -64,7 +64,7 @@ func isMapEmpty(data map[string]interface{}) bool {
 	return true
 }
 
-// 定义一个函数来展平和过滤JSON数据
+// 定义一个函数来展开和过滤JSON数据
 func flattenAndFilterJSON(data string) (map[string]interface{}, error) {
 	// 将JSON数据解组为映射
 	var jsonData map[string]interface{}

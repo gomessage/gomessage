@@ -34,22 +34,15 @@ func init() {
 }
 
 func main() {
-
-	//创建gin实例
 	r := gin.Default()
-
-	//加载路由表
 	routers.Path(r)
-
-	//捕获全局panic的错误
 	defer func() {
 		if err := recover(); err != nil {
 			fmt.Println(err)
 		}
 	}()
-
 	//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-	//启动web服务，默认(BaseURL := "127.0.0.1:7077")
+	//启动服务(默认：127.0.0.1:7077)
 	//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	host := viper.GetString("service.host")
 	port := viper.GetString("service.port")
