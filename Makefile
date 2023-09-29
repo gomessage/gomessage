@@ -174,7 +174,7 @@ docker:
 docker_push: DOCKER_SCAN_SUGGEST := False
 docker_push: packageName := ${NAME}-${VERSION}-linux-amd64
 docker_push:
-	docker login -u $(DOCKER_HUB_USERNAME) -p $(DOCKER_HUB_PASSWORD)
+	docker login --username=$(DOCKER_HUB_USERNAME)
 	@docker push gomessage/gomessage:${VERSION}
 	@echo "\n---------推送镜像完成，版本${VERSION}---------\n"
 	@docker push gomessage/gomessage:latest
