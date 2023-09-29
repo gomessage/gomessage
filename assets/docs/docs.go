@@ -115,7 +115,7 @@ const docTemplate = `{
                 "tags": [
                     "Variables"
                 ],
-                "summary": "新增一个用户变量",
+                "summary": "新增一批用户变量",
                 "responses": {}
             }
         },

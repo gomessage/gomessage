@@ -35,16 +35,14 @@ func isAutoMigrateDB(migrate bool) {
 			&authorization.Users{},
 			&authorization.Sessions{},
 		)
-
 		//数据库自动迁移
 		//参数1：如果同时连接了多个数据库，需要明确指定往哪个客户端迁移，这里默认往database.DB.Client客户端对应的数据库中进行迁移
 		//参数2：这是一个list类型，需要指定要进行迁移的有哪些表
 		databaseAutoMigrate(database.DB.Default, DbList)
 		loggers.DefaultLogger.Info("检测到 '--migrate==True' 开始对数据库进行幂等性检测...")
 	}
-
 	//创建默认的Namespace（只有真正迁移数据库时，才会创建default命名空间）
-	models.InitNamespace()
+	models.InitDefaultNamespace()
 	//创建默认的admin账户（只有真正迁移数据库时，才会初始化创建admin账户，若admin已存在则跳过初始化）
 	authorization.InitAdmin()
 }

@@ -3,7 +3,6 @@ package models
 import (
 	"errors"
 	"gomessage/pkg/utils/database"
-	"gomessage/pkg/utils/log/loggers"
 	"gorm.io/gorm"
 	"strconv"
 	"time"
@@ -95,22 +94,4 @@ func IsNamespaceExist(nsName string) bool {
 	} else {
 		return false
 	}
-}
-
-// InitNamespace 在main函数中被调用，全局只被调用一次，创建一些默认的Namespace
-func InitNamespace() {
-	var queryNamespace Namespace
-	result := database.DB.Default.Where(&Namespace{Name: "default"}).First(&queryNamespace)
-	if result.Error != nil {
-		newNamespace := Namespace{
-			IsActive:    true,
-			Name:        "default",
-			Description: "系统自动创建的\"默认通道\"，可通过 /go/message 或 /go/default 接收消息推送。",
-		}
-		database.DB.Default.Create(&newNamespace)
-		loggers.DefaultLogger.Info("创建default命名空间...")
-	} else {
-		loggers.DefaultLogger.Info("default命名空间已存在...")
-	}
-
 }

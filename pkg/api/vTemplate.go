@@ -30,9 +30,7 @@ func PostTemplate(g *gin.Context) {
 		TemplateName: ns,
 	}
 	g.ShouldBindJSON(&body)
-
 	template := UpdateAddTemp(ns, body)
-
 	g.JSON(http.StatusOK, utils.ResponseSuccessful("模板添加成功", &template))
 }
 
@@ -68,7 +66,6 @@ func PutTemplate(g *gin.Context) {
 	id, _ := strconv.Atoi(g.Param("id"))
 	body := models.Template{}
 	g.ShouldBindJSON(&body)
-
 	result, err := models.UpdateTemplate(id, &body)
 	if err != nil {
 		g.JSON(http.StatusBadRequest, err)

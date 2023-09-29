@@ -61,3 +61,26 @@ func ListVariables(ns string) (*[]Variables, error) {
 	queryResult := database.DB.Default.Where(Variables{Namespace: ns}).Order("id").Find(&vv)
 	return &vv, queryResult.Error
 }
+
+func UpdateAddVars(ns string, kvList []map[string]string) []Variables {
+	//遍历删除当前namespace下的所有用户变量
+	listVars, _ := ListVariables(ns)
+	for _, vars := range *listVars {
+		DeleteVariables(vars.ID)
+	}
+
+	var newVars []Variables
+	//批量写入新的配置
+	for _, oneVar := range kvList {
+		for kk, vv := range oneVar {
+			v := Variables{
+				Namespace: ns,
+				Key:       kk,
+				Value:     vv,
+			}
+			AddVariables(&v)
+			newVars = append(newVars, v)
+		}
+	}
+	return newVars
+}

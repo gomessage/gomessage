@@ -21,45 +21,18 @@ func ListVariables(g *gin.Context) {
 
 // PostVariables
 // @Tags Variables
-// @Summary 新增一个用户变量
+// @Summary 新增一批用户变量
 // @Router /api/v1/:namespace/vars [POST]
 func PostVariables(g *gin.Context) {
 	ns := g.Param("namespace")
 	type requestData struct {
 		KeyValueList []map[string]string `json:"key_value_list"`
 	}
-
 	//绑定请求数据
 	body := requestData{}
 	g.ShouldBindJSON(&body)
-
-	ResponseVars := UpdateAddVars(ns, body.KeyValueList)
-
+	ResponseVars := models.UpdateAddVars(ns, body.KeyValueList)
 	g.JSON(http.StatusOK, utils.ResponseSuccessful("用户变量映射成功", ResponseVars))
-}
-
-func UpdateAddVars(ns string, keyValueList []map[string]string) []models.Variables {
-	//遍历删除当前namespace下的所有用户变量
-	listVars, _ := models.ListVariables(ns)
-	for _, vars := range *listVars {
-		models.DeleteVariables(vars.ID)
-	}
-
-	var ResponseVars []models.Variables
-	//批量写入新的配置
-	for _, oneVar := range keyValueList {
-		for kk, vv := range oneVar {
-			v := models.Variables{
-				Namespace: ns,
-				Key:       kk,
-				Value:     vv,
-			}
-			models.AddVariables(&v)
-			ResponseVars = append(ResponseVars, v)
-		}
-	}
-
-	return ResponseVars
 }
 
 // GetVariables
@@ -84,7 +57,6 @@ func PutVariables(g *gin.Context) {
 	id, _ := strconv.Atoi(g.Param("id"))
 	body := models.Variables{}
 	g.ShouldBindJSON(&body)
-
 	result, err := models.UpdateVariables(id, &body)
 	if err != nil {
 		g.JSON(http.StatusBadRequest, err)
