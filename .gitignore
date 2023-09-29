@@ -36,6 +36,7 @@ GoMessage
 .DS_Store
 data
 data/*.db
+data/*.log
 tmp
 tmp/
 tmp/*

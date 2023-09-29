@@ -20,9 +20,9 @@ service:
 log:
   level: info                                 #（选项：debug、info）
   format: text                                #（选项：json、text）
-  runtimeLogFile: ./gomessage-runtime.log     # 该文件记录"运行时"的日志
-  accessLogFile: ./gomessage-access.log       # 该文件记录"access"的日志
-  pushLogFile: ./gomessage-push.log           # 该文件记录"推送数据"的日志
+  runtimeLogFile: ./data/gomessage-runtime.log     # 该文件记录"运行时"的日志
+  accessLogFile: ./data/gomessage-access.log       # 该文件记录"access"的日志
+  pushLogFile: ./data/gomessage-push.log           # 该文件记录"推送数据"的日志
   # log2es 这个参数是一个开关；
   # 如果设定为true则会把日志也送入es中；
   # 如果为false则什么也不做；
