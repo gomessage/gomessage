@@ -285,9 +285,9 @@ func main() {
 	branch := "master"   //分支
 
 	//动态拼装包名
-	mac := fmt.Sprintf("gomessage-%s-mac-x64.tar.gz", version)
-	linux := fmt.Sprintf("gomessage-%s-linux-x64.tar.gz", version)
-	windows := fmt.Sprintf("gomessage-%s-windows-x64.tar.gz", version)
+	mac := fmt.Sprintf("gomessage-%s-mac-arm64.tar.gz", version)
+	linux := fmt.Sprintf("gomessage-%s-linux-amd64.tar.gz", version)
+	windows := fmt.Sprintf("gomessage-%s-windows-amd64.tar.gz", version)
 
 	packageList := []string{mac, linux, windows}
 
