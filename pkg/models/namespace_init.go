@@ -32,11 +32,11 @@ func InitDefaultNamespace() {
 
 // InitTemplate 初始化信息（多通道复用）
 func InitTemplate(ns string) {
-	content := `{{ if eq .N6 "firing" }}
+	content := `{{ if eq .N5 "firing" }}
 
 ## <font color='#FF0000'>【报警中】服务器{{ .N3 }}</font>
 
-{{ else if eq .N6 "resolved" }}
+{{ else if eq .N5 "resolved" }}
 
 ## <font color='#20B2AA'>【已恢复】服务器{{ .N3 }}</font>
 
@@ -52,17 +52,15 @@ func InitTemplate(ns string) {
 
 **告警级别**：{{ .N2 }}
 
-**主机名称**：{{ .N3 }} 
+**主机名称**：{{ .N3 }}
 
-**主机地址**：{{ .N4 }}
+**告警详情**：{{ .N4 }}
 
-**告警详情**：{{ .N5 }}
+**告警状态**：{{ .N5 }}
 
-**告警状态**：{{ .N6 }}
+**触发时间**：{{ .N6 }}
 
-**触发时间**：{{ .N7 }}
-
-**发送时间**：{{ .N8 }}
+**发送时间**：{{ .N7 }}
 
 **规则详情**：[Prometheus控制台](https://www.baidu.com)
 
@@ -83,12 +81,11 @@ func InitVarMap(ns string) {
 	keyValueList := []map[string]string{
 		{"N1": "alerts.#.labels.alertname"},
 		{"N2": "alerts.#.labels.severity"},
-		{"N3": "alerts.#.labels.hostname"},
-		{"N4": "alerts.#.labels.ping"},
-		{"N5": "alerts.#.annotations.description"},
-		{"N6": "status"},
-		{"N7": "alerts.#.startsAt"},
-		{"N8": "alerts.#.endsAt"},
+		{"N3": "alerts.#.labels.instance"},
+		{"N4": "alerts.#.annotations.description"},
+		{"N5": "status"},
+		{"N6": "alerts.#.startsAt"},
+		{"N7": "alerts.#.endsAt"},
 	}
 	UpdateAddVars(ns, keyValueList)
 }

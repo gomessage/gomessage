@@ -47,11 +47,11 @@ export default {
     return {
       template: {
         template_is_merge: false,
-        template_content: '{{ if eq .N6 "firing" }}\n' +
+        template_content: '{{ if eq .N5 "firing" }}\n' +
             '\n' +
             '## <font color=\'#FF0000\'>【报警中】服务器{{ .N3 }}</font>\n' +
             '\n' +
-            '{{ else if eq .N6 "resolved" }}\n' +
+            '{{ else if eq .N5 "resolved" }}\n' +
             '\n' +
             '## <font color=\'#20B2AA\'>【已恢复】服务器{{ .N3 }}</font>\n' +
             '\n' +
@@ -69,15 +69,13 @@ export default {
             '\n' +
             '**主机名称**：{{ .N3 }} \n' +
             '\n' +
-            '**主机地址**：{{ .N4 }}\n' +
+            '**告警详情**：{{ .N4 }}\n' +
             '\n' +
-            '**告警详情**：{{ .N5 }}\n' +
+            '**告警状态**：{{ .N5 }}\n' +
             '\n' +
-            '**告警状态**：{{ .N6 }}\n' +
+            '**触发时间**：{{ .N6 }}\n' +
             '\n' +
-            '**触发时间**：{{ .N7 }}\n' +
-            '\n' +
-            '**发送时间**：{{ .N8 }}\n' +
+            '**发送时间**：{{ .N7 }}\n' +
             '\n' +
             '**规则详情**：[Prometheus控制台](https://www.baidu.com)\n' +
             '\n' +

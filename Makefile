@@ -20,7 +20,7 @@
 #要编译的命令名称
 NAME := gomessage
 #版本
-VERSION := 2.3.7
+VERSION := 2.3.8
 #编译输出目录
 OUTPUT_PATH := ./build/${VERSION}
 #是否开启cgo（0代表不开启，1代表开启）
@@ -164,10 +164,10 @@ docker:
 	@echo "\n---------开始制作镜像，版本${VERSION}---------\n"
 	@docker buildx build --platform linux/arm64,linux/amd64 -t gomessage/gomessage:${VERSION} -f ./docker/Dockerfile  "${OUTPUT_PATH}/${packageName}" --push
 	@echo "\n---------镜像制作完成，版本${VERSION}---------\n"
-	#	@docker push gomessage/gomessage:${VERSION}
-	#	@echo "\n---------推送镜像完成，版本${VERSION}---------\n"
-	#	@docker push gomessage/gomessage:latest
-	#	@echo "\n---------推送镜像完成，版本latest---------\n"
+	###@docker push gomessage/gomessage:${VERSION}
+	###@echo "\n---------推送镜像完成，版本${VERSION}---------\n"
+	###@docker push gomessage/gomessage:latest
+	###@echo "\n---------推送镜像完成，版本latest---------\n"
 	@echo
 	@gsed -i '/version:/c version: ${VERSION}' ./docker/helm/Chart.yaml
 	@gsed -i '/appVersion:/c appVersion: ${VERSION}' ./docker/helm/Chart.yaml

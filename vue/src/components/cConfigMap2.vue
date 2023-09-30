@@ -40,22 +40,19 @@ export default {
           value: 'alerts.#.labels.severity',
         }, {
           key: '{{ .N3 }}',
-          value: 'alerts.#.labels.hostname',
-        }, {
+          value: 'alerts.#.labels.instance',
+        },  {
           key: '{{ .N4 }}',
-          value: 'alerts.#.labels.ping',
-        }, {
-          key: '{{ .N5 }}',
           value: 'alerts.#.annotations.description',
         }, {
-          key: '{{ .N6 }}',
+          key: '{{ .N5 }}',
           value: 'status',
         }, {
-          key: '{{ .N7 }}',
+          key: '{{ .N6 }}',
           value: 'alerts.#.startsAt',
         },
         {
-          key: '{{ .N8 }}',
+          key: '{{ .N7 }}',
           value: 'alerts.#.endsAt',
         },
 
