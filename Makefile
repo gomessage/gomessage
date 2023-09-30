@@ -6,8 +6,6 @@
 #
 #	make docker --->  编译docker镜像
 #
-#	make docker_push --->  推送docker镜像
-#
 #	make package_push
 #
 #	make swagger
@@ -166,6 +164,17 @@ docker:
 	@echo "\n---------开始制作镜像，版本${VERSION}---------\n"
 	@docker buildx build --platform linux/arm64,linux/amd64 -t gomessage/gomessage:${VERSION} -f ./docker/Dockerfile  "${OUTPUT_PATH}/${packageName}" --push
 	@echo "\n---------镜像制作完成，版本${VERSION}---------\n"
+	#	@docker push gomessage/gomessage:${VERSION}
+	#	@echo "\n---------推送镜像完成，版本${VERSION}---------\n"
+	#	@docker push gomessage/gomessage:latest
+	#	@echo "\n---------推送镜像完成，版本latest---------\n"
+	@echo
+	@gsed -i '/version:/c version: ${VERSION}' ./docker/helm/Chart.yaml
+	@gsed -i '/appVersion:/c appVersion: ${VERSION}' ./docker/helm/Chart.yaml
+	helm package ./docker/helm
+	helm coding-push gomessage-${VERSION}.tgz gomessage
+	rm -rf ./*.tgz
+	@echo "\n---------制作Helm Chart完成，版本${VERSION}---------\n"
 
 
 ######################################
@@ -176,17 +185,8 @@ docker:
 #docker_push: packageName := ${NAME}-${VERSION}-linux-amd64
 #docker_push:
 #	docker login --username=$(DOCKER_HUB_USERNAME)
-#	@docker push gomessage/gomessage:${VERSION}
-#	@echo "\n---------推送镜像完成，版本${VERSION}---------\n"
-#	@docker push gomessage/gomessage:latest
-#	@echo "\n---------推送镜像完成，版本latest---------\n"
-#	@echo
-#	@gsed -i '/version:/c version: ${VERSION}' ./docker/helm/Chart.yaml
-#	@gsed -i '/appVersion:/c appVersion: ${VERSION}' ./docker/helm/Chart.yaml
-#	helm package ./docker/helm
-#	helm coding-push gomessage-${VERSION}.tgz gomessage
-#	rm -rf ./*.tgz
-#	@echo "\n---------制作Helm Chart完成，版本${VERSION}---------\n"
+
+
 
 
 ######################################
