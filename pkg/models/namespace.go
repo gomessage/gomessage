@@ -2,6 +2,7 @@ package models
 
 import (
 	"errors"
+	"fmt"
 	"gomessage/pkg/utils/database"
 	"gorm.io/gorm"
 	"strconv"
@@ -38,7 +39,11 @@ func AddNamespace(n *Namespace) (*Namespace, error) {
 
 func DeleteNamespace(id int) (int, error) {
 	var ns Namespace
-	result := database.DB.Default.Delete(&ns, id)
+	database.DB.Default.First(&ns, id)
+	ns.Name = fmt.Sprintf("%s-%v", ns.Name, time.Now().Unix()) //把原来的命名空间改名一下
+	database.DB.Default.Save(&ns)
+
+	result := database.DB.Default.Delete(&ns, id) //然后把原来的命名空间进行软删除
 	return int(result.RowsAffected), result.Error
 }
 
