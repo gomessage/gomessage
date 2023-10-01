@@ -3,12 +3,14 @@ package v1
 import (
 	"bytes"
 	"fmt"
-	"github.com/tidwall/gjson"
 	"gomessage/pkg/utils"
 	"gomessage/pkg/utils/log/loggers"
 	"html/template"
 	"strconv"
 	"strings"
+	"time"
+
+	"github.com/tidwall/gjson"
 )
 
 // CompleteMessage 完整的内容渲染
@@ -29,6 +31,16 @@ func CompleteMessage(thisTemplate string, dataList []map[string]string) []string
 		//实例化属性
 		//tmplData := data
 		//fmt.Println(data)
+
+		//检查并转换时间格式
+		for k, v := range data {
+			if _, err := time.Parse(time.RFC3339, v); err == nil {
+				parsedTime, _ := time.Parse(time.RFC3339, v)
+				loc, _ := time.LoadLocation("Asia/Shanghai")
+				parsedTime = parsedTime.In(loc)
+				data[k] = parsedTime.Format("2006-01-02 15:04:05")
+			}
+		}
 
 		//渲染tmpl模板，渲染的过程中把tmplData的值填充到模板之内，最后把渲染后的结果存入到buf这个字节缓冲器中
 		if err = tmpl.Execute(&buf, data); err != nil {
