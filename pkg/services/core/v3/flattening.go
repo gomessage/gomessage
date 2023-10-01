@@ -64,7 +64,7 @@ func isMapEmpty(data map[string]interface{}) bool {
 	return true
 }
 
-// 定义一个函数来展开和过滤JSON数据
+// 定义一个函数展开和过滤JSON数据
 func flattenAndFilterJSON(data string) (map[string]interface{}, error) {
 	// 将JSON数据解组为映射
 	var jsonData map[string]interface{}
@@ -90,6 +90,7 @@ func flattenAndFilterJSON(data string) (map[string]interface{}, error) {
 	return filteredData, nil
 }
 
+// FlatteningJson 扁平化展开Json（由于上层接口还没写好，因此该方法暂时未被调用）
 func FlatteningJson(requestByte []byte) {
 	flattenedData, err := flattenAndFilterJSON(string(requestByte))
 	if err != nil {

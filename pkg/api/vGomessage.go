@@ -19,42 +19,35 @@ import (
 // @Tags gomessage
 // @Router /go/:namespace [POST]
 func GoMessageByTransport(g *gin.Context) {
+	//TODO：劫持数据的容器
+	hijackingData := hijacking.ArbitrarilyJsonData{}
 
-	/*
-	 * TODO: 获取通道对象
-	 */
+	//TODO: 获取通道对象
 	nsObj := v1.GetNsInfo(g.Param("namespace"))
 
-	/*
-	 * TODO: 获取过境数据
-	 */
-	//获取请求数据
-	hijacking.CacheData.RequestTime = time.Now()
-	hijacking.CacheData.RequestByte, _ = io.ReadAll(g.Request.Body)                 //g.Request.Body中的数据只能读取一次，是因为"流"的指针被移位了
-	g.Request.Body = io.NopCloser(bytes.NewBuffer(hijacking.CacheData.RequestByte)) //向g.Request.Body回写数据
-	v3.FlatteningJson(hijacking.CacheData.RequestByte)                              //解析json
-	if err := g.ShouldBindJSON(&hijacking.CacheData.RequestJson); err != nil {      //把请求数据绑定到CacheData.RequestJson
+	//TODO: 获取过境数据
+	hijackingData.RequestTime = time.Now()                                    //获取请求数据
+	hijackingData.RequestByte, _ = io.ReadAll(g.Request.Body)                 //g.Request.Body中的数据只能读取一次，是因为"流"的指针被移位了
+	g.Request.Body = io.NopCloser(bytes.NewBuffer(hijackingData.RequestByte)) //向g.Request.Body回写数据
+	if err := g.ShouldBindJSON(&hijackingData.RequestJson); err != nil {      //把请求数据绑定到CacheData.RequestJson
 		return
 	}
 
+	//TODO：扁平化解析json
+	//v3.FlatteningJson(hijackingData.RequestByte)                              //扁平化解析json
+
 	loggers.PushLogger.WithFields(logrus.Fields{
 		"namespace": nsObj.Name,
-		"content":   string(hijacking.CacheData.RequestByte),
+		"content":   string(hijackingData.RequestByte),
 	}).Info("上游消息")
 
-	/*
-	 * TODO: 写入缓存便于劫持层读取信息
-	 */
-	hijacking.SetCacheData(nsObj.Name, hijacking.CacheData) //把推送过来的数据写入缓存（一个命名空间中，同一时间只能写入一条数据）
+	//TODO: 写入缓存便于劫持层读取信息
+	hijacking.SetCacheData(nsObj.Name, hijackingData) //把推送过来的数据写入缓存（一个命名空间中，同一时间只能写入一条数据）
 
-	/*
-	 * TODO: 获取通道的用户配置信息
-	 */
+	//TODO: 获取通道的用户配置信息
 	nsUserConfig := v1.GetNamespaceUserConfig(nsObj.Name, nsObj.IsRenders) //"通道自身信息"与"通道中用户添加的信息"不要搞混了
 
-	/*
-	 * TODO: 根据不同的客户端来产生对应的操作
-	 */
+	//TODO: 根据不同的客户端来产生对应的操作
 	for _, client := range nsUserConfig.ActiveClient {
 		var messages []any
 		clientInfo, _ := models.GetClientById(client.ID)
@@ -95,11 +88,11 @@ func GoMessageByTransport(g *gin.Context) {
 		 */
 		if nsObj.IsRenders {
 			//渲染出需要的"内容体"
-			contentList := v3.RendersContentData(hijacking.CacheData.RequestByte, nsUserConfig.VariablesMap, nsUserConfig.MessageTemplate)
+			contentList := v3.RendersContentData(hijackingData.RequestByte, nsUserConfig.VariablesMap, nsUserConfig.MessageTemplate)
 			//渲染出需要的"消息体"
 			messages = clientAction.RendersMessages(clientInfo, nsUserConfig.IsMerge, contentList)
 		} else {
-			messages = append(messages, hijacking.CacheData.RequestJson)
+			messages = append(messages, hijackingData.RequestJson)
 		}
 
 		// TODO：推送消息

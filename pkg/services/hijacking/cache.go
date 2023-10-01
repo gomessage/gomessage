@@ -22,15 +22,15 @@ type Mappings struct {
 	Value any    `json:"value"`
 }
 
-type arbitrarilyJsonData struct {
+type ArbitrarilyJsonData struct {
 	RequestByte  []byte         `json:"-"`              //请求数据[]byte格式
 	RequestJson  map[string]any `json:"request_json"`   //请求数据json格式
 	RequestTime  time.Time      `json:"request_time"`   //请求时间
-	KeyValueMap  map[string]any `json:"key_value_map"`  //展开解析后的key:value
-	KeyValueList []Mappings     `json:"key_value_list"` //展开解析后的key:value切片
+	KeyValueMap  map[string]any `json:"key_value_map"`  //展开解析后的key:value（扁平化展开的Json）
+	KeyValueList []Mappings     `json:"key_value_list"` //展开解析后的key:value（这是一个切片，便于前端遍历展开）
 }
 
-var CacheData arbitrarilyJsonData
+var CacheData ArbitrarilyJsonData
 
 // SetCacheData TODO: 由于缓存库出现了BUG，因此这里临时用map顶一下，以后在修复，上下文中与cache相关的内容临时注释一下
 func SetCacheData(ns string, value any) {
