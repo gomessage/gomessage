@@ -20,7 +20,7 @@
 #要编译的命令名称
 NAME := gomessage
 #版本
-VERSION := 2.3.12
+VERSION := 2.3.13
 #编译输出目录
 OUTPUT_PATH := ./build/${VERSION}
 #是否开启cgo（0代表不开启，1代表开启）
@@ -158,6 +158,20 @@ end:
 docker: DOCKER_SCAN_SUGGEST := False
 docker: packageName := ${NAME}-${VERSION}-linux-amd64
 docker:
+	@echo "\n---------版本latest---------\n"
+	@docker build -t gomessage/gomessage:latest -f ./docker/Dockerfile  "${OUTPUT_PATH}/${packageName}"
+	@echo "\n---------开始制作镜像，版本${VERSION}---------\n"
+	@docker build -t gomessage/gomessage:${VERSION} -f ./docker/Dockerfile  "${OUTPUT_PATH}/${packageName}"
+	@echo "\n---------镜像制作完成，版本${VERSION}---------\n"
+
+
+######################################
+# Target：推送docker镜像
+######################################
+.PHONY: docker_push
+docker_push: DOCKER_SCAN_SUGGEST := False
+docker_push: packageName := ${NAME}-${VERSION}-linux-amd64
+docker_push:
 	docker login --username=$(DOCKER_HUB_USERNAME)
 	@echo "\n---------版本latest---------\n"
 	@docker buildx build --platform linux/arm64,linux/amd64 -t gomessage/gomessage:latest -f ./docker/Dockerfile  "${OUTPUT_PATH}/${packageName}" --push
@@ -175,16 +189,6 @@ docker:
 	helm coding-push gomessage-${VERSION}.tgz gomessage
 	rm -rf ./*.tgz
 	@echo "\n---------制作Helm Chart完成，版本${VERSION}---------\n"
-
-
-######################################
-# Target：推送docker镜像
-######################################
-#.PHONY: docker_push
-#docker_push: DOCKER_SCAN_SUGGEST := False
-#docker_push: packageName := ${NAME}-${VERSION}-linux-amd64
-#docker_push:
-#	docker login --username=$(DOCKER_HUB_USERNAME)
 
 
 
