@@ -62,9 +62,9 @@ func InitTemplate(ns string) {
 
 **发送时间**：{{ .N7 }}
 
-**规则详情**：[Prometheus控制台](https://www.baidu.com)
+**规则详情**：[Prometheus控制台]({{ .N8 }})
 
-**报警详情**：[Alertmanager控制台](https://www.baidu.com)
+**报警详情**：[Alertmanager控制台]({{ .N9 }})
 `
 
 	defaultTemplate := Template{
@@ -86,6 +86,8 @@ func InitVarMap(ns string) {
 		{"N5": "status"},
 		{"N6": "alerts.#.startsAt"},
 		{"N7": "alerts.#.endsAt"},
+		{"N8": "alerts.#.generatorURL"},
+		{"N9": "externalURL"},
 	}
 	UpdateAddVars(ns, keyValueList)
 }
