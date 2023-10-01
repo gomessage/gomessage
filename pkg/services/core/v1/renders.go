@@ -25,6 +25,7 @@ func CompleteMessage(thisTemplate string, dataList []map[string]string) []string
 		if err != nil {
 			fmt.Println(err)
 		}
+
 		//实例化属性
 		//tmplData := data
 		//fmt.Println(data)

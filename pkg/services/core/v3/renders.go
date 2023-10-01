@@ -38,6 +38,16 @@ func AnalysisDataV2(keyValueList []map[string]string, requestData []byte) []map[
 				tmpKey := strings.ReplaceAll(v, "#", strconv.Itoa(i))
 				tmpValue := gjson.GetBytes(requestData, tmpKey) //此时的：tmpKey是：【alert.0.label.name】 这种形式，取到的是一个具体值
 				oneDataMapping[k] = tmpValue.String()
+
+				//layout := "2006-01-02 15:04:05"
+				//t, err := time.Parse(time.RFC3339, tmpValue.String())
+				//if err == nil {
+				//	// 如果值可以转换为时间类型，则进行复制
+				//	newValue := t.Format(time.RFC3339)
+				//	oneDataMapping[k] = newValue
+				//} else {
+				//	oneDataMapping[k] = tmpValue.String()
+				//}
 			}
 		}
 		dataList = append(dataList, oneDataMapping)

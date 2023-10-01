@@ -7,20 +7,20 @@ import (
 )
 
 // RendersRequestData 渲染数据
-func RendersRequestData(isRenders bool, thisNamespaceUserConfig NamespaceUserConfig, requestByte []byte) []string {
-	var contentList []string
-	//判断是否渲染
-	if isRenders {
-		//得到变量映射
-		analysisDataList := AnalysisData(thisNamespaceUserConfig.VariablesMap, requestByte)
-		//得到内容体
-		contentList = CompleteMessage(thisNamespaceUserConfig.MessageTemplate, analysisDataList)
-	} else {
-		//不渲染数据
-		contentList = append(contentList, string(requestByte))
-	}
-	return contentList
-}
+//func RendersRequestData(isRenders bool, thisNamespaceUserConfig NamespaceUserConfig, requestByte []byte) []string {
+//	var contentList []string
+//	//判断是否渲染
+//	if isRenders {
+//		//得到变量映射
+//		analysisDataList := AnalysisData(thisNamespaceUserConfig.VariablesMap, requestByte)
+//		//得到内容体
+//		contentList = CompleteMessage(thisNamespaceUserConfig.MessageTemplate, analysisDataList)
+//	} else {
+//		//不渲染数据
+//		contentList = append(contentList, string(requestByte))
+//	}
+//	return contentList
+//}
 
 type ReadyClient struct {
 	Id      int
