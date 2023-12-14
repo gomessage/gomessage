@@ -52,6 +52,25 @@
         <el-menu-item index="3-1"><i class="el-icon-chat-dot-square"></i>接收客户端</el-menu-item>
       </router-link>
 
+
+      <el-submenu index="4">
+        <template slot="title"><i class="el-icon-s-operation"></i>其它</template>
+        <router-link to="/main/clients"><el-menu-item index="4-1"><i class="el-icon-alarm-clock"></i>定时消息</el-menu-item></router-link>
+        <router-link to="/main/clients"><el-menu-item index="4-2"><i class="el-icon-s-data"></i>数据统计</el-menu-item></router-link>
+        <router-link to="/main/clients"><el-menu-item index="4-3"><i class="el-icon-user"></i>人工语音</el-menu-item></router-link>
+        <!--<el-submenu index="4-4">-->
+        <!--  <template slot="title">选项4</template>-->
+        <!--  <el-menu-item index="4-4-1">选项1</el-menu-item>-->
+        <!--  <el-menu-item index="4-4-2">选项2</el-menu-item>-->
+        <!--  <el-menu-item index="4-4-3">选项3</el-menu-item>-->
+        <!--</el-submenu>-->
+      </el-submenu>
+
+
+      <!--<router-link to="/main/clients">-->
+      <!--  <el-menu-item index="4-1"><i class="el-icon-chat-dot-square"></i>定时通知</el-menu-item>-->
+      <!--</router-link>-->
+
       <!--指向Github的文档地址-->
       <!--<el-menu-item>-->
       <!--  <el-link :underline="false" href="https://github.com/gomessage/gomessage#gomessage" target="_blank" type="primary">-->
