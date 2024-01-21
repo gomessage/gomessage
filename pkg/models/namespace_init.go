@@ -59,8 +59,8 @@ func InitTemplate(ns string) {
 **告警状态**：{{ .N5 }}
 
 **触发时间**：{{ .N6 }}
-{{ if eq .N5 "resolved" }}
 
+{{ if eq .N5 "resolved" }}
 **恢复时间**：{{ .N7 }}
 
 {{ end }}
