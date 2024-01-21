@@ -60,9 +60,7 @@ func InitTemplate(ns string) {
 
 **触发时间**：{{ .N6 }}
 {{ if eq .N5 "resolved" }}
-
 **恢复时间**：{{ .N7 }}
-
 {{ end }}
 **规则详情**：[Prometheus控制台]({{ .N8 }})
 
