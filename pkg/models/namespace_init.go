@@ -59,9 +59,11 @@ func InitTemplate(ns string) {
 **告警状态**：{{ .N5 }}
 
 **触发时间**：{{ .N6 }}
+{{ if eq .N5 "resolved" }}
 
-**发送时间**：{{ .N7 }}
+**恢复时间**：{{ .N7 }}
 
+{{ end }}
 **规则详情**：[Prometheus控制台]({{ .N8 }})
 
 **报警详情**：[Alertmanager控制台]({{ .N9 }})
@@ -83,7 +85,7 @@ func InitVarMap(ns string) {
 		{"N2": "alerts.#.labels.severity"},
 		{"N3": "alerts.#.labels.instance"},
 		{"N4": "alerts.#.annotations.description"},
-		{"N5": "status"},
+		{"N5": "alerts.#.status"},
 		{"N6": "alerts.#.startsAt"},
 		{"N7": "alerts.#.endsAt"},
 		{"N8": "alerts.#.generatorURL"},
