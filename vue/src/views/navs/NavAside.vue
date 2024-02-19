@@ -20,19 +20,6 @@
 
     <br>
 
-    <!--for循环命名空间-->
-    <el-menu-item
-        v-for="(oneNs,index) in namespaceList"
-        :key="index"
-        :index="oneNs.name"
-        style="text-align: left"
-        @click="updateNamespace(oneNs,$event)">
-      <i class="el-icon-menu"></i>
-      <span slot="title">{{ oneNs.name }}</span>
-    </el-menu-item>
-
-    <br>
-
     <!--添加一个新的namespace-->
     <el-menu-item index="998" style="text-align: left">
       <el-button
@@ -44,6 +31,21 @@
       >管理推送通道
       </el-button>
     </el-menu-item>
+
+    <br>
+
+    <!--for循环命名空间-->
+    <el-menu-item
+        v-for="(oneNs,index) in namespaceList"
+        :key="index"
+        :index="oneNs.name"
+        style="text-align: left"
+        @click="updateNamespace(oneNs,$event)">
+      <i class="el-icon-menu"></i>
+      <span slot="title">{{ oneNs.name }}</span>
+    </el-menu-item>
+
+
 
 
     <!--利用对话框，添加命名空间-->
@@ -130,6 +132,7 @@ import {deleteNamespaceOne, getNamespace, postNamespace, putNamespaceOne} from "
 import {isLength, isStringOrNumber, isNumberStart} from "@/utils/validate";
 
 export default {
+  inject:['reload'],
   name: "NavAside",
   data() {
     return {
@@ -183,7 +186,8 @@ export default {
       this.$store.commit("updateNamespace", namespace);
       this.$store.commit("updateNamespaceInfo", item)
       //刷新当前页
-      location.reload();
+      // location.reload();
+      this.reload()
     },
     addNamespace: function () {
       this.$refs["namespaceForm"].validate(valid => {
@@ -195,7 +199,8 @@ export default {
           // 发送post请求
           postNamespace(this.namespaceForm).then(response => {
             console.log(response)
-            location.reload();
+            //location.reload();
+            this.reload()
           })
         }
       });
