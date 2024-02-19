@@ -2,11 +2,11 @@
   <!--#303133-->
   <!--#41555d-->
   <el-menu
-    :default-active="getStoreNamespace"
-    active-text-color="#ffd04b"
-    background-color="#41555d"
-    style="height: 100%;border-right: solid 0 red"
-    text-color="#fff"
+      :default-active="getStoreNamespace"
+      active-text-color="#ffd04b"
+      background-color="#41555d"
+      style="height: 100%;border-right: solid 0 red"
+      text-color="#fff"
   >
 
     <!--左侧logo-->
@@ -22,11 +22,11 @@
 
     <!--for循环命名空间-->
     <el-menu-item
-      v-for="(oneNs,index) in namespaceList"
-      :key="index"
-      :index="oneNs.name"
-      style="text-align: left"
-      @click="updateNamespace(oneNs,$event)">
+        v-for="(oneNs,index) in namespaceList"
+        :key="index"
+        :index="oneNs.name"
+        style="text-align: left"
+        @click="updateNamespace(oneNs,$event)">
       <i class="el-icon-menu"></i>
       <span slot="title">{{ oneNs.name }}</span>
     </el-menu-item>
@@ -36,11 +36,11 @@
     <!--添加一个新的namespace-->
     <el-menu-item index="998" style="text-align: left">
       <el-button
-        icon="el-icon-setting"
-        plain
-        size="mini"
-        @click="dialogFormVisible222 = true"
-        style="padding-right: 35px"
+          icon="el-icon-setting"
+          plain
+          size="mini"
+          @click="dialogFormVisible222 = true"
+          style="padding-right: 35px"
       >管理推送通道
       </el-button>
     </el-menu-item>
@@ -48,30 +48,30 @@
 
     <!--利用对话框，添加命名空间-->
     <el-dialog
-      :visible.sync="dialogFormVisible222"
-      title="消息推送通道"
-      modal
-      width="60%"
-      top="10vh"
-      lock-scroll
+        :visible.sync="dialogFormVisible222"
+        title="消息推送通道"
+        modal
+        width="60%"
+        top="10vh"
+        lock-scroll
     >
       <!--表格-->
       <el-table
-        :data="namespaceList"
-        border
-        :header-cell-style="{background:'#2f2f35',color:'#fff'}"
-        style="width: 100%"
+          :data="namespaceList"
+          border
+          :header-cell-style="{background:'#2f2f35',color:'#fff'}"
+          style="width: 100%"
       >
 
         <el-table-column
-          prop="name"
-          label="名称"
-          width="180">
+            prop="name"
+            label="名称"
+            width="180">
         </el-table-column>
 
         <el-table-column
-          prop="description"
-          label="描述">
+            prop="description"
+            label="描述">
         </el-table-column>
 
         <!--<el-table-column-->

@@ -3,9 +3,7 @@
   <!--这里的背景色修改完成之后，要在对地下的#NavFooter-Footer中修改一下线条背景色，不然底部会出现一条白线-->
   <el-menu id="NavFooter-Footer" class="el-menu-demo" mode="horizontal" @select="handleSelect"
            background-color="#161823" text-color="#fff" active-text-color="#ffd04b" :collapse-transition="true">
-
     <el-row type="flex" justify="center" id="my-row">
-
       <el-menu-item id="NavFooter-menu-item" disabled>
         <el-link href="https://github.com/gomessage/gomessage" type="primary">@ 2020~2023&nbsp;&nbsp;</el-link>
         <el-link href="https://opensource.org/licenses/MIT" type="primary">MIT License&nbsp;&nbsp;&nbsp;</el-link>
@@ -16,18 +14,12 @@
         <el-link href="https://github.com/gomessage/gomessage/releases" type="primary">v{{ version }}&nbsp;&nbsp;</el-link>
         Give feedback and Suggestions to the author:
         <el-link href="mailto:taycc3223@gmail.com" type="primary">Email</el-link>
-
-
       </el-menu-item>
-
     </el-row>
-
   </el-menu>
 </template>
 
 <script>
-// import Image from './image.vue'
-
 export default {
   name: "NavFooter",
   data() {
@@ -45,9 +37,6 @@ export default {
   created() {
     this.version = process.env.VUE_APP_VERSION;
   }
-  // components: {
-  //     Image
-  // }
 }
 </script>
 
@@ -61,9 +50,4 @@ export default {
   /*margin-bottom: 10px;*/
   /*background-color: #161823;*/
 }
-
-/*#NavFooter-menu-item{*/
-/*    height: 60px;*/
-/*}*/
-
 </style>

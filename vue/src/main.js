@@ -5,13 +5,6 @@ import router from './router'
 import store from './store'
 import './plugins/element.js'
 
-// import * as Sentry from '@sentry/browser';
-// import * as Integrations from '@sentry/integrations';
-//
-// Sentry.init({
-//   dsn: 'http://0b1fbfe6d1e041d6b66c85650f80ca5e@172.20.3.195:9000/3',
-//   // integrations: [new Integrations.Vue({Vue, attachProps: true})],
-// });
 
 Vue.config.productionTip = false
 
