@@ -131,9 +131,9 @@ export default {
 
 <style scoped>
 .shadow {
-  -webkit-box-shadow: #ccc 0px 30px 30px;
-  -moz-box-shadow: #ccc 0px 30px 30px;
-  box-shadow: #ccc 0px 30px 30px;
+  -webkit-box-shadow: #ccc 0 30px 30px;
+  -moz-box-shadow: #ccc 0 30px 30px;
+  box-shadow: #ccc 0 30px 30px;
   /*transform: scale(1.01, 1.01);*/
 }
 </style>

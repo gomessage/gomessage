@@ -150,3 +150,56 @@ func GetUsers(g *gin.Context) {
 	}
 	g.JSON(http.StatusOK, user)
 }
+func CreateUserView(g *gin.Context) {
+	var user Users
+	err := g.ShouldBindJSON(&user)
+	if err != nil {
+		g.JSON(http.StatusBadRequest, gin.H{"error": "请求内容错误"})
+		return
+	}
+	createdUser, err := CreateUser(&user)
+	if err != nil {
+		g.JSON(http.StatusInternalServerError, gin.H{"error": "创建用户失败"})
+		return
+	}
+	g.JSON(http.StatusOK, createdUser)
+}
+
+func DeleteUserView(g *gin.Context) {
+	id := g.Param("id")
+	id2, _ := strconv.Atoi(id)
+	rowsAffected, err := DeleteUser(id2)
+	if err != nil || rowsAffected == 0 {
+		g.JSON(http.StatusInternalServerError, gin.H{"error": "删除用户失败"})
+		return
+	}
+	g.JSON(http.StatusOK, gin.H{"message": "用户删除成功"})
+}
+
+func UpdateUserView(g *gin.Context) {
+	var user Users
+	id := g.Param("id")
+	id2, _ := strconv.Atoi(id)
+	err := g.ShouldBindJSON(&user)
+	if err != nil {
+		g.JSON(http.StatusBadRequest, gin.H{"error": "请求内容错误"})
+		return
+	}
+	updatedUser, err := UpdateUser(id2, &user)
+	if err != nil {
+		g.JSON(http.StatusInternalServerError, gin.H{"error": "更新用户失败"})
+		return
+	}
+	g.JSON(http.StatusOK, updatedUser)
+}
+
+func GetUserView(g *gin.Context) {
+	id := g.Param("id")
+	id2, _ := strconv.Atoi(id)
+	user, err := GetUserById(id2)
+	if err != nil {
+		g.JSON(http.StatusInternalServerError, gin.H{"error": "获取用户信息失败"})
+		return
+	}
+	g.JSON(http.StatusOK, user)
+}
