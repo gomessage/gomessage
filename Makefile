@@ -22,7 +22,7 @@
 #要编译的命令名称
 NAME := gomessage
 #版本
-VERSION := 2.3.15
+VERSION := 2.3.16
 #编译输出目录
 OUTPUT_PATH := ./build/${VERSION}
 #是否开启cgo（0代表不开启，1代表开启）
@@ -175,7 +175,7 @@ docker_push: DOCKER_SCAN_SUGGEST := False
 docker_push: packageName := ${NAME}-${VERSION}-linux-amd64
 docker_push:
 	docker login --username=$(DOCKER_HUB_USERNAME)
-	docker buildx rm mybuilder
+	#docker buildx rm mybuilder
 	docker buildx create --name mybuilder --bootstrap --use
 	@echo "\n---------开始制作镜像，版本${VERSION}---------\n"
 	@docker buildx build --platform linux/arm64,linux/amd64 -t gomessage/gomessage:${VERSION} -f ./docker/Dockerfile  "${OUTPUT_PATH}/${packageName}" --push
