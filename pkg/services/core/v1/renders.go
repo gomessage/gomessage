@@ -38,12 +38,16 @@ func CompleteMessage(thisTemplate string, dataList []map[string]string) []string
 				n6, _ := time.Parse(time.RFC3339, v)
 
 				//TODO：容器里面没有“时区信息”，因此不管制定哪个时区得到的内容都是空，在Linux裸机上执行没问题（但容器里却会出BUG）
-				//loc, err := time.LoadLocation("Asia/Shanghai")
-				//loc, _ := time.LoadLocation("Local")
-				//n6InBeijing := n6.In(loc)
+				loc, err := time.LoadLocation("Asia/Shanghai")
+				if err != nil {
+					fmt.Println(err)
+				}
+				// loc, _ := time.LoadLocation("Local")
+				n6InBeijing := n6.In(loc)
 
 				//TODO：暂时这里直接暴力的追加8小时，先来模拟东八区
-				n6InBeijing := n6.Add(8 * time.Hour)
+				//n6InBeijing := n6.Add(8 * time.Hour)
+
 
 				data[k] = n6InBeijing.Format("2006-01-02 15:04:05")
 			}

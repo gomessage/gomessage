@@ -7,6 +7,7 @@ import (
 	"gomessage/pkg/routers"
 	"gomessage/pkg/utils/initialize"
 	"gomessage/pkg/utils/log/loggers"
+	_ "time/tzdata"
 )
 
 func init() {
