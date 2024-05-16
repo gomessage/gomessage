@@ -182,10 +182,6 @@ docker_push:
 	@echo "\n---------版本latest---------\n"
 	@docker buildx build --platform linux/arm64,linux/amd64 -t gomessage/gomessage:latest -f ./docker/Dockerfile  "${OUTPUT_PATH}/${packageName}" --push
 	@echo "\n---------镜像制作完成，版本${VERSION}---------\n"
-	###@docker push gomessage/gomessage:${VERSION}
-	###@echo "\n---------推送镜像完成，版本${VERSION}---------\n"
-	###@docker push gomessage/gomessage:latest
-	###@echo "\n---------推送镜像完成，版本latest---------\n"
 	@echo
 	@gsed -i '/version:/c version: ${VERSION}' ./docker/helm/Chart.yaml
 	@gsed -i '/appVersion:/c appVersion: ${VERSION}' ./docker/helm/Chart.yaml
