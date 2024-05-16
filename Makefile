@@ -72,7 +72,7 @@ swagger:
 
 
 ######################################
-# Target：编译为Mac发行版（本地调试使用）
+# Target：编译为Mac的x86_64发行版（本地调试使用）
 ######################################
 .PHONY: build_mac
 build_mac: packageName:=${NAME}-${VERSION}-mac-amd64
@@ -176,7 +176,7 @@ docker_push: packageName := ${NAME}-${VERSION}-linux-amd64
 docker_push:
 	docker login --username=$(DOCKER_HUB_USERNAME)
 	#docker buildx rm mybuilder
-	docker buildx create --name mybuilder --bootstrap --use
+	#docker buildx create --name mybuilder --bootstrap --use
 	@echo "\n---------开始制作镜像，版本${VERSION}---------\n"
 	@docker buildx build --platform linux/arm64,linux/amd64 -t gomessage/gomessage:${VERSION} -f ./docker/Dockerfile  "${OUTPUT_PATH}/${packageName}" --push
 	@echo "\n---------版本latest---------\n"
