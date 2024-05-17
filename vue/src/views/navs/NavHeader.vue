@@ -50,23 +50,30 @@
         <el-menu-item index="3-1"><i class="el-icon-chat-dot-square"></i>接收客户端</el-menu-item>
       </router-link>
 
+      <router-link to="/main/crontab">
+        <el-menu-item index="4-1"><i class="el-icon-alarm-clock"></i>定时消息</el-menu-item>
+      </router-link>
 
-      <el-submenu index="4">
-        <template slot="title"><i class="el-icon-s-operation"></i>其它功能</template>
-        <router-link to="/main/clients">
-          <el-menu-item index="4-1"><i class="el-icon-alarm-clock"></i>定时消息</el-menu-item>
-        </router-link>
-        <router-link to="/main/clients">
-          <el-menu-item index="4-2"><i class="el-icon-s-data"></i>数据统计</el-menu-item>
-        </router-link>
-        <router-link to="/main/clients">
-          <el-menu-item index="4-3"><i class="el-icon-user"></i>人工语音</el-menu-item>
-        </router-link>
-        <!--后台管理-->
-        <router-link to="/main/clients">
-          <el-menu-item index="4-44"><i class="el-icon-setting"></i>后台管理</el-menu-item>
-        </router-link>
-      </el-submenu>
+<!--      <el-submenu index="4">-->
+<!--        <template slot="title"><i class="el-icon-s-operation"></i>其它功能</template>-->
+
+<!--        <router-link to="/main/crontab">-->
+<!--          <el-menu-item index="4-1"><i class="el-icon-alarm-clock"></i>定时消息</el-menu-item>-->
+<!--        </router-link>-->
+
+<!--        <router-link to="/main/clients">-->
+<!--          <el-menu-item index="4-2"><i class="el-icon-s-data"></i>数据统计</el-menu-item>-->
+<!--        </router-link>-->
+
+<!--        <router-link to="/main/clients">-->
+<!--          <el-menu-item index="4-3"><i class="el-icon-user"></i>人工语音</el-menu-item>-->
+<!--        </router-link>-->
+
+<!--        &lt;!&ndash;后台管理&ndash;&gt;-->
+<!--        <router-link to="/main/clients">-->
+<!--          <el-menu-item index="4-44"><i class="el-icon-setting"></i>后台管理</el-menu-item>-->
+<!--        </router-link>-->
+<!--      </el-submenu>-->
 
 
 

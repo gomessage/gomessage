@@ -20,22 +20,27 @@ const routes = [
     {
         //首页
         path: '/main/',
-        component: () => import("@/views/main.vue"),
+        component: () => import("@/views/main/main.vue"),
         children: [
             {
                 path: '',
                 name: '1-1',
-                component: () => import("@/views/ViewHome.vue")
+                component: () => import("@/views/main/ViewHome.vue")
             },
             {
                 path: 'renders',
                 name: '2-1',
-                component: () => import("@/views/ViewJson.vue")
+                component: () => import("@/views/main/ViewJson.vue")
             },
             {
                 path: 'clients',
                 name: '3-1',
-                component: () => import( '@/views/ViewClient.vue')
+                component: () => import( '@/views/main/ViewClient.vue')
+            },
+            {
+                path: 'crontab',
+                name: '4-1',
+                component: () => import( '@/views/cron/ViewCrontab.vue')
             }
         ]
     },

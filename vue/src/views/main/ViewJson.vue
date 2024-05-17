@@ -54,10 +54,10 @@
 </template>
 
 <script>
-import DataFormat from "@/components/cCodeFormat";
-import DataMap from "@/components/cConfigMap";
-import DataMap2 from "@/components/cConfigMap2";
-import CTemplate from "@/components/cTemplate";
+import DataFormat from "@/components/cCodeFormat.vue";
+import DataMap from "@/components/cConfigMap.vue";
+import DataMap2 from "@/components/cConfigMap2.vue";
+import CTemplate from "@/components/cTemplate.vue";
 import {getNamespaceOne, putNamespaceOne} from "@/service/requests";
 
 export default {

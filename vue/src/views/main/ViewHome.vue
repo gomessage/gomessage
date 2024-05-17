@@ -15,7 +15,7 @@
 
 <script>
 // @ is an alias to /src
-import Domain from "@/components/cDomain";
+import Domain from "@/components/cDomain.vue";
 import {postDemoData} from '@/service/requests'
 
 export default {
