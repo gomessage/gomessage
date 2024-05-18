@@ -13,7 +13,7 @@
     <!-- background-color="#303133" text-color="#fff" active-text-color="#ffd04b" collapse-transition=true style="height: 100%">-->
 
     <!--左侧logo-->
-    <el-menu-item>
+    <el-menu-item index="0-1">
       <router-link to="/">
         <img height="90%" src="../../assets/logo.svg">
         &nbsp;&nbsp;
@@ -21,7 +21,7 @@
       </router-link>
     </el-menu-item>
 
-    <el-menu-item style="padding: 0;">
+    <el-menu-item style="padding: 0;" index="0-2">
       <router-link to="/">
         <el-button
             type="text"
@@ -41,42 +41,39 @@
       </router-link>
 
 
-      <router-link to="/main/renders">
+      <router-link to="/renders">
         <el-menu-item index="2-1"><i class="el-icon-set-up"></i>数据渲染</el-menu-item>
       </router-link>
 
 
-      <router-link to="/main/clients">
+      <router-link to="/clients">
         <el-menu-item index="3-1"><i class="el-icon-chat-dot-square"></i>接收客户端</el-menu-item>
       </router-link>
 
-      <router-link to="/main/crontab">
+      <router-link to="/crontab">
         <el-menu-item index="4-1"><i class="el-icon-alarm-clock"></i>定时消息</el-menu-item>
       </router-link>
 
-<!--      <el-submenu index="4">-->
-<!--        <template slot="title"><i class="el-icon-s-operation"></i>其它功能</template>-->
+      <!--      <el-submenu index="4">-->
+      <!--        <template slot="title"><i class="el-icon-s-operation"></i>其它功能</template>-->
 
-<!--        <router-link to="/main/crontab">-->
-<!--          <el-menu-item index="4-1"><i class="el-icon-alarm-clock"></i>定时消息</el-menu-item>-->
-<!--        </router-link>-->
+      <!--        <router-link to="/main/crontab">-->
+      <!--          <el-menu-item index="4-1"><i class="el-icon-alarm-clock"></i>定时消息</el-menu-item>-->
+      <!--        </router-link>-->
 
-<!--        <router-link to="/main/clients">-->
-<!--          <el-menu-item index="4-2"><i class="el-icon-s-data"></i>数据统计</el-menu-item>-->
-<!--        </router-link>-->
+      <!--        <router-link to="/main/clients">-->
+      <!--          <el-menu-item index="4-2"><i class="el-icon-s-data"></i>数据统计</el-menu-item>-->
+      <!--        </router-link>-->
 
-<!--        <router-link to="/main/clients">-->
-<!--          <el-menu-item index="4-3"><i class="el-icon-user"></i>人工语音</el-menu-item>-->
-<!--        </router-link>-->
+      <!--        <router-link to="/main/clients">-->
+      <!--          <el-menu-item index="4-3"><i class="el-icon-user"></i>人工语音</el-menu-item>-->
+      <!--        </router-link>-->
 
-<!--        &lt;!&ndash;后台管理&ndash;&gt;-->
-<!--        <router-link to="/main/clients">-->
-<!--          <el-menu-item index="4-44"><i class="el-icon-setting"></i>后台管理</el-menu-item>-->
-<!--        </router-link>-->
-<!--      </el-submenu>-->
-
-
-
+      <!--        &lt;!&ndash;后台管理&ndash;&gt;-->
+      <!--        <router-link to="/main/clients">-->
+      <!--          <el-menu-item index="4-44"><i class="el-icon-setting"></i>后台管理</el-menu-item>-->
+      <!--        </router-link>-->
+      <!--      </el-submenu>-->
 
 
       <!--指向语雀的文档地址-->
@@ -147,6 +144,9 @@ export default {
       }
     }
   },
+  // created() {
+  //   alert("1111111")
+  // },
   methods: {
     handleSelect(key, keyPath) {
       console.log(key, keyPath);

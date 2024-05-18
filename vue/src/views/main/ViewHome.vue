@@ -22,7 +22,8 @@ export default {
   name: 'ViewHome',
   components: {
     Domain,
-  }, methods: {
+  },
+  methods: {
     simulation: function () {
       let jsonData = require('./a2template.json');
       postDemoData(this.$store.getters.getNamespace, jsonData).then(response => {

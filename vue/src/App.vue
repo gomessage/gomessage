@@ -1,23 +1,81 @@
 <template>
   <div id="app">
-    <router-view v-if="isRouterAlive"></router-view>
+
+    <!--容器布局：全局-->
+    <el-container id="MyContainer-Container">
+
+      <!--Header导航栏-->
+      <el-header id="MyContainer-Header">
+        <NavHeader/>
+      </el-header>
+
+
+      <el-container>
+        <!--左侧导航栏-->
+        <el-aside id="MyContainer-Aside" width="275px" v-if="showHeader">
+          <NavAside/>
+        </el-aside>
+
+
+        <el-main id="MyContainer-Main">
+          <!-- 路由匹配到的组件将渲染在这里 -->
+          <router-view></router-view>
+        </el-main>
+
+      </el-container>
+
+      <!--底部导航栏-->
+      <el-footer id="MyContainer-Footer">
+        <NavFooter/>
+      </el-footer>
+
+    </el-container>
+
+
   </div>
 </template>
 
 <script>
+import NavFooter from "@/views/navs/NavFooter.vue";
+import NavAside from "@/views/navs/NavAside.vue";
+import NavHeader from "@/views/navs/NavHeader.vue";
+
 export default {
   name: 'app',
-  provide() {
-    return {
-      reload: this.reload,
-    }
-  },
   data() {
     return {
-      isRouterAlive: true
+      // isRouterAlive: true,
+      showHeader: false
     }
   },
-  components: {},
+  components: {
+    NavHeader, NavAside, NavFooter
+  },
+  //在 src/App.vue 文件中的 provide 函数用于定义可以被所有后代组件注入的依赖。这里的 provide 函数返回一个对象，其中包含一个 reload 方法。这意味着任何子组件都可以通过注入机制访问 reload 方法，而不需要通过属性传递（prop drilling）。
+  //在这个上下文中，reload 方法用于重新加载路由视图。当调用 reload 方法时，它会先将 isRouterAlive 设置为 false，然后在下一个事件循环中将其设置回 true。这种方式实际上是在重置 <router-view> 组件，使得路由加载的组件可以重新渲染。这通常用于处理需要在路由级别强制刷新页面内容的情况。
+  //通过 provide 提供的 reload 方法，任何子组件都可以直接调用这个方法来触发路由视图的重载，而无需从顶层组件一层层传递方法或状态。这样做可以大大简化组件间的通信和状态管理。
+  // provide() {
+  //   return {
+  //     reload: this.reload,
+  //   }
+  // },
+  methods: {
+    // reload() {
+    //   this.isRouterAlive = false; //先关闭，
+    //   this.$nextTick(function () {
+    //     this.isRouterAlive = true; //再打开
+    //   });
+    // }
+  },
+  watch: {
+    $route: { // 监控路由变化
+      immediate: true,
+      handler(to) {
+        // 根据路由路径判断是否显示Header
+        this.showHeader = !['/login', '/',].includes(to.path);
+      }
+    }
+  },
   created() {
     //在页面加载时读取sessionStorage里的状态信息
     if (sessionStorage.getItem("store")) {
@@ -27,14 +85,6 @@ export default {
     window.addEventListener("beforeunload", () => {
       sessionStorage.setItem("store", JSON.stringify(this.$store.state))
     })
-  },
-  methods: {
-    reload() {
-      this.isRouterAlive = false; //先关闭，
-      this.$nextTick(function () {
-        this.isRouterAlive = true; //再打开
-      });
-    }
   }
 }
 </script>
@@ -46,42 +96,29 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  /*border: 3px solid red;*/
-  /*margin-top: 60px;*/
-
-  /*下面这5个属性，是为了让element-ui绝对占满屏幕，但是使用了布局容器后，就不再需要这个干巴巴的写了*/
-  /*position: absolute;*/
-  /*top: 0;*/
-  /*left: 0;*/
-  /*width: 100%;*/
-  /*height: 100%;*/
 }
 
 /*布局容器：全局*/
 #MyContainer-Container {
   height: 100vh;
-  /*background-color: red;*/
 }
 
 /*布局容器：导航栏*/
 #MyContainer-Header {
   padding: 0;
   margin: 0;
-  /*border: 3px solid red;*/
 }
 
 /*布局容器：内容栏*/
 #MyContainer-Main {
   padding: 0;
   margin: 0;
-  /*border: 3px solid red;*/
 }
 
+/*布局容器：左侧栏*/
 #MyContainer-Aside {
   padding: 0;
   margin: 0;
-  /*height: 100%;*/
-  /*border: 3px solid black;*/
 }
 
 /*布局容器：底部栏*/
@@ -89,22 +126,6 @@ export default {
   padding: 0;
   margin: 0;
   height: auto !important;
-  /*background-color: #161823;*/
-  /*border: 3px solid red;*/
 }
-
-/*全局设定el-row的样式，但是我打算用别的方式实现，这个先不删，留在这里备忘*/
-/*.el-row {*/
-/*    margin-bottom: 20px;*/
-
-/*    &:last-child {*/
-/*        margin-bottom: 0;*/
-/*    }*/
-
-/*}*/
-
-/*.el-col {*/
-/*    border-radius: 4px;*/
-/*}*/
 
 </style>
