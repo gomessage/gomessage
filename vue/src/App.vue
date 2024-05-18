@@ -72,7 +72,7 @@ export default {
       immediate: true,
       handler(to) {
         // 根据路由路径判断是否显示Header
-        this.showHeader = !['/login', '/crontab',].includes(to.path);
+        this.showHeader = !['/login',].includes(to.path);
       }
     }
   },
@@ -113,6 +113,9 @@ export default {
 #MyContainer-Main {
   padding: 0;
   margin: 0;
+  /*定时消息里使用了绝对定位，因此这里需要设定为相对定位。*/
+  position: relative;
+  //border: 3px solid red;
 }
 
 /*布局容器：左侧栏*/
