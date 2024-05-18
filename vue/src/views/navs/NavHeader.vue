@@ -13,7 +13,7 @@
     <!-- background-color="#303133" text-color="#fff" active-text-color="#ffd04b" collapse-transition=true style="height: 100%">-->
 
     <!--左侧logo-->
-    <el-menu-item index="0-1">
+    <el-menu-item style="text-decoration: none;border-bottom: none;">
       <router-link to="/">
         <img height="90%" src="../../assets/logo.svg">
         &nbsp;&nbsp;
@@ -21,7 +21,7 @@
       </router-link>
     </el-menu-item>
 
-    <el-menu-item style="padding: 0;" index="0-2">
+    <el-menu-item style="padding: 0;text-decoration: none;border-bottom: none;">
       <router-link to="/">
         <el-button
             type="text"

@@ -72,7 +72,7 @@ export default {
       immediate: true,
       handler(to) {
         // 根据路由路径判断是否显示Header
-        this.showHeader = !['/login', '/',].includes(to.path);
+        this.showHeader = !['/login', '/crontab',].includes(to.path);
       }
     }
   },
