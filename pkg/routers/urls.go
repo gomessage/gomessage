@@ -93,11 +93,25 @@ func Path(g *gin.Engine) {
 	v1Namespace.Use(middleware.AuthMiddleware())
 	{
 		//命名空间
-		v1Namespace.GET("/namespace", api.ListNamespace)
 		v1Namespace.POST("/namespace", api.PostNamespace)
+		v1Namespace.GET("/namespace", api.ListNamespace)
 		v1Namespace.GET("/namespace/:id", api.GetNamespace)
 		v1Namespace.PUT("/namespace/:id", api.PutNamespace)
 		v1Namespace.DELETE("/namespace/:id", api.DeleteNamespace) //删除命名空间的时候，需要把当前命名空间下的（变量映射、模板、客户端）全都删除掉
+	}
+
+	//=======================
+	// 定时消息操作：v1版本
+	//=======================
+	v1Crontab := g.Group("/api/v1")
+	//v1Crontab.Use(middleware.AuthMiddleware())
+	{
+		//命名空间
+		v1Crontab.POST("/crontab", api.PostCrontab)
+		v1Crontab.GET("/crontab", api.ListCrontabs)
+		v1Crontab.GET("/crontab/:id", api.GetCrontab)
+		v1Crontab.PUT("/crontab/:id", api.PutCrontab)
+		v1Crontab.DELETE("/crontab/:id", api.DeleteCrontab)
 	}
 
 	loggers.DefaultLogger.Info("路由表加载完成...")

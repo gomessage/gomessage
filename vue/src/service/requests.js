@@ -35,6 +35,14 @@ export const deleteNamespaceOne = (id) => http.Delete("/api/v1/namespace/" + id)
 export const putNamespaceOne = (id, data) => http.Put("/api/v1/namespace/" + id, data)
 
 
+//定时消息相关（完成数据校验）
+export const getCrontab = (params) => http.Get("/api/v1/crontab", params)
+export const postCrontab = (data) => http.Post("/api/v1/crontab", data)
+export const getCrontabOne = (id, params) => http.Get("/api/v1/crontab/" + id, params)
+export const deleteCrontabOne = (id) => http.Delete("/api/v1/crontab/" + id)
+export const putCrontabOne = (id, data) => http.Put("/api/v1/crontab/" + id, data)
+
+
 //用户登录相关
 export const login = (data) => http.Post("/auth/login", data)
 export const logout = (data) => http.Post("/auth/logout", data)
