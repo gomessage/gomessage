@@ -2,14 +2,11 @@ package api
 
 import (
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"gomessage/pkg/models"
 	"gomessage/pkg/utils"
 	"net/http"
 	"strconv"
-
-	crontabJob "gomessage/pkg/crontab"
-
-	"github.com/gin-gonic/gin"
 )
 
 // PostCrontab
@@ -32,16 +29,6 @@ func PostCrontab(g *gin.Context) {
 		g.JSON(http.StatusInternalServerError, utils.ResponseFailure("创建Crontab失败", err))
 		return
 	}
-
-	if crontab.CrontabActivate {
-		err := crontabJob.AddJob(crontab)
-		if err != nil {
-			fmt.Println(err)
-			g.JSON(http.StatusInternalServerError, utils.ResponseFailure("创建Crontab失败", err))
-			return
-		}
-	}
-
 	g.JSON(http.StatusOK, utils.ResponseSuccessful("添加成功", crontab))
 }
 
@@ -96,17 +83,6 @@ func PutCrontab(g *gin.Context) {
 		g.JSON(http.StatusInternalServerError, utils.ResponseFailure("更新Crontab失败", err))
 		return
 	}
-
-	crontabJob.RemoveJobByCrontabID(id)
-	if crontab.CrontabActivate {
-		err := crontabJob.AddJob(crontab)
-		if err != nil {
-			fmt.Println(err)
-			g.JSON(http.StatusInternalServerError, utils.ResponseFailure("更新Crontab失败", err))
-			return
-		}
-	}
-
 	g.JSON(http.StatusOK, utils.ResponseSuccessful("更新成功", crontab))
 }
 
@@ -125,8 +101,5 @@ func DeleteCrontab(g *gin.Context) {
 		g.JSON(http.StatusInternalServerError, utils.ResponseFailure("删除Crontab失败", err))
 		return
 	}
-
-	crontabJob.RemoveJobByCrontabID(id)
-
 	g.JSON(http.StatusOK, utils.ResponseSuccessful("删除成功", nil))
 }

@@ -11,7 +11,7 @@
           <span>发送定时消息（Crontab类型的时间规则定义）</span>
         </div>
 
-        <el-form :ref="formData2" :model="formData2" label-width="90px">
+        <el-form :ref="formData2"  :model="formData2" label-width="90px">
           <el-form-item label="名称：">
             <el-input v-model="formData2.crontab_name" placeholder="下班打卡提醒"></el-input>
           </el-form-item>
@@ -43,7 +43,6 @@
           </el-form-item>
 
           <el-form-item label="是否启用：">
-<!--            {{formData2.crontab_activate}}-->
             <el-switch v-model="formData2.crontab_activate"></el-switch>
           </el-form-item>
 
@@ -139,7 +138,25 @@ import {
 export default {
   name: "ViewCrontab",
   data() {
+    // const validateCrontabRule = (rule, value, callback) => {
+    //   console.log("调用了 validateCrontabRule 函数"); // 添加日志来确认函数调用
+    //   const crontabRegex = /^(\*|([0-5]?[0-9](-[0-5]?[0-9])?)(\/[0-9]+)?)(\s+(\*|([01]?[0-9]|2[0-3])(-[01]?[0-9]|2[0-3])?)(\/[0-9]+)?)(\s+(\*|([1-9]|[12][0-9]|3[01])(-[1-9]|[12][0-9]|3[01])?)(\/[0-9]+)?)(\s+(\*|([1-9]|1[0-2])(-[1-9]|1[0-2])?)(\/[0-9]+)?)(\s+(\*|([0-6])(-[0-6])?)(\/[0-9]+)?)$/;
+    //   if (!value) {
+    //     callback(new Error('请输入时间规则'));
+    //   } else if (!crontabRegex.test(value)) {
+    //     callback(new Error('时间规则格式不正确'));
+    //   } else {
+    //     callback();
+    //   }
+    // }
+
     return {
+      // formData2rules: {
+      //   "crontab_rule": [
+      //     {required: true, message: '请输入用户名', trigger: 'blur'},
+      //     {validator: validateCrontabRule, trigger: ['blur', 'change']}
+      //   ],
+      // },
       componentKey: 0,
       ListData2: [
         {
@@ -154,10 +171,26 @@ export default {
         //   id: "",
         //   crontab_name: '002',
         //   crontab_rule: '*/4 * * * *',
-        //   crontab_namespace: ["default", "test"],
+        //   crontab_namespace: ["default", "alarmdog"],
         //   crontab_activate: false,
         //   crontab_content: '113123123123123123123113123123123123123123113123123123123123113123123123123123123113123123123123123123113123123123123123123',
         // },
+        // {
+        //   id: "",
+        //   crontab_name: '003',
+        //   crontab_rule: '*/5 * 2 * *',
+        //   crontab_namespace: ["alarmdog"],
+        //   crontab_activate: true,
+        //   crontab_content: '113123123123123123123113123123123123123123113123123123123123113123123123123123123113123123123123123123113123123123123123123',
+        // },
+        // {
+        //   id: "",
+        //   crontab_name: '123',
+        //   crontab_rule: '5 * * * *',
+        //   crontab_namespace: ["default", "ttpai", "alarmdog", "aaaa", "bbb"],
+        //   crontab_activate: true,
+        //   crontab_content: '113123123123123123123113123123123123123123113123123123123123113123123123123123123113123123123123123123113123123123123123123',
+        // }
       ],
       formData2: {
         id: -1,
@@ -169,8 +202,9 @@ export default {
       },
       namespaceOptions: [
         {label: 'default', value: 'default'},
-        // {label: 'test', value: 'test'},
-        // {label: 'aaa', value: 'aaa'},
+        // {label: 'ttpai', value: 'ttpai'},
+        // {label: 'alarmdog', value: 'alarmdog'},
+        // {label: 'aaaa', value: 'aaaa'},
         // {label: 'bbb', value: 'bbb'}
       ]
     }
@@ -209,16 +243,19 @@ export default {
 
 
     },
-
-    //提交表单（或）更新表单
     onSubmit() {
+      // console.log('表单数据:', this.form);
+      // 这里可以添加更多处理表单提交的逻辑
+
+      let data = this.formData2
+
       //如果data等于编号-1则新增数据，否则就只是更新数据
-      if (this.formData2.id === -1) {
-        this.formData2.id = null;
-        postCrontab(this.formData2).then(response => {
+      if (data.id === -1) {
+        data.id = null;
+        postCrontab(data).then(response => {
           if (response.data.code === 1) {
             this.refresh_self();
-          } else {
+          }else {
             alert(response.data.msg);
           }
         }).catch(err => {
@@ -226,28 +263,30 @@ export default {
           console.log(err);
         })
 
-      } else { //如果this.formData2.id的值不等于-1，则只更新数据
-        putCrontabOne(this.formData2.id, this.formData2).then(response => {
+      } else {
+        putCrontabOne(data.id, data).then(response => {
           if (response.data.code === 1) {
             this.refresh_self();
           }
+
         }).catch(err => {
           console.log(err);
         })
+
       }
-    },
 
-    // 将bool值转换为中文
+      // this.componentKey += 1;
+
+
+    },
     formatStatus(row, column, cellValue) {
-      return cellValue ? '启用' : '未启用'; // 将布尔值转换为文本
+      // 将布尔值转换为文本
+      return cellValue ? '启用' : '未启用';
     },
-
-    // 将数组转换为字符串
     formatNamespace(row, column, cellValue) {
-      return cellValue.join(', '); // 将数组转换为逗号分隔的字符串
+      // 将数组转换为逗号分隔的字符串
+      return cellValue.join(', ');
     },
-
-    // 获取所有的crontab规则
     listCrontab: function () {
       getCrontab().then(response => {
         if (response.data.code === 1) {
@@ -257,8 +296,6 @@ export default {
         console.log(err)
       })
     },
-
-    // 获取所有的namespace用来给下拉菜单使用
     listNamespace: function () {
       getNamespace().then(response => {
         if (response.data.code === 1) {
@@ -270,8 +307,6 @@ export default {
         console.log(err);
       })
     },
-
-    // 删除一条数据（当前行选中的数据）
     delete_one_data: function (row) {
       if (confirm(`确定要删除名称为 '${row.crontab_name}' 的定时任务吗？`)) {
         deleteCrontabOne(row.id).then(response => {
@@ -288,8 +323,6 @@ export default {
         });
       }
     },
-
-
     // 刷新自身
     refresh_self: function () {
       this.formData2 = {
@@ -303,8 +336,6 @@ export default {
       this.listCrontab();
     }
   },
-
-  //组件开局就先获取一下crontab的所有规则
   created() {
     this.listCrontab();
   }
