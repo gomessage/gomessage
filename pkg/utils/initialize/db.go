@@ -25,13 +25,14 @@ func isAutoMigrateDB(migrate bool) {
 		var DbList []any
 		DbList = append(DbList,
 			&models.Namespace{},
-			&models.Template{},
 			&models.Variables{},
+			&models.Template{},
 			&models.Client{},
-			&models.Dingtalk{},
 			&models.Feishu{},
-			&models.WechatApplication{},
+			&models.Dingtalk{},
 			&models.WechatRobot{},
+			&models.WechatApplication{},
+			&models.Crontab{},
 			&authorization.Users{},
 			&authorization.Sessions{},
 		)
