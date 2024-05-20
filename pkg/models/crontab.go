@@ -85,7 +85,8 @@ func UpdateCrontab(id int, c *Crontab) error {
 	if len(c.CrontabNamespace) == 0 {
 		return errors.New("crontab namespace 不能为空")
 	}
-	result := database.DB.Default.Model(&Crontab{}).Where("id = ?", id).Updates(c)
+	// 使用Select确保所有字段都被考虑更新，包括零值字段
+	result := database.DB.Default.Model(&Crontab{}).Where("id = ?", id).Select("*").Updates(c)
 	if result.Error != nil {
 		return result.Error
 	}
