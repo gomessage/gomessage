@@ -50,9 +50,9 @@
         <el-menu-item index="3-1"><i class="el-icon-chat-dot-square"></i>接收客户端</el-menu-item>
       </router-link>
 
-      <router-link to="/crontab">
-        <el-menu-item index="4-1"><i class="el-icon-alarm-clock"></i>定时消息</el-menu-item>
-      </router-link>
+<!--      <router-link to="/crontab">-->
+<!--        <el-menu-item index="4-1"><i class="el-icon-alarm-clock"></i>定时消息</el-menu-item>-->
+<!--      </router-link>-->
 
       <!--      <el-submenu index="4">-->
       <!--        <template slot="title"><i class="el-icon-s-operation"></i>其它功能</template>-->
