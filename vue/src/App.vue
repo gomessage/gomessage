@@ -19,7 +19,7 @@
 
         <el-main id="MyContainer-Main">
           <!-- 路由匹配到的组件将渲染在这里 -->
-          <router-view></router-view>
+          <router-view v-if="isRouterAlive"></router-view>
         </el-main>
 
       </el-container>
@@ -44,7 +44,7 @@ export default {
   name: 'app',
   data() {
     return {
-      // isRouterAlive: true,
+      isRouterAlive: true,
       showHeader: false
     }
   },
@@ -54,18 +54,18 @@ export default {
   //在 src/App.vue 文件中的 provide 函数用于定义可以被所有后代组件注入的依赖。这里的 provide 函数返回一个对象，其中包含一个 reload 方法。这意味着任何子组件都可以通过注入机制访问 reload 方法，而不需要通过属性传递（prop drilling）。
   //在这个上下文中，reload 方法用于重新加载路由视图。当调用 reload 方法时，它会先将 isRouterAlive 设置为 false，然后在下一个事件循环中将其设置回 true。这种方式实际上是在重置 <router-view> 组件，使得路由加载的组件可以重新渲染。这通常用于处理需要在路由级别强制刷新页面内容的情况。
   //通过 provide 提供的 reload 方法，任何子组件都可以直接调用这个方法来触发路由视图的重载，而无需从顶层组件一层层传递方法或状态。这样做可以大大简化组件间的通信和状态管理。
-  // provide() {
-  //   return {
-  //     reload: this.reload,
-  //   }
-  // },
+  provide() {
+    return {
+      reload: this.reload,
+    }
+  },
   methods: {
-    // reload() {
-    //   this.isRouterAlive = false; //先关闭，
-    //   this.$nextTick(function () {
-    //     this.isRouterAlive = true; //再打开
-    //   });
-    // }
+    reload() {
+      this.isRouterAlive = false; //先关闭，
+      this.$nextTick(function () {
+        this.isRouterAlive = true; //再打开
+      });
+    }
   },
   watch: {
     $route: { // 监控路由变化

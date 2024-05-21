@@ -159,7 +159,7 @@ export default {
       }
     }
   },
-  // inject:['reload'],
+  inject:['reload'],
   methods: {
     pullNamespace: function () {
       getNamespace().then(response => {
@@ -187,8 +187,8 @@ export default {
       this.$store.commit("updateNamespaceInfo", item)
       //刷新当前页
       // location.reload();
-      // this.reload()
-      this.pullNamespace();
+      this.reload()
+      //this.pullNamespace();
     },
     addNamespace: function () {
       this.$refs["namespaceForm"].validate(valid => {
@@ -201,8 +201,8 @@ export default {
           postNamespace(this.namespaceForm).then(response => {
             console.log(response)
             //location.reload();
-            // this.reload()
-            this.pullNamespace();
+            this.reload()
+            //this.pullNamespace();
           })
         }
       });
