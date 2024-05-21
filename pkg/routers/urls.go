@@ -84,6 +84,9 @@ func Path(g *gin.Engine) {
 		v1View.PUT("/:namespace/client-info/:id", client.PutClientInfo) //更新一个客户端
 		v1View.DELETE("/:namespace/client/:id", client.DeleteClient)    //删除一个客户端
 
+		//用户配置相关
+		v1View.PUT("/auth/user/password/:id", authorization.UpdatePassword)
+
 	}
 
 	//=======================

@@ -50,9 +50,9 @@
         <el-menu-item index="3-1"><i class="el-icon-chat-dot-square"></i>接收客户端</el-menu-item>
       </router-link>
 
-<!--      <router-link to="/crontab">-->
-<!--        <el-menu-item index="4-1"><i class="el-icon-alarm-clock"></i>定时消息</el-menu-item>-->
-<!--      </router-link>-->
+      <!--      <router-link to="/crontab">-->
+      <!--        <el-menu-item index="4-1"><i class="el-icon-alarm-clock"></i>定时消息</el-menu-item>-->
+      <!--      </router-link>-->
 
       <!--      <el-submenu index="4">-->
       <!--        <template slot="title"><i class="el-icon-s-operation"></i>其它功能</template>-->
@@ -96,15 +96,29 @@
         <!--下拉菜单内容-->
         <el-dropdown-menu>
 
+          <!--用户配置-->
+          <el-dropdown-item v-if="isToken">
+            <router-link to="/user">
+              <el-button type="text">个人信息</el-button>
+            </router-link>
+          </el-dropdown-item>
+
+
           <!--如果存在token，就代表已经登录了，只显示退出登录按钮-->
           <el-dropdown-item v-if="isToken">
             <el-button type="text" @click="user_logout">退出登录</el-button>
           </el-dropdown-item>
 
+
           <!--如果不存在token，则显示"用户登录"按钮-->
-          <el-dropdown-item v-else>
+          <!--          <el-dropdown-item v-else>-->
+          <!--            <el-button type="text" @click="router2login">用户登录</el-button>-->
+          <!--          </el-dropdown-item>-->
+
+          <el-dropdown-item v-if="!isToken">
             <el-button type="text" @click="router2login">用户登录</el-button>
           </el-dropdown-item>
+
 
         </el-dropdown-menu>
 
@@ -116,7 +130,7 @@
 </template>
 
 <script>
-import image001 from "@/assets/image001.jpeg"
+import image002 from "@/assets/image001.jpeg"
 import {logout} from "@/service/requests";
 
 export default {
@@ -124,11 +138,8 @@ export default {
   data() {
     return {
       // activeIndex: this.getActiveIndex,
-      image001: image001,
+      image001: image002,
     };
-  },
-  components: {
-    // CSteps,
   },
   computed: {
     // 计算属性：动态获取vuex中的值
@@ -136,17 +147,9 @@ export default {
       return this.$store.getters.getNamespace
     },
     isToken: function () {
-      let token = this.$store.getters.getToken
-      if (token === "") {
-        return false
-      } else {
-        return true
-      }
+      return this.$store.getters.getToken !== "";
     }
   },
-  // created() {
-  //   alert("1111111")
-  // },
   methods: {
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
@@ -154,17 +157,31 @@ export default {
     user_logout() {
       logout({"demo": "demo"}).then(resp => {
         if (resp.data.code === 1) {
-          this.$store.commit("updateToken", "")
-          this.$message.success("注销成功...")
-          this.$router.push("/login")
+          if (this.$route.path !== '/login') {
+            this.$router.push("/login");
+          }
+          this.$message.success("注销成功...");
+          this.$store.commit("updateToken", "");
+          // this.$nextTick(() => {
+          // 确保所有DOM更新完成后执行路由跳转
+          //
+          //
+          // });
         } else {
           this.$message.error("退出登录失败...")
         }
       })
-
     },
-    router2login() {
-      this.$router.push("/login")
+    router2login: function () {
+      if (this.$route.path !== '/login') {
+        this.$router.push("/login").catch((err) => {
+          if (err.name !== 'NavigationDuplicated') {
+            throw err;
+          }
+        })
+      } else {
+        console.log("已经在登录页面");
+      }
     },
   }
 }

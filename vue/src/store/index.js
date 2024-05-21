@@ -11,12 +11,14 @@ export default new Vuex.Store({
         // NamespaceIsRenders: false, //命名空间是否开启渲染模式
         NamespaceInfo: {}, //命名空间的所有信息
         Token: "",
+        UserID: "",
     },
     getters: {
         getNamespace: state => state.Namespace,
         // getNamespaceIsRenders: state => state.NamespaceIsRenders,
         getNamespaceInfo: state => state.NamespaceInfo,
-        getToken: state => state.Token
+        getToken: state => state.Token,
+        getUserID: state => state.UserID,
     },
     mutations: {
         updateStepsActive(state, num) {
@@ -37,6 +39,9 @@ export default new Vuex.Store({
         updateNamespaceInfo(state, namespaceInfo) {
             state.NamespaceInfo = namespaceInfo
         },
+        updateUserID(state, userID) {
+            state.UserID = userID
+        }
     },
     actions: {},
     modules: {}

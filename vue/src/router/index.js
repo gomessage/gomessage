@@ -38,6 +38,12 @@ const routes = [
         name: 'login',
         component: () => import("@/views/login.vue")
     },
+    {
+        //用户配置
+        path: '/user',
+        name: 'user',
+        component: () => import("@/views/users/UserProfile.vue")
+    },
 
     // {
     //     //重定向
