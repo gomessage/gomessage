@@ -188,7 +188,7 @@ export default {
       //刷新当前页
       // location.reload();
       this.reload()
-      //this.pullNamespace();
+      this.pullNamespace();
     },
     addNamespace: function () {
       this.$refs["namespaceForm"].validate(valid => {
@@ -202,7 +202,7 @@ export default {
             console.log(response)
             //location.reload();
             this.reload()
-            //this.pullNamespace();
+            this.pullNamespace();
           })
         }
       });

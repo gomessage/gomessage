@@ -156,6 +156,7 @@ export default {
         if (resp.data.code === 1) {
           this.$store.commit("updateToken", "")
           this.$message.success("注销成功...")
+          this.$router.push("/login")
         } else {
           this.$message.error("退出登录失败...")
         }
