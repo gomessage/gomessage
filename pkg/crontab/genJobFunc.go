@@ -15,8 +15,9 @@ func genJobFunc(ct models.Crontab) func() {
 			// TODO: error
 			continue
 		}
-		for i := range acList {
-			clients = append(clients, &acList[i])
+		for _, client := range acList {
+			clientInfo, _ := models.GetClientById(client.ID)
+			clients = append(clients, clientInfo)
 		}
 	}
 

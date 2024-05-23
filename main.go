@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
+	"gomessage/pkg/crontab"
 	"gomessage/pkg/routers"
 	"gomessage/pkg/utils/initialize"
 	"gomessage/pkg/utils/log/loggers"
@@ -42,6 +43,9 @@ func main() {
 			fmt.Println(err)
 		}
 	}()
+
+	go crontab.InitCrontab()
+
 	//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 	//启动服务(默认：127.0.0.1:7077)
 	//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
