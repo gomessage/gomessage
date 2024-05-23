@@ -46,3 +46,4 @@ export const putCrontabOne = (id, data) => http.Put("/api/v1/crontab/" + id, dat
 //用户登录相关
 export const login = (data) => http.Post("/auth/login", data)
 export const logout = (data) => http.Post("/auth/logout", data)
+export const updatePassword = (id, data) => http.Put("/api/v1/auth/user/password/" + id, data)

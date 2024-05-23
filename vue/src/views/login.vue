@@ -52,7 +52,8 @@ export default {
         if (resp.data.code === 1) {
 
           this.$store.commit("updateToken", resp.data.result.token);
-          this.$router.push("/main/")
+          this.$store.commit("updateUserID", resp.data.result.id);
+          this.$router.push("/main")
 
         } else if (resp.data.code === 0) {
           this.$message.error("登录失败")

@@ -44,6 +44,14 @@ func UpdateUser(id int, newData *Users) (*Users, error) {
 	return &u, result.Error
 }
 
+func UpdateUserPassword(id int, newData *Users) (*Users, error) {
+	var u Users
+	database.DB.Default.First(&u, id)
+	u.PasswordHash = newData.PasswordHash
+	result := database.DB.Default.Save(&u)
+	return &u, result.Error
+}
+
 func ListUser() (*[]Users, error) {
 	var userList *[]Users
 	result := database.DB.Default.Find(&userList)
