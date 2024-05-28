@@ -43,7 +43,7 @@
           </el-form-item>
 
           <el-form-item label="是否启用：">
-            {{formData2.crontab_activate}}
+<!--            {{formData2.crontab_activate}}-->
             <el-switch v-model="formData2.crontab_activate"></el-switch>
           </el-form-item>
 
