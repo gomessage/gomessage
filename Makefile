@@ -175,8 +175,8 @@ docker_push: DOCKER_SCAN_SUGGEST := False
 docker_push: packageName := ${NAME}-${VERSION}-linux-amd64
 docker_push:
 	#docker login --username=$(DOCKER_HUB_USERNAME)
-	#docker buildx rm mybuildx
-	#docker buildx create --name mybuildx --bootstrap --use
+	#docker buildx rm mybuilder
+	#docker buildx create --name mybuilder --bootstrap --use
 	@echo "\n---------开始制作镜像，版本${VERSION}---------\n"
 	@docker buildx build --platform linux/arm64,linux/amd64 -t gomessage/gomessage:${VERSION} -f ./docker/Dockerfile  "${OUTPUT_PATH}/${packageName}" --push
 	@echo "\n---------版本latest---------\n"
