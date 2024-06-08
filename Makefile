@@ -175,8 +175,8 @@ docker_push: DOCKER_SCAN_SUGGEST := False
 docker_push: packageName := ${NAME}-${VERSION}-linux-amd64
 docker_push:
 	#docker login --username=$(DOCKER_HUB_USERNAME)
-	#docker buildx rm mybuilder
-	#docker buildx create --name mybuilder --bootstrap --use
+	#docker buildx rm mybuildx
+	#docker buildx create --name mybuildx --bootstrap --use
 	@echo "\n---------开始制作镜像，版本${VERSION}---------\n"
 	@docker buildx build --platform linux/arm64,linux/amd64 -t gomessage/gomessage:${VERSION} -f ./docker/Dockerfile  "${OUTPUT_PATH}/${packageName}" --push
 	@echo "\n---------版本latest---------\n"
@@ -190,21 +190,6 @@ docker_push:
 	rm -rf ./*.tgz
 	@echo "\n---------制作Helm Chart完成，版本${VERSION}---------\n"
 
-
-
-######################################
-# Target：推送docker镜像
-######################################
-.PHONY: helm_push
-helm_push: DOCKER_SCAN_SUGGEST := False
-helm_push: packageName := ${NAME}-${VERSION}-linux-amd64
-helm_push:
-	@gsed -i '/version:/c version: ${VERSION}' ./docker/helm/Chart.yaml
-	@gsed -i '/appVersion:/c appVersion: ${VERSION}' ./docker/helm/Chart.yaml
-	helm package ./docker/helm
-	helm coding-push gomessage-${VERSION}.tgz gomessage
-	rm -rf ./*.tgz
-	@echo "\n---------制作Helm Chart完成，版本${VERSION}---------\n"
 
 
 
