@@ -13,4 +13,4 @@ spec:
     - port: {{ .Values.service.port }}
       targetPort: {{ .Values.service.targetPort }}
       name: {{ .Chart.Name }}
-      nodePort: 32077
+      nodePort: {{ .Values.service.nodePort }}

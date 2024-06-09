@@ -192,6 +192,21 @@ docker_push:
 
 
 
+######################################
+# Target：推送docker镜像
+######################################
+.PHONY: helm_push
+helm_push: DOCKER_SCAN_SUGGEST := False
+helm_push: packageName := ${NAME}-${VERSION}-linux-amd64
+helm_push:
+	@gsed -i '/version:/c version: ${VERSION}' ./docker/helm/Chart.yaml
+	@gsed -i '/appVersion:/c appVersion: ${VERSION}' ./docker/helm/Chart.yaml
+	helm package ./docker/helm
+	helm coding-push gomessage-${VERSION}.tgz gomessage
+	rm -rf ./*.tgz
+	@echo "\n---------制作Helm Chart完成，版本${VERSION}---------\n"
+
+
 
 ######################################
 # Target：推送package到github
