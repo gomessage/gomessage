@@ -25,6 +25,10 @@ appVersion: 2.3.18
 
 home: https://github.com/gomessage/gomessage
 
+sources:
+  - http://47.102.46.109:7077
+  - https://www.yuque.com/osoc/gomessage
+
 keywords:
   - gomessage
 
