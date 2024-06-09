@@ -2,15 +2,17 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-namespace: gomessage
-
+namespace: default
 deployment:
   replicas: 2
+
+pvc:
+  storage: 1Gi
+  storageClassName: nfs-client
 
 service:
   port: 80
   targetPort: 7077
   nodePort: 32077
 
-pvc:
-  storage: 1Gi
+

@@ -32,3 +32,37 @@ spec:
         - name: {{ .Chart.Name }}-data
           persistentVolumeClaim:
             claimName: {{ .Chart.Name }}-pvc
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Chart.Name }}-pvc
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Chart.Name }}
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: {{ .Values.pvc.storage }}
+  storageClassName:  {{ .Values.pvc.storageClassName }}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Chart.Name }}-svc
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Chart.Name }}
+spec:
+  selector:
+    app: {{ .Chart.Name }}
+  type: NodePort
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetPort }}
+      name: {{ .Chart.Name }}
+      nodePort: {{ .Values.service.nodePort }}
