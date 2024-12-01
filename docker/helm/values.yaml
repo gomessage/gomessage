@@ -2,13 +2,11 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-namespace: default
 deployment:
   replicas: 2
 
 pvc:
   storage: 1Gi
-  storageClassName: nfs-client
 
 service:
   port: 80
