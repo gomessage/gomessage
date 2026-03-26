@@ -40,4 +40,4 @@ data/*.log
 tmp
 tmp/
 tmp/*
-
+.trae
