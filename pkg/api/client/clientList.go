@@ -13,6 +13,10 @@ import (
 // @Router /api/v1/:namespace/client [GET]
 func ListClient(g *gin.Context) {
 	ns := g.Param("namespace")
-	result, _ := models.ListClient(ns)
+	result, err := models.ListClient(ns)
+	if err != nil {
+		g.JSON(http.StatusInternalServerError, utils.ResponseFailure("查询失败", err))
+		return
+	}
 	g.JSON(http.StatusOK, utils.ResponseSuccessful("获取成功", result))
 }

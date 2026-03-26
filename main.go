@@ -31,7 +31,7 @@ func init() {
 	loggers.InitAccessLog()
 	initialize.InitSwagger()
 	initialize.InitGinMode()
-	initialize.InitDB("sqlite3", initialize.GlobalVars.Migrate)
+	initialize.InitDB(viper.GetString("databaseType"), initialize.GlobalVars.Migrate)
 }
 
 func main() {

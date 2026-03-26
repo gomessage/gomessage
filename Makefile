@@ -22,7 +22,7 @@
 #要编译的命令名称
 NAME := gomessage
 #版本
-VERSION := 2.3.18
+VERSION := 3.0.0
 #编译输出目录
 OUTPUT_PATH := ./build/${VERSION}
 #是否开启cgo（0代表不开启，1代表开启）
@@ -72,9 +72,20 @@ swagger:
 
 
 ######################################
+# Target：构建前端静态资源
+######################################
+.PHONY: build_frontend
+build_frontend:
+	@echo "\n---------开始构建前端---------\n"
+	cd vue && NODE_OPTIONS=--openssl-legacy-provider npm run build
+	@echo "\n---------前端构建完成---------\n"
+
+
+######################################
 # Target：编译为Mac的x86_64发行版（本地调试使用）
 ######################################
 .PHONY: build_mac
+build_mac: build_frontend
 build_mac: packageName:=${NAME}-${VERSION}-mac-amd64
 build_mac:
 	mkdir -p "${OUTPUT_PATH}/${packageName}"
@@ -92,6 +103,7 @@ build_mac:
 # Target：编译为Mac的arm发行版（本地调试使用）
 ######################################
 .PHONY: build_mac_arm64
+build_mac_arm64: build_frontend
 build_mac_arm64: packageName:=${NAME}-${VERSION}-mac-arm64
 build_mac_arm64:
 	mkdir -p "${OUTPUT_PATH}/${packageName}"
@@ -109,6 +121,7 @@ build_mac_arm64:
 # Target：编译为Windows发行版
 ######################################
 .PHONY: build_windows
+build_windows: build_frontend
 build_windows: packageName:=${NAME}-${VERSION}-windows-amd64
 build_windows:
 	mkdir -p "${OUTPUT_PATH}/${packageName}"
@@ -129,6 +142,7 @@ build_windows:
 # Target：编译为Linux发行版（实际封装到容器里的内容）
 ######################################
 .PHONY: build_linux
+build_linux: build_frontend
 build_linux: packageName:=${NAME}-${VERSION}-linux-amd64
 build_linux:
 	mkdir -p "${OUTPUT_PATH}/${packageName}"
@@ -157,6 +171,7 @@ end:
 # Target：编译docker镜像
 ######################################
 .PHONY: docker
+docker: build_linux
 docker: DOCKER_SCAN_SUGGEST := False
 docker: packageName := ${NAME}-${VERSION}-linux-amd64
 docker:
@@ -171,9 +186,11 @@ docker:
 # Target：推送docker镜像
 ######################################
 .PHONY: docker_push
+docker_push: build_linux
 docker_push: DOCKER_SCAN_SUGGEST := False
 docker_push: packageName := ${NAME}-${VERSION}-linux-amd64
 docker_push:
+	# 注意：需要 docker buildx、gsed、helm 等工具支持
 	#docker login --username=$(DOCKER_HUB_USERNAME)
 	#docker buildx rm mybuilder
 	#docker buildx create --name mybuilder --bootstrap --use
@@ -199,6 +216,7 @@ docker_push:
 helm_push: DOCKER_SCAN_SUGGEST := False
 helm_push: packageName := ${NAME}-${VERSION}-linux-amd64
 helm_push:
+	# 注意：需要 gsed、helm coding-push 等工具支持
 	@gsed -i '/version:/c version: ${VERSION}' ./docker/helm/Chart.yaml
 	@gsed -i '/appVersion:/c appVersion: ${VERSION}' ./docker/helm/Chart.yaml
 	helm package ./docker/helm
@@ -213,4 +231,4 @@ helm_push:
 ######################################
 .PHONY: package_push
 package_push:
-	@go run uploads.go --version=${VERSION}
+	@go run ./cmd/uploads --version=${VERSION}

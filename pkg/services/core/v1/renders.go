@@ -2,7 +2,6 @@ package v1
 
 import (
 	"bytes"
-	"fmt"
 	"gomessage/pkg/utils"
 	"gomessage/pkg/utils/log/loggers"
 	"html/template"
@@ -25,7 +24,8 @@ func CompleteMessage(thisTemplate string, dataList []map[string]string) []string
 		//以 K8sMessageTemplate 为蓝本，新建一个模板，新起一个名字叫tmplNewName
 		tmpl, err := template.New("tmplNewName").Parse(thisTemplate)
 		if err != nil {
-			fmt.Println(err)
+			loggers.DefaultLogger.Errorln("模板解析失败：", err)
+			continue
 		}
 
 		//实例化属性
@@ -34,13 +34,13 @@ func CompleteMessage(thisTemplate string, dataList []map[string]string) []string
 
 		//检查并转换时间格式
 		for k, v := range data {
-			if _, err := time.Parse(time.RFC3339, v); err == nil {
-				n6, _ := time.Parse(time.RFC3339, v)
+			if n6, err := time.Parse(time.RFC3339, v); err == nil {
 
 				//TODO：容器里面没有“时区信息”，因此不管制定哪个时区得到的内容都是空，在Linux裸机上执行没问题（但容器里却会出BUG）
 				loc, err := time.LoadLocation("Asia/Shanghai")
 				if err != nil {
-					fmt.Println(err)
+					loggers.DefaultLogger.Errorln("时区加载失败：", err)
+					continue
 				}
 				// loc, _ := time.LoadLocation("Local")
 				n6InBeijing := n6.In(loc)
@@ -55,7 +55,8 @@ func CompleteMessage(thisTemplate string, dataList []map[string]string) []string
 
 		//渲染tmpl模板，渲染的过程中把tmplData的值填充到模板之内，最后把渲染后的结果存入到buf这个字节缓冲器中
 		if err = tmpl.Execute(&buf, data); err != nil {
-			panic(err)
+			loggers.DefaultLogger.Errorln("模板执行失败：", err)
+			continue
 		}
 
 		//格式化字节缓冲器中的内容为String串，然后返回给调用方

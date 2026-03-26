@@ -63,11 +63,14 @@ func setDefaultBaseConfig() {
 	viper.SetDefault("databaseType", "sqlite3")   //当前连接数据库类型
 
 	//运行相关
-	viper.SetDefault("server.host", "127.0.0.1") //启动时监听的地址
-	viper.SetDefault("server.port", "7077")      //启动时监听的端口
+	viper.SetDefault("service.host", "127.0.0.1") //启动时监听的地址
+	viper.SetDefault("service.port", "7077")      //启动时监听的端口
 
 	//日志相关
 	viper.SetDefault("log.level", "info")                     //日志记录级别；（选项：debug、info）
 	viper.SetDefault("log.format", "json")                    //日志记录格式；（选项：json、text）
 	viper.SetDefault("log.runtimeLogFile", "./gomessage.log") //日志输出位置
+
+	//鉴权相关
+	viper.SetDefault("auth.jwtKey", "PLEASE_CHANGE_ME_TO_A_RANDOM_STRING")
 }

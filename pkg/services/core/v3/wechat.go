@@ -4,9 +4,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"gomessage/pkg/models"
-	"gomessage/pkg/services/core/v1"
+	v1 "gomessage/pkg/services/core/v1"
 	"gomessage/pkg/services/format"
 	"gomessage/pkg/utils"
+	"gomessage/pkg/utils/log/loggers"
 	"io"
 	"net/http"
 	"strconv"
@@ -51,25 +52,42 @@ func (c *ClientActionWechatApplication) RendersMessages(client *models.Client, i
 	return msgList
 }
 
-func (c *ClientActionWechatApplication) PushMessages(messages []any) {
+func (c *ClientActionWechatApplication) PushMessages(messages []any) (successCount int, failureCount int) {
+	token := c.getAccessToken()
+	if token.AccessToken == "" {
+		loggers.DefaultLogger.Error("企业微信 access_token 获取失败")
+		failureCount = len(messages)
+		return
+	}
 	for _, msg2 := range messages {
-		MyByte, _ := json.Marshal(msg2)
-		url := "https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=" + c.getAccessToken().AccessToken
+		MyByte, err := json.Marshal(msg2)
+		if err != nil {
+			loggers.DefaultLogger.Errorln("企业微信消息序列化失败：", err)
+			failureCount++
+			continue
+		}
+		url := "https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=" + token.AccessToken
 		resp, err := http.Post(url, "application/json", strings.NewReader(string(MyByte)))
 		if err != nil {
-			panic(err)
+			loggers.DefaultLogger.Errorln("企业微信消息推送失败：", err)
+			failureCount++
+			continue
 		}
 
-		defer func(Body io.ReadCloser) {
-			err := Body.Close()
-			if err != nil {
-				panic(err)
-			}
-		}(resp.Body)
-
-		body, _ := io.ReadAll(resp.Body)
+		body, err := io.ReadAll(resp.Body)
+		if err != nil {
+			loggers.DefaultLogger.Errorln("企业微信响应读取失败：", err)
+			_ = resp.Body.Close()
+			failureCount++
+			continue
+		}
+		if err = resp.Body.Close(); err != nil {
+			loggers.DefaultLogger.Errorln("企业微信响应关闭失败：", err)
+		}
 		fmt.Println(string(body))
+		successCount++
 	}
+	return
 }
 
 // 向微信发送请求获取access_token
@@ -80,18 +98,23 @@ func (c *ClientActionWechatApplication) getAccessToken() format.GetAccessTokenRe
 	url := "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=" + corpId + "&corpsecret=" + agentSecret
 	resp, err := http.Get(url)
 	if err != nil {
-		panic(err)
+		loggers.DefaultLogger.Errorln("企业微信 token 请求失败：", err)
+		return format.GetAccessTokenReturn{}
 	}
 
-	defer func(Body io.ReadCloser) {
-		err := Body.Close()
-		if err != nil {
-			panic(err)
-		}
-	}(resp.Body)
-
 	result, err := io.ReadAll(resp.Body)
+	if err != nil {
+		loggers.DefaultLogger.Errorln("企业微信 token 响应读取失败：", err)
+		_ = resp.Body.Close()
+		return format.GetAccessTokenReturn{}
+	}
+	if err = resp.Body.Close(); err != nil {
+		loggers.DefaultLogger.Errorln("企业微信 token 响应关闭失败：", err)
+	}
 	r := format.GetAccessTokenReturn{}
-	json.Unmarshal(result, &r)
+	if err = json.Unmarshal(result, &r); err != nil {
+		loggers.DefaultLogger.Errorln("企业微信 token 响应解析失败：", err)
+		return format.GetAccessTokenReturn{}
+	}
 	return r
 }

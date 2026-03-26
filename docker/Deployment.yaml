@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: gomessage
-          image: "docker.io/gomessage/gomessage:latest"
+          image: "docker.io/gomessage/gomessage:3.0.0"
           imagePullPolicy: Always
           ports:
             - containerPort: 7077

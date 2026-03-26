@@ -22,7 +22,7 @@ func (*Variables) TableName() string {
 }
 
 func AddVariables(v *Variables) (*Variables, error) {
-	createResult := database.DB.Default.Create(&v)
+	createResult := database.DB.Default.Create(v)
 	return v, createResult.Error
 }
 
@@ -45,7 +45,7 @@ func UpdateVariables(id int, v *Variables) (*Variables, error) {
 		return &vv, readResult.Error
 
 	} else {
-		updateResult := database.DB.Default.Model(&vv).Omit("id").Updates(&v)
+		updateResult := database.DB.Default.Model(&vv).Omit("id").Updates(v)
 		return &vv, updateResult.Error
 	}
 }
@@ -64,9 +64,11 @@ func ListVariables(ns string) (*[]Variables, error) {
 
 func UpdateAddVars(ns string, kvList []map[string]string) []Variables {
 	//遍历删除当前namespace下的所有用户变量
-	listVars, _ := ListVariables(ns)
-	for _, vars := range *listVars {
-		DeleteVariables(vars.ID)
+	listVars, err := ListVariables(ns)
+	if err == nil {
+		for _, vars := range *listVars {
+			_, _ = DeleteVariables(vars.ID)
+		}
 	}
 
 	var newVars []Variables

@@ -97,7 +97,7 @@
 
       <br>
       <p class="authorStatement2">
-        GoMessage v2 版本支持多通道并发，可以同时存在多个"通道"，互不干扰的进行消息转发。
+        GoMessage v3 版本支持多通道并发，可以同时存在多个"通道"，互不干扰地进行消息转发。
       </p>
       <br>
 

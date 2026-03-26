@@ -22,7 +22,7 @@ func (*Template) TableName() string {
 }
 
 func AddTemplate(t *Template) (*Template, error) {
-	createResult := database.DB.Default.Create(&t)
+	createResult := database.DB.Default.Create(t)
 	return t, createResult.Error
 }
 
@@ -47,7 +47,7 @@ func UpdateTemplate(id int, t *Template) (*Template, error) {
 		return &template, readResult.Error
 
 	} else {
-		updateResult := database.DB.Default.Model(&template).Omit("id").Updates(&t)
+		updateResult := database.DB.Default.Model(&template).Omit("id").Updates(t)
 		return &template, updateResult.Error
 	}
 }

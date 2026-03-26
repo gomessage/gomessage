@@ -2,7 +2,7 @@ package middleware
 
 import (
 	"fmt"
-	"github.com/dgrijalva/jwt-go"
+	"github.com/golang-jwt/jwt/v4"
 	"github.com/gin-gonic/gin"
 	authorization2 "gomessage/pkg/authorization"
 	"gomessage/pkg/utils"
@@ -13,7 +13,7 @@ func AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var tokenString string
 		tokenStringList, ok := c.Request.Header["Authorization"]
-		if ok {
+		if ok && len(tokenStringList) > 0 {
 			tokenString = tokenStringList[0]
 			if tokenString == "" {
 				c.AbortWithStatusJSON(http.StatusUnauthorized, utils.ResponseFailure("需要Authorization请求头", nil))
@@ -32,7 +32,7 @@ func AuthMiddleware() gin.HandlerFunc {
 				if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 					return nil, fmt.Errorf("意外的签名方法: %v", token.Header["alg"])
 				}
-				return authorization2.JwtKey, nil
+				return authorization2.JwtKey(), nil
 			})
 
 			if err != nil {

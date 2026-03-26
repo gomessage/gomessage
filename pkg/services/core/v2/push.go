@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"gomessage/pkg/services/core/v1"
 	"gomessage/pkg/services/format"
+	"gomessage/pkg/utils/log/loggers"
 	"io"
 	"net/http"
 	"strconv"
@@ -30,30 +31,49 @@ type WechatPush struct {
 
 func (w *WechatPush) PushData(url string, data any) {
 	byt, err := json.Marshal(data)
+	if err != nil {
+		loggers.DefaultLogger.Errorln("微信应用消息序列化失败：", err)
+		return
+	}
 	url = ""
 
 	//要推送的数据
 	msg := format.PushMessageData{}
 	msg.MsgType = "markdown"
 	msg.Touser = w.Touser
-	msg.AgentId, _ = strconv.Atoi(w.AgentId)
+	msg.AgentId, err = strconv.Atoi(w.AgentId)
+	if err != nil {
+		loggers.DefaultLogger.Errorln("微信应用 agent_id 解析失败：", err)
+		return
+	}
 	msg.Markdown.Content = string(byt)
 
-	MyByte, _ := json.Marshal(&msg)
-	url = "https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=" + w.getAccessToken().AccessToken
+	MyByte, err := json.Marshal(&msg)
+	if err != nil {
+		loggers.DefaultLogger.Errorln("微信应用请求体序列化失败：", err)
+		return
+	}
+	accessToken := w.getAccessToken().AccessToken
+	if accessToken == "" {
+		loggers.DefaultLogger.Errorln("微信应用 access_token 为空")
+		return
+	}
+	url = "https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=" + accessToken
 	resp, err := http.Post(url, "application/json", strings.NewReader(string(MyByte)))
 	if err != nil {
-		panic(err)
+		loggers.DefaultLogger.Errorln("微信应用推送失败：", err)
+		return
 	}
 
-	defer func(Body io.ReadCloser) {
-		err := Body.Close()
-		if err != nil {
-			panic(err)
-		}
-	}(resp.Body)
-
-	body, _ := io.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		loggers.DefaultLogger.Errorln("微信应用响应读取失败：", err)
+		_ = resp.Body.Close()
+		return
+	}
+	if err = resp.Body.Close(); err != nil {
+		loggers.DefaultLogger.Errorln("微信应用响应关闭失败：", err)
+	}
 	fmt.Println(string(body))
 }
 
@@ -65,17 +85,19 @@ func (w *WechatPush) getAccessToken() format.GetAccessTokenReturn {
 	url := "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=" + corpId + "&corpsecret=" + agentSecret
 	resp, err := http.Get(url)
 	if err != nil {
-		panic(err)
+		loggers.DefaultLogger.Errorln("微信应用 token 请求失败：", err)
+		return format.GetAccessTokenReturn{}
 	}
 
-	defer func(Body io.ReadCloser) {
-		err := Body.Close()
-		if err != nil {
-			panic(err)
-		}
-	}(resp.Body)
-
 	result, err := io.ReadAll(resp.Body)
+	if err != nil {
+		loggers.DefaultLogger.Errorln("微信应用 token 响应读取失败：", err)
+		_ = resp.Body.Close()
+		return format.GetAccessTokenReturn{}
+	}
+	if err = resp.Body.Close(); err != nil {
+		loggers.DefaultLogger.Errorln("微信应用 token 响应关闭失败：", err)
+	}
 	r := format.GetAccessTokenReturn{}
 	if err := json.Unmarshal(result, &r); err != nil {
 		return format.GetAccessTokenReturn{}

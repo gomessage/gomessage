@@ -4,7 +4,7 @@
 #
 #############################################################################
 
-FROM alpine:3.17
+FROM alpine:3.23
 
 RUN mkdir -p /opt/gomessage \
     && rm -rf /opt/gomessage/* \

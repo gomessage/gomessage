@@ -36,7 +36,10 @@ func AssembledMessage(isRenders bool, thisNamespaceUserConfig NamespaceUserConfi
 
 	//遍历客户端
 	for _, client := range thisNamespaceUserConfig.ActiveClient {
-		clientInfo, _ := models.GetClientById(client.ID)
+		clientInfo, err := models.GetClientById(client.ID)
+		if err != nil {
+			continue
+		}
 
 		cd := ReadyClient{
 			Id:      clientInfo.ID,

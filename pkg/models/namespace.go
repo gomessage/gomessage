@@ -26,7 +26,7 @@ func (*Namespace) TableName() string {
 }
 
 func AddNamespace(n *Namespace) (*Namespace, error) {
-	createResult := database.DB.Default.Create(&n)
+	createResult := database.DB.Default.Create(n)
 	if createResult.Error != nil {
 		return nil, createResult.Error
 	} else {
@@ -69,7 +69,10 @@ func ListNamespace(isActive string) (*[]Namespace, error) {
 		return &nsList, result.Error
 
 	} else { //如果不是空字符串，则把字符串转换为布尔值，然后再进行查询.
-		status, _ := strconv.ParseBool(isActive) //字符串转布尔值（1=True，0=False）
+		status, err := strconv.ParseBool(isActive) //字符串转布尔值（1=True，0=False）
+		if err != nil {
+			return &nsList, err
+		}
 		result := database.DB.Default.Where("is_active", status).Find(&nsList)
 		return &nsList, result.Error
 	}

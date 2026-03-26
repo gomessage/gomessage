@@ -26,9 +26,14 @@ func (c *ClientActionWechatRobot) RendersMessages(client *models.Client, isMerge
 	return msgList
 }
 
-func (c *ClientActionWechatRobot) PushMessages(messages []any) {
+func (c *ClientActionWechatRobot) PushMessages(messages []any) (successCount int, failureCount int) {
 	url := v12.RobotRandomUrl(c.Client.ExtendWechatRobot.RobotUrlRandomList)
 	for _, msg := range messages {
-		v12.Push(msg, url)
+		if err := v12.Push(msg, url); err != nil {
+			failureCount++
+		} else {
+			successCount++
+		}
 	}
+	return
 }

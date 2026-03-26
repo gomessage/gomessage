@@ -3,6 +3,7 @@ package format
 import (
 	"encoding/json"
 	"fmt"
+	"gomessage/pkg/utils/log/loggers"
 	"io"
 	"net/http"
 	"strconv"
@@ -45,19 +46,24 @@ func (w *WeChat) getAccessToken() GetAccessTokenReturn {
 	url := "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=" + corpId + "&corpsecret=" + agentSecret
 	resp, err := http.Get(url)
 	if err != nil {
-		panic(err)
+		loggers.DefaultLogger.Errorln("企业微信 token 请求失败：", err)
+		return GetAccessTokenReturn{}
 	}
 
-	defer func(Body io.ReadCloser) {
-		err := Body.Close()
-		if err != nil {
-			panic(err)
-		}
-	}(resp.Body)
-
 	result, err := io.ReadAll(resp.Body)
+	if err != nil {
+		loggers.DefaultLogger.Errorln("企业微信 token 响应读取失败：", err)
+		_ = resp.Body.Close()
+		return GetAccessTokenReturn{}
+	}
+	if err = resp.Body.Close(); err != nil {
+		loggers.DefaultLogger.Errorln("企业微信 token 响应关闭失败：", err)
+	}
 	r := GetAccessTokenReturn{}
-	json.Unmarshal(result, &r)
+	if err = json.Unmarshal(result, &r); err != nil {
+		loggers.DefaultLogger.Errorln("企业微信 token 响应解析失败：", err)
+		return GetAccessTokenReturn{}
+	}
 	return r
 }
 
@@ -67,24 +73,40 @@ func (w *WeChat) PushMessage() {
 	msg := PushMessageData{}
 	msg.MsgType = "markdown"
 	msg.Touser = w.Touser
-	msg.AgentId, _ = strconv.Atoi(w.AgentId)
+	agentID, err := strconv.Atoi(w.AgentId)
+	if err != nil {
+		loggers.DefaultLogger.Errorln("企业微信 agent_id 解析失败：", err)
+		return
+	}
+	msg.AgentId = agentID
 	msg.Markdown.Content = w.Content
 
-	MyByte, _ := json.Marshal(&msg)
-	url := "https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=" + w.getAccessToken().AccessToken
+	MyByte, err := json.Marshal(&msg)
+	if err != nil {
+		loggers.DefaultLogger.Errorln("企业微信消息序列化失败：", err)
+		return
+	}
+	token := w.getAccessToken().AccessToken
+	if token == "" {
+		loggers.DefaultLogger.Errorln("企业微信 access_token 为空")
+		return
+	}
+	url := "https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=" + token
 	resp, err := http.Post(url, "application/json", strings.NewReader(string(MyByte)))
 	if err != nil {
-		panic(err)
+		loggers.DefaultLogger.Errorln("企业微信消息推送失败：", err)
+		return
 	}
 
-	defer func(Body io.ReadCloser) {
-		err := Body.Close()
-		if err != nil {
-			panic(err)
-		}
-	}(resp.Body)
-
-	body, _ := io.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		loggers.DefaultLogger.Errorln("企业微信响应读取失败：", err)
+		_ = resp.Body.Close()
+		return
+	}
+	if err = resp.Body.Close(); err != nil {
+		loggers.DefaultLogger.Errorln("企业微信响应关闭失败：", err)
+	}
 	//r := PushMessageReturn{}
 	//json.Unmarshal(result, &r)
 	//return r

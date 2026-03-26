@@ -26,7 +26,7 @@ func (user *Users) TableName() string {
 }
 
 func CreateUser(user *Users) (*Users, error) {
-	result := database.DB.Default.Create(&user)
+	result := database.DB.Default.Create(user)
 	return user, result.Error
 }
 
@@ -38,7 +38,10 @@ func DeleteUser(id int) (int, error) {
 
 func UpdateUser(id int, newData *Users) (*Users, error) {
 	var u Users
-	database.DB.Default.First(&u, id)
+	readResult := database.DB.Default.First(&u, id)
+	if readResult.Error != nil {
+		return &u, readResult.Error
+	}
 	u.Username = newData.Username
 	result := database.DB.Default.Save(&u)
 	return &u, result.Error
@@ -46,28 +49,31 @@ func UpdateUser(id int, newData *Users) (*Users, error) {
 
 func UpdateUserPassword(id int, newData *Users) (*Users, error) {
 	var u Users
-	database.DB.Default.First(&u, id)
+	readResult := database.DB.Default.First(&u, id)
+	if readResult.Error != nil {
+		return &u, readResult.Error
+	}
 	u.PasswordHash = newData.PasswordHash
 	result := database.DB.Default.Save(&u)
 	return &u, result.Error
 }
 
 func ListUser() (*[]Users, error) {
-	var userList *[]Users
+	var userList []Users
 	result := database.DB.Default.Find(&userList)
-	return userList, result.Error
+	return &userList, result.Error
 }
 
 func GetUserById(id int) (*Users, error) {
-	var user *Users
+	var user Users
 	result := database.DB.Default.Where(&Users{ID: id}).First(&user)
-	return user, result.Error
+	return &user, result.Error
 }
 
 func QueryUserByUsername(username string) (*Users, error) {
-	var user *Users
+	var user Users
 	result := database.DB.Default.Where("username = ?", username).First(&user)
-	return user, result.Error
+	return &user, result.Error
 }
 
 func InitAdmin() {
@@ -113,8 +119,11 @@ func CreateSession(username, token string) (*Sessions, error) {
 }
 
 func DeleteSession(token string) {
-	var ss *Sessions
-	database.DB.Default.Where("token = ?", token).First(&ss)
+	var ss Sessions
+	result := database.DB.Default.Where("token = ?", token).First(&ss)
+	if result.Error != nil {
+		return
+	}
 	database.DB.Default.Delete(&Sessions{}, ss.ID)
 }
 

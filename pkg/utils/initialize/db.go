@@ -52,7 +52,7 @@ func databaseAutoMigrate(databaseClient *gorm.DB, databaseList []any) {
 	for _, table := range databaseList {
 		//如果不做判断，那么gorm每一次都是增量式迁移，字段只增不见，会保留无用的表字段这样比较安全
 		if err := databaseClient.AutoMigrate(&table); err != nil {
-			loggers.DefaultLogger.Warningln("数据库迁移失败...：%s", table)
+			loggers.DefaultLogger.Warnf("数据库迁移失败...：%v", table)
 			return
 		}
 	}

@@ -27,13 +27,19 @@ type Client struct {
 	ExtendWechatRobot       *WechatRobot       `gorm:"-:all" json:"-"`
 }
 
+type ClientLite struct {
+	ID        int    `json:"id"`
+	Namespace string `json:"namespace"`
+	ClientType string `json:"client_type"`
+}
+
 func (*Client) TableName() string {
 	return "clients"
 }
 
 func AddClient(c *Client) (*Client, error) {
 	c.IsActive = false
-	createResult := database.DB.Default.Create(&c)
+	createResult := database.DB.Default.Create(c)
 	if createResult.Error != nil {
 		return c, createResult.Error
 	}
@@ -43,7 +49,7 @@ func AddClient(c *Client) (*Client, error) {
 		c.ExtendDingtalk.ClientId = int(c.ID)
 		c.ExtendDingtalk.RobotUrlRandomList = JoinUrl(c.ExtendDingtalk.RobotUrlList) //url随机列表
 		c.ExtendDingtalk.RobotUrl = strings.Join(c.ExtendDingtalk.RobotUrlRandomList, "\n")
-		dingtalkResult := database.DB.Default.Create(&c.ExtendDingtalk)
+		dingtalkResult := database.DB.Default.Create(c.ExtendDingtalk)
 		if dingtalkResult.Error != nil {
 			return c, dingtalkResult.Error
 		}
@@ -52,7 +58,7 @@ func AddClient(c *Client) (*Client, error) {
 		c.ExtendFeishu.ClientId = int(c.ID)
 		c.ExtendFeishu.RobotUrlRandomList = JoinUrl(c.ExtendFeishu.RobotUrlList) //url随机列表
 		c.ExtendFeishu.RobotUrl = strings.Join(c.ExtendFeishu.RobotUrlRandomList, "\n")
-		feishuResult := database.DB.Default.Create(&c.ExtendFeishu)
+		feishuResult := database.DB.Default.Create(c.ExtendFeishu)
 		if feishuResult.Error != nil {
 			return c, feishuResult.Error
 		}
@@ -61,14 +67,14 @@ func AddClient(c *Client) (*Client, error) {
 		c.ExtendWechatRobot.ClientId = int(c.ID)
 		c.ExtendWechatRobot.RobotUrlRandomList = JoinUrl(c.ExtendWechatRobot.RobotUrlList) //url随机列表
 		c.ExtendWechatRobot.RobotUrl = strings.Join(c.ExtendWechatRobot.RobotUrlRandomList, "\n")
-		result := database.DB.Default.Create(&c.ExtendWechatRobot)
+		result := database.DB.Default.Create(c.ExtendWechatRobot)
 		if result.Error != nil {
 			return c, result.Error
 		}
 
 	case utils.VarWechatApplication:
 		c.ExtendWechatApplication.ClientId = int(c.ID)
-		wechatResult := database.DB.Default.Create(&c.ExtendWechatApplication)
+		wechatResult := database.DB.Default.Create(c.ExtendWechatApplication)
 		if wechatResult.Error != nil {
 			return c, wechatResult.Error
 		}
@@ -200,6 +206,15 @@ func GetClientById(id int) (*Client, error) {
 		return nil, errors.New("未知的ClientType=" + cli.ClientType)
 	}
 
+	return &cli, nil
+}
+
+func GetClientLiteById(id int) (*ClientLite, error) {
+	var cli ClientLite
+	queryResult := database.DB.Default.Model(&Client{}).Select("id", "namespace", "client_type").Where("id = ?", id).First(&cli)
+	if queryResult.Error != nil {
+		return &cli, queryResult.Error
+	}
 	return &cli, nil
 }
 

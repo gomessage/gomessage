@@ -11,7 +11,11 @@ import (
 func GetNamespaceJson(g *gin.Context) {
 	// 从缓存中获取"指定命名空间"中最新一条的数据，然后交给前端进行格式化且展示出来
 	ns := g.Param("namespace")
-	result, _ := hijacking.GetCacheData(ns)
+	result, ok := hijacking.GetCacheData(ns)
+	if !ok {
+		g.JSON(http.StatusBadRequest, utils.ResponseFailure("命名空间错误", nil))
+		return
+	}
 	g.JSON(http.StatusOK, utils.ResponseSuccessful("劫持数据成功", result))
 }
 
@@ -19,6 +23,10 @@ func GetNamespaceJson(g *gin.Context) {
 func GetNamespaceFlatteningJson(g *gin.Context) {
 	// 从缓存中获取"指定命名空间"中最新一条的数据，然后交给前端进行格式化且展示出来
 	ns := g.Param("namespace")
-	result, _ := hijacking.GetCacheData(ns)
+	result, ok := hijacking.GetCacheData(ns)
+	if !ok {
+		g.JSON(http.StatusBadRequest, utils.ResponseFailure("命名空间错误", nil))
+		return
+	}
 	g.JSON(http.StatusOK, utils.ResponseSuccessful("劫持数据成功", result))
 }

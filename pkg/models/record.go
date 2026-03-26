@@ -23,6 +23,6 @@ func (*Record) TableName() string {
 
 // AddRecord 添加一条发送记录
 func AddRecord(r *Record) (*Record, error) {
-	result := database.DB.Default.Create(&r)
+	result := database.DB.Default.Create(r)
 	return r, result.Error
 }

@@ -30,7 +30,7 @@ build
 *.tar.gz
 lastupdate.tmp
 src/routers/commentsRouter_controllers.go
-src/routers/commentsRouter______________________Users_tay_go_src_GoMessage_controllers.go
+src/routers/commentsRouter
 GoMessage
 *prof
 .DS_Store
@@ -41,3 +41,4 @@ tmp
 tmp/
 tmp/*
 .trae
+.qoder

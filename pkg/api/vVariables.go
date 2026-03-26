@@ -15,7 +15,11 @@ import (
 // @Router /api/v1/:namespace/vars [GET]
 func ListVariables(g *gin.Context) {
 	ns := g.Param("namespace")
-	listVariables, _ := models.ListVariables(ns)
+	listVariables, err := models.ListVariables(ns)
+	if err != nil {
+		g.JSON(http.StatusInternalServerError, utils.ResponseFailure("数据拉取失败", err))
+		return
+	}
 	g.JSON(http.StatusOK, utils.ResponseSuccessful("数据拉取成功", listVariables))
 }
 
@@ -30,7 +34,10 @@ func PostVariables(g *gin.Context) {
 	}
 	//绑定请求数据
 	body := requestData{}
-	g.ShouldBindJSON(&body)
+	if err := g.ShouldBindJSON(&body); err != nil {
+		g.JSON(http.StatusBadRequest, utils.ResponseFailure("请求内容错误", err))
+		return
+	}
 	ResponseVars := models.UpdateAddVars(ns, body.KeyValueList)
 	g.JSON(http.StatusOK, utils.ResponseSuccessful("用户变量映射成功", ResponseVars))
 }
@@ -40,10 +47,14 @@ func PostVariables(g *gin.Context) {
 // @Summary 查询一个用户变量
 // @Router /api/v1/:namespace/vars/:id [GET]
 func GetVariables(g *gin.Context) {
-	id, _ := strconv.Atoi(g.Param("id"))
+	id, err := strconv.Atoi(g.Param("id"))
+	if err != nil {
+		g.JSON(http.StatusBadRequest, utils.ResponseFailure("参数错误", err))
+		return
+	}
 	result, err := models.GetVariablesById(id)
 	if err != nil {
-		g.JSON(http.StatusBadRequest, "参数错误")
+		g.JSON(http.StatusBadRequest, utils.ResponseFailure("参数错误", err))
 	} else {
 		g.JSON(http.StatusOK, result)
 	}
@@ -54,12 +65,19 @@ func GetVariables(g *gin.Context) {
 // @Summary 修改一个用户变量
 // @Router /api/v1/:namespace/vars/:id [PUT]
 func PutVariables(g *gin.Context) {
-	id, _ := strconv.Atoi(g.Param("id"))
+	id, err := strconv.Atoi(g.Param("id"))
+	if err != nil {
+		g.JSON(http.StatusBadRequest, utils.ResponseFailure("参数错误", err))
+		return
+	}
 	body := models.Variables{}
-	g.ShouldBindJSON(&body)
+	if err = g.ShouldBindJSON(&body); err != nil {
+		g.JSON(http.StatusBadRequest, utils.ResponseFailure("请求内容错误", err))
+		return
+	}
 	result, err := models.UpdateVariables(id, &body)
 	if err != nil {
-		g.JSON(http.StatusBadRequest, err)
+		g.JSON(http.StatusBadRequest, utils.ResponseFailure("修改失败", err))
 	} else {
 		g.JSON(http.StatusOK, result)
 	}
@@ -70,10 +88,14 @@ func PutVariables(g *gin.Context) {
 // @Summary 删除一个用户变量
 // @Router /api/v1/:namespace/vars/:id [DELETE]
 func DeleteVariables(g *gin.Context) {
-	id, _ := strconv.Atoi(g.Param("id"))
+	id, err := strconv.Atoi(g.Param("id"))
+	if err != nil {
+		g.JSON(http.StatusBadRequest, utils.ResponseFailure("参数错误", err))
+		return
+	}
 	num, err := models.DeleteVariables(id)
 	if err != nil {
-		g.JSON(http.StatusBadRequest, err)
+		g.JSON(http.StatusBadRequest, utils.ResponseFailure("删除失败", err))
 	} else {
 		g.JSON(http.StatusOK, fmt.Sprintf("受影响的行数：%v", num))
 	}

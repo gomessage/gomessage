@@ -1,8 +1,7 @@
 package authorization
 
 import (
-	"fmt"
-	"github.com/dgrijalva/jwt-go"
+	"github.com/golang-jwt/jwt/v4"
 	"github.com/gin-gonic/gin"
 	"gomessage/pkg/utils"
 	"net/http"
@@ -12,7 +11,7 @@ import (
 
 // Register 创建或注册用户
 func Register(g *gin.Context) {
-	var user Account
+	user := Account{Users: &Users{}}
 	err := g.ShouldBindJSON(&user)
 	if err != nil {
 		g.JSON(http.StatusBadRequest, utils.ResponseFailure("请求内容错误", err))
@@ -31,7 +30,7 @@ func Register(g *gin.Context) {
 
 // Login 登录功能
 func Login(g *gin.Context) {
-	var user Account
+	user := Account{Users: &Users{}}
 	err := g.ShouldBindJSON(&user)
 	if err != nil {
 		g.JSON(http.StatusBadRequest, utils.ResponseFailure("请求内容错误", err))
@@ -48,12 +47,12 @@ func Login(g *gin.Context) {
 		expirationTime := time.Now().Add(60 * time.Minute) //到期时间
 		claims := &Claims{
 			Username: userObject.Username,
-			StandardClaims: jwt.StandardClaims{
-				ExpiresAt: expirationTime.Unix(),
+			RegisteredClaims: jwt.RegisteredClaims{
+				ExpiresAt: jwt.NewNumericDate(expirationTime),
 			},
 		}
 		token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-		tokenString, err := token.SignedString(JwtKey)
+		tokenString, err := token.SignedString(JwtKey())
 		if err != nil {
 			g.JSON(http.StatusInternalServerError, utils.ResponseFailure("服务器内部错误", err))
 			return
@@ -75,10 +74,10 @@ func Login(g *gin.Context) {
 // Logout 注销和登出
 func Logout(g *gin.Context) {
 	var tokenString string
-	tokenStringList, _ := g.Request.Header["Authorization"]
-	tokenString = tokenStringList[0]
-
-	fmt.Println(g.Request.Header["Authorization"])
+	tokenStringList, ok := g.Request.Header["Authorization"]
+	if ok && len(tokenStringList) > 0 {
+		tokenString = tokenStringList[0]
+	}
 
 	//前端会有特殊情况下携带空字符串过来，这里判断一下，只有token不为空的情况下，才会删除session表中的token
 	if len(tokenString) != 0 {
@@ -104,7 +103,11 @@ func UpdatePassword(g *gin.Context) {
 	}
 
 	//获取用户对象
-	userID, _ := strconv.Atoi(g.Param("id"))
+	userID, err := strconv.Atoi(g.Param("id"))
+	if err != nil {
+		g.JSON(http.StatusBadRequest, utils.ResponseFailure("请求内容错误", err))
+		return
+	}
 	user, err := GetUserById(userID)
 	if err != nil {
 		g.JSON(http.StatusBadRequest, utils.ResponseFailure("请求内容错误", err))

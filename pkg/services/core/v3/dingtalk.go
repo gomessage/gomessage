@@ -2,7 +2,7 @@ package v3
 
 import (
 	"gomessage/pkg/models"
-	"gomessage/pkg/services/core/v1"
+	v1 "gomessage/pkg/services/core/v1"
 	"gomessage/pkg/services/format"
 	"gomessage/pkg/utils"
 )
@@ -27,9 +27,14 @@ func (c *ClientActionDingtalk) RendersMessages(client *models.Client, isMerge bo
 	return msgList
 }
 
-func (c *ClientActionDingtalk) PushMessages(messages []any) {
+func (c *ClientActionDingtalk) PushMessages(messages []any) (successCount int, failureCount int) {
 	url := v1.RobotRandomUrl(c.Client.ExtendDingtalk.RobotUrlRandomList)
 	for _, msg := range messages {
-		v1.Push(msg, url)
+		if err := v1.Push(msg, url); err != nil {
+			failureCount++
+		} else {
+			successCount++
+		}
 	}
+	return
 }

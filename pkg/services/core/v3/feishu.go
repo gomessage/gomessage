@@ -26,9 +26,14 @@ func (c *ClientActionFeishu) RendersMessages(client *models.Client, isMerge bool
 	return msgList
 }
 
-func (c *ClientActionFeishu) PushMessages(messages []any) {
+func (c *ClientActionFeishu) PushMessages(messages []any) (successCount int, failureCount int) {
 	url := v12.RobotRandomUrl(c.Client.ExtendFeishu.RobotUrlRandomList)
 	for _, msg := range messages {
-		v12.Push(msg, url)
+		if err := v12.Push(msg, url); err != nil {
+			failureCount++
+		} else {
+			successCount++
+		}
 	}
+	return
 }

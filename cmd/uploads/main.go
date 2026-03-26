@@ -118,9 +118,7 @@ type releaseResponse struct {
 	Body            string        `json:"body"`
 }
 
-// 创建一个发行版
 func createRelease(owner, repo, branch, tag string) (string, error) {
-	//url := "https://api.github.com/repos/gomessage/gomessage/releases"
 	url := "https://api.github.com/repos/" + owner + "/" + repo + "/releases"
 
 	data := releaseRequest{
@@ -162,9 +160,7 @@ func createRelease(owner, repo, branch, tag string) (string, error) {
 	return strconv.Itoa(rsp.ID), nil
 }
 
-// 上传软件包
 func upload(owner, repo, version, releaseId, pkgName string) {
-	//url := fmt.Sprintf("https://uploads.github.com/repos/gomessage/gomessage/releases/%s/assets?name=%s", releaseId, pkgName)
 	url := fmt.Sprintf("https://uploads.github.com/repos/%s/%s/releases/%s/assets?name=%s", owner, repo, releaseId, pkgName)
 
 	filePath, _ := os.Getwd()
@@ -193,9 +189,7 @@ func upload(owner, repo, version, releaseId, pkgName string) {
 	fmt.Println(res.Status)
 }
 
-// 按照标签查询release
 func getReleaseByTag(owner, repo, tag string) (string, bool) {
-	//url := fmt.Sprintf("https://api.github.com/repos/gomessage/gomessage/releases/tags/%s", tag)
 	url := fmt.Sprintf("https://api.github.com/repos/%s/%s/releases/tags/%s", owner, repo, tag)
 
 	method := "GET"
@@ -218,13 +212,10 @@ func getReleaseByTag(owner, repo, tag string) (string, bool) {
 		fmt.Println(&r)
 		fmt.Println(r.ID)
 		return strconv.Itoa(r.ID), true
-	} else {
-		return "发行版不存在，查询不到release_id", false
 	}
-
+	return "发行版不存在，查询不到release_id", false
 }
 
-// 基础删除
 func baseDelete(delName, url string) {
 	client := &http.Client{}
 	method := "DELETE"
@@ -248,21 +239,16 @@ func baseDelete(delName, url string) {
 	}
 }
 
-// 删除指定release
 func deleteReleaseById(owner, repo, releaseId string) {
-	//url := fmt.Sprintf("https://api.github.com/repos/gomessage/gomessage/releases/%s", releaseId)
 	url := fmt.Sprintf("https://api.github.com/repos/%s/%s/releases/%s", owner, repo, releaseId)
 	baseDelete("release", url)
 }
 
-// 删除指定tag
 func deleteTag(owner, repo, tag string) {
-	//url := fmt.Sprintf("https://api.github.com/repos/gomessage/gomessage/git/refs/tags/%s", tag)
 	url := fmt.Sprintf("https://api.github.com/repos/%s/%s/git/refs/tags/%s", owner, repo, tag)
 	baseDelete("tag", url)
 }
 
-// 版本参数
 var versionParam *string
 
 func init() {
@@ -276,29 +262,25 @@ func init() {
 }
 
 func main() {
-	//接收命令行参数
-	version := *versionParam           //纯数字格式：2.0.1
-	tag := fmt.Sprintf("v%s", version) //tag格式：v2.0.1
+	version := *versionParam
+	tag := fmt.Sprintf("v%s", version)
 
-	owner := "gomessage" //账户
-	repo := "gomessage"  //仓库
-	branch := "master"   //分支
+	owner := "gomessage"
+	repo := "gomessage"
+	branch := "master"
 
-	//动态拼装包名
 	mac := fmt.Sprintf("gomessage-%s-mac-arm64.tar.gz", version)
 	linux := fmt.Sprintf("gomessage-%s-linux-amd64.tar.gz", version)
 	windows := fmt.Sprintf("gomessage-%s-windows-amd64.tar.gz", version)
 
 	packageList := []string{mac, linux, windows}
 
-	//判断指定的tag是否存在
 	releaseId, ok := getReleaseByTag(owner, repo, tag)
 
 	var wg sync.WaitGroup
 	wg.Add(len(packageList))
 
 	if !ok {
-		//如果发行版不存在，则直接创建一个新的release并上传包
 		newReleaseId, _ := createRelease(owner, repo, branch, tag)
 		for _, pkgName := range packageList {
 			go func(owner, repo, version, releaseId, pkgName string) {
@@ -306,11 +288,9 @@ func main() {
 				wg.Done()
 			}(owner, repo, version, newReleaseId, pkgName)
 		}
-
 	} else {
-		//如果发行版存在，则先删除原来的，再重新创建
-		deleteReleaseById(owner, repo, releaseId) //删除release
-		deleteTag(owner, repo, tag)               //删除tag
+		deleteReleaseById(owner, repo, releaseId)
+		deleteTag(owner, repo, tag)
 
 		newReleaseId, _ := createRelease(owner, repo, branch, tag)
 		for _, pkgName := range packageList {
@@ -322,5 +302,5 @@ func main() {
 	}
 
 	wg.Wait()
-	fmt.Println("\n文件上传完成~ \n")
+	fmt.Println("文件上传完成~")
 }

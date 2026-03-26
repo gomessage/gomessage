@@ -5,6 +5,13 @@ global:
   env: "dev"                      # 当前运行环境（这里是的第二优先级，如果启动时的命令行参数时没有指定--env参数，这里的才会生效）
   ginMode: "release"              # 运行模式（debug、test、release），如果不是二次开发该项目，则不用关注这个参数。
 
+#--------------------
+# 鉴权配置
+#--------------------
+auth:
+  # [生产环境必须修改] jwtKey 请替换为随机字符串，不要使用默认值
+  jwtKey: "PLEASE_CHANGE_ME_TO_A_RANDOM_STRING"
+
 
 #--------------------
 # 服务监听的地址和端口
@@ -66,7 +73,6 @@ sqlite3:
 #  username: "xxxxxxxxxx"
 #  password: "xxxxxxxxxx"
 #  options: "charset=utf8mb4&parseTime=True&loc=Local"
-
 
 
 

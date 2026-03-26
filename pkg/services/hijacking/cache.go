@@ -2,6 +2,7 @@ package hijacking
 
 import (
 	"gomessage/pkg/utils/log/loggers"
+	"sync"
 	"time"
 )
 
@@ -9,6 +10,7 @@ import (
 //var once sync.Once
 
 var DataList map[string]any
+var cacheRWMutex sync.RWMutex
 
 func init() {
 	//once.Do(func() {
@@ -37,7 +39,9 @@ func SetCacheData(ns string, value any) {
 	if len(ns) != 0 {
 		key := ns + "_key"
 		//cc.Set(key, value, cache.DefaultExpiration)
+		cacheRWMutex.Lock()
 		DataList[key] = value
+		cacheRWMutex.Unlock()
 	} else {
 		loggers.DefaultLogger.Errorln("写入cache时，Namespace获取失败...")
 	}
@@ -48,7 +52,10 @@ func GetCacheData(ns string) (any, bool) {
 	if len(ns) != 0 {
 		key := ns + "_key"
 		//return cc.Get(key)
-		return DataList[key], true
+		cacheRWMutex.RLock()
+		value := DataList[key]
+		cacheRWMutex.RUnlock()
+		return value, true
 	} else {
 		return nil, false
 	}

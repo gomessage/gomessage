@@ -1,0 +1,46 @@
+# GoMessage .dockerignore
+# 容器构建上下文瘦身，排除不需要进入镜像的内容
+# 注意：当前 make docker 使用 build/${VERSION}/${packageName} 作为构建上下文，此文件对主构建基本不生效
+
+# Git
+.git
+.gitignore
+
+# IDE
+.idea
+.vscode
+*.swp
+*.swo
+
+# 构建产物（由 Makefile 生成，最终产物在 build/ 下）
+tmp/
+*.tar.gz
+*.tgz
+
+# 本地数据库和日志（运行时产物，不应进入镜像）
+*.db
+*.log
+data/
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 文档和 wiki（不需要进入镜像）
+wiki/
+docs/*.md
+*.md
+!README.md
+
+# 前端源码（已编译到 assets/ 或 vue/dist/）
+vue/node_modules/
+vue/dist/
+
+# 开发配置
+.air.toml
+.qoder/
+.trae/
+
+# 测试和临时文件
+*_test.go
+tmp/

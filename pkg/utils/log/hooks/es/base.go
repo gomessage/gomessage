@@ -49,18 +49,24 @@ func CreateRecord(entry *logrus.Entry) *Record {
 }
 
 func SyncIndex(indexName string) {
+	if elasticsearchClient == nil {
+		fmt.Println("ES索引同步失败：客户端未初始化")
+		return
+	}
 	//设置上下文超时时间
 	ctx := context.Background()
 
 	//判断索引是否存在，如果不存在则创建
 	exists, err := elasticsearchClient.IndexExists(indexName).Do(ctx)
 	if err != nil {
-		panic(err)
+		fmt.Println("ES索引检查失败：", err)
+		return
 	} else {
 		if !exists {
 			_, err := elasticsearchClient.CreateIndex(indexName).BodyString(Mapping2).Do(ctx)
 			if err != nil {
-				panic(err)
+				fmt.Println("ES索引创建失败：", err)
+				return
 			}
 		}
 	}

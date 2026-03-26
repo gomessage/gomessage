@@ -6,8 +6,19 @@ import (
 	"github.com/sirupsen/logrus"
 	"gomessage/pkg/utils/log/loggers"
 	"io"
+	"regexp"
 	"time"
 )
+
+var sensitiveFieldRegexp = regexp.MustCompile(`(?i)("(?:password|secret|token|authorization)"\s*:\s*")([^"]*)(")`)
+
+func sanitizeRequestBody(body []byte) string {
+	bodyString := sensitiveFieldRegexp.ReplaceAllString(string(body), `$1***$3`)
+	if len(bodyString) > 4096 {
+		return bodyString[:4096]
+	}
+	return bodyString
+}
 
 func AccessLog() gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -53,7 +64,7 @@ func AccessLog() gin.HandlerFunc {
 			"method":       c.Request.Method,  //请求方法
 			"path":         uriPath,           //uri路径
 			"router":       c.FullPath(),      //路由
-			"request_body": string(body),      //请求数据
+			"request_body": sanitizeRequestBody(body),
 		}).Info("access日志记录")
 
 	}

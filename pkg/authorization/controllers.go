@@ -1,12 +1,15 @@
 package authorization
 
 import (
-	"github.com/dgrijalva/jwt-go"
+	"github.com/golang-jwt/jwt/v4"
+	"github.com/spf13/viper"
 	"golang.org/x/crypto/bcrypt"
 	"gomessage/pkg/utils/log/loggers"
 )
 
-var JwtKey = []byte("syx8F6FtdWKS9yj0UGcnKGaTq2MsWOilqwB8uELRCGOMlYJgl4t1zxSsOwiF7sAS")
+func JwtKey() []byte {
+	return []byte(viper.GetString("auth.jwtKey"))
+}
 
 type Account struct {
 	*Users
@@ -15,7 +18,7 @@ type Account struct {
 
 type Claims struct {
 	Username string `json:"username"`
-	jwt.StandardClaims
+	jwt.RegisteredClaims
 }
 
 func HashAndSalt(pwd string) string {
