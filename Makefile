@@ -5,7 +5,7 @@
 #
 #	make build    --->  编译：编译四平台安装包（mac arm64 / windows / linux amd64+arm64）
 #
-#	make publish  --->  推送：凭证校验后，推送多架构Docker镜像、推送Helm Chart、上传GitHub Release
+#	make publish  --->  推送：凭证校验后，推送多架构Docker镜像、上传GitHub Release
 #
 # 日常开发时在 dev 分支随意提交推送，互不影响。
 # 发布新版本时只需在 release 交互提示中输入新版本号（如 3.0.1），无需手改任何文件。
@@ -93,7 +93,8 @@ creds:
 	@echo "\n---------凭证校验---------\n"
 	@docker info >/dev/null 2>&1 || { echo "ERROR: Docker 未启动，请先启动 Docker Desktop"; exit 1; }
 	@grep -q 'docker.io' ~/.docker/config.json 2>/dev/null || { echo "ERROR: 未登录 Docker Hub，请先执行 docker login"; exit 1; }
-	@[ -n "$$CODING_USERNAME" ] && [ -n "$$CODING_PASSWORD" ] || { echo "ERROR: 请先 export CODING_USERNAME 和 CODING_PASSWORD"; exit 1; }
+	# Helm Chart 发布已暂停，Coding 凭证暂不校验（恢复Helm时取消注释）
+	#@[ -n "$$CODING_USERNAME" ] && [ -n "$$CODING_PASSWORD" ] || { echo "ERROR: 请先 export CODING_USERNAME 和 CODING_PASSWORD"; exit 1; }
 	@[ -n "$$Github_Authorization" ] && [ -n "$$Github_Token" ] || { echo "ERROR: 请先 export Github_Authorization=\"Authorization\" 和 Github_Token=\"Bearer <token>\""; exit 1; }
 	@echo "凭证校验通过\n"
 
@@ -293,28 +294,29 @@ docker_push:
 	@docker buildx build --platform linux/amd64 -t gomessage/gomessage:${VERSION} -t gomessage/gomessage:latest -f ./docker/Dockerfile "${OUTPUT_PATH}/${NAME}-${VERSION}-linux-amd64" --push
 	@docker buildx build --platform linux/arm64 -t gomessage/gomessage:${VERSION} -t gomessage/gomessage:latest -f ./docker/Dockerfile "${OUTPUT_PATH}/${NAME}-${VERSION}-linux-arm64" --push
 	@echo "\n---------镜像制作完成，版本${VERSION}---------\n"
-	@echo
-	@gsed -i '/version:/c version: ${VERSION}' ./docker/helm/Chart.yaml
-	@gsed -i '/appVersion:/c appVersion: ${VERSION}' ./docker/helm/Chart.yaml
-	helm package ./docker/helm
-	helm coding-push gomessage-${VERSION}.tgz gomessage
-	rm -rf ./*.tgz
-	@echo "\n---------制作Helm Chart完成，版本${VERSION}---------\n"
+	# Helm Chart 发布已暂停（如需恢复，取消以下注释即可）
+	#@echo
+	#@gsed -i '/version:/c version: ${VERSION}' ./docker/helm/Chart.yaml
+	#@gsed -i '/appVersion:/c appVersion: ${VERSION}' ./docker/helm/Chart.yaml
+	#helm package ./docker/helm
+	#helm coding-push gomessage-${VERSION}.tgz gomessage
+	#rm -rf ./*.tgz
+	#@echo "\n---------制作Helm Chart完成，版本${VERSION}---------\n"
 
 
 
 ######################################
-# Target：推送Helm Chart（不重新构建镜像时使用）
+# Target：推送Helm Chart（已暂停使用，如需恢复取消以下注释）
 ######################################
-.PHONY: helm_push
-helm_push:
-	# 注意：需要 gsed、helm coding-push 等工具支持
-	@gsed -i '/version:/c version: ${VERSION}' ./docker/helm/Chart.yaml
-	@gsed -i '/appVersion:/c appVersion: ${VERSION}' ./docker/helm/Chart.yaml
-	helm package ./docker/helm
-	helm coding-push gomessage-${VERSION}.tgz gomessage
-	rm -rf ./*.tgz
-	@echo "\n---------制作Helm Chart完成，版本${VERSION}---------\n"
+#.PHONY: helm_push
+#helm_push:
+#	# 注意：需要 gsed、helm coding-push 等工具支持
+#	@gsed -i '/version:/c version: ${VERSION}' ./docker/helm/Chart.yaml
+#	@gsed -i '/appVersion:/c appVersion: ${VERSION}' ./docker/helm/Chart.yaml
+#	helm package ./docker/helm
+#	helm coding-push gomessage-${VERSION}.tgz gomessage
+#	rm -rf ./*.tgz
+#	@echo "\n---------制作Helm Chart完成，版本${VERSION}---------\n"
 
 
 
