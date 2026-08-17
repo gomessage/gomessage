@@ -61,6 +61,14 @@
         <el-input v-model="list.url" placeholder="从飞书上粘贴而来的机器人URL地址" style="width: 85%"></el-input>
         <el-button type="danger" icon="el-icon-delete" circle size="mini" v-on:click="del(index)" style="margin-left: 10px"></el-button>
       </el-form-item>
+      <el-form-item label="签名密钥:">
+        <el-input
+            v-model="list.secret"
+            placeholder="飞书机器人开启签名校验后填写；未开启可留空"
+            show-password
+            style="width: 85%">
+        </el-input>
+      </el-form-item>
     </div>
 
     <!--动态增删输入框-->
@@ -70,7 +78,7 @@
 
     <!--最下的文字提醒-->
     <p id="textStype">
-      此处可以添加多个机器人，推送消息时会从中随机挑选一个URL来使用，可以避免单个机器人消息推送时（每分钟）的次数限制，避免重要报警信息被漏送的可能。
+      此处可以添加多个机器人，推送时会随机选择一个。若机器人启用了签名校验，请为每个URL填写对应的签名密钥；系统会按飞书当前频率限制自动节流并重试。
     </p>
 
     <br><br>
@@ -106,6 +114,7 @@ export default {
           robot_url_list: [
             {
               url: "",
+              secret: "",
             },
           ],
           title_color: "grey",
@@ -227,6 +236,7 @@ export default {
     add: function () {
       let cope = {
         url: "",
+        secret: "",
       };
       this.client.client_info.robot_url_list.push(cope);
       // console.log(this.mapList2);

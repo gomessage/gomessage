@@ -16,7 +16,7 @@ type RequestDataDingtalk struct {
 
 type RequestDataFeishu struct {
 	*models.Feishu
-	RobotUrlList []models.Url `json:"robot_url_list"`
+	RobotUrlList []models.FeishuRobot `json:"robot_url_list"`
 }
 
 type RequestDataWechatRobot struct {
@@ -63,9 +63,13 @@ func GetClient(g *gin.Context) {
 		respData.ClientInfo = cInfo
 
 	case utils.VarFeishu:
-		var urls []models.Url
-		for _, v := range client.ExtendFeishu.RobotUrlRandomList {
-			urls = append(urls, models.Url{Url: v})
+		var urls []models.FeishuRobot
+		for index, v := range client.ExtendFeishu.RobotUrlRandomList {
+			secret := ""
+			if index < len(client.ExtendFeishu.RobotSecretRandomList) {
+				secret = client.ExtendFeishu.RobotSecretRandomList[index]
+			}
+			urls = append(urls, models.FeishuRobot{Url: v, Secret: secret})
 		}
 		cInfo := RequestDataFeishu{
 			Feishu:       client.ExtendFeishu,
