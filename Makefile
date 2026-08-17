@@ -95,7 +95,8 @@ creds:
 	@grep -q 'docker.io' ~/.docker/config.json 2>/dev/null || { echo "ERROR: 未登录 Docker Hub，请先执行 docker login"; exit 1; }
 	# Helm Chart 发布已暂停，Coding 凭证暂不校验（恢复Helm时取消注释）
 	#@[ -n "$$CODING_USERNAME" ] && [ -n "$$CODING_PASSWORD" ] || { echo "ERROR: 请先 export CODING_USERNAME 和 CODING_PASSWORD"; exit 1; }
-	@[ -n "$$Github_Authorization" ] && [ -n "$$Github_Token" ] || { echo "ERROR: 请先 export Github_Authorization=\"Authorization\" 和 Github_Token=\"Bearer <token>\""; exit 1; }
+	# Github凭证：优先 Github_Token 环境变量，其次自动复用 gh CLI 登录态
+	@{ [ -n "$$Github_Token" ] || { command -v gh >/dev/null 2>&1 && gh auth token >/dev/null 2>&1; }; } || { echo "ERROR: 未检测到GitHub凭证：请 export Github_Token=\"Bearer <token>\"，或执行 gh auth login"; exit 1; }
 	@echo "凭证校验通过\n"
 
 
@@ -325,5 +326,11 @@ docker_push:
 ######################################
 .PHONY: package_push
 package_push:
-	@test -n "$$Github_Authorization" -a -n "$$Github_Token" || { echo "ERROR: 请先 export Github_Authorization=\"Authorization\" 与 Github_Token=\"Bearer <token>\""; exit 1; }
-	@go run ./cmd/uploads --version=${VERSION}
+	# 优先使用 Github_Token 环境变量；未设置时自动复用 gh CLI 登录态（gh auth token）
+	@TOKEN="$$Github_Token" ; \
+	if [ -z "$$TOKEN" ] && command -v gh >/dev/null 2>&1; then \
+		GH_TOKEN=$$(gh auth token 2>/dev/null) ; \
+		[ -n "$$GH_TOKEN" ] && TOKEN="Bearer $$GH_TOKEN" ; \
+	fi ; \
+	[ -n "$$TOKEN" ] || { echo "ERROR: 未检测到 GitHub凭证：请 export Github_Token=\"Bearer <token>\"，或执行 gh auth login"; exit 1; } ; \
+	Github_Authorization="$${Github_Authorization:-Authorization}" Github_Token="$$TOKEN" go run ./cmd/uploads --version=${VERSION}
