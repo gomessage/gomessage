@@ -34,9 +34,18 @@ FRONTEND_STAMP := ./build/.frontend_done
 
 
 ######################################
+# Target：分支守卫（发布链路命令仅允许在 main 分支执行，防止在 dev 上误操作）
+######################################
+.PHONY: guard_main
+guard_main:
+	@BRANCH="$$(git rev-parse --abbrev-ref HEAD)" ; \
+	[ "$${BRANCH}" = "main" ] || { echo "ERROR: 发布相关命令仅允许在 main 分支执行（当前分支：$${BRANCH}），请先切换到 main" ; exit 1; }
+
+
+######################################
 # 指定缺省状态下执行哪些Target
 ######################################
-build: clean start swagger build_frontend build_mac_arm64 build_windows build_linux build_linux_arm64 end
+build: guard_main clean start swagger build_frontend build_mac_arm64 build_windows build_linux build_linux_arm64 end
 
 # 兼容旧命令
 all: build
@@ -51,6 +60,7 @@ help:
 	@echo "  make release  ->  锁版本：交互输入版本号，自动合并dev/辐射版本/提交/打tag/推送"
 	@echo "  make build    ->  编译：四平台安装包（mac arm64 / windows / linux amd64+arm64）"
 	@echo "  make publish  ->  推送：多架构Docker镜像 + GitHub Release安装包"
+	@echo "  （以上命令仅限 main 分支执行，其它分支会被强制拦截）"
 	@echo "\n辅助命令："
 	@echo "  make status   ->  查看当前分支/版本/tag/产物状态"
 	@echo "  make creds    ->  单独校验发布凭证\n"
@@ -135,7 +145,7 @@ creds:
 # 前置条件：已执行过 make build
 ######################################
 .PHONY: publish
-publish: creds check docker_push package_push
+publish: guard_main creds check docker_push package_push
 	@echo "\n---------$(GIT_TAG) 发布完成---------\n"
 
 
@@ -313,7 +323,7 @@ docker:
 # Target：推送docker多架构镜像及Helm Chart
 ######################################
 .PHONY: docker_push
-docker_push:
+docker_push: guard_main
 	# 注意：需要 docker buildx、gsed、helm 等工具支持；请先执行 make build
 	@for p in linux-amd64 linux-arm64; do \
 		[ -d "${OUTPUT_PATH}/${NAME}-${VERSION}-$${p}" ] || { echo "ERROR: 缺少编译产物 ${NAME}-${VERSION}-$${p}，请先执行 make build"; exit 1; } ; \
@@ -355,7 +365,7 @@ docker_push:
 # Target：推送package到github（创建Release并上传安装包）
 ######################################
 .PHONY: package_push
-package_push:
+package_push: guard_main
 	# 优先使用 Github_Token 环境变量；未设置时自动复用 gh CLI 登录态（gh auth token）
 	@TOKEN="$$Github_Token" ; \
 	if [ -z "$$TOKEN" ] && command -v gh >/dev/null 2>&1; then \
