@@ -43,6 +43,33 @@ all: build
 
 
 ######################################
+# Target：查看发布流程说明
+######################################
+.PHONY: help
+help:
+	@echo "\n发布流程（三步走）："
+	@echo "  make release  ->  锁版本：交互输入版本号，自动合并dev/辐射版本/提交/打tag/推送"
+	@echo "  make build    ->  编译：四平台安装包（mac arm64 / windows / linux amd64+arm64）"
+	@echo "  make publish  ->  推送：多架构Docker镜像 + GitHub Release安装包"
+	@echo "\n辅助命令："
+	@echo "  make status   ->  查看当前分支/版本/tag/产物状态"
+	@echo "  make creds    ->  单独校验发布凭证\n"
+
+
+######################################
+# Target：查看当前发布状态
+######################################
+.PHONY: status
+status:
+	@echo "\n---------当前状态---------"
+	@echo "分支：$$(git rev-parse --abbrev-ref HEAD)"
+	@echo "版本：$(VERSION)"
+	@if git tag --points-at HEAD | grep -qx '$(GIT_TAG)'; then echo "tag ：$(GIT_TAG) ✅ 已锁定在当前HEAD"; else echo "tag ：$(GIT_TAG) ⚠️ 未锁定在当前HEAD（需 make release）"; fi
+	@if [ -d "${OUTPUT_PATH}" ]; then echo "产物：${OUTPUT_PATH} ✅ 已存在"; else echo "产物：${OUTPUT_PATH} ⚠️ 不存在（需 make build）"; fi
+	@echo "--------------------------\n"
+
+
+######################################
 # Target：锁版本（交互式，只能在main分支执行）
 # 自动完成：合并dev → 输入新版本号 → 版本号辐射 → 提交 → 打tag → 推送GitHub
 ######################################
