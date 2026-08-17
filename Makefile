@@ -1,24 +1,13 @@
-# 编译新版本时只需修改<VERSION>的变量值即可（格式：x.x.x）
+# 发布流程（两步走）：
 #
-# 版本管理约定：
-#	VERSION 是全局唯一版本号来源；Chart.yaml 的 version/appVersion 由构建流程自动同步
-#	正式发布前，HEAD 上必须已打好 v$(VERSION) 的 tag（make check 会自动校验）
+#	make release  --->  锁版本：交互式输入新版本号，自动完成
+#	                    合并dev→main、版本号辐射、提交、打tag、推送GitHub（仅限main分支）
 #
-# 常用命令：
+#	make publish  --->  发产物：校验凭证后，自动编译四平台安装包、
+#	                    推送多架构Docker镜像、推送Helm Chart、上传GitHub Release
 #
-#	make check  --->  发布前置校验（工作区干净 + tag 存在）
-#
-#	make all  --->  同时编译linux、mac、windows三个环境的tar包
-#
-#	make docker --->  编译docker镜像
-#
-#	make docker_push
-#
-#	make package_push
-#
-#	make release  --->  一键发布：check + 编译 + 多架构镜像 + Helm + 上传GitHub Release
-#
-#	make swagger
+# 日常开发时在 dev 分支随意提交推送，互不影响。
+# 发布新版本时只需在 release 交互提示中输入新版本号（如 3.0.1），无需手改任何文件。
 #
 
 
@@ -29,7 +18,7 @@
 ######################################
 #要编译的命令名称
 NAME := gomessage
-#版本（唯一版本号来源，发布其他版本时只需改这里）
+#当前版本（由 make release 自动维护，请勿手改）
 VERSION := 3.0.0
 #对应的git tag
 GIT_TAG := v$(VERSION)
@@ -50,14 +39,67 @@ all: clean start swagger build_frontend build_mac_arm64 build_windows build_linu
 
 
 ######################################
-# Target：发布前置校验
+# Target：锁版本（交互式，只能在main分支执行）
+# 自动完成：合并dev → 输入新版本号 → 版本号辐射 → 提交 → 打tag → 推送GitHub
+######################################
+.PHONY: release
+release:
+	@echo "\n---------开始锁定版本---------\n"
+	@[ "$$(git rev-parse --abbrev-ref HEAD)" = "main" ] || { echo "ERROR: make release 只能在 main 分支执行"; exit 1; }
+	@git diff-index --quiet HEAD -- || { echo "ERROR: 工作区存在未提交变更，请先提交或stash"; exit 1; }
+	@git merge-base --is-ancestor dev main || { echo ">> dev 有未合并变更，自动合并到 main..."; git merge dev --no-edit; }
+	@printf "当前版本：$(VERSION)\n请输入要发布的新版本号（如 3.0.1 或 3.1.0）：" ; \
+	read NEW_VERSION ; \
+	echo "$$NEW_VERSION" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$$' || { echo "ERROR: 版本号格式必须是 x.y.z"; exit 1; } ; \
+	git tag -l | grep -qx "v$$NEW_VERSION" && { echo "ERROR: tag v$$NEW_VERSION 已存在，请换一个版本号"; exit 1; } ; \
+	printf "确认发布 v$$NEW_VERSION（当前 $(VERSION) → v$$NEW_VERSION）？[y/N] " ; \
+	read CONFIRM ; \
+	[ "$$CONFIRM" = "y" ] || { echo "已取消"; exit 1; } ; \
+	echo ">> 版本号辐射：Makefile / Chart.yaml" ; \
+	gsed -i -E "s/^VERSION := .*/VERSION := $$NEW_VERSION/" Makefile ; \
+	gsed -i "/version:/c version: $$NEW_VERSION" ./docker/helm/Chart.yaml ; \
+	gsed -i "/appVersion:/c appVersion: $$NEW_VERSION" ./docker/helm/Chart.yaml ; \
+	echo ">> 提交并打tag" ; \
+	git add Makefile ./docker/helm/Chart.yaml ; \
+	git commit -m "release: v$$NEW_VERSION" ; \
+	git tag -a "v$$NEW_VERSION" -m "release: v$$NEW_VERSION" ; \
+	echo ">> 推送 main 和 tag 到远程" ; \
+	git push github main ; \
+	git push github "v$$NEW_VERSION" ; \
+	echo "\n---------版本已锁定：v$$NEW_VERSION---------" ; \
+	echo ">> 下一步执行 make publish 开始编译和分发\n"
+
+
+######################################
+# Target：发布前置校验（tag必须存在于HEAD）
 ######################################
 .PHONY: check
 check:
 	@echo "\n---------发布前置校验---------\n"
 	@git diff-index --quiet HEAD -- || { echo "ERROR: 工作区存在未提交变更，请先提交或stash"; exit 1; }
-	@git tag --points-at HEAD | grep -qx '$(GIT_TAG)' || { echo "ERROR: 当前HEAD上不存在tag $(GIT_TAG)，请先执行: git tag -a $(GIT_TAG) -m \"release: $(GIT_TAG)\""; exit 1; }
+	@git tag --points-at HEAD | grep -qx '$(GIT_TAG)' || { echo "ERROR: 当前HEAD上不存在tag $(GIT_TAG)，请先执行 make release 锁定版本"; exit 1; }
 	@echo "校验通过：工作区干净，HEAD已标记为 $(GIT_TAG)\n"
+
+
+######################################
+# Target：发布凭证校验
+######################################
+.PHONY: creds
+creds:
+	@echo "\n---------凭证校验---------\n"
+	@docker info >/dev/null 2>&1 || { echo "ERROR: Docker 未启动，请先启动 Docker Desktop"; exit 1; }
+	@grep -q 'docker.io' ~/.docker/config.json 2>/dev/null || { echo "ERROR: 未登录 Docker Hub，请先执行 docker login"; exit 1; }
+	@[ -n "$$CODING_USERNAME" ] && [ -n "$$CODING_PASSWORD" ] || { echo "ERROR: 请先 export CODING_USERNAME 和 CODING_PASSWORD"; exit 1; }
+	@[ -n "$$Github_Authorization" ] && [ -n "$$Github_Token" ] || { echo "ERROR: 请先 export Github_Authorization=\"Authorization\" 和 Github_Token=\"Bearer <token>\""; exit 1; }
+	@echo "凭证校验通过\n"
+
+
+######################################
+# Target：发产物（一键：凭证校验 + 编译 + 推镜像 + 推Helm + 传GitHub Release）
+######################################
+.PHONY: publish
+publish: creds check all docker_push package_push
+	@echo "\n---------$(GIT_TAG) 发布完成---------\n"
 
 
 ######################################
@@ -217,7 +259,7 @@ end:
 
 
 ######################################
-# Target：编译docker镜像
+# Target：编译docker镜像（本地调试）
 ######################################
 .PHONY: docker
 docker: build_linux
@@ -276,11 +318,3 @@ helm_push:
 package_push:
 	@test -n "$$Github_Authorization" -a -n "$$Github_Token" || { echo "ERROR: 请先 export Github_Authorization=\"Authorization\" 与 Github_Token=\"Bearer <token>\""; exit 1; }
 	@go run ./cmd/uploads --version=${VERSION}
-
-
-######################################
-# Target：一键发布（校验 + 编译 + 镜像 + Helm + GitHub Release）
-######################################
-.PHONY: release
-release: check all docker_push package_push
-	@echo "\n---------$(GIT_TAG) 发布完成---------\n"
