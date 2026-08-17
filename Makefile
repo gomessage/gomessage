@@ -1,10 +1,11 @@
-# 发布流程（两步走）：
+# 发布流程（三步走）：
 #
 #	make release  --->  锁版本：交互式输入新版本号，自动完成
 #	                    合并dev→main、版本号辐射、提交、打tag、推送GitHub（仅限main分支）
 #
-#	make publish  --->  发产物：校验凭证后，自动编译四平台安装包、
-#	                    推送多架构Docker镜像、推送Helm Chart、上传GitHub Release
+#	make build    --->  编译：编译四平台安装包（mac arm64 / windows / linux amd64+arm64）
+#
+#	make publish  --->  推送：凭证校验后，推送多架构Docker镜像、推送Helm Chart、上传GitHub Release
 #
 # 日常开发时在 dev 分支随意提交推送，互不影响。
 # 发布新版本时只需在 release 交互提示中输入新版本号（如 3.0.1），无需手改任何文件。
@@ -35,7 +36,10 @@ FRONTEND_STAMP := ./build/.frontend_done
 ######################################
 # 指定缺省状态下执行哪些Target
 ######################################
-all: clean start swagger build_frontend build_mac_arm64 build_windows build_linux build_linux_arm64 end
+build: clean start swagger build_frontend build_mac_arm64 build_windows build_linux build_linux_arm64 end
+
+# 兼容旧命令
+all: build
 
 
 ######################################
@@ -52,7 +56,7 @@ release:
 	read NEW_VERSION ; \
 	echo "$$NEW_VERSION" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$$' || { echo "ERROR: 版本号格式必须是 x.y.z"; exit 1; } ; \
 	git tag -l | grep -qx "v$$NEW_VERSION" && { echo "ERROR: tag v$$NEW_VERSION 已存在，请换一个版本号"; exit 1; } ; \
-	printf "确认发布 v$$NEW_VERSION（当前 $(VERSION) → v$$NEW_VERSION）？[y/N] " ; \
+	printf "确认发布 v$${NEW_VERSION}（当前 $(VERSION) → v$${NEW_VERSION}）？[y/N] " ; \
 	read CONFIRM ; \
 	[ "$$CONFIRM" = "y" ] || { echo "已取消"; exit 1; } ; \
 	echo ">> 版本号辐射：Makefile / Chart.yaml" ; \
@@ -95,10 +99,11 @@ creds:
 
 
 ######################################
-# Target：发产物（一键：凭证校验 + 编译 + 推镜像 + 推Helm + 传GitHub Release）
+# Target：推送（一键：凭证校验 + 推镜像 + 推Helm + 传GitHub Release）
+# 前置条件：已执行过 make build
 ######################################
 .PHONY: publish
-publish: creds check all docker_push package_push
+publish: creds check docker_push package_push
 	@echo "\n---------$(GIT_TAG) 发布完成---------\n"
 
 
@@ -276,9 +281,11 @@ docker:
 # Target：推送docker多架构镜像及Helm Chart
 ######################################
 .PHONY: docker_push
-docker_push: build_linux build_linux_arm64
 docker_push:
-	# 注意：需要 docker buildx、gsed、helm 等工具支持
+	# 注意：需要 docker buildx、gsed、helm 等工具支持；请先执行 make build
+	@for p in linux-amd64 linux-arm64; do \
+		[ -d "${OUTPUT_PATH}/${NAME}-${VERSION}-$${p}" ] || { echo "ERROR: 缺少编译产物 ${NAME}-${VERSION}-$${p}，请先执行 make build"; exit 1; } ; \
+	done
 	#docker login --username=$(DOCKER_HUB_USERNAME)
 	#docker buildx rm mybuilder
 	#docker buildx create --name mybuilder --bootstrap --use
