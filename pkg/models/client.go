@@ -28,8 +28,8 @@ type Client struct {
 }
 
 type ClientLite struct {
-	ID        int    `json:"id"`
-	Namespace string `json:"namespace"`
+	ID         int    `json:"id"`
+	Namespace  string `json:"namespace"`
 	ClientType string `json:"client_type"`
 }
 
@@ -56,8 +56,10 @@ func AddClient(c *Client) (*Client, error) {
 
 	case utils.VarFeishu:
 		c.ExtendFeishu.ClientId = int(c.ID)
-		c.ExtendFeishu.RobotUrlRandomList = JoinUrl(c.ExtendFeishu.RobotUrlList) //url随机列表
+		c.ExtendFeishu.RobotUrlRandomList = JoinFeishuRobotUrl(c.ExtendFeishu.RobotUrlList) //url随机列表
+		c.ExtendFeishu.RobotSecretRandomList = JoinFeishuRobotSecret(c.ExtendFeishu.RobotUrlList)
 		c.ExtendFeishu.RobotUrl = strings.Join(c.ExtendFeishu.RobotUrlRandomList, "\n")
+		c.ExtendFeishu.RobotSecret = strings.Join(c.ExtendFeishu.RobotSecretRandomList, "\n")
 		feishuResult := database.DB.Default.Create(c.ExtendFeishu)
 		if feishuResult.Error != nil {
 			return c, feishuResult.Error
@@ -112,11 +114,13 @@ func UpdateClientInfo(id int, newClient *Client) (*Client, error) {
 	case utils.VarFeishu:
 		feishu := Feishu{}
 		database.DB.Default.Model(&feishu).Where("client_id = ?", oldClient.ID).First(&feishu)
-		newClient.ExtendFeishu.RobotUrlRandomList = JoinUrl(newClient.ExtendFeishu.RobotUrlList) //url随机列表
-		database.DB.Default.Model(&feishu).Updates(Feishu{
-			RobotKeyword: newClient.ExtendFeishu.RobotKeyword,
-			TitleColor:   newClient.ExtendFeishu.TitleColor,
-			RobotUrl:     strings.Join(newClient.ExtendFeishu.RobotUrlRandomList, "\n"),
+		newClient.ExtendFeishu.RobotUrlRandomList = JoinFeishuRobotUrl(newClient.ExtendFeishu.RobotUrlList) //url随机列表
+		newClient.ExtendFeishu.RobotSecretRandomList = JoinFeishuRobotSecret(newClient.ExtendFeishu.RobotUrlList)
+		database.DB.Default.Model(&feishu).Updates(map[string]any{
+			"robot_keyword": newClient.ExtendFeishu.RobotKeyword,
+			"title_color":   newClient.ExtendFeishu.TitleColor,
+			"robot_url":     strings.Join(newClient.ExtendFeishu.RobotUrlRandomList, "\n"),
+			"robot_secret":  strings.Join(newClient.ExtendFeishu.RobotSecretRandomList, "\n"),
 		})
 
 	case utils.VarWechatRobot:
@@ -183,6 +187,13 @@ func GetClientById(id int) (*Client, error) {
 			return &cli, feishuResult.Error
 		}
 		feishu.RobotUrlRandomList = strings.Split(feishu.RobotUrl, "\n")
+		feishu.RobotSecretRandomList = strings.Split(feishu.RobotSecret, "\n")
+		if len(feishu.RobotSecretRandomList) < len(feishu.RobotUrlRandomList) {
+			feishu.RobotSecretRandomList = append(
+				feishu.RobotSecretRandomList,
+				make([]string, len(feishu.RobotUrlRandomList)-len(feishu.RobotSecretRandomList))...,
+			)
+		}
 		cli.ExtendFeishu = &feishu
 
 	case utils.VarWechatRobot:
