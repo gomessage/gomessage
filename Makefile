@@ -52,11 +52,14 @@ release:
 	@[ "$$(git rev-parse --abbrev-ref HEAD)" = "main" ] || { echo "ERROR: make release 只能在 main 分支执行"; exit 1; }
 	@git diff-index --quiet HEAD -- || { echo "ERROR: 工作区存在未提交变更，请先提交或stash"; exit 1; }
 	@git merge-base --is-ancestor dev main || { echo ">> dev 有未合并变更，自动合并到 main..."; git merge dev --no-edit; }
-	@printf "当前版本：$(VERSION)\n请输入要发布的新版本号（如 3.0.1 或 3.1.0）：" ; \
+	@printf "当前版本：$(VERSION)\n请输入要发布的版本号（如 3.0.1 或 3.1.0，重锁可输入当前版本号）：" ; \
 	read NEW_VERSION ; \
 	echo "$$NEW_VERSION" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$$' || { echo "ERROR: 版本号格式必须是 x.y.z"; exit 1; } ; \
-	git tag -l | grep -qx "v$$NEW_VERSION" && { echo "ERROR: tag v$$NEW_VERSION 已存在，请换一个版本号"; exit 1; } ; \
-	printf "确认发布 v$${NEW_VERSION}（当前 $(VERSION) → v$${NEW_VERSION}）？[y/N] " ; \
+	if git tag -l | grep -qx "v$$NEW_VERSION"; then \
+		printf "tag v$${NEW_VERSION} 已存在，是否重新锁定（tag将移动到当前HEAD）？[y/N] " ; \
+	else \
+		printf "确认发布 v$${NEW_VERSION}（当前 $(VERSION) → v$${NEW_VERSION}）？[y/N] " ; \
+	fi ; \
 	read CONFIRM ; \
 	[ "$$CONFIRM" = "y" ] || { echo "已取消"; exit 1; } ; \
 	echo ">> 版本号辐射：Makefile / Chart.yaml" ; \
@@ -65,13 +68,13 @@ release:
 	gsed -i "/appVersion:/c appVersion: $$NEW_VERSION" ./docker/helm/Chart.yaml ; \
 	echo ">> 提交并打tag" ; \
 	git add Makefile ./docker/helm/Chart.yaml ; \
-	git commit -m "release: v$$NEW_VERSION" ; \
-	git tag -a "v$$NEW_VERSION" -m "release: v$$NEW_VERSION" ; \
-	echo ">> 推送 main 和 tag 到远程" ; \
+	if git diff --cached --quiet; then echo ">> 版本号无变化，跳过提交"; else git commit -m "release: v$$NEW_VERSION"; fi ; \
+	git tag -af "v$$NEW_VERSION" -m "release: v$$NEW_VERSION" ; \
+	echo ">> 推送 main 和 tag 到远程（重锁时tag会强制更新）" ; \
 	git push github main ; \
-	git push github "v$$NEW_VERSION" ; \
+	git push -f github "refs/tags/v$$NEW_VERSION" ; \
 	echo "\n---------版本已锁定：v$$NEW_VERSION---------" ; \
-	echo ">> 下一步执行 make publish 开始编译和分发\n"
+	echo ">> 下一步执行 make build 和 make publish 开始编译和分发\n"
 
 
 ######################################
