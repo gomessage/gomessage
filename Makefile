@@ -77,7 +77,7 @@ status:
 release:
 	@echo "\n---------开始锁定版本---------\n"
 	@[ "$$(git rev-parse --abbrev-ref HEAD)" = "main" ] || { echo "ERROR: make release 只能在 main 分支执行"; exit 1; }
-	@git diff-index --quiet HEAD -- || { echo "ERROR: 工作区存在未提交变更，请先提交或stash"; exit 1; }
+	@git update-index --refresh >/dev/null 2>&1; git diff-index --quiet HEAD -- || { echo "ERROR: 工作区存在未提交变更，请先提交或stash"; exit 1; }
 	@git merge-base --is-ancestor dev main || { echo ">> dev 有未合并变更，自动合并到 main..."; git merge dev --no-edit; }
 	@printf "当前版本：$(VERSION)\n请输入要发布的版本号（如 3.0.1 或 3.1.0，重锁可输入当前版本号）：" ; \
 	read NEW_VERSION ; \
@@ -105,14 +105,14 @@ release:
 
 
 ######################################
-# Target：发布前置校验（tag必须存在于HEAD）
+# Target：发布前置校验（只验tag在HEAD上，不验工作区干净：
+# make build 会重新生成swagger/前端产物，产生正常diff，若验干净会与tag校验形成死锁）
 ######################################
 .PHONY: check
 check:
 	@echo "\n---------发布前置校验---------\n"
-	@git diff-index --quiet HEAD -- || { echo "ERROR: 工作区存在未提交变更，请先提交或stash"; exit 1; }
 	@git tag --points-at HEAD | grep -qx '$(GIT_TAG)' || { echo "ERROR: 当前HEAD上不存在tag $(GIT_TAG)，请先执行 make release 锁定版本"; exit 1; }
-	@echo "校验通过：工作区干净，HEAD已标记为 $(GIT_TAG)\n"
+	@echo "校验通过：HEAD已标记为 $(GIT_TAG)\n"
 
 
 ######################################
@@ -183,7 +183,7 @@ build_frontend:
 	else \
 		echo "\n---------开始构建前端---------\n"; \
 		cd vue && NODE_OPTIONS=--openssl-legacy-provider npm run build; \
-		touch "$(FRONTEND_STAMP)"; \
+		touch "$(CURDIR)/$(FRONTEND_STAMP)"; \
 		echo "\n---------前端构建完成---------\n"; \
 	fi
 

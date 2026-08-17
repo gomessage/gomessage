@@ -143,19 +143,21 @@ func createRelease(owner, repo, branch, tag string) (string, error) {
 
 	res, err := client.Do(req)
 	if err != nil {
-		fmt.Println(err)
+		return "", err
 	}
 	defer res.Body.Close()
 
 	body, err := io.ReadAll(res.Body)
 	if err != nil {
-		fmt.Println(err)
 		return "", err
+	}
+	if res.StatusCode != http.StatusCreated {
+		return "", fmt.Errorf("createRelease 失败: %s\n%s", res.Status, string(body))
 	}
 	rsp := releaseResponse{}
 	json.Unmarshal(body, &rsp)
 
-	fmt.Println(&rsp)
+	fmt.Println(">> Release创建成功，ID:", rsp.ID)
 
 	return strconv.Itoa(rsp.ID), nil
 }
@@ -267,40 +269,42 @@ func main() {
 
 	owner := "gomessage"
 	repo := "gomessage"
-	branch := "master"
+	branch := "main"
 
 	mac := fmt.Sprintf("gomessage-%s-mac-arm64.tar.gz", version)
 	linux := fmt.Sprintf("gomessage-%s-linux-amd64.tar.gz", version)
+	linuxArm := fmt.Sprintf("gomessage-%s-linux-arm64.tar.gz", version)
 	windows := fmt.Sprintf("gomessage-%s-windows-amd64.tar.gz", version)
 
-	packageList := []string{mac, linux, windows}
+	packageList := []string{mac, linux, linuxArm, windows}
 
 	releaseId, ok := getReleaseByTag(owner, repo, tag)
 
 	var wg sync.WaitGroup
 	wg.Add(len(packageList))
 
-	if !ok {
-		newReleaseId, _ := createRelease(owner, repo, branch, tag)
+	uploadAll := func(newReleaseId string) {
 		for _, pkgName := range packageList {
-			go func(owner, repo, version, releaseId, pkgName string) {
+			go func(pkgName string) {
 				upload(owner, repo, version, newReleaseId, pkgName)
 				wg.Done()
-			}(owner, repo, version, newReleaseId, pkgName)
-		}
-	} else {
-		deleteReleaseById(owner, repo, releaseId)
-		deleteTag(owner, repo, tag)
-
-		newReleaseId, _ := createRelease(owner, repo, branch, tag)
-		for _, pkgName := range packageList {
-			go func(owner, repo, version, releaseId, pkgName string) {
-				upload(owner, repo, version, newReleaseId, pkgName)
-				wg.Done()
-			}(owner, repo, version, newReleaseId, pkgName)
+			}(pkgName)
 		}
 	}
 
+	if ok {
+		// 只删Release不删tag：tag仍在时createRelease会复用现有tag，
+		// 避免重复发布时tag被重新指向main最新HEAD而破坏版本锁定
+		deleteReleaseById(owner, repo, releaseId)
+	}
+
+	newReleaseId, err := createRelease(owner, repo, branch, tag)
+	if err != nil {
+		fmt.Println("ERROR:", err)
+		os.Exit(1)
+	}
+	uploadAll(newReleaseId)
+
 	wg.Wait()
-	fmt.Println("文件上传完成~")
+	fmt.Println(">> 文件上传完成：", packageList)
 }
