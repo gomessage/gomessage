@@ -33,20 +33,12 @@ func InitDefaultNamespace() {
 // InitTemplate 初始化信息（多通道复用）
 func InitTemplate(ns string) {
 	content := `{{ if eq .N5 "firing" }}
-
-## <font color='#FF0000'>【报警中】服务器{{ .N3 }}</font>
-
+## 🚨 【报警中】服务器 {{ .N3 }}
 {{ else if eq .N5 "resolved" }}
-
-## <font color='#20B2AA'>【已恢复】服务器{{ .N3 }}</font>
-
+## ✅ 【已恢复】服务器 {{ .N3 }}
 {{ else }}
-
-## 标题：信息通知
-
+## ℹ️ 信息通知
 {{ end }}
-
-====================
 
 **告警规则**：{{ .N1 }}
 
@@ -62,9 +54,12 @@ func InitTemplate(ns string) {
 {{ if eq .N5 "resolved" }}
 **恢复时间**：{{ .N7 }}
 {{ end }}
-**规则详情**：[Prometheus控制台]({{ .N8 }})
-
-**报警详情**：[Alertmanager控制台]({{ .N9 }})
+{{ if .N8 }}
+**规则详情**：[Prometheus 控制台]({{ .N8 }})
+{{ end }}
+{{ if .N9 }}
+**报警详情**：[Alertmanager 控制台]({{ .N9 }})
+{{ end }}
 `
 
 	defaultTemplate := Template{

@@ -1,9 +1,10 @@
 //判断是否是以数字开头
 export function isNumberStart(rule, value, callback) {
-  let reg = /^[0-9]+$/
+  let reg = /^[0-9]/
   let check = reg.test(value.toString()); //如果命中这个规则就会返回true
   if (check) {
     callback("不能以数字开头");
+    return;
   }
   callback();
 }
@@ -23,6 +24,7 @@ export function isStringOrNumber(rule, value, callback) {
   let check = reg.test(value.toString()); //如果命中这个规则就会返回true
   if (!check) {
     callback("只能是字母或数字，不能包含特殊符号");
+    return;
   }
   callback();
 }

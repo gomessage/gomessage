@@ -25,6 +25,53 @@
     <!--    </el-col>-->
     <!--</el-row>-->
 
+    <div class="system-template-panel">
+      <div class="system-template-toolbar">
+        <span class="system-template-label">系统模板</span>
+        <el-select
+            v-model="selectedSystemTemplateId"
+            class="system-template-select"
+            filterable
+            placeholder="选择适用的通道模板">
+          <el-option
+              v-for="item in systemTemplates"
+              :key="item.id"
+              :label="item.platform + ' · ' + item.name"
+              :value="item.id">
+            <span>{{ item.platform }}</span>
+            <span class="system-template-option-name">{{ item.name }}</span>
+          </el-option>
+        </el-select>
+        <el-button
+            type="primary"
+            plain
+            :disabled="!selectedSystemTemplate"
+            @click="replaceWithSystemTemplate">应用到当前模板
+        </el-button>
+      </div>
+      <template v-if="selectedSystemTemplate">
+        <div class="system-template-description">
+          {{ selectedSystemTemplate.description }}
+        </div>
+        <div class="system-template-preview-header">
+          <span>模板内容预览</span>
+          <el-tag size="mini" type="info">{{ selectedSystemTemplate.platform }}</el-tag>
+        </div>
+        <el-input
+            :value="selectedSystemTemplate.content"
+            :autosize="{ minRows: 8, maxRows: 18 }"
+            class="system-template-preview"
+            readonly
+            resize="none"
+            type="textarea">
+        </el-input>
+      </template>
+      <div v-else class="system-template-description">
+        选择后只会替换下方编辑区，确认内容后请点击“保存模板”。
+      </div>
+    </div>
+
+    <div class="current-template-header">当前模板（保存时提交此处内容）</div>
     <div>
       <el-input
           v-model="template.template_content"
@@ -40,6 +87,7 @@
 <script>
 
 import {getTemplate, postTemplate} from '@/service/requests'
+import {commonAlertTemplate, SYSTEM_MESSAGE_TEMPLATES} from '@/utils/systemMessageTemplates'
 
 export default {
   name: "cTemplate",
@@ -47,47 +95,44 @@ export default {
     return {
       template: {
         template_is_merge: false,
-        template_content: '{{ if eq .N5 "firing" }}\n' +
-            '\n' +
-            '## <font color=\'#FF0000\'>【报警中】服务器{{ .N3 }}</font>\n' +
-            '\n' +
-            '{{ else if eq .N5 "resolved" }}\n' +
-            '\n' +
-            '## <font color=\'#20B2AA\'>【已恢复】服务器{{ .N3 }}</font>\n' +
-            '\n' +
-            '{{ else }}\n' +
-            '\n' +
-            '## 标题：信息通知\n' +
-            '\n' +
-            '{{ end }}\n' +
-            '\n' +
-            '====================\n' +
-            '\n' +
-            '**告警规则**：{{ .N1 }}\n' +
-            '\n' +
-            '**告警级别**：{{ .N2 }}\n' +
-            '\n' +
-            '**主机名称**：{{ .N3 }} \n' +
-            '\n' +
-            '**告警详情**：{{ .N4 }}\n' +
-            '\n' +
-            '**告警状态**：{{ .N5 }}\n' +
-            '\n' +
-            '**触发时间**：{{ .N6 }}\n' +
-            '\n' +
-            '**发送时间**：{{ .N7 }}\n' +
-            '\n' +
-            '**规则详情**：[Prometheus控制台](https://www.baidu.com)\n' +
-            '\n' +
-            '**报警详情**：[Alertmanager控制台](https://www.baidu.com)\n',
-      }
+        template_content: commonAlertTemplate,
+      },
+      systemTemplates: SYSTEM_MESSAGE_TEMPLATES,
+      selectedSystemTemplateId: ''
     }
   },
   components: {},
+  computed: {
+    selectedSystemTemplate() {
+      return this.systemTemplates.find(item => item.id === this.selectedSystemTemplateId)
+    }
+  },
   methods: {
     newTagPage: function () {
       let url = "https://github.com/gomessage/gomessage#gomessage"
       window.open(url)
+    },
+
+    // 用系统样例替换编辑区，不自动保存，避免误覆盖现有模板
+    replaceWithSystemTemplate: function () {
+      if (!this.selectedSystemTemplate) {
+        this.$message.warning("请先选择系统模板...")
+        return
+      }
+
+      this.$confirm(
+          '将用“' + this.selectedSystemTemplate.platform + ' · ' + this.selectedSystemTemplate.name + '”替换当前编辑区内容。替换后不会自动保存，你可以继续修改。',
+          '替换消息模板',
+          {
+            confirmButtonText: '确认替换',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }
+      ).then(() => {
+        this.template.template_content = this.selectedSystemTemplate.content
+        this.$message.success('已替换编辑区，请检查后保存模板...')
+      }).catch(() => {
+      })
     },
 
     //保存模板数据
@@ -129,6 +174,72 @@ export default {
 </script>
 
 <style scoped>
+.system-template-panel {
+  margin-bottom: 18px;
+  padding: 14px 16px;
+  border: 1px solid #ebeef5;
+  border-radius: 4px;
+  background: #fafafa;
+}
+
+.system-template-toolbar {
+  display: flex;
+  align-items: center;
+}
+
+.system-template-label {
+  margin-right: 14px;
+  color: #303133;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.system-template-select {
+  flex: 1;
+  margin-right: 12px;
+}
+
+.system-template-option-name {
+  float: right;
+  margin-left: 24px;
+  color: #8492a6;
+  font-size: 13px;
+}
+
+.system-template-description {
+  margin-top: 10px;
+  color: #909399;
+  font-size: 12px;
+  line-height: 1.6;
+  text-align: left;
+}
+
+.system-template-preview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 14px 0 8px;
+  color: #606266;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.system-template-preview >>> textarea {
+  background: #f5f7fa;
+  color: #606266;
+  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.current-template-header {
+  margin-bottom: 8px;
+  color: #606266;
+  font-size: 13px;
+  font-weight: 500;
+  text-align: left;
+}
+
 /*#MessageTemplateContent {*/
 /*    width: 100%;*/
 /*    !*margin-left: 20%;*!*/
