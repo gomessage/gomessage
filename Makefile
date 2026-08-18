@@ -108,8 +108,8 @@ release:
 	if git diff --cached --quiet; then echo ">> 版本号无变化，跳过提交"; else git commit -m "release: v$$NEW_VERSION"; fi ; \
 	git tag -af "v$$NEW_VERSION" -m "release: v$$NEW_VERSION" ; \
 	echo ">> 推送 main 和 tag 到远程（重锁时tag会强制更新）" ; \
-	git push github main ; \
-	git push -f github "refs/tags/v$$NEW_VERSION" ; \
+	git push origin main ; \
+	git push -f origin "refs/tags/v$$NEW_VERSION" ; \
 	echo "\n---------版本已锁定：v$$NEW_VERSION---------" ; \
 	echo ">> 下一步执行 make build 和 make publish 开始编译和分发\n"
 
