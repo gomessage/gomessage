@@ -138,7 +138,7 @@ creds:
 
 
 ######################################
-# Target：推送（一键：凭证校验 + 推镜像 + 推Helm + 传GitHub Release）
+# Target：推送（一键：凭证校验 + 推镜像 + 传GitHub Release）
 # 前置条件：已执行过 make build
 ######################################
 .PHONY: publish
@@ -317,20 +317,24 @@ docker:
 
 
 ######################################
-# Target：推送docker多架构镜像及Helm Chart
+# Target：推送docker多架构镜像
 ######################################
 .PHONY: docker_push
 docker_push: guard_main
-	# 注意：需要 docker buildx、gsed、helm 等工具支持；请先执行 make build
+	# 注意：需要 docker buildx 支持；请先执行 make build
 	@for p in linux-amd64 linux-arm64; do \
 		[ -d "${OUTPUT_PATH}/${NAME}-${VERSION}-$${p}" ] || { echo "ERROR: 缺少编译产物 ${NAME}-${VERSION}-$${p}，请先执行 make build"; exit 1; } ; \
 	done
 	#docker login --username=$(DOCKER_HUB_USERNAME)
 	#docker buildx rm mybuilder
 	#docker buildx create --name mybuilder --bootstrap --use
+	# 两平台构建上下文不同，只能分次构建；若直接向同一 tag 各推一次，
+	# 后推的单平台 manifest 会整体覆盖先推的（丢架构），故先推架构子tag再合成主tag
 	@echo "\n---------开始制作多架构镜像，版本${VERSION}---------\n"
-	@docker buildx build --platform linux/amd64 -t gomessage/gomessage:${VERSION} -t gomessage/gomessage:latest -f ./docker/Dockerfile "${OUTPUT_PATH}/${NAME}-${VERSION}-linux-amd64" --push
-	@docker buildx build --platform linux/arm64 -t gomessage/gomessage:${VERSION} -t gomessage/gomessage:latest -f ./docker/Dockerfile "${OUTPUT_PATH}/${NAME}-${VERSION}-linux-arm64" --push
+	@docker buildx build --platform linux/amd64 -t gomessage/gomessage:${VERSION}-amd64 -f ./docker/Dockerfile "${OUTPUT_PATH}/${NAME}-${VERSION}-linux-amd64" --push
+	@docker buildx build --platform linux/arm64 -t gomessage/gomessage:${VERSION}-arm64 -f ./docker/Dockerfile "${OUTPUT_PATH}/${NAME}-${VERSION}-linux-arm64" --push
+	@echo "\n---------合成多架构manifest（${VERSION} / latest）---------\n"
+	@docker buildx imagetools create -t gomessage/gomessage:${VERSION} -t gomessage/gomessage:latest gomessage/gomessage:${VERSION}-amd64 gomessage/gomessage:${VERSION}-arm64
 	@echo "\n---------镜像制作完成，版本${VERSION}---------\n"
 
 
