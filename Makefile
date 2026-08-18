@@ -20,7 +20,7 @@
 #要编译的命令名称
 NAME := gomessage
 #当前版本（由 make release 自动维护，请勿手改）
-VERSION := 3.0.0
+VERSION := 3.1.0
 #对应的git tag
 GIT_TAG := v$(VERSION)
 #编译输出目录
