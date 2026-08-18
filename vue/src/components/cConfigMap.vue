@@ -18,8 +18,10 @@
         style="width: 100%">
       <el-table-column label="Key（自定义变量名）" prop="key"></el-table-column>
       <el-table-column label="Value（原始数据中的索引）" prop="value"></el-table-column>
-      <el-table-column fixed="right" label="操作" width="100">
+      <el-table-column fixed="right" label="操作" width="140">
         <template slot-scope="scope">
+          <el-button size="small" type="text" @click.native.prevent="openEditDialog(scope.$index, scope.row)">修改
+          </el-button>
           <el-button size="small" type="text" @click.native.prevent="deleteRow(scope.$index, configList)">移除
           </el-button>
         </template>
@@ -62,6 +64,28 @@
     <!--添加新的输入框（+号按钮）-->
     <el-button size="mini" type="primary" v-on:click="addTableData">新增变量</el-button>
 
+    <el-dialog
+        title="修改变量映射"
+        :visible.sync="editDialogVisible"
+        width="520px"
+        append-to-body
+        @closed="resetEditMap">
+      <el-form ref="editMap" :model="editMap" :rules="newMapRules" label-width="70px">
+        <el-form-item label="Key" prop="mapKey">
+          <el-input v-model="editMap.mapKey" placeholder="纯字符串，不能有符号">
+            <template slot="prepend">Key:</template>
+          </el-input>
+        </el-form-item>
+        <el-form-item label="Value" prop="mapValue">
+          <el-input v-model="editMap.mapValue" placeholder="Json索引路径"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="editDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="saveEditMap">保存修改</el-button>
+      </span>
+    </el-dialog>
+
   </el-card>
 </template>
 
@@ -75,6 +99,12 @@ export default {
   data() {
     return {
       newMap: {
+        mapKey: '',
+        mapValue: ''
+      },
+      editDialogVisible: false,
+      editingIndex: -1,
+      editMap: {
         mapKey: '',
         mapValue: ''
       },
@@ -131,9 +161,11 @@ export default {
 
           if (mapKey.length === 0 || mapValue.length === 0) {
             this.$message.error('输入框不能为空...');
+          } else if (this.hasDuplicateMapKey(mapKey)) {
+            this.$message.error('自定义变量名已存在...');
           } else {
             let tableRow = {
-              key: "{{ ." + mapKey + " }}",
+              key: this.formatMapKey(mapKey),
               value: mapValue
             };
             this.configList.push(tableRow);
@@ -145,6 +177,62 @@ export default {
           }
         }
       })
+    },
+
+    // 打开修改弹窗，并把当前行转换回可编辑的Key与Value
+    openEditDialog(index, row) {
+      this.editingIndex = index;
+      this.editMap = {
+        mapKey: this.extractMapKey(row.key),
+        mapValue: row.value
+      };
+      this.editDialogVisible = true;
+    },
+
+    // 保存当前行的修改，并复用现有的批量持久化接口
+    saveEditMap() {
+      this.$refs["editMap"].validate(valid => {
+        if (!valid) {
+          return;
+        }
+        if (this.hasDuplicateMapKey(this.editMap.mapKey, this.editingIndex)) {
+          this.$message.error('自定义变量名已存在...');
+          return;
+        }
+
+        this.$set(this.configList, this.editingIndex, {
+          key: this.formatMapKey(this.editMap.mapKey),
+          value: this.editMap.mapValue
+        });
+        this.editDialogVisible = false;
+        this.PushVarData();
+      });
+    },
+
+    resetEditMap() {
+      this.editingIndex = -1;
+      this.editMap = {
+        mapKey: '',
+        mapValue: ''
+      };
+      if (this.$refs["editMap"]) {
+        this.$refs["editMap"].clearValidate();
+      }
+    },
+
+    formatMapKey(mapKey) {
+      return "{{ ." + mapKey + " }}";
+    },
+
+    extractMapKey(templateKey) {
+      const matched = templateKey.match(/^\{\{\s*\.([A-Za-z][A-Za-z0-9]*)\s*\}\}$/);
+      return matched ? matched[1] : '';
+    },
+
+    hasDuplicateMapKey(mapKey, ignoredIndex = -1) {
+      return this.configList.some((item, index) => {
+        return index !== ignoredIndex && this.extractMapKey(item.key) === mapKey;
+      });
     },
 
     // 删除一行数据，这里虽然是删除一条数据，但本质上是从数组中删除了一个元素，
@@ -159,7 +247,7 @@ export default {
       const dataList = [];
       for (let i = 0; i < this.configList.length; i++) {
         let mapKey = this.configList[i].key;
-        let mapKey2 = mapKey.split(" ")[1].split(".")[1]
+        let mapKey2 = this.extractMapKey(mapKey)
         let mapValue = this.configList[i].value;
 
         //封装到临时字典中
