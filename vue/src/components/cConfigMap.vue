@@ -124,7 +124,7 @@ export default {
       },
       configList: [
         {
-          key: '{{ .N1 }} ',
+          key: '{{ .N1 }}',
           value: 'alerts.#.labels.alertname',
         }, {
           key: '{{ .N2 }}',
@@ -225,7 +225,7 @@ export default {
     },
 
     extractMapKey(templateKey) {
-      const matched = templateKey.match(/^\{\{\s*\.([A-Za-z][A-Za-z0-9]*)\s*\}\}$/);
+      const matched = templateKey.match(/^\{\{\s*\.([A-Za-z][A-Za-z0-9]*)\s*\}\}\s*$/);
       return matched ? matched[1] : '';
     },
 
@@ -249,6 +249,12 @@ export default {
         let mapKey = this.configList[i].key;
         let mapKey2 = this.extractMapKey(mapKey)
         let mapValue = this.configList[i].value;
+
+        //Key 提取失败时跳过该行，避免把空 key 提交到后端污染变量映射
+        if (!mapKey2) {
+          this.$message.error('第 ' + (i + 1) + ' 行的 Key 格式不合法，已跳过：' + mapKey);
+          continue;
+        }
 
         //封装到临时字典中
         let newKeyValue = {};
